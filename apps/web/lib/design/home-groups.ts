@@ -86,3 +86,11 @@ export function buildAttentionGroups(items: ItemResponse[]): AttentionGroups {
     hero,
   };
 }
+
+export function hasItemsNeedingAttention(groups: AttentionGroups): boolean {
+  return groups.hero != null || groups.needsAttention.length > 0 || groups.gettingStale.length > 0;
+}
+
+export function shouldShowAllFreshBanner(groups: AttentionGroups): boolean {
+  return !hasItemsNeedingAttention(groups) && groups.lookingGood.length > 0;
+}

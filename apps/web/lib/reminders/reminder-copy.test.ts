@@ -23,7 +23,7 @@ describe("buildReminderCopy", () => {
       emphasis: "normal",
     });
 
-    expect(copy).toBe("Your Bed sheets was last tended 11 days ago.");
+    expect(copy).toBe("Bed sheets was last tended 11 days ago.");
   });
 });
 

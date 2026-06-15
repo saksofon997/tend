@@ -30,18 +30,18 @@ export function buildReminderCopy(reminder: ReminderCopyInput): string {
   const days = reminder.daysSinceLastTended;
 
   if (days === null) {
-    return `Your ${reminder.name} has never been tended.`;
+    return `${reminder.name} has never been tended.`;
   }
 
   if (days === 0) {
-    return `Your ${reminder.name} was tended today, but could still use attention.`;
+    return `${reminder.name} was tended today, but could still use attention.`;
   }
 
   if (days === 1) {
-    return `Your ${reminder.name} was last tended yesterday.`;
+    return `${reminder.name} was last tended yesterday.`;
   }
 
-  return `Your ${reminder.name} was last tended ${days} days ago.`;
+  return `${reminder.name} was last tended ${days} days ago.`;
 }
 
 export function buildAggregatedReminderCopy(reminders: ReminderCopyInput[], now: Date): string {

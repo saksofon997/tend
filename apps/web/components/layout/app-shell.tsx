@@ -18,12 +18,12 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-10 border-b border-border bg-card">
-        <div className="mx-auto flex h-14 max-w-[var(--tend-content-max)] items-center justify-between px-4">
-          <Link href="/" className="font-display text-lg font-medium text-primary">
+        <div className="tend-content-column flex h-14 items-center gap-4">
+          <Link href="/" className="shrink-0 font-display text-lg font-medium text-primary">
             Tend
           </Link>
 
-          <nav className="flex items-center gap-4">
+          <nav className="flex flex-1 items-center justify-center gap-4">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.href}
@@ -40,7 +40,7 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-3">
             {user ? (
               <span className="hidden text-sm text-muted-foreground sm:inline">
                 {user.displayName}
@@ -51,7 +51,7 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
         </div>
       </header>
 
-      <div className="mx-auto max-w-[var(--tend-content-max)] px-4 py-6">{children}</div>
+      <main className="tend-content-column py-6">{children}</main>
     </div>
   );
 }

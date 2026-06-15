@@ -30,6 +30,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [LifeAreaChip](#lifeareachip) | `tend/life-area-chip.tsx` | 4, 13 |
 | [LifeAreaFilter](#lifeareafilter) | `tend/life-area-filter.tsx` | 13 |
 | [PresetCard](#presetcard) | `tend/preset-card.tsx` | 4 |
+| [PresetSuggestions](#presetsuggestions) | `tend/preset-suggestions.tsx` | 3, 4 |
 | [TabList](#tablist) | `ui/tabs.tsx` | 4 |
 | [ReminderBanner](#reminderbanner) | `tend/reminder-banner.tsx` | 11 |
 | [EmptyState](#emptystate) | `tend/empty-state.tsx` | 5, 14 |
@@ -69,10 +70,10 @@ interface AppShellProps {
 ```
 
 **Styles:**
-- Header: `--tend-bg-elevated`, bottom border `--tend-border`
+- Header: `--tend-bg-elevated`, bottom border `--tend-border`, full-width bar
+- Header and page body share `.tend-content-column` (`max-width: 640px`, centered, `padding-inline: 16px`)
 - Logo wordmark: `text-lg`, display font, `--tend-primary`
-- Nav links: `text-sm`, muted default, primary color when active
-- Content area: centered, `max-w-[640px]`, `px-4 py-6`
+- Nav links: centered in the column; `text-sm`, muted default, primary color when active
 
 **Notes:** Hide full nav during onboarding. Auth pages use no shell or minimal logo-only header.
 
@@ -522,6 +523,28 @@ interface PresetCardProps {
 
 ---
 
+### PresetSuggestions
+
+**File:** `components/tend/preset-suggestions.tsx`
+
+```tsx
+interface PresetSuggestionsProps {
+  onSelect: (preset: TendPreset) => void;
+  selectedPresetName?: string;
+  className?: string;
+}
+```
+
+**Anatomy:** Secondary section below `ItemForm` on `/items/new`. Muted heading, life-area filter pills, then bordered suggestion chips (rounded-md, not pills).
+
+**Visual hierarchy:** Life areas use filled `rounded-full` chips; suggestions use outlined `rounded-md` chips so the two rows read as filter vs. actions.
+
+**Behavior:** Selecting a preset pre-fills the form above and focuses the name field.
+
+**Stories:** 3 (add item), 4 (presets)
+
+---
+
 ### ReminderBanner
 
 **File:** `components/tend/reminder-banner.tsx`
@@ -542,7 +565,7 @@ interface ReminderBannerProps {
 **Styles:** `Alert` variant `reminder`. Soft stale background — not modal.
 
 **Copy patterns (from Story 11):**
-- `"Your bed sheets were last tended 11 days ago."`
+- `"Bed sheets were last tended 11 days ago."`
 - `"You have free time this evening. Bed sheets and vacuuming could use attention."`
 - `"Medication is marked as a must and needs attention."`
 

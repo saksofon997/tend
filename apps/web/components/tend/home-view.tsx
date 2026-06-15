@@ -10,7 +10,11 @@ import { ReminderBanner } from "@/components/tend/reminder-banner";
 import { TendItemCard } from "@/components/tend/tend-item-card";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { type AttentionListItem, buildAttentionGroups } from "@/lib/design/home-groups";
+import {
+  type AttentionListItem,
+  buildAttentionGroups,
+  shouldShowAllFreshBanner,
+} from "@/lib/design/home-groups";
 import type { ItemResponse } from "@/lib/items/serialize";
 import type { RemindersApiResponse } from "@/lib/reminders/serialize";
 import type { LifeArea } from "@tend/domain";
@@ -103,8 +107,7 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
   return (
     <AppShell user={user} activePath="/">
       <PageHeader
-        title="Tend"
-        subtitle={`Welcome back, ${user.displayName}`}
+        title={`Welcome back, ${user.displayName}`}
         action={
           <Button asChild>
             <Link href="/items/new">Add item</Link>
@@ -148,10 +151,8 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
 
           {heroItem ? <AttentionHero item={heroItem} onTend={handleTend} /> : null}
 
-          {groups.needsAttention.length === 0 &&
-          groups.gettingStale.length === 0 &&
-          groups.lookingGood.length > 0 ? (
-            <EmptyStatePreset preset="all-fresh" />
+          {shouldShowAllFreshBanner(groups) ? (
+            <EmptyStatePreset preset="all-fresh" className="mb-8" />
           ) : null}
 
           <AttentionSection

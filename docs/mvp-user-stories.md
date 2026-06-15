@@ -440,7 +440,7 @@ Reviewed against Mike Cohn + Gherkin format and INVEST criteria. Original storie
 
 **Example reminder copy:**
 
-- "Your bed sheets were last tended 11 days ago."
+- "Bed sheets were last tended 11 days ago."
 - "You have free time this evening. Bed sheets and vacuuming could use attention."
 - "Medication is marked as a must and needs attention."
 

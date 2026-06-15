@@ -32,9 +32,23 @@
     @apply border-border;
   }
 
+  html {
+    scrollbar-gutter: stable;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: var(--tend-font-body);
+  }
+}
+
+@layer components {
+  .tend-content-column {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: var(--tend-content-max);
+    margin-inline: auto;
+    padding-inline: var(--tend-space-4);
   }
 }
 

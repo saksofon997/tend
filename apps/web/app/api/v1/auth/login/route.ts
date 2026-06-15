@@ -1,4 +1,5 @@
 import { jsonData, jsonError } from "@/lib/api";
+import { isEmailAllowed } from "@/lib/auth/allowed-emails";
 import { lucia, toAuthUser } from "@/lib/auth/lucia";
 import { verifyPassword } from "@/lib/auth/password";
 import { applySessionCookie } from "@/lib/auth/session";
@@ -18,6 +19,10 @@ export async function POST(request: Request) {
     const parsed = loginSchema.safeParse(body);
     if (!parsed.success) {
       return jsonError(formatZodError(parsed.error), 400);
+    }
+
+    if (!isEmailAllowed(parsed.data.email)) {
+      return jsonError("Invalid email or password", 401);
     }
 
     const user = await findUserByEmailAddress(parsed.data.email);

@@ -1,4 +1,5 @@
 import { jsonData, jsonError } from "@/lib/api";
+import { isEmailAllowed } from "@/lib/auth/allowed-emails";
 import { lucia, toAuthUser } from "@/lib/auth/lucia";
 import { applySessionCookie } from "@/lib/auth/session";
 import { createUser, findUserByEmailAddress } from "@/lib/auth/users";
@@ -17,6 +18,10 @@ export async function POST(request: Request) {
     const parsed = registerSchema.safeParse(body);
     if (!parsed.success) {
       return jsonError(formatZodError(parsed.error), 400);
+    }
+
+    if (!isEmailAllowed(parsed.data.email)) {
+      return jsonError("Registration is not currently available", 403);
     }
 
     const existing = await findUserByEmailAddress(parsed.data.email);

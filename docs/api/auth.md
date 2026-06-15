@@ -4,6 +4,8 @@ Create a local pre-alpha account and start a session.
 
 **Auth:** None
 
+**Invite list:** When `ALLOWED_EMAILS` is set on the server, only listed emails can register. Others receive `403`.
+
 **Request body**
 
 | Field | Type | Required | Description |
@@ -18,6 +20,7 @@ Create a local pre-alpha account and start a session.
 |--------|------|-------------|
 | 201 | `{ user: User }` | Account created; session cookie set |
 | 400 | `{ error: string }` | Validation failure |
+| 403 | `{ error: string }` | Email not on invite list (when `ALLOWED_EMAILS` is set) |
 | 409 | `{ error: string }` | Email already registered |
 
 **Example**
@@ -37,6 +40,8 @@ Create a local pre-alpha account and start a session.
 Sign in with email and password.
 
 **Auth:** None
+
+**Invite list:** When `ALLOWED_EMAILS` is set on the server, only listed emails can sign in. Others receive `401` with the same message as invalid credentials.
 
 **Request body**
 
@@ -92,4 +97,4 @@ Return the signed-in user.
 | displayName | string | Display name |
 | email | string | Email address |
 
-**Pre-alpha note:** No cloud sync, email verification, or password reset.
+**Pre-alpha note:** No cloud sync, email verification, or password reset. Set `ALLOWED_EMAILS` (comma-separated) in production to restrict who can register and sign in.

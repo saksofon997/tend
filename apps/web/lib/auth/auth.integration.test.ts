@@ -1,4 +1,4 @@
-import { describe, expect, it } from "bun:test";
+import { afterEach, describe, expect, it } from "bun:test";
 import { POST as login } from "@/app/api/v1/auth/login/route";
 import { POST as logout } from "@/app/api/v1/auth/logout/route";
 import { POST as register } from "@/app/api/v1/auth/register/route";
@@ -6,6 +6,16 @@ import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 import { validateSessionFromId } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { deleteUserByEmail, isDatabaseAvailable } from "@tend/db";
+
+const originalAllowedEmails = process.env.ALLOWED_EMAILS;
+
+afterEach(() => {
+  if (originalAllowedEmails === undefined) {
+    process.env.ALLOWED_EMAILS = undefined;
+  } else {
+    process.env.ALLOWED_EMAILS = originalAllowedEmails;
+  }
+});
 
 function uniqueEmail(): string {
   return `test-${Date.now()}-${Math.random().toString(36).slice(2)}@example.com`;
@@ -34,6 +44,8 @@ describe("auth integration", () => {
       console.warn("Skipping: database not available (start Docker with docker compose up -d)");
       return;
     }
+
+    process.env.ALLOWED_EMAILS = undefined;
 
     const email = uniqueEmail();
     const password = "password123";
@@ -102,6 +114,8 @@ describe("auth integration", () => {
       return;
     }
 
+    process.env.ALLOWED_EMAILS = undefined;
+
     const email = uniqueEmail();
 
     try {
@@ -151,5 +165,100 @@ describe("auth integration", () => {
     );
 
     expect(response.status).toBe(401);
+  });
+
+  it("rejects registration when email is not on the invite list", async () => {
+    if (!(await isDatabaseAvailable())) {
+      console.warn("Skipping: database not available");
+      return;
+    }
+
+    const email = uniqueEmail();
+    process.env.ALLOWED_EMAILS = "invited@example.com";
+
+    const response = await register(
+      new Request("http://localhost/api/v1/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          displayName: "Blocked User",
+          email,
+          password: "password123",
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(403);
+    const body = (await response.json()) as { error: string };
+    expect(body.error).toBe("Registration is not currently available");
+  });
+
+  it("allows registration when email is on the invite list", async () => {
+    if (!(await isDatabaseAvailable())) {
+      console.warn("Skipping: database not available");
+      return;
+    }
+
+    const email = uniqueEmail();
+    process.env.ALLOWED_EMAILS = email;
+
+    try {
+      const response = await register(
+        new Request("http://localhost/api/v1/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            displayName: "Invited User",
+            email,
+            password: "password123",
+          }),
+        }),
+      );
+
+      expect(response.status).toBe(201);
+    } finally {
+      await cleanupUser(email);
+    }
+  });
+
+  it("rejects login when email is not on the invite list", async () => {
+    if (!(await isDatabaseAvailable())) {
+      console.warn("Skipping: database not available");
+      return;
+    }
+
+    const email = uniqueEmail();
+    process.env.ALLOWED_EMAILS = undefined;
+
+    try {
+      const registerResponse = await register(
+        new Request("http://localhost/api/v1/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            displayName: "Existing User",
+            email,
+            password: "password123",
+          }),
+        }),
+      );
+      expect(registerResponse.status).toBe(201);
+
+      process.env.ALLOWED_EMAILS = "someone-else@example.com";
+
+      const loginResponse = await login(
+        new Request("http://localhost/api/v1/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password: "password123" }),
+        }),
+      );
+
+      expect(loginResponse.status).toBe(401);
+      const body = (await loginResponse.json()) as { error: string };
+      expect(body.error).toBe("Invalid email or password");
+    } finally {
+      await cleanupUser(email);
+    }
   });
 });

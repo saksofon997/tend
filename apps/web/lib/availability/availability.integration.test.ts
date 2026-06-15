@@ -31,6 +31,8 @@ function getSessionIdFromResponse(response: Response): string | null {
 }
 
 async function registerTestUser() {
+  process.env.ALLOWED_EMAILS = undefined;
+
   const email = uniqueEmail();
   const password = "password123";
 

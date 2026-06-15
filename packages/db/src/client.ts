@@ -8,3 +8,5 @@ export function createDb(connectionString: string) {
 }
 
 export type Database = ReturnType<typeof createDb>;
+/** Database connection or an active transaction — both support queries. */
+export type DbClient = Database | Parameters<Parameters<Database["transaction"]>[0]>[0];

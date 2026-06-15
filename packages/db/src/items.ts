@@ -1,5 +1,5 @@
 import { and, desc, eq, isNull } from "drizzle-orm";
-import type { Database } from "./client";
+import type { Database, DbClient } from "./client";
 import { tendEvents, tendItems } from "./schema";
 
 export type TendItemRow = typeof tendItems.$inferSelect;
@@ -212,7 +212,7 @@ export async function getRecentEventsForItem(
 }
 
 export async function getEventForUser(
-  database: Database,
+  database: DbClient,
   userId: string,
   eventId: string,
 ): Promise<{ event: TendEventRow; item: TendItemRow } | null> {
@@ -234,7 +234,7 @@ export async function getEventForUser(
 }
 
 async function syncItemLastTendedFromEvents(
-  tx: Database,
+  tx: DbClient,
   userId: string,
   itemId: string,
 ): Promise<TendItemRow | null> {

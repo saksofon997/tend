@@ -35,13 +35,24 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
     setError(null);
     setFieldErrors({});
 
-    const schema = mode === "register" ? registerSchema : loginSchema;
-    const parsed = schema.safeParse({
-      displayName: mode === "register" ? displayName : undefined,
-      email,
-      password,
-    });
+    if (mode === "register") {
+      const parsed = registerSchema.safeParse({ displayName, email, password });
+      if (!parsed.success) {
+        setFieldErrors(fieldErrorsFromZod(parsed.error));
+        setSubmitting(false);
+        return;
+      }
 
+      try {
+        await onSubmit(parsed.data);
+      } catch (submitError) {
+        setError(submitError instanceof Error ? submitError.message : "Something went wrong");
+        setSubmitting(false);
+      }
+      return;
+    }
+
+    const parsed = loginSchema.safeParse({ email, password });
     if (!parsed.success) {
       setFieldErrors(fieldErrorsFromZod(parsed.error));
       setSubmitting(false);
@@ -49,11 +60,7 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
     }
 
     try {
-      await onSubmit({
-        displayName: mode === "register" ? parsed.data.displayName : undefined,
-        email: parsed.data.email,
-        password: parsed.data.password,
-      });
+      await onSubmit(parsed.data);
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "Something went wrong");
       setSubmitting(false);

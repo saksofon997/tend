@@ -7,9 +7,9 @@ import { waitForDatabase } from "./wait-for-database";
 
 config({ path: path.resolve(import.meta.dir, "../../../.env") });
 
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL;
 if (!databaseUrl) {
-  console.error("DATABASE_URL is required");
+  console.error("DATABASE_URL or DATABASE_URL_UNPOOLED is required");
   process.exit(1);
 }
 

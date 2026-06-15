@@ -113,6 +113,10 @@ bun run ci:check
 
 Before sharing with testers, walk through [`docs/manual-test-script.md`](docs/manual-test-script.md) — it covers all 14 MVP user stories.
 
+## Deployment
+
+Production hosting uses **Vercel** (app), **Neon** (Postgres), and **Cloudflare** (DNS). Step-by-step setup: [`docs/deployment.md`](docs/deployment.md).
+
 ## API documentation
 
 HTTP endpoints are documented under [`docs/api/`](docs/api/README.md) as they are implemented. Base path: `/api/v1`.

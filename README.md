@@ -1,5 +1,7 @@
 # Tend
 
+![CI](https://github.com/saksofon997/tend/actions/workflows/ci.yml/badge.svg)
+
 A lightweight life-maintenance app for remembering recurring things that matter — without guilt-driven overdue tasks.
 
 Tend tracks when you last tended household care, health upkeep, relationships, pets, vehicles, and life admin, and gently surfaces what could use attention now.
@@ -90,11 +92,22 @@ Health check: [http://localhost:3000/api/v1/health](http://localhost:3000/api/v1
 |---------|-------------|
 | `bun run dev` | Start web app in development |
 | `bun run build` | Production build |
+| `bun run ci:check` | Full CI pipeline locally (lint → migrate → test → build) |
 | `bun run test` | Run all tests |
 | `bun run lint` | Lint and format check (Biome) |
 | `bun run setup:db` | Start Postgres (Docker) and apply migrations |
 | `bun run db:migrate` | Apply Drizzle migrations (waits for Postgres) |
 | `bun run db:studio` | Open Drizzle Studio |
+
+## Git hooks
+
+After `bun install`, Husky runs the same checks as CI before each commit (`bun run ci:check`). Postgres must be running — start it with `bun run setup:db` or `docker compose up -d`.
+
+To run the checks manually without committing:
+
+```bash
+bun run ci:check
+```
 
 ## Manual QA
 

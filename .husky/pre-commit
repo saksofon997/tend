@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+set -e
+
+if [ -f .env ]; then
+  set -a
+  # shellcheck disable=SC1091
+  . ./.env
+  set +a
+fi
+
+export DATABASE_URL="${DATABASE_URL:-postgresql://tend:tend@localhost:5432/tend}"
+export SESSION_SECRET="${SESSION_SECRET:-local-pre-commit-session-secret-32chars}"
+
+bun run ci:check

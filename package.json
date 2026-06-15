@@ -3,9 +3,11 @@
   "private": true,
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
+    "prepare": "husky",
     "dev": "turbo run dev",
     "build": "turbo run build",
     "test": "turbo run test",
+    "ci:check": "bun run lint && bun run db:generate && bun run db:migrate && bun run test && bun run build",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
@@ -16,6 +18,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "husky": "^9.1.7",
     "turbo": "^2.5.4",
     "typescript": "^5.8.3"
   },

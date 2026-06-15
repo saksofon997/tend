@@ -1,0 +1,45 @@
+@import "tailwindcss";
+@import "../../../docs/design/tokens.css";
+
+@theme inline {
+  --font-sans: var(--font-body), var(--tend-font-body);
+  --font-display: var(--font-display), var(--tend-font-display);
+  --color-background: var(--tend-bg);
+  --color-foreground: var(--tend-text);
+  --color-card: var(--tend-bg-elevated);
+  --color-card-foreground: var(--tend-text);
+  --color-primary: var(--tend-primary);
+  --color-primary-foreground: var(--tend-text-inverse);
+  --color-secondary: var(--tend-secondary-muted);
+  --color-secondary-foreground: var(--tend-text);
+  --color-muted: var(--tend-bg-muted);
+  --color-muted-foreground: var(--tend-text-muted);
+  --color-accent: var(--tend-primary-muted);
+  --color-accent-foreground: var(--tend-primary);
+  --color-destructive: var(--tend-error);
+  --color-destructive-foreground: var(--tend-text-inverse);
+  --color-border: var(--tend-border);
+  --color-input: var(--tend-border-subtle);
+  --color-ring: var(--tend-border-focus);
+  --radius-sm: var(--tend-radius-sm);
+  --radius-md: var(--tend-radius-md);
+  --radius-lg: var(--tend-radius-lg);
+  --radius-xl: var(--tend-radius-xl);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: var(--tend-font-body);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--tend-font-display);
+  }
+}

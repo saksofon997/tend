@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tend-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: tend
+      POSTGRES_PASSWORD: tend
+      POSTGRES_DB: tend
+    volumes:
+      - tend_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tend -d tend"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  tend_postgres_data:

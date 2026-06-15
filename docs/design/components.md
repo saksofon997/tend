@@ -1,0 +1,816 @@
+# Tend Component Catalog
+
+Implementation specs for React components in `apps/web/components/`. Each entry includes file path, props, anatomy, states, and which user stories / routes use it.
+
+**Convention:** Primitives in `ui/` (shadcn-themed). Domain components in `tend/`. Layout in `layout/`. Forms in `forms/`.
+
+---
+
+## Quick reference
+
+| Component | File | Stories |
+|-----------|------|---------|
+| [AppShell](#appshell) | `layout/app-shell.tsx` | All |
+| [PageHeader](#pageheader) | `layout/page-header.tsx` | All pages |
+| [Button](#button) | `ui/button.tsx` | All |
+| [FormField](#formfield) | `forms/form-field.tsx` | 1, 3, 8, 10 |
+| [Input](#input) | `ui/input.tsx` | 1, 3, 8 |
+| [Select](#select) | `ui/select.tsx` | 3, 4, 8, 13 |
+| [Card](#card) | `ui/card.tsx` | 1, 5, 6 |
+| [Alert](#alert) | `ui/alert.tsx` | 1, 11 |
+| [StatusBadge](#statusbadge) | `tend/status-badge.tsx` | 5, 6, 11 |
+| [TypeBadge](#typebadge) | `tend/type-badge.tsx` | 5, 6, 12 |
+| [RelativeTime](#relativetime) | `tend/relative-time.tsx` | 5, 6, 11, 14 |
+| [TendItemCard](#tenditemcard) | `tend/tend-item-card.tsx` | 5, 7, 11 |
+| [AttentionSection](#attentionsection) | `tend/attention-section.tsx` | 5 |
+| [AttentionHero](#attentionhero) | `tend/attention-hero.tsx` | 5, 11 |
+| [MarkTendedButton](#marktendedbutton) | `tend/mark-tended-button.tsx` | 7, 11 |
+| [TypeSelector](#typeselector) | `forms/type-selector.tsx` | 3, 8, 12 |
+| [RhythmSelect](#rhythmselect) | `forms/rhythm-select.tsx` | 3, 4, 8 |
+| [LifeAreaChip](#lifeareachip) | `tend/life-area-chip.tsx` | 4, 13 |
+| [LifeAreaFilter](#lifeareafilter) | `tend/life-area-filter.tsx` | 13 |
+| [PresetCard](#presetcard) | `tend/preset-card.tsx` | 4 |
+| [TabList](#tablist) | `ui/tabs.tsx` | 4 |
+| [ReminderBanner](#reminderbanner) | `tend/reminder-banner.tsx` | 11 |
+| [EmptyState](#emptystate) | `tend/empty-state.tsx` | 5, 14 |
+| [ActivityListItem](#activitylistitem) | `tend/activity-list-item.tsx` | 14 |
+| [AvailabilityEditor](#availabilityeditor) | `forms/availability-editor.tsx` | 10 |
+| [ConfirmDialog](#confirmdialog) | `ui/dialog.tsx` | 9 |
+| [AuthForm](#authform) | `forms/auth-form.tsx` | 1 |
+| [ItemForm](#itemform) | `forms/item-form.tsx` | 3, 4, 8 |
+| [ItemDetailView](#itemdetailview) | `tend/item-detail-view.tsx` | 6, 7, 8, 14 |
+| [TendEventRow](#tendeventrow) | `tend/tend-event-row.tsx` | 6, 14 |
+| [OnboardingStep](#onboardingstep) | `layout/onboarding-step.tsx` | 2 |
+
+---
+
+## Layout
+
+### AppShell
+
+**File:** `components/layout/app-shell.tsx`
+
+**Purpose:** Persistent chrome — logo, primary nav, user menu.
+
+```tsx
+interface AppShellProps {
+  children: React.ReactNode;
+  user?: { displayName: string };
+}
+```
+
+**Anatomy:**
+```
+┌──────────────────────────────────────────────┐
+│ [Tend logo]     Home  Activity  Settings  ▾  │  ← header, h-14, border-b
+├──────────────────────────────────────────────┤
+│  {children}                                   │
+└──────────────────────────────────────────────┘
+```
+
+**Styles:**
+- Header: `--tend-bg-elevated`, bottom border `--tend-border`
+- Logo wordmark: `text-lg`, display font, `--tend-primary`
+- Nav links: `text-sm`, muted default, primary color when active
+- Content area: centered, `max-w-[640px]`, `px-4 py-6`
+
+**Notes:** Hide full nav during onboarding. Auth pages use no shell or minimal logo-only header.
+
+---
+
+### PageHeader
+
+**File:** `components/layout/page-header.tsx`
+
+```tsx
+interface PageHeaderProps {
+  title: string;
+  subtitle?: string;
+  action?: React.ReactNode; // e.g. "Add" button
+}
+```
+
+**Styles:**
+- Title: `text-2xl`, display font, `--tend-text`
+- Subtitle: `text-sm`, `--tend-text-muted`, `mt-1`
+- Action: right-aligned on desktop, below title on mobile
+- Bottom margin: `--tend-space-6`
+
+---
+
+### OnboardingStep
+
+**File:** `components/layout/onboarding-step.tsx`
+
+```tsx
+interface OnboardingStepProps {
+  step: number;
+  totalSteps: number;
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+  footer?: React.ReactNode; // Back / Skip / Continue buttons
+}
+```
+
+**Anatomy:** Centered column, `max-w-[480px]`. Step dots (`totalSteps` wide, current filled). No heavy progress bar.
+
+**Stories:** 2, 4
+
+---
+
+## Primitives (shadcn-themed)
+
+### Button
+
+**File:** `components/ui/button.tsx` (shadcn)
+
+Extend shadcn variants:
+
+| Variant | Background | Text | Border | Usage |
+|---------|------------|------|--------|-------|
+| `default` | `--tend-primary` | inverse | none | Primary actions |
+| `secondary` | `--tend-secondary-muted` | `--tend-text` | `--tend-border` | Back, cancel |
+| `ghost` | transparent | `--tend-text-muted` | none | Skip, low emphasis |
+| `destructive` | `--tend-error-bg` | `--tend-error` | `--tend-error` 1px | Delete confirm only |
+
+**Sizes:** `sm` (32px), `default` (40px), `lg` (44px)
+
+**States:** `disabled` → 50% opacity, no pointer. `loading` → spinner + "Saving…" label pattern.
+
+---
+
+### Input
+
+**File:** `components/ui/input.tsx`
+
+**Styles:**
+- Height: `40px`
+- Background: `--tend-bg-elevated`
+- Border: `1px solid --tend-border-subtle`
+- Radius: `--tend-radius-md`
+- Padding: `12px`
+- Font: body, `text-base`
+- Placeholder: `--tend-text-subtle`
+- Focus: border `--tend-border-focus`, ring `2px` offset
+
+**Types used:** `text`, `email`, `password`, `date`
+
+---
+
+### Select
+
+**File:** `components/ui/select.tsx` (shadcn Radix)
+
+Same visual treatment as Input. Chevron icon muted. Dropdown panel: elevated card with `--tend-shadow-md`.
+
+---
+
+### Card
+
+**File:** `components/ui/card.tsx`
+
+```tsx
+// shadcn Card + CardHeader + CardContent + CardFooter
+```
+
+- Background: `--tend-bg-elevated`
+- Border: `1px --tend-border`
+- Radius: `--tend-radius-lg`
+- Padding: `--tend-space-4` (content), `--tend-space-5` (header)
+
+Used for: auth forms, attention hero, preset picker container.
+
+---
+
+### Alert
+
+**File:** `components/ui/alert.tsx`
+
+| Variant | Background | Icon color | Usage |
+|---------|------------|------------|-------|
+| `info` | `--tend-info-bg` | `--tend-info` | Must guidance, pre-alpha notes |
+| `error` | `--tend-error-bg` | `--tend-error` | Form validation |
+| `reminder` | `--tend-status-stale-bg` | `--tend-status-stale` | In-app reminders |
+
+No warning variant with yellow/red — use `reminder` or `info`.
+
+---
+
+### FormField
+
+**File:** `components/forms/form-field.tsx`
+
+```tsx
+interface FormFieldProps {
+  id: string;
+  label: string;
+  helper?: string;
+  error?: string;
+  required?: boolean;
+  children: React.ReactNode; // Input or Select
+}
+```
+
+**Anatomy:**
+```
+Label (text-base, medium)     [optional *]
+Helper (text-sm, muted)       — if helper
+{children}
+Error (text-sm, error color)  — if error, role="alert"
+```
+
+**Spacing:** `16px` between fields. Label `4px` above control.
+
+**Stories:** 1, 3, 8, 10
+
+---
+
+## Domain components
+
+### StatusBadge
+
+**File:** `components/tend/status-badge.tsx`
+
+```tsx
+import type { TendStatus } from "@tend/domain";
+
+interface StatusBadgeProps {
+  status: TendStatus;
+  size?: "sm" | "md";
+}
+```
+
+**Label map:**
+```ts
+const STATUS_LABELS: Record<TendStatus, string> = {
+  fresh: "Fresh",
+  getting_stale: "Getting stale",
+  needs_attention: "Needs attention",
+};
+```
+
+**Styles:**
+| Status | Text | BG |
+|--------|------|-----|
+| `fresh` | `--tend-status-fresh` | `--tend-status-fresh-bg` |
+| `getting_stale` | `--tend-status-stale` | `--tend-status-stale-bg` |
+| `needs_attention` | `--tend-status-attention` | `--tend-status-attention-bg` |
+
+- `sm`: `text-xs`, padding `4px 8px`, radius `--tend-radius-sm`
+- `md`: `text-sm`, padding `6px 10px`
+
+Always render text label — never color-only.
+
+---
+
+### TypeBadge
+
+**File:** `components/tend/type-badge.tsx`
+
+```tsx
+interface TypeBadgeProps {
+  type: TendItemType; // "must" | "want"
+  size?: "sm" | "md";
+}
+```
+
+| Type | Label | Accent |
+|------|-------|--------|
+| `want` | Want | `--tend-type-want` on `--tend-type-want-bg` |
+| `must` | Must | `--tend-type-must` on `--tend-type-must-bg` |
+
+Optional `CircleDot` icon (12px) before label for must.
+
+---
+
+### RelativeTime
+
+**File:** `components/tend/relative-time.tsx`
+
+```tsx
+interface RelativeTimeProps {
+  date: Date | string | null;
+  prefix?: string; // default: "Last tended"
+}
+```
+
+**Output examples:**
+- `Last tended today`
+- `Last tended 2 days ago`
+- `Last tended 11 days ago`
+- `Never tended` (null date)
+
+**Styles:** `text-sm`, `--tend-text-muted`. Never append "overdue".
+
+```ts
+// lib/design/relative-time.ts — implementation helper
+export function formatRelativeTended(date: Date | null, now: Date): string;
+```
+
+---
+
+### TendItemCard
+
+**File:** `components/tend/tend-item-card.tsx`
+
+The primary list unit on home and reminders.
+
+```tsx
+interface TendItemCardProps {
+  id: string;
+  name: string;
+  type: TendItemType;
+  status: TendStatus;
+  lastTendedAt: Date | string | null;
+  rhythmDays: number;
+  lifeArea?: LifeArea | null;
+  onTend?: (id: string) => void;
+  onClick?: (id: string) => void;
+  loading?: boolean;
+}
+```
+
+**Anatomy:**
+```
+┌─────────────────────────────────────────────────┐
+│ [Name text-lg medium]              [StatusBadge]│
+│ [TypeBadge]  [RelativeTime]                     │
+│                                    [Mark tended]│
+└─────────────────────────────────────────────────┘
+```
+
+**Layout:** Flex row. Left: name + metadata stack. Right: status + action.
+
+**Variants:**
+- **Default:** Card border, white bg
+- **Must + needs_attention:** Add `border-l-4 border-l-[--tend-type-must-border]` and `--tend-type-must-bg` tint
+- **Looking good section:** Slightly reduced opacity (0.85) optional
+
+**Interaction:**
+- Whole card clickable → `/items/[id]` except Mark tended button
+- Mark tended: `MarkTendedButton` inline, stops propagation
+
+**Stories:** 5, 7, 11
+
+---
+
+### AttentionSection
+
+**File:** `components/tend/attention-section.tsx`
+
+```tsx
+interface AttentionSectionProps {
+  title: string; // "Needs attention" | "Getting stale" | "Looking good"
+  count: number;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+}
+```
+
+**Styles:**
+- Header: `text-xl` display font + count in `text-sm` muted pill
+- Collapsible when `count === 0` — show muted empty line instead of hiding section entirely on home
+- `32px` margin below section
+
+---
+
+### AttentionHero
+
+**File:** `components/tend/attention-hero.tsx`
+
+```tsx
+interface AttentionHeroProps {
+  item: {
+    id: string;
+    name: string;
+    type: TendItemType;
+    status: TendStatus;
+    lastTendedAt: Date | string | null;
+  };
+  onTend: (id: string) => void;
+}
+```
+
+**Purpose:** Single featured card at top of home for the highest-priority stale item (must first).
+
+**Styles:** Larger card (`padding: 24px`), `text-3xl` name in display font, prominent `MarkTendedButton` size `lg`.
+
+**Copy example:** "Bed sheets could use attention" (derived from name + status, not alarming).
+
+**Stories:** 5, 11
+
+---
+
+### MarkTendedButton
+
+**File:** `components/tend/mark-tended-button.tsx`
+
+```tsx
+interface MarkTendedButtonProps {
+  itemId: string;
+  onTend: (id: string) => Promise<void>;
+  size?: "sm" | "default" | "lg";
+  className?: string;
+}
+```
+
+- Label: "Mark tended" (not "Complete" or "Done")
+- Loading: "Updating…"
+- Icon: `Check` 16px before label
+- Variant: `default` (primary green)
+- On success: parent removes card from section (optimistic update encouraged)
+
+---
+
+### TypeSelector
+
+**File:** `components/forms/type-selector.tsx`
+
+```tsx
+interface TypeSelectorProps {
+  value: TendItemType;
+  onChange: (type: TendItemType) => void;
+}
+```
+
+**Anatomy:** Two side-by-side selectable cards (not a bare `<select>` on create/edit flows):
+
+```
+┌─────────────────────┐  ┌─────────────────────┐
+│ Want                │  │ Must                │
+│ Flexible, no guilt  │  │ Important, stronger │
+│ if it drifts        │  │ reminders           │
+└─────────────────────┘  └─────────────────────┘
+```
+
+Selected state: border `2px` type accent color, tinted background.
+
+Below both: `Alert` variant `info` — "Use must sparingly for things that truly can't drift."
+
+**Stories:** 3, 8, 12
+
+---
+
+### RhythmSelect
+
+**File:** `components/forms/rhythm-select.tsx`
+
+```tsx
+interface RhythmSelectProps {
+  value: number; // rhythmDays
+  onChange: (days: number) => void;
+  options?: { days: number; label: string }[];
+}
+```
+
+Default options from `@/lib/onboarding/constants` `RHYTHM_OPTIONS`. Falls back to numeric display for custom values.
+
+Use `Select` primitive or pill button group for common rhythms.
+
+---
+
+### LifeAreaChip
+
+**File:** `components/tend/life-area-chip.tsx`
+
+```tsx
+interface LifeAreaChipProps {
+  area: LifeArea;
+  selected?: boolean;
+  onClick?: () => void;
+}
+```
+
+Small pill: `text-xs`, `padding 6px 12px`, `radius-full`. Selected: `--tend-primary-muted` bg, `--tend-primary` text.
+
+---
+
+### LifeAreaFilter
+
+**File:** `components/tend/life-area-filter.tsx`
+
+```tsx
+interface LifeAreaFilterProps {
+  selected: LifeArea | null;
+  onChange: (area: LifeArea | null) => void;
+}
+```
+
+Horizontal scroll row of `LifeAreaChip` + "All" chip. Sticky below header on home optional.
+
+**Stories:** 13
+
+---
+
+### PresetCard
+
+**File:** `components/tend/preset-card.tsx`
+
+```tsx
+interface PresetCardProps {
+  name: string;
+  type: TendItemType;
+  rhythmDays: number;
+  onSelect: () => void;
+}
+```
+
+**Anatomy:** Tappable card. Name `text-base` medium. Metadata line: `{type} · every {n} days` in `text-sm` muted.
+
+**Stories:** 4
+
+---
+
+### ReminderBanner
+
+**File:** `components/tend/reminder-banner.tsx`
+
+```tsx
+interface ReminderBannerProps {
+  reminders: Array<{
+    itemId: string;
+    name: string;
+    type: TendItemType;
+    copy: string; // from domain reminder copy
+  }>;
+  onTend: (id: string) => void;
+  onDismiss?: () => void;
+}
+```
+
+**Styles:** `Alert` variant `reminder`. Soft stale background — not modal.
+
+**Copy patterns (from Story 11):**
+- `"Your bed sheets were last tended 11 days ago."`
+- `"You have free time this evening. Bed sheets and vacuuming could use attention."`
+- `"Medication is marked as a must and needs attention."`
+
+Include inline `MarkTendedButton` size `sm` per item when multiple.
+
+**Stories:** 11
+
+---
+
+### EmptyState
+
+**File:** `components/tend/empty-state.tsx`
+
+```tsx
+interface EmptyStateProps {
+  title: string;
+  description?: string;
+  action?: React.ReactNode;
+}
+```
+
+**Presets:**
+
+| Key | Title | Description |
+|-----|-------|-------------|
+| `no-items` | "Nothing to tend yet" | "Add something you want to maintain — plants, sheets, a friendship." |
+| `all-fresh` | "Nothing needs attention right now" | "Your rhythms are in good shape. Tend will let you know when something drifts." |
+| `no-activity` | "No tending logged yet" | "When you mark items as tended, they'll show up here." |
+| `no-availability` | "No availability set yet" | "Add windows for days you're usually free. Wants wait for these times; musts still surface when they need attention." |
+
+**Styles:** Centered, `text-muted`, no illustration required for pre-alpha (optional `Leaf` icon 32px muted).
+
+---
+
+### ActivityListItem
+
+**File:** `components/tend/activity-list-item.tsx`
+
+```tsx
+interface ActivityListItemProps {
+  itemName: string;
+  tendedAt: Date | string;
+  onEdit?: () => void;
+}
+```
+
+Simple row: name left, formatted date right, optional edit on hover.
+
+**Stories:** 14
+
+---
+
+## Forms (composite)
+
+### AuthForm
+
+**File:** `components/forms/auth-form.tsx`
+
+```tsx
+interface AuthFormProps {
+  mode: "login" | "register";
+  onSubmit: (data: AuthFormData) => Promise<void>;
+}
+
+interface AuthFormData {
+  displayName?: string; // register only
+  email: string;
+  password: string;
+}
+```
+
+Wraps `FormField` + `Input` + `Button`. Register includes display name field.
+
+Pre-alpha footer note via `Alert` variant `info`.
+
+**Stories:** 1
+
+---
+
+### ItemForm
+
+**File:** `components/forms/item-form.tsx`
+
+```tsx
+interface ItemFormProps {
+  initial?: Partial<ItemFormValues>;
+  onSubmit: (values: ItemFormValues) => Promise<void>;
+  onCancel?: () => void;
+  submitLabel?: string;
+}
+
+interface ItemFormValues {
+  name: string;
+  type: TendItemType;
+  rhythmDays: number;
+  lifeArea: LifeArea | null;
+  lastTendedDate: string; // YYYY-MM-DD input value
+}
+```
+
+Composes: name `Input`, `TypeSelector`, `RhythmSelect`, life area `Select`, last tended date `Input type="date"`.
+
+Extract from current `onboarding-flow.tsx` `itemForm()` — that function is the behavioral reference.
+
+**Stories:** 2, 3, 4, 8
+
+---
+
+### ItemDetailView
+
+**File:** `components/tend/item-detail-view.tsx`
+
+```tsx
+interface ItemDetailViewProps {
+  user: { displayName: string };
+  initialItem: ItemResponse;
+  initialEvents: TendEventResponse[];
+  todayDate: string;
+}
+```
+
+**Purpose:** Item detail screen with view/edit modes, mark tended action, and recent event history with correction.
+
+**Stories:** 6, 7, 8, 14
+
+---
+
+### TendEventRow
+
+**File:** `components/tend/tend-event-row.tsx`
+
+```tsx
+interface TendEventRowProps {
+  event: TendEventResponse;
+  onUpdate: (eventId: string, tendedAt: string) => Promise<void>;
+  onDelete: (eventId: string) => Promise<void>;
+}
+```
+
+**Purpose:** Single tend event row with inline date edit and remove actions.
+
+**Stories:** 6, 14
+
+---
+
+### AvailabilityEditor
+
+**File:** `components/forms/availability-editor.tsx`
+
+```tsx
+interface AvailabilityEditorProps {
+  windows: AvailabilityWindow[];
+  onChange: (windows: AvailabilityWindow[]) => void;
+  onSave: () => Promise<void>;
+}
+
+interface AvailabilityWindow {
+  dayOfWeek: 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0 = Sunday
+  startTime: string; // "HH:MM"
+  endTime: string;
+}
+```
+
+**Anatomy:** 7 rows (Sun–Sat). Each row: day label + start/end time inputs (`type="time"`) + add/remove window.
+
+Empty day: muted text "No windows set".
+
+**Stories:** 10
+
+---
+
+### ConfirmDialog
+
+**File:** `components/ui/dialog.tsx` (shadcn)
+
+Used for archive and permanent delete.
+
+```tsx
+interface ConfirmDialogProps {
+  open: boolean;
+  title: string;
+  description: string;
+  confirmLabel: string;
+  variant?: "default" | "destructive";
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+```
+
+**Copy:**
+- Archive: "Archive {name}? It won't appear on your home screen but history stays saved."
+- Delete: "Permanently delete {name}? This removes all tending history."
+
+**Stories:** 9
+
+---
+
+## lib helpers
+
+**File:** `lib/design/status-labels.ts`
+
+```ts
+import type { TendStatus, TendItemType, LifeArea } from "@tend/domain";
+
+export const STATUS_LABELS: Record<TendStatus, string>;
+export const TYPE_LABELS: Record<TendItemType, string>;
+export const LIFE_AREA_LABELS: Record<LifeArea, string>;
+// Re-export or align with @/lib/onboarding/constants
+```
+
+**File:** `lib/design/relative-time.ts`
+
+```ts
+export function formatRelativeTended(lastTendedAt: Date | null, now?: Date): string;
+export function formatRhythm(days: number): string; // "Every 7 days"
+```
+
+---
+
+## Migration from current code
+
+| Current | Replace with |
+|---------|--------------|
+| `onboarding-flow.tsx` bare `<main>` | `OnboardingStep` + `ItemForm` + styled primitives |
+| `login/page.tsx` inline form | `AuthForm` inside `Card` |
+| `register/page.tsx` inline form | `AuthForm` |
+| `page.tsx` placeholder home | `AttentionHero` + `AttentionSection` + `TendItemCard` |
+| `sign-out-button.tsx` | Keep; restyle with `Button` variant `ghost` |
+
+---
+
+## Example: Home page composition
+
+```tsx
+// app/page.tsx (target structure — illustrative)
+<AppShell user={user}>
+  <PageHeader
+    title="Tend"
+    subtitle={`Welcome back, ${user.displayName}`}
+    action={<Button href="/items/new">Add item</Button>}
+  />
+
+  {heroItem && <AttentionHero item={heroItem} onTend={handleTend} />}
+
+  <AttentionSection title="Needs attention" count={groups.needsAttention.length}>
+    {groups.needsAttention.map((item) => (
+      <TendItemCard key={item.id} {...item} onTend={handleTend} />
+    ))}
+  </AttentionSection>
+
+  <AttentionSection title="Getting stale" count={groups.gettingStale.length}>
+    {groups.gettingStale.map((item) => (
+      <TendItemCard key={item.id} {...item} onTend={handleTend} />
+    ))}
+  </AttentionSection>
+
+  <AttentionSection title="Looking good" count={groups.lookingGood.length} defaultOpen={false}>
+    {groups.lookingGood.map((item) => (
+      <TendItemCard key={item.id} {...item} onTend={handleTend} />
+    ))}
+  </AttentionSection>
+
+  {reminders.length > 0 && (
+    <ReminderBanner reminders={reminders} onTend={handleTend} />
+  )}
+
+  <LifeAreaFilter selected={filter} onChange={setFilter} />
+</AppShell>
+```
+
+Data from `groupForAttention()` in `@tend/domain` — already implemented.

@@ -1,0 +1,147 @@
+/**
+ * Tend design tokens
+ * Import at top of apps/web/app/globals.css
+ *
+ * Maps to shadcn CSS variables where noted (--background, --foreground, etc.)
+ */
+
+:root {
+  /* ── Color: surfaces ───────────────────────────────────── */
+  --tend-bg: #f7f5f2; /* warm linen page background */
+  --tend-bg-elevated: #ffffff; /* cards, modals */
+  --tend-bg-muted: #efede8; /* inset sections, tab tracks */
+  --tend-bg-subtle: #f3f1ec; /* hover on list rows */
+
+  --tend-border: #e4e0d8; /* default borders */
+  --tend-border-subtle: #ece8e1; /* input borders at rest */
+  --tend-border-focus: #9aab8f; /* focus ring color */
+
+  /* ── Color: text ───────────────────────────────────────── */
+  --tend-text: #2c2925; /* primary body */
+  --tend-text-muted: #6b6560; /* secondary, metadata */
+  --tend-text-subtle: #9a948c; /* placeholders, hints */
+  --tend-text-inverse: #f7f5f2; /* on primary buttons */
+
+  /* ── Color: brand & actions ────────────────────────────── */
+  --tend-primary: #5c7352; /* sage green — primary actions */
+  --tend-primary-hover: #4d6244;
+  --tend-primary-muted: #e8efe5; /* primary tint backgrounds */
+
+  --tend-secondary: #7a8f9a; /* dusty blue-gray — secondary actions */
+  --tend-secondary-hover: #6a7d87;
+  --tend-secondary-muted: #eef2f4;
+
+  /* ── Color: status (never punitive red) ──────────────── */
+  --tend-status-fresh: #6b8f71;
+  --tend-status-fresh-bg: #edf4ee;
+
+  --tend-status-stale: #b8956b; /* warm honey */
+  --tend-status-stale-bg: #f8f2e8;
+
+  --tend-status-attention: #a67c6b; /* soft clay — not alarm red */
+  --tend-status-attention-bg: #f6ece8;
+
+  /* ── Color: type distinction ───────────────────────────── */
+  --tend-type-must: #8b6b5c; /* muted terracotta accent */
+  --tend-type-must-bg: #f5ebe7;
+  --tend-type-must-border: #d4b8ad;
+
+  --tend-type-want: #6b7a8f; /* calm slate */
+  --tend-type-want-bg: #eef1f5;
+  --tend-type-want-border: #c5cdd8;
+
+  /* ── Color: feedback ───────────────────────────────────── */
+  --tend-error: #9e5a52; /* muted brick, not bright red */
+  --tend-error-bg: #f9ecea;
+  --tend-success: #5c7352;
+  --tend-success-bg: #edf4ee;
+  --tend-info: #6b7a8f;
+  --tend-info-bg: #eef1f5;
+
+  /* ── Typography ────────────────────────────────────────── */
+  --tend-font-display: "Newsreader", "Georgia", serif;
+  --tend-font-body: "DM Sans", system-ui, sans-serif;
+  --tend-font-mono: "DM Mono", ui-monospace, monospace;
+
+  --tend-text-xs: 0.75rem; /* 12px — badges, captions */
+  --tend-text-sm: 0.875rem; /* 14px — metadata, helpers */
+  --tend-text-base: 1rem; /* 16px — body */
+  --tend-text-lg: 1.125rem; /* 18px — card titles */
+  --tend-text-xl: 1.25rem; /* 20px — section headers */
+  --tend-text-2xl: 1.5rem; /* 24px — page titles */
+  --tend-text-3xl: 1.875rem; /* 30px — hero / onboarding */
+
+  --tend-leading-tight: 1.25;
+  --tend-leading-normal: 1.5;
+  --tend-leading-relaxed: 1.65;
+
+  --tend-weight-normal: 400;
+  --tend-weight-medium: 500;
+  --tend-weight-semibold: 600;
+
+  /* ── Spacing (4px base) ────────────────────────────────── */
+  --tend-space-1: 0.25rem; /* 4 */
+  --tend-space-2: 0.5rem; /* 8 */
+  --tend-space-3: 0.75rem; /* 12 */
+  --tend-space-4: 1rem; /* 16 */
+  --tend-space-5: 1.25rem; /* 20 */
+  --tend-space-6: 1.5rem; /* 24 */
+  --tend-space-8: 2rem; /* 32 */
+  --tend-space-10: 2.5rem; /* 40 */
+  --tend-space-12: 3rem; /* 48 */
+  --tend-space-16: 4rem; /* 64 */
+
+  /* ── Radius ────────────────────────────────────────────── */
+  --tend-radius-sm: 0.375rem; /* 6px — badges, chips */
+  --tend-radius-md: 0.5rem; /* 8px — inputs, buttons */
+  --tend-radius-lg: 0.75rem; /* 12px — cards */
+  --tend-radius-xl: 1rem; /* 16px — modals, hero cards */
+  --tend-radius-full: 9999px;
+
+  /* ── Shadows (barely there) ────────────────────────────── */
+  --tend-shadow-sm: 0 1px 2px rgba(44, 41, 37, 0.04);
+  --tend-shadow-md: 0 2px 8px rgba(44, 41, 37, 0.06);
+  --tend-shadow-lg: 0 4px 16px rgba(44, 41, 37, 0.08);
+
+  /* ── Motion ────────────────────────────────────────────── */
+  --tend-duration-fast: 120ms;
+  --tend-duration-normal: 200ms;
+  --tend-duration-slow: 320ms;
+  --tend-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* ── Layout ────────────────────────────────────────────── */
+  --tend-content-max: 40rem; /* 640px — main column */
+  --tend-content-wide: 48rem; /* 768px — forms with side-by-side fields */
+  --tend-nav-height: 3.5rem; /* 56px */
+
+  /* ── shadcn mappings ───────────────────────────────────── */
+  --background: var(--tend-bg);
+  --foreground: var(--tend-text);
+  --card: var(--tend-bg-elevated);
+  --card-foreground: var(--tend-text);
+  --popover: var(--tend-bg-elevated);
+  --popover-foreground: var(--tend-text);
+  --primary: var(--tend-primary);
+  --primary-foreground: var(--tend-text-inverse);
+  --secondary: var(--tend-secondary-muted);
+  --secondary-foreground: var(--tend-text);
+  --muted: var(--tend-bg-muted);
+  --muted-foreground: var(--tend-text-muted);
+  --accent: var(--tend-primary-muted);
+  --accent-foreground: var(--tend-primary);
+  --destructive: var(--tend-error);
+  --destructive-foreground: var(--tend-text-inverse);
+  --border: var(--tend-border);
+  --input: var(--tend-border-subtle);
+  --ring: var(--tend-border-focus);
+  --radius: var(--tend-radius-md);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --tend-duration-fast: 0ms;
+    --tend-duration-normal: 0ms;
+    --tend-duration-slow: 0ms;
+  }
+}

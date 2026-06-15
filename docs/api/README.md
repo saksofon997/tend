@@ -1,0 +1,37 @@
+# Tend HTTP API
+
+Reference for exposed HTTP endpoints. Update this index and the linked resource docs whenever routes are added or changed.
+
+> Agents: follow `.cursor/rules/api-documentation.mdc` when implementing endpoints.
+
+## Conventions
+
+- Base path: `/api/v1` (adjust when the app is scaffolded)
+- JSON request and response bodies unless noted otherwise
+- Errors: `{ "error": "<message>" }` with an appropriate HTTP status
+- Auth: document per endpoint once auth is implemented
+
+## Resources
+
+| Resource | Doc | Description |
+|----------|-----|-------------|
+| Health | [health.md](./health.md) | Liveness and database connectivity |
+| Auth | [auth.md](./auth.md) | Local account registration and sessions |
+| Items | [items.md](./items.md) | Tend item CRUD, tend events, presets |
+| Activity | [activity.md](./activity.md) | Correct or remove tended events |
+| Availability | [availability.md](./availability.md) | Weekly free-time windows |
+| Reminders | [reminders.md](./reminders.md) | In-app reminder eligibility |
+| Onboarding | [onboarding.md](./onboarding.md) | First-run setup status |
+
+## Changelog
+
+| Date | Change |
+|------|--------|
+| 2026-06-15 | Added availability and reminders endpoints |
+| 2026-06-15 | Added `GET /api/v1/activity` |
+| 2026-06-15 | Added activity endpoints (correct/remove tend events) |
+| 2026-06-15 | Added onboarding endpoints |
+| 2026-06-15 | Added items endpoints (CRUD, tend, presets) |
+| 2026-06-15 | Added auth endpoints (`register`, `login`, `logout`, `me`) |
+| 2026-06-15 | Added `GET /api/v1/health` |
+| — | API docs scaffold created |

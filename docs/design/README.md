@@ -1,0 +1,94 @@
+# Tend Design System
+
+Design language and component specs for the Tend web app (Next.js 15 + React 19).
+
+**Audience:** Implementation agents building UI in `apps/web/`.
+
+## Agent instructions
+
+This spec is wired into Cursor change instructions:
+
+| Rule | Scope | Purpose |
+|------|-------|---------|
+| [`implementation-workflow.mdc`](../../.cursor/rules/implementation-workflow.mdc) | Always | Checklist step 5 + UI order of operations |
+| [`ui-design.mdc`](../../.cursor/rules/ui-design.mdc) | `apps/web/**/*.{tsx,css}` | Design spec, reusable components, styling rules, final polish |
+
+**Before any UI work:** read this README, then `design-language.md` and the relevant entries in `components.md`. Reuse existing components in `apps/web/components/` before writing new markup.
+
+**Before marking UI work complete:** load the **impeccable** skill and run **`adapt`** then **`polish`** on the changed screens or components — a final touch-up pass for hierarchy, spacing, copy, states, and accessibility within Tend's design constraints.
+
+## Documents
+
+| Doc | Purpose |
+|-----|---------|
+| [design-language.md](./design-language.md) | Principles, tokens, typography, color, motion, copy tone |
+| [components.md](./components.md) | Component catalog with props, anatomy, and screen mapping |
+| [tokens.css](./tokens.css) | CSS custom properties — imported by `apps/web/app/globals.css` |
+| [component-types.ts](./component-types.ts) | TypeScript prop contracts (reference) |
+
+## Intended stack
+
+Per `docs/pre-alpha-development-plan.md`:
+
+- **Tailwind CSS 4** for utility styling
+- **shadcn-style primitives** in `components/ui/` (Button, Input, Select, Dialog, etc.)
+- **CSS variables** from `tokens.css` as the single source of truth for color, type, and spacing
+
+Do not introduce a second token system. Extend theme variables to map to Tend tokens.
+
+## Reusable components
+
+**Default:** compose screens from existing components. **Exception:** truly one-off glue.
+
+| Layer | Path | Examples |
+|-------|------|----------|
+| Primitives | `components/ui/` | `Button`, `Input`, `Card`, `Alert`, `Badge` |
+| Layout | `components/layout/` | `AppShell`, `PageHeader`, `OnboardingStep`, `AuthLayout` |
+| Domain | `components/tend/` | `TendItemCard`, `StatusBadge`, `AttentionSection`, `HomeView` |
+| Forms | `components/forms/` | `AuthForm`, `ItemForm`, `FormField`, `TypeSelector` |
+
+When adding a pattern used in more than one place:
+
+1. Implement in the correct layer
+2. Add props + usage to `components.md`
+3. Replace duplicate inline markup on other screens
+
+## Implementation status
+
+Foundation and Phase 5 home UI are implemented. Still to build per `components.md`:
+
+- Item detail (`/items/[id]`)
+- `AvailabilityEditor`
+- `ReminderBanner` (in-app reminders)
+- `ActivityListItem` / recent activity view
+- `ConfirmDialog` for archive/delete
+
+## File layout
+
+```
+apps/web/
+├── app/
+│   ├── globals.css          # imports tokens.css + tailwind
+│   └── layout.tsx           # fonts (Newsreader + DM Sans)
+├── components/
+│   ├── ui/                  # primitives
+│   ├── layout/              # AppShell, PageHeader, …
+│   ├── tend/                # domain components
+│   └── forms/               # AuthForm, ItemForm, …
+└── lib/
+    └── design/              # status-labels, relative-time helpers
+```
+
+## Domain types to import
+
+```ts
+import type { TendItemType, TendStatus, LifeArea } from "@tend/domain";
+```
+
+Status values are snake_case in code; labels are title case in UI:
+
+| Code | Label |
+|------|-------|
+| `fresh` | Fresh |
+| `getting_stale` | Getting stale |
+| `needs_attention` | Needs attention |

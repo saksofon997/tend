@@ -1,0 +1,26 @@
+{
+  "name": "tend",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "db:migrate": "turbo run db:migrate --filter=@tend/db",
+    "db:studio": "turbo run db:studio --filter=@tend/db",
+    "db:generate": "turbo run db:generate --filter=@tend/db",
+    "setup:db": "docker compose up -d && bun run db:migrate"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "turbo": "^2.5.4",
+    "typescript": "^5.8.3"
+  },
+  "packageManager": "bun@1.2.0",
+  "overrides": {
+    "drizzle-orm": "0.45.2"
+  }
+}

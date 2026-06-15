@@ -112,6 +112,7 @@
   /* ── Layout ────────────────────────────────────────────── */
   --tend-content-max: 40rem; /* 640px — main column */
   --tend-content-wide: 48rem; /* 768px — forms with side-by-side fields */
+  --tend-content-marketing: 68rem; /* 1088px — landing and marketing hero */
   --tend-nav-height: 3.5rem; /* 56px */
 
   /* ── shadcn mappings ───────────────────────────────────── */

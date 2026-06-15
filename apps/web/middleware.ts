@@ -1,16 +1,36 @@
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 import { allowsUnauthenticatedAccess } from "@/lib/auth/public-access";
-import { getCanonicalAppHost, isVercelAppHost } from "@/lib/canonical-host";
+import {
+  buildHostRedirectUrl,
+  getCanonicalAppHost,
+  getMarketingHost,
+  isAppProductionHost,
+  isMarketingHost,
+  isMarketingLegalPath,
+  isMarketingPath,
+  isVercelAppHost,
+  shouldEnforceHostSplit,
+} from "@/lib/canonical-host";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  if (isVercelAppHost(request.nextUrl.hostname)) {
-    const redirectUrl = request.nextUrl.clone();
-    redirectUrl.protocol = "https:";
-    redirectUrl.host = getCanonicalAppHost();
-    redirectUrl.port = "";
-    return NextResponse.redirect(redirectUrl, 308);
+  const hostname = request.nextUrl.hostname;
+
+  if (isVercelAppHost(hostname)) {
+    return NextResponse.redirect(buildHostRedirectUrl(request, getCanonicalAppHost()), 308);
+  }
+
+  if (shouldEnforceHostSplit(hostname)) {
+    const { pathname } = request.nextUrl;
+
+    if (isMarketingHost(hostname) && !isMarketingPath(pathname)) {
+      return NextResponse.redirect(buildHostRedirectUrl(request, getCanonicalAppHost()), 308);
+    }
+
+    if (isAppProductionHost(hostname) && isMarketingLegalPath(pathname)) {
+      return NextResponse.redirect(buildHostRedirectUrl(request, getMarketingHost()), 308);
+    }
   }
 
   const { pathname } = request.nextUrl;

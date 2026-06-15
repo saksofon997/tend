@@ -11,6 +11,9 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | Component | File | Stories |
 |-----------|------|---------|
 | [AppShell](#appshell) | `layout/app-shell.tsx` | All |
+| [SiteFooter](#sitefooter) | `layout/site-footer.tsx` | 1, All |
+| [LandingPage](#landingpage) | `marketing/landing-page.tsx` | 1 |
+| [LegalPage](#legalpage) | `marketing/legal-page.tsx` | 1 |
 | [TendLogoLink](#tendlogolink) | `layout/tend-logo-link.tsx` | 1, All |
 | [UserMenu](#usermenu) | `layout/user-menu.tsx` | All |
 | [PageHeader](#pageheader) | `layout/page-header.tsx` | All pages |
@@ -46,6 +49,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [ItemDetailView](#itemdetailview) | `tend/item-detail-view.tsx` | 6, 7, 8, 14 |
 | [TendEventRow](#tendeventrow) | `tend/tend-event-row.tsx` | 6, 14 |
 | [OnboardingStep](#onboardingstep) | `layout/onboarding-step.tsx` | 2 |
+| [PromoCarousel](#promocarousel) | `onboarding/promo-carousel.tsx` | 2 |
 
 ---
 
@@ -70,6 +74,8 @@ interface AppShellProps {
 │ [Tend logo]     Home  Activity  Settings  ▾  │  ← header, h-14, border-b
 ├──────────────────────────────────────────────┤
 │  {children}                                   │
+├──────────────────────────────────────────────┤
+│  Privacy · Terms · Language (coming soon)     │  ← SiteFooter
 └──────────────────────────────────────────────┘
 ```
 
@@ -80,7 +86,19 @@ interface AppShellProps {
 - Nav links: centered in the column; `text-sm`, muted default, primary color when active
 - User menu: `UserMenu` dropdown in the header trailing slot (sign out today; expandable)
 
-**Notes:** Hide full nav during onboarding. Auth pages use no shell or minimal logo-only header.
+**Notes:** Hide full nav during onboarding. Auth pages use `AuthLayout` with `SiteFooter`.
+
+---
+
+### SiteFooter
+
+**File:** `components/layout/site-footer.tsx`
+
+**Purpose:** Legal links and locale switcher placeholder on public and app surfaces.
+
+**Links:** Privacy (`/privacy`), Terms (`/terms`), Language (disabled until i18n Phase 4).
+
+**Used in:** `AppShell`, `AuthLayout`, `LandingPage`, `LegalPage`.
 
 ---
 
@@ -138,6 +156,24 @@ interface OnboardingStepProps {
 **Anatomy:** Centered column, `max-w-[480px]`. Step dots (`totalSteps` wide, current filled). No heavy progress bar.
 
 **Stories:** 2, 4
+
+---
+
+### PromoCarousel
+
+**File:** `components/onboarding/promo-carousel.tsx`
+
+**Purpose:** Swipeable promo screenshot carousel on onboarding welcome step. Uses `/promo/tend-*.jpg` assets; `tend-remember.jpg` is always first.
+
+```tsx
+interface PromoCarouselProps {
+  slides: readonly OnboardingPromoSlide[];
+  activeIndex: number;
+  onActiveIndexChange: (index: number) => void;
+}
+```
+
+**Stories:** 2 (welcome step)
 
 ---
 
@@ -263,6 +299,44 @@ Error (text-sm, error color)  — if error, role="alert"
 **Spacing:** `16px` between fields. Label `4px` above control.
 
 **Stories:** 1, 3, 8, 10
+
+---
+
+## Marketing
+
+### LandingPage
+
+**File:** `components/marketing/landing-page.tsx`
+
+**Purpose:** Public landing at `/` for unauthenticated visitors. Value prop, product preview carousel (`LandingPromoPreview` + `PromoCarousel`), differentiation copy, Register + Sign in CTAs.
+
+**Routes:** `/` (when no session)
+
+---
+
+### LandingPromoPreview
+
+**File:** `components/marketing/landing-promo-preview.tsx`
+
+**Purpose:** Client wrapper for the landing hero product preview. Manages carousel state and shows slide title + description beneath `PromoCarousel`.
+
+**Used in:** `LandingPage`
+
+---
+
+### LegalPage
+
+**File:** `components/marketing/legal-page.tsx`
+
+**Purpose:** Renders sample Privacy or Terms markdown with alpha disclaimer banner.
+
+```tsx
+interface LegalPageProps {
+  slug: "privacy" | "terms";
+}
+```
+
+**Routes:** `/privacy`, `/terms`
 
 ---
 

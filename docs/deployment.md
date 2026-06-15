@@ -94,9 +94,25 @@ https://<your-project>.vercel.app/api/v1/health
 
 Expect `"database": "ok"` when `DATABASE_URL` is set correctly.
 
-### Custom domain (before Cloudflare)
+### Custom domains (before Cloudflare)
 
-In **Project → Settings → Domains**, add your domain (e.g. `tend.example.com`). Vercel shows the DNS records you need — you'll enter these in Cloudflare in step 3.
+In **Project → Settings → Domains**, add both hostnames:
+
+| Domain | Purpose |
+|--------|---------|
+| `tend.qzz.io` | Marketing landing page and legal pages |
+| `app.tend.qzz.io` | App, auth, and API |
+
+Vercel shows the DNS records you need — you'll enter these in Cloudflare in step 3.
+
+Optional env overrides (defaults match the table above):
+
+| Name | Default |
+|------|---------|
+| `CANONICAL_APP_HOST` | `app.tend.qzz.io` |
+| `MARKETING_HOST` | `tend.qzz.io` |
+
+Middleware keeps marketing routes on `tend.qzz.io` (`/`, `/privacy`, `/terms`, promo assets) and sends everything else to `app.tend.qzz.io`. Landing CTAs link directly to the app host so sessions stay on one subdomain.
 
 ---
 
@@ -112,29 +128,22 @@ In **Project → Settings → Domains**, add your domain (e.g. `tend.example.com
 4. In **DigitalPlat** → your domain → **Nameservers** → switch to custom and paste Cloudflare's pair.
 5. Wait for propagation (often 15 minutes–24 hours). Cloudflare emails when active.
 
-### Point domain to Vercel
+### Point domains to Vercel
 
-In Cloudflare **DNS → Records**:
-
-**Subdomain (recommended first):** `app.yourdomain.com`
+In Cloudflare **DNS → Records** (zone `qzz.io`):
 
 | Type | Name | Target | Proxy |
 |------|------|--------|-------|
-| CNAME | `app` | `cname.vercel-dns.com` | DNS only (grey cloud) initially |
+| CNAME | `tend` | `cname.vercel-dns.com` | DNS only (grey cloud) initially |
+| CNAME | `app.tend` | `cname.vercel-dns.com` | DNS only |
 
-**Apex domain (`yourdomain.com`):**
+That serves `tend.qzz.io` (landing + legal) and `app.tend.qzz.io` (app + auth) from the same Vercel project.
 
-| Type | Name | Target | Proxy |
-|------|------|--------|-------|
-| A | `@` | `76.76.21.21` | DNS only |
-
-Or use Cloudflare redirect: `yourdomain.com` → `https://app.yourdomain.com`.
-
-In Vercel **Domains**, add the same hostname(s). Vercel issues HTTPS automatically once DNS resolves.
+In Vercel **Domains**, add both hostnames. Vercel issues HTTPS automatically once DNS resolves.
 
 ### Block direct `.vercel.app` access
 
-Middleware permanently redirects any `*.vercel.app` request to `https://app.tend.qzz.io` (same path and query string). Override with `CANONICAL_APP_HOST` in Vercel env vars if needed.
+Middleware permanently redirects any `*.vercel.app` request to `https://app.tend.qzz.io` (same path and query string). Override with `CANONICAL_APP_HOST` / `MARKETING_HOST` in Vercel env vars if needed.
 
 ### Proxy (orange cloud) note
 

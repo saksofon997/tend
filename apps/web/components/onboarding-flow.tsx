@@ -2,10 +2,12 @@
 
 import { ItemForm, type ItemFormValues } from "@/components/forms/item-form";
 import { OnboardingStep } from "@/components/layout/onboarding-step";
+import { PromoCarousel } from "@/components/onboarding/promo-carousel";
 import { PresetCard } from "@/components/tend/preset-card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { LIFE_AREA_LABELS, LIFE_AREA_ORDER, dateInputToIso } from "@/lib/onboarding/constants";
+import { ONBOARDING_PROMO_SLIDES } from "@/lib/onboarding/promo-slides";
 import { cn } from "@/lib/utils";
 import { PRESETS_BY_AREA } from "@tend/domain";
 import type { LifeArea, TendItemType, TendPreset } from "@tend/domain";
@@ -42,6 +44,7 @@ const STEP_MAP: Record<Step, number> = {
 export function OnboardingFlow({ todayDate }: { todayDate: string }) {
   const router = useRouter();
   const [step, setStep] = useState<Step>("welcome");
+  const [carouselIndex, setCarouselIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("household");
@@ -111,6 +114,8 @@ export function OnboardingFlow({ todayDate }: { todayDate: string }) {
   }
 
   if (step === "welcome") {
+    const promoSlide = ONBOARDING_PROMO_SLIDES[carouselIndex];
+
     return (
       <div className="min-h-screen bg-background px-4">
         <div className="mx-auto max-w-[30rem] pt-10">
@@ -121,8 +126,8 @@ export function OnboardingFlow({ todayDate }: { todayDate: string }) {
         <OnboardingStep
           step={STEP_MAP[step]}
           totalSteps={4}
-          title="Welcome to Tend"
-          description="Remember the recurring parts of life that matter, without guilt or overdue badges."
+          title={carouselIndex === 0 ? "Welcome to Tend" : promoSlide.title}
+          description={promoSlide.description}
           footer={
             <>
               <Button type="button" onClick={() => setStep("choose")}>
@@ -139,10 +144,11 @@ export function OnboardingFlow({ todayDate }: { todayDate: string }) {
             </>
           }
         >
-          <p className="text-sm text-muted-foreground">
-            Household care, health, relationships, life admin. Just the stuff that drifts in real
-            life.
-          </p>
+          <PromoCarousel
+            slides={ONBOARDING_PROMO_SLIDES}
+            activeIndex={carouselIndex}
+            onActiveIndexChange={setCarouselIndex}
+          />
           {error ? (
             <Alert variant="error" className="mt-4">
               <AlertDescription>{error}</AlertDescription>

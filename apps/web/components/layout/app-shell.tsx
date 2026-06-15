@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/layout/site-footer";
 import { TendLogoLink } from "@/components/layout/tend-logo-link";
 import { UserMenu } from "@/components/layout/user-menu";
 import { cn } from "@/lib/utils";
@@ -17,7 +18,7 @@ const NAV_ITEMS = [
 
 export function AppShell({ children, user, activePath }: AppShellProps) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-10 border-b border-border bg-card">
         <div className="tend-content-column flex h-14 items-center gap-4">
           <TendLogoLink />
@@ -43,7 +44,9 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
         </div>
       </header>
 
-      <main className="tend-content-column py-6">{children}</main>
+      <main className="tend-content-column flex-1 py-6">{children}</main>
+
+      <SiteFooter />
     </div>
   );
 }

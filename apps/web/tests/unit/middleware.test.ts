@@ -18,14 +18,21 @@ describe("isStaticAssetPath", () => {
 });
 
 describe("allowsUnauthenticatedAccess", () => {
-  it("allows auth pages and static promo assets", () => {
+  it("allows auth pages, public shell routes, and static promo assets", () => {
     expect(isPublicPath("/login")).toBe(true);
+    expect(isPublicPath("/")).toBe(true);
+    expect(isPublicPath("/privacy")).toBe(true);
+    expect(isPublicPath("/terms")).toBe(true);
     expect(allowsUnauthenticatedAccess("/login")).toBe(true);
+    expect(allowsUnauthenticatedAccess("/")).toBe(true);
+    expect(allowsUnauthenticatedAccess("/privacy")).toBe(true);
+    expect(allowsUnauthenticatedAccess("/terms")).toBe(true);
     expect(allowsUnauthenticatedAccess("/promo/tend-logo.png")).toBe(true);
   });
 
   it("blocks protected app routes", () => {
-    expect(allowsUnauthenticatedAccess("/")).toBe(false);
+    expect(allowsUnauthenticatedAccess("/activity")).toBe(false);
     expect(allowsUnauthenticatedAccess("/items/abc")).toBe(false);
+    expect(allowsUnauthenticatedAccess("/onboarding")).toBe(false);
   });
 });

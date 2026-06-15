@@ -1,3 +1,4 @@
+import { LandingPage } from "@/components/marketing/landing-page";
 import { HomeView } from "@/components/tend/home-view";
 import { validateSession } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
@@ -9,7 +10,7 @@ export default async function HomePage() {
   const { user } = await validateSession();
 
   if (!user) {
-    redirect("/login");
+    return <LandingPage />;
   }
 
   const settings = await getUserSettings(getDb(), user.id);

@@ -107,7 +107,12 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
   return (
     <AppShell user={user} activePath="/">
       <PageHeader
-        title={`Welcome back, ${user.displayName}`}
+        title={
+          <>
+            Welcome back,
+            <br className="md:hidden" aria-hidden="true" /> {user.displayName}
+          </>
+        }
         action={
           <Button asChild>
             <Link href="/items/new">Add item</Link>

@@ -83,7 +83,7 @@ export function AddItemForm({ user, todayDate }: AddItemFormProps) {
 
   return (
     <AppShell user={user} activePath="/">
-      <PageHeader title="Add item" subtitle="Capture something you want to maintain." />
+      <PageHeader title="Add item" subtitle="Something you want to keep up with over time." />
       <ItemForm
         key={formKey}
         todayDate={todayDate}

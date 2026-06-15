@@ -10,15 +10,15 @@ interface EmptyStateProps {
 const PRESETS = {
   "no-items": {
     title: "Nothing to tend yet",
-    description: "Add something you want to maintain — plants, sheets, a friendship.",
+    description: "Add something you want to keep up with: plants, sheets, a friendship.",
   },
   "all-fresh": {
     title: "Nothing needs attention right now",
-    description: "Your rhythms are in good shape. Tend will let you know when something drifts.",
+    description: "Your rhythms look good. Tend will nudge you when something starts to drift.",
   },
   "no-activity": {
     title: "No tending logged yet",
-    description: "When you mark items as tended, they'll show up here.",
+    description: "Mark items as tended and they'll show up here.",
   },
   "no-availability": {
     title: "No availability set yet",

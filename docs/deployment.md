@@ -132,6 +132,10 @@ Or use Cloudflare redirect: `yourdomain.com` → `https://app.yourdomain.com`.
 
 In Vercel **Domains**, add the same hostname(s). Vercel issues HTTPS automatically once DNS resolves.
 
+### Block direct `.vercel.app` access
+
+Middleware permanently redirects any `*.vercel.app` request to `https://app.tend.qzz.io` (same path and query string). Override with `CANONICAL_APP_HOST` in Vercel env vars if needed.
+
 ### Proxy (orange cloud) note
 
 Start with **DNS only** (grey cloud) until the site works. You can enable Cloudflare proxy later for caching/DDoS protection. If you enable it, set SSL/TLS mode to **Full** in Cloudflare.

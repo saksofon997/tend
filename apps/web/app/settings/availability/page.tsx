@@ -18,7 +18,10 @@ export default async function AvailabilitySettingsPage() {
 
   return (
     <AppShell user={{ displayName: user.displayName }} activePath="/settings/availability">
-      <PageHeader title="Availability" subtitle="When you're usually free to tend things." />
+      <PageHeader
+        title="Availability"
+        subtitle="When you're usually free to take care of things."
+      />
       <AvailabilityEditor initialWindows={windows.map(serializeAvailabilityWindow)} />
     </AppShell>
   );

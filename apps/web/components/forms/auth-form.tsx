@@ -75,17 +75,11 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
         <CardTitle>{isRegister ? "Create your account" : "Sign in"}</CardTitle>
         <CardDescription>
           {isRegister
-            ? "What should we call you? This pre-alpha profile stays on this device."
-            : "Pre-alpha accounts stay on this device. No cloud sync or password reset yet."}
+            ? "What should we call you? We'll greet you by this name on the home screen."
+            : "Welcome back. See what could use a little attention today."}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Alert variant="info" className="mb-6">
-          <AlertDescription>
-            No cloud sync, email verification, or password recovery in pre-alpha.
-          </AlertDescription>
-        </Alert>
-
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {isRegister ? (
             <FormField

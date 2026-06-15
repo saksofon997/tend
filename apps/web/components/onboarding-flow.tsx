@@ -122,7 +122,7 @@ export function OnboardingFlow({ todayDate }: { todayDate: string }) {
           step={STEP_MAP[step]}
           totalSteps={4}
           title="Welcome to Tend"
-          description="Tend helps you remember recurring parts of life that matter — household care, health, relationships, and life admin — without guilt-driven overdue tasks."
+          description="Remember the recurring parts of life that matter, without guilt or overdue badges."
           footer={
             <>
               <Button type="button" onClick={() => setStep("choose")}>
@@ -140,7 +140,8 @@ export function OnboardingFlow({ todayDate }: { todayDate: string }) {
           }
         >
           <p className="text-sm text-muted-foreground">
-            No projects, labels, or productivity systems required.
+            Household care, health, relationships, life admin. Just the stuff that drifts in real
+            life.
           </p>
           {error ? (
             <Alert variant="error" className="mt-4">
@@ -159,7 +160,7 @@ export function OnboardingFlow({ todayDate }: { todayDate: string }) {
           step={STEP_MAP[step]}
           totalSteps={4}
           title="What do you want to tend first?"
-          description="Start from scratch, pick a suggestion, or skip and explore the app."
+          description="Write your own, pick a suggestion, or skip and look around first."
           footer={
             <>
               <Button

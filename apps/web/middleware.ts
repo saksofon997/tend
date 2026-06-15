@@ -1,4 +1,5 @@
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
+import { getCanonicalAppHost, isVercelAppHost } from "@/lib/canonical-host";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -15,6 +16,14 @@ function isPublicPath(pathname: string): boolean {
 }
 
 export async function middleware(request: NextRequest) {
+  if (isVercelAppHost(request.nextUrl.hostname)) {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.protocol = "https:";
+    redirectUrl.host = getCanonicalAppHost();
+    redirectUrl.port = "";
+    return NextResponse.redirect(redirectUrl, 308);
+  }
+
   const { pathname } = request.nextUrl;
 
   if (isPublicPath(pathname)) {

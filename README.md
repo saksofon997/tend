@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/saksofon997/tend/actions/workflows/ci.yml"><img src="https://github.com/saksofon997/tend/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://app.tend.gzz.io"><img src="https://vercel.com/saksofon997/tend/status?style=flat" alt="Vercel deployment" /></a>
+  <a href="https://app.tend.qzz.io"><img src="https://vercel.com/saksofon997/tend/status?style=flat" alt="Vercel deployment" /></a>
 </p>
 
 <p align="center"><strong>The stuff that drifts, remembered softly.</strong></p>

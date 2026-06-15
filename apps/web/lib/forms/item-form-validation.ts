@@ -1,4 +1,5 @@
 import type { ItemFormValues } from "@/components/forms/item-form";
+import { rhythmDaysFieldError } from "@/lib/forms/rhythm";
 import { z } from "zod";
 
 export const itemFormClientSchema = z.object({
@@ -32,6 +33,11 @@ export function validateItemForm(
 
   if (values.lastTendedDate > todayDate) {
     return { lastTendedDate: "Last tended cannot be in the future" };
+  }
+
+  const rhythmError = rhythmDaysFieldError(values.rhythmDays);
+  if (rhythmError) {
+    return { rhythmDays: rhythmError };
   }
 
   return null;

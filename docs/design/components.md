@@ -578,9 +578,9 @@ interface RhythmSelectProps {
 }
 ```
 
-Default options from `@/lib/onboarding/constants` `RHYTHM_OPTIONS`. Falls back to numeric display for custom values.
+Default options from `@/lib/onboarding/constants` `RHYTHM_OPTIONS` (Daily through Monthly). Includes a **Custom interval** option that reveals a day-count input for values like preset catalog rhythms (90, 180, 365) or any whole number from 1–365.
 
-Use `Select` primitive or pill button group for common rhythms.
+Use `Select` for common rhythms; custom input uses factual helper copy: "How often, in days? (1–365)".
 
 ---
 
@@ -648,11 +648,11 @@ interface PresetSuggestionsProps {
 }
 ```
 
-**Anatomy:** Secondary section below `ItemForm` on `/items/new`. Muted heading, life-area filter pills, then bordered suggestion chips (rounded-md, not pills).
+**Anatomy:** Collapsible panel on `/items/new`, hidden by default. **Need ideas?** sits in the page header action column (right). Panel sits above `ItemForm` with a short helper line, life-area filter pills, then suggestion chips.
 
 **Visual hierarchy:** Life areas use filled `rounded-full` chips; suggestions use outlined `rounded-md` chips so the two rows read as filter vs. actions.
 
-**Behavior:** Selecting a preset pre-fills the form above and focuses the name field.
+**Behavior:** Hidden until toggled with a subtle expand/collapse animation via `.tend-collapsible-reveal` (`--tend-duration-slow`, 320ms). Selecting a preset pre-fills the form below and focuses the name field.
 
 **Stories:** 3 (add item), 4 (presets)
 
@@ -707,7 +707,7 @@ interface EmptyStateProps {
 | `no-items` | "Nothing to tend yet" | "Add something you want to maintain — plants, sheets, a friendship." |
 | `all-fresh` | "Nothing needs attention right now" | "Your rhythms are in good shape. Tend will let you know when something drifts." |
 | `no-activity` | "No tending logged yet" | "When you mark items as tended, they'll show up here." |
-| `no-availability` | "No availability set yet" | "Add windows for days you're usually free. Wants wait for these times; musts still surface when they need attention." |
+| `no-availability` | "No availability set yet" | — |
 
 **Styles:** Centered, `text-muted`, no illustration required for pre-alpha (optional `Leaf` icon 32px muted).
 

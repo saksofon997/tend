@@ -17,7 +17,13 @@ export const LIFE_AREA_LABELS: Record<LifeArea, string> = {
   relationships: "Relationships",
   pets: "Pets",
   vehicle: "Vehicle",
-  admin: "Admin",
+  life_admin: "Life admin",
+  self_care: "Self-care",
+  finance: "Finance",
+  food_kitchen: "Food & kitchen",
+  home_maintenance: "Home maintenance",
+  outdoor: "Outdoor",
+  kids_family: "Kids & family",
   personal: "Personal",
 };
 

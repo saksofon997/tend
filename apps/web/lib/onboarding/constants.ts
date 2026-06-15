@@ -2,11 +2,17 @@ import type { LifeArea } from "@tend/domain";
 
 export const LIFE_AREA_ORDER: Array<Exclude<LifeArea, "personal">> = [
   "household",
+  "food_kitchen",
+  "home_maintenance",
+  "outdoor",
   "health",
+  "self_care",
   "relationships",
+  "kids_family",
   "pets",
   "vehicle",
-  "admin",
+  "finance",
+  "life_admin",
 ];
 
 export const LIFE_AREA_LABELS: Record<LifeArea, string> = {
@@ -15,9 +21,18 @@ export const LIFE_AREA_LABELS: Record<LifeArea, string> = {
   relationships: "Relationships",
   pets: "Pets",
   vehicle: "Vehicle",
-  admin: "Admin",
+  life_admin: "Life admin",
+  self_care: "Self-care",
+  finance: "Finance",
+  food_kitchen: "Food & kitchen",
+  home_maintenance: "Home maintenance",
+  outdoor: "Outdoor",
+  kids_family: "Kids & family",
   personal: "Personal",
 };
+
+export const RHYTHM_MIN_DAYS = 1;
+export const RHYTHM_MAX_DAYS = 365;
 
 export const RHYTHM_OPTIONS = [
   { label: "Daily", days: 1 },
@@ -25,6 +40,15 @@ export const RHYTHM_OPTIONS = [
   { label: "Every 2 weeks", days: 14 },
   { label: "Monthly", days: 30 },
 ] as const;
+
+export type RhythmOption = { label: string; days: number };
+
+export function isPresetRhythm(
+  days: number,
+  options: readonly RhythmOption[] = RHYTHM_OPTIONS,
+): boolean {
+  return options.some((option) => option.days === days);
+}
 
 export function todayDateInputValue(from: Date = new Date()): string {
   return from.toISOString().slice(0, 10);

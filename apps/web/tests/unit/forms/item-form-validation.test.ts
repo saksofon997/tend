@@ -48,4 +48,19 @@ describe("validateItemForm", () => {
 
     expect(errors?.lastTendedDate).toBe("Last tended cannot be in the future");
   });
+
+  it("rejects custom rhythms outside the supported range", () => {
+    const errors = validateItemForm(
+      {
+        name: "Dental cleaning",
+        type: "must",
+        rhythmDays: 400,
+        lifeArea: "health",
+        lastTendedDate: todayDate,
+      },
+      todayDate,
+    );
+
+    expect(errors?.rhythmDays).toBe("Rhythm must be 365 days or fewer");
+  });
 });

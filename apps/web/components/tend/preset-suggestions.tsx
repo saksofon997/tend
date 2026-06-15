@@ -11,26 +11,29 @@ interface PresetSuggestionsProps {
   onSelect: (preset: TendPreset) => void;
   selectedPresetName?: string;
   className?: string;
+  id?: string;
 }
 
 export function PresetSuggestions({
   onSelect,
   selectedPresetName,
   className,
+  id,
 }: PresetSuggestionsProps) {
   const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("household");
   const presets = PRESETS_BY_AREA[selectedArea];
 
   return (
     <section
-      className={cn("border-t border-[var(--tend-border)] pt-6", className)}
+      id={id}
+      className={cn(
+        "rounded-lg border border-[var(--tend-border-subtle)] bg-[var(--tend-bg-elevated)] p-4",
+        className,
+      )}
       aria-label="Item suggestions"
     >
       <div className="mb-4">
-        <h2 className="text-sm text-muted-foreground">Suggestions</h2>
-        <p className="mt-0.5 text-xs text-muted-foreground/80">
-          Tap one to pre-fill the form above.
-        </p>
+        <p className="text-sm text-muted-foreground/90">Tap one to pre-fill the form below.</p>
       </div>
 
       <div className="mb-3 flex flex-wrap gap-2" role="tablist" aria-label="Life areas">

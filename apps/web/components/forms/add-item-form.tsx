@@ -4,10 +4,12 @@ import { ItemForm, type ItemFormValues } from "@/components/forms/item-form";
 import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/layout/page-header";
 import { PresetSuggestions } from "@/components/tend/preset-suggestions";
+import { Button } from "@/components/ui/button";
 import { dateInputToIso } from "@/lib/onboarding/constants";
+import { cn } from "@/lib/utils";
 import type { TendPreset } from "@tend/domain";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 interface AddItemFormProps {
   user: { displayName: string };
@@ -20,8 +22,10 @@ const createEmptyDraft = (todayDate: string): Partial<ItemFormValues> => ({
 
 export function AddItemForm({ user, todayDate }: AddItemFormProps) {
   const router = useRouter();
+  const suggestionsId = useId();
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [formKey, setFormKey] = useState(0);
   const [draft, setDraft] = useState<Partial<ItemFormValues>>(() => createEmptyDraft(todayDate));
   const [selectedPresetName, setSelectedPresetName] = useState<string | undefined>();
@@ -83,7 +87,38 @@ export function AddItemForm({ user, todayDate }: AddItemFormProps) {
 
   return (
     <AppShell user={user} activePath="/">
-      <PageHeader title="Add item" subtitle="Something you want to keep up with over time." />
+      <PageHeader
+        title="Add item"
+        subtitle="Something you want to keep up with over time."
+        action={
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            className="text-[var(--tend-text-muted)] hover:text-foreground"
+            aria-expanded={showSuggestions}
+            aria-controls={suggestionsId}
+            onClick={() => setShowSuggestions((open) => !open)}
+          >
+            Need ideas?
+          </Button>
+        }
+      />
+      <div
+        aria-hidden={!showSuggestions}
+        data-open={showSuggestions}
+        className={cn("tend-collapsible-reveal", !showSuggestions && "pointer-events-none")}
+      >
+        <div className="tend-collapsible-reveal__inner">
+          <div className="tend-collapsible-reveal__content">
+            <PresetSuggestions
+              id={suggestionsId}
+              onSelect={applyPreset}
+              selectedPresetName={selectedPresetName}
+            />
+          </div>
+        </div>
+      </div>
       <ItemForm
         key={formKey}
         todayDate={todayDate}
@@ -93,11 +128,6 @@ export function AddItemForm({ user, todayDate }: AddItemFormProps) {
         submitLabel="Save item"
         error={error}
         submitting={submitting}
-      />
-      <PresetSuggestions
-        className="mt-8"
-        onSelect={applyPreset}
-        selectedPresetName={selectedPresetName}
       />
     </AppShell>
   );

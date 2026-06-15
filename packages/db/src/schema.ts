@@ -19,7 +19,13 @@ export const lifeAreaEnum = pgEnum("life_area", [
   "relationships",
   "pets",
   "vehicle",
-  "admin",
+  "life_admin",
+  "self_care",
+  "finance",
+  "food_kitchen",
+  "home_maintenance",
+  "outdoor",
+  "kids_family",
   "personal",
 ]);
 

@@ -13,7 +13,7 @@ This spec is wired into Cursor change instructions:
 | [`implementation-workflow.mdc`](../../.cursor/rules/implementation-workflow.mdc) | Always | Checklist step 5 + UI order of operations |
 | [`ui-design.mdc`](../../.cursor/rules/ui-design.mdc) | `apps/web/**/*.{tsx,css}` | Design spec, reusable components, styling rules, final polish |
 
-**Before any UI work:** read this README, then `design-language.md` and the relevant entries in `components.md`. Reuse existing components in `apps/web/components/` before writing new markup.
+**Before any UI or copy work:** read [`PRODUCT.md`](../../PRODUCT.md) for product direction, then this README, `design-language.md`, and the relevant entries in `components.md`. UI and wording must stay aligned with both the design language and product constraints (calm, no guilt-driven UX, not a task manager). Reuse existing components in `apps/web/components/` before writing new markup.
 
 **Before marking UI work complete:** load the **impeccable** skill and run **`adapt`** then **`polish`** on the changed screens or components — a final touch-up pass for hierarchy, spacing, copy, states, and accessibility within Tend's design constraints.
 

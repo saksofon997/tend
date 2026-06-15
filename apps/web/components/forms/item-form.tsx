@@ -77,7 +77,7 @@ export function ItemForm({
         <TypeSelector value={type} onChange={setType} />
       </FormField>
 
-      <FormField id="item-rhythm" label="Rhythm">
+      <FormField id="item-rhythm" label="Rhythm" error={fieldErrors.rhythmDays}>
         <RhythmSelect value={rhythmDays} onChange={setRhythmDays} />
       </FormField>
 

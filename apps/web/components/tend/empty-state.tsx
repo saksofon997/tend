@@ -7,7 +7,9 @@ interface EmptyStateProps {
   className?: string;
 }
 
-const PRESETS = {
+type PresetCopy = { title: string; description?: string };
+
+const PRESETS: Record<"no-items" | "all-fresh" | "no-activity" | "no-availability", PresetCopy> = {
   "no-items": {
     title: "Nothing to tend yet",
     description: "Add something you want to keep up with: plants, sheets, a friendship.",
@@ -22,10 +24,8 @@ const PRESETS = {
   },
   "no-availability": {
     title: "No availability set yet",
-    description:
-      "Add windows for days you're usually free. Wants wait for these times; musts still surface when they need attention.",
   },
-} as const;
+};
 
 export type EmptyStatePreset = keyof typeof PRESETS;
 

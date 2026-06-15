@@ -1,12 +1,13 @@
 "use client";
 
 import { FormField } from "@/components/forms/form-field";
+import { PasswordInput } from "@/components/forms/password-input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { loginSchema, registerSchema } from "@/lib/auth/validation";
-import { fieldErrorsFromZod } from "@/lib/forms/client-validation";
+import { loginSchema, registerFormSchema } from "@/lib/auth/validation";
+import { fieldErrorsFromZod, registerFormFieldErrors } from "@/lib/forms/client-validation";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -25,9 +26,26 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+
+  function applyLiveRegisterErrors(nextPassword: string, nextConfirmPassword: string) {
+    setFieldErrors((previous) => {
+      const validationErrors = registerFormFieldErrors(
+        {
+          displayName,
+          email,
+          password: nextPassword,
+          confirmPassword: nextConfirmPassword,
+        },
+        { liveOnly: true },
+      );
+      const { password: _password, confirmPassword: _confirmPassword, ...rest } = previous;
+      return { ...rest, ...validationErrors };
+    });
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -36,7 +54,12 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
     setFieldErrors({});
 
     if (mode === "register") {
-      const parsed = registerSchema.safeParse({ displayName, email, password });
+      const parsed = registerFormSchema.safeParse({
+        displayName,
+        email,
+        password,
+        confirmPassword,
+      });
       if (!parsed.success) {
         setFieldErrors(fieldErrorsFromZod(parsed.error));
         setSubmitting(false);
@@ -44,7 +67,11 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
       }
 
       try {
-        await onSubmit(parsed.data);
+        await onSubmit({
+          displayName: parsed.data.displayName,
+          email: parsed.data.email,
+          password: parsed.data.password,
+        });
       } catch (submitError) {
         setError(submitError instanceof Error ? submitError.message : "Something went wrong");
         setSubmitting(false);
@@ -123,19 +150,48 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
             error={fieldErrors.password}
             helper={isRegister ? "At least 8 characters" : undefined}
           >
-            <Input
+            <PasswordInput
               id="password"
               name="password"
-              type="password"
               autoComplete={isRegister ? "new-password" : "current-password"}
               minLength={isRegister ? 8 : undefined}
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => {
+                const nextPassword = event.target.value;
+                setPassword(nextPassword);
+                if (isRegister) {
+                  applyLiveRegisterErrors(nextPassword, confirmPassword);
+                }
+              }}
               aria-invalid={Boolean(fieldErrors.password)}
               aria-describedby={fieldErrors.password ? "password-error" : undefined}
               required
             />
           </FormField>
+
+          {isRegister ? (
+            <FormField
+              id="confirmPassword"
+              label="Confirm password"
+              required
+              error={fieldErrors.confirmPassword}
+            >
+              <PasswordInput
+                id="confirmPassword"
+                name="confirmPassword"
+                autoComplete="new-password"
+                value={confirmPassword}
+                onChange={(event) => {
+                  const nextConfirmPassword = event.target.value;
+                  setConfirmPassword(nextConfirmPassword);
+                  applyLiveRegisterErrors(password, nextConfirmPassword);
+                }}
+                aria-invalid={Boolean(fieldErrors.confirmPassword)}
+                aria-describedby={fieldErrors.confirmPassword ? "confirmPassword-error" : undefined}
+                required
+              />
+            </FormField>
+          ) : null}
 
           {error ? (
             <Alert variant="error">

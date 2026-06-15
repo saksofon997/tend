@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tend promo compositions</title>
+    <style>
+      :root {
+        --bg: #f7f5f2;
+        --card: #fff;
+        --muted: #efede8;
+        --subtle: #f3f1ec;
+        --border: #e4e0d8;
+        --border-soft: #ece8e1;
+        --text: #2c2925;
+        --text-muted: #6b6560;
+        --primary: #5c7352;
+        --primary-muted: #e8efe5;
+        --secondary: #7a8f9a;
+        --secondary-muted: #eef2f4;
+        --stale: #b8956b;
+        --stale-bg: #f8f2e8;
+        --attention: #a67c6b;
+        --attention-bg: #f6ece8;
+        --must-bg: #f5ebe7;
+        --must-border: #d4b8ad;
+        --want-bg: #eef1f5;
+        --want-border: #c5cdd8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #ded9cf;
+        color: var(--text);
+        font-family: "DM Sans", Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+      }
+
+      body {
+        padding: 40px;
+      }
+
+      .frame {
+        position: relative;
+        width: 1200px;
+        height: 900px;
+        margin: 0 auto 40px;
+        overflow: hidden;
+        background:
+          linear-gradient(90deg, rgba(92, 115, 82, 0.045) 1px, transparent 1px),
+          linear-gradient(rgba(92, 115, 82, 0.035) 1px, transparent 1px),
+          var(--bg);
+        background-size: 56px 56px;
+        border: 1px solid rgba(44, 41, 37, 0.08);
+      }
+
+      .sheet {
+        position: absolute;
+        inset: 72px;
+        display: grid;
+        grid-template-columns: 0.86fr 1.14fr;
+        gap: 44px;
+        align-items: center;
+      }
+
+      .brand {
+        position: absolute;
+        top: 34px;
+        left: 42px;
+        color: var(--primary);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .headline {
+        margin: 0;
+        max-width: 420px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 82px;
+        font-weight: 500;
+        letter-spacing: -0.03em;
+        line-height: 0.94;
+        text-wrap: balance;
+      }
+
+      .lede {
+        max-width: 430px;
+        margin: 24px 0 0;
+        color: var(--text-muted);
+        font-size: 22px;
+        line-height: 1.45;
+      }
+
+      .motif {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 22px;
+        color: var(--primary);
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .motif svg,
+      .icon svg {
+        display: block;
+      }
+
+      .phone {
+        justify-self: center;
+        width: 390px;
+        min-height: 690px;
+        padding: 22px;
+        border: 1px solid rgba(44, 41, 37, 0.14);
+        border-radius: 30px;
+        background: #fbfaf8;
+        box-shadow: 0 12px 34px rgba(44, 41, 37, 0.12);
+      }
+
+      .screen {
+        min-height: 646px;
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        background: var(--bg);
+        overflow: hidden;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 22px 16px;
+        border-bottom: 1px solid var(--border-soft);
+      }
+
+      .logo {
+        color: var(--primary);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .pill,
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        min-height: 28px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .pill {
+        background: var(--primary-muted);
+        color: var(--primary);
+      }
+
+      .screen-body {
+        padding: 24px 22px;
+      }
+
+      .screen h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 30px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+      }
+
+      .screen .sub {
+        margin: 8px 0 22px;
+        color: var(--text-muted);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--card);
+        padding: 15px;
+      }
+
+      .card + .card,
+      .section + .section,
+      .event + .event {
+        margin-top: 10px;
+      }
+
+      .item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: start;
+      }
+
+      .item strong,
+      .event strong {
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .meta {
+        margin-top: 5px;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      .badge.attention {
+        background: var(--attention-bg);
+        color: var(--attention);
+      }
+
+      .badge.stale {
+        background: var(--stale-bg);
+        color: var(--stale);
+      }
+
+      .badge.fresh {
+        background: var(--primary-muted);
+        color: var(--primary);
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 36px;
+        padding: 0 13px;
+        border-radius: 8px;
+        background: var(--primary);
+        color: #f7f5f2;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 24px 0 10px;
+      }
+
+      .section-title h3 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 22px;
+        font-weight: 500;
+      }
+
+      .count {
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      .note {
+        width: 270px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.88);
+        padding: 18px;
+        transform: rotate(-3deg);
+      }
+
+      .note p {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 17px;
+        line-height: 1.45;
+      }
+
+      .loose {
+        position: absolute;
+        opacity: 0.7;
+      }
+
+      .leaf {
+        right: 96px;
+        bottom: 70px;
+      }
+
+      .bell {
+        right: 122px;
+        top: 112px;
+      }
+
+      .activity-line {
+        left: 500px;
+        bottom: 96px;
+      }
+
+      .onboarding {
+        padding: 46px 28px;
+      }
+
+      .dots {
+        display: flex;
+        gap: 7px;
+        margin-bottom: 34px;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--border);
+      }
+
+      .dot.active {
+        background: var(--primary);
+      }
+
+      .choice {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 12px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+        padding: 14px;
+      }
+
+      .choice span {
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      .reminder-card {
+        border-left: 4px solid var(--must-border);
+        background: var(--attention-bg);
+      }
+
+      .reminder-list {
+        margin-top: 18px;
+      }
+
+      .mini-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.64);
+        padding: 11px 12px;
+      }
+
+      .mini-row + .mini-row {
+        margin-top: 8px;
+      }
+
+      .event {
+        position: relative;
+        display: grid;
+        grid-template-columns: 38px 1fr;
+        gap: 12px;
+      }
+
+      .event::before {
+        content: "";
+        position: absolute;
+        left: 18px;
+        top: 40px;
+        bottom: -20px;
+        width: 1px;
+        background: var(--border);
+      }
+
+      .event:last-child::before {
+        display: none;
+      }
+
+      .event-dot {
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--primary-muted);
+        display: grid;
+        place-items: center;
+        color: var(--primary);
+      }
+
+      .event-card {
+        min-height: 82px;
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        background: var(--card);
+        padding: 13px 14px;
+      }
+
+      .caption {
+        margin-top: 18px;
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+
+      .wide {
+        grid-template-columns: 1fr 0.92fr;
+      }
+
+      .text-panel {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .stack {
+        position: relative;
+        min-height: 700px;
+      }
+
+      .stack .phone:nth-child(1) {
+        position: absolute;
+        right: 98px;
+        top: 8px;
+        transform: rotate(2.2deg);
+      }
+
+      .stack .note {
+        position: absolute;
+        right: 352px;
+        top: 420px;
+      }
+    </style>
+  </head>
+  <body>
+    <section id="remember" class="frame">
+      <div class="brand">Tend</div>
+      <div class="sheet">
+        <div class="text-panel">
+          <div class="motif">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <path d="M12 8v5l3 2" />
+              <path d="M4 12a8 8 0 1 0 3-6.25" />
+              <path d="M4 4v6h6" />
+            </svg>
+            remember
+          </div>
+          <h1 class="headline">The stuff that drifts, remembered softly.</h1>
+          <p class="lede">Household care, health, relationships, and life admin, gathered without overdue badges.</p>
+        </div>
+        <div class="stack">
+          <div class="phone">
+            <div class="screen">
+              <div class="topbar">
+                <div class="logo">Tend</div>
+                <div class="pill">Saki</div>
+              </div>
+              <div class="screen-body">
+                <h2>Welcome back, Saki</h2>
+                <p class="sub">What could use attention now?</p>
+                <div class="card item" style="border-left: 4px solid var(--must-border)">
+                  <div>
+                    <strong>Take medication</strong>
+                    <div class="meta">Last tended 2 days ago · every day</div>
+                  </div>
+                  <div class="badge attention">Needs attention</div>
+                </div>
+                <div class="section-title">
+                  <h3>Getting stale</h3>
+                  <span class="count">2</span>
+                </div>
+                <div class="card item">
+                  <div>
+                    <strong>Water plants</strong>
+                    <div class="meta">Last tended 8 days ago · every 10 days</div>
+                  </div>
+                  <div class="badge stale">Getting stale</div>
+                </div>
+                <div class="card item">
+                  <div>
+                    <strong>Call parents</strong>
+                    <div class="meta">Last tended 11 days ago · every 2 weeks</div>
+                  </div>
+                  <div class="badge stale">Getting stale</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="note">
+            <p>Not a task list. Just a place for the repeating things that matter.</p>
+          </div>
+        </div>
+      </div>
+      <svg class="loose leaf" width="116" height="116" viewBox="0 0 116 116" fill="none">
+        <path d="M84 26C48 29 30 46 30 84c35-1 55-21 54-58Z" fill="#e8efe5" stroke="#5c7352" stroke-width="2" />
+        <path d="M36 78c16-20 30-31 43-42" stroke="#5c7352" stroke-width="2" />
+      </svg>
+    </section>
+
+    <section id="care" class="frame">
+      <div class="brand">Tend</div>
+      <div class="sheet">
+        <div class="phone">
+          <div class="screen onboarding">
+            <div class="dots">
+              <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <h2>What do you want to tend first?</h2>
+            <p class="sub">Write your own, pick a suggestion, or skip and look around first.</p>
+            <div class="choice">
+              <div>
+                <strong>Change bed sheets</strong>
+                <span>Household · every 2 weeks</span>
+              </div>
+              <div class="badge stale">Want</div>
+            </div>
+            <div class="choice">
+              <div>
+                <strong>Book medication refill</strong>
+                <span>Health · every month</span>
+              </div>
+              <div class="badge attention">Must</div>
+            </div>
+            <div class="choice">
+              <div>
+                <strong>Dinner with partner</strong>
+                <span>Relationships · every week</span>
+              </div>
+              <div class="badge fresh">Want</div>
+            </div>
+            <div class="caption">Start with one real thing. The system can stay small.</div>
+          </div>
+        </div>
+        <div class="text-panel">
+          <div class="motif">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z" />
+              <path d="M12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+            </svg>
+            care
+          </div>
+          <h1 class="headline">Begin with one small act of care.</h1>
+          <p class="lede">Onboarding is a soft prompt, not a setup project. Pick one recurring thing and move on.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="reminder" class="frame">
+      <div class="brand">Tend</div>
+      <div class="sheet wide">
+        <div class="text-panel">
+          <div class="motif">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <path d="M10 21h4" />
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" />
+            </svg>
+            reminder
+          </div>
+          <h1 class="headline">A reminder can be gentle and still useful.</h1>
+          <p class="lede">Tend surfaces what matters with context: name, rhythm, and the last time you cared for it.</p>
+        </div>
+        <div class="phone">
+          <div class="screen">
+            <div class="topbar">
+              <div class="logo">Tend</div>
+              <div class="pill">Home</div>
+            </div>
+            <div class="screen-body">
+              <div class="card reminder-card">
+                <strong>Medication and AC filter could use attention.</strong>
+                <p class="sub" style="margin-bottom: 0">Two must items have drifted from their usual rhythm.</p>
+                <div class="reminder-list">
+                  <div class="mini-row">
+                    <span>Take medication</span>
+                    <span class="button">Mark tended</span>
+                  </div>
+                  <div class="mini-row">
+                    <span>Clean AC filter</span>
+                    <span class="button">Mark tended</span>
+                  </div>
+                </div>
+              </div>
+              <div class="section-title">
+                <h3>Needs attention</h3>
+                <span class="count">2</span>
+              </div>
+              <div class="card item" style="border-left: 4px solid var(--must-border)">
+                <div>
+                  <strong>Clean AC filter</strong>
+                  <div class="meta">Last tended 46 days ago · every month</div>
+                </div>
+                <div class="badge attention">Needs attention</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <svg class="loose bell" width="96" height="96" viewBox="0 0 96 96" fill="none">
+        <circle cx="48" cy="48" r="45" fill="#f6ece8" />
+        <path d="M36 70h24M64 60H32c4-4 6-9 6-21a10 10 0 0 1 20 0c0 12 2 17 6 21Z" stroke="#a67c6b" stroke-width="2" />
+      </svg>
+    </section>
+
+    <section id="activity" class="frame">
+      <div class="brand">Tend</div>
+      <div class="sheet">
+        <div class="phone">
+          <div class="screen">
+            <div class="topbar">
+              <div class="logo">Tend</div>
+              <div class="pill">Activity</div>
+            </div>
+            <div class="screen-body">
+              <h2>Recent activity</h2>
+              <p class="sub">What you've tended lately.</p>
+              <div class="event">
+                <div class="event-dot">✓</div>
+                <div class="event-card">
+                  <strong>Water plants</strong>
+                  <div class="meta">Tended this morning · household</div>
+                </div>
+              </div>
+              <div class="event">
+                <div class="event-dot">✓</div>
+                <div class="event-card">
+                  <strong>Dinner with partner</strong>
+                  <div class="meta">Tended yesterday · relationships</div>
+                </div>
+              </div>
+              <div class="event">
+                <div class="event-dot">✓</div>
+                <div class="event-card">
+                  <strong>Change bed sheets</strong>
+                  <div class="meta">Tended 4 days ago · household</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-panel">
+          <div class="motif">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <path d="M3 12h4l3 8 4-16 3 8h4" />
+            </svg>
+            activity
+          </div>
+          <h1 class="headline">Care leaves a quiet trail.</h1>
+          <p class="lede">Recent activity makes maintenance visible without turning it into a score.</p>
+        </div>
+      </div>
+      <svg class="loose activity-line" width="126" height="76" viewBox="0 0 126 76" fill="none">
+        <path d="M8 54c24-33 42-33 56 0s32 12 54-38" stroke="#7a8f9a" stroke-width="2" />
+        <circle cx="8" cy="54" r="5" fill="#eef2f4" stroke="#7a8f9a" stroke-width="2" />
+        <circle cx="64" cy="54" r="5" fill="#eef2f4" stroke="#7a8f9a" stroke-width="2" />
+        <circle cx="118" cy="16" r="5" fill="#eef2f4" stroke="#7a8f9a" stroke-width="2" />
+      </svg>
+    </section>
+  </body>
+</html>

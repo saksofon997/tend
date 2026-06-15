@@ -1,19 +1,8 @@
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
+import { allowsUnauthenticatedAccess } from "@/lib/auth/public-access";
 import { getCanonicalAppHost, isVercelAppHost } from "@/lib/canonical-host";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-
-const PUBLIC_PATHS = [
-  "/login",
-  "/register",
-  "/api/v1/health",
-  "/api/v1/auth/register",
-  "/api/v1/auth/login",
-];
-
-function isPublicPath(pathname: string): boolean {
-  return PUBLIC_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`));
-}
 
 export async function middleware(request: NextRequest) {
   if (isVercelAppHost(request.nextUrl.hostname)) {
@@ -26,7 +15,7 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  if (isPublicPath(pathname)) {
+  if (allowsUnauthenticatedAccess(pathname)) {
     return NextResponse.next();
   }
 

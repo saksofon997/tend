@@ -10,7 +10,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "bun run src/migrate.ts",
     "db:studio": "drizzle-kit studio",
-    "test": "bun --env-file=../../.env test"
+    "test": "bun --env-file=../../.env test tests"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.2",

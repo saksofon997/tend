@@ -11,10 +11,14 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | Component | File | Stories |
 |-----------|------|---------|
 | [AppShell](#appshell) | `layout/app-shell.tsx` | All |
+| [TendLogoLink](#tendlogolink) | `layout/tend-logo-link.tsx` | 1, All |
+| [UserMenu](#usermenu) | `layout/user-menu.tsx` | All |
 | [PageHeader](#pageheader) | `layout/page-header.tsx` | All pages |
 | [Button](#button) | `ui/button.tsx` | All |
+| [DropdownMenu](#dropdownmenu) | `ui/dropdown-menu.tsx` | All |
 | [FormField](#formfield) | `forms/form-field.tsx` | 1, 3, 8, 10 |
 | [Input](#input) | `ui/input.tsx` | 1, 3, 8 |
+| [PasswordInput](#passwordinput) | `forms/password-input.tsx` | 1 |
 | [Select](#select) | `ui/select.tsx` | 3, 4, 8, 13 |
 | [Card](#card) | `ui/card.tsx` | 1, 5, 6 |
 | [Alert](#alert) | `ui/alert.tsx` | 1, 11 |
@@ -72,10 +76,27 @@ interface AppShellProps {
 **Styles:**
 - Header: `--tend-bg-elevated`, bottom border `--tend-border`, full-width bar
 - Header and page body share `.tend-content-column` (`max-width: 640px`, centered, `padding-inline: 16px`)
-- Logo wordmark: `text-lg`, display font, `--tend-primary`
+- Logo: `TendLogoLink` image (`/promo/tend-logo.png`), `h-7` in the shell header
 - Nav links: centered in the column; `text-sm`, muted default, primary color when active
+- User menu: `UserMenu` dropdown in the header trailing slot (sign out today; expandable)
 
 **Notes:** Hide full nav during onboarding. Auth pages use no shell or minimal logo-only header.
+
+---
+
+### TendLogoLink
+
+**File:** `components/layout/tend-logo-link.tsx`
+
+Linked Tend wordmark image. Used in `AppShell`, `AuthLayout`, and anywhere the brand mark links home.
+
+---
+
+### UserMenu
+
+**File:** `components/layout/user-menu.tsx`
+
+Account dropdown in the app header. Currently contains **Sign out**; structured for additional items later.
 
 ---
 
@@ -141,6 +162,14 @@ Extend shadcn variants:
 
 ---
 
+### DropdownMenu
+
+**File:** `components/ui/dropdown-menu.tsx`
+
+Radix-based menu panel for compact actions (e.g. account menu in `AppShell`). Matches card elevation and border tokens.
+
+---
+
 ### Input
 
 **File:** `components/ui/input.tsx`
@@ -156,6 +185,16 @@ Extend shadcn variants:
 - Focus: border `--tend-border-focus`, ring `2px` offset
 
 **Types used:** `text`, `email`, `password`, `date`
+
+---
+
+### PasswordInput
+
+**File:** `components/forms/password-input.tsx`
+
+Password field with a show/hide toggle. Same visual treatment as `Input`, with right padding for the toggle button.
+
+Used in `AuthForm` for password and confirm-password fields (register) and sign-in password.
 
 ---
 
@@ -637,7 +676,7 @@ interface AuthFormData {
 }
 ```
 
-Wraps `FormField` + `Input` + `Button`. Register includes display name field.
+Wraps `FormField` + `Input` / `PasswordInput` + `Button`. Register includes display name and confirm password fields with live password validation.
 
 Pre-alpha footer note via `Alert` variant `info`.
 

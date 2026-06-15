@@ -128,11 +128,6 @@ export function AvailabilityEditor({ initialWindows, onSaved }: AvailabilityEdit
 
   return (
     <div className="flex flex-col gap-6">
-      <p className="text-sm text-muted-foreground">
-        Set when you are usually free to tend things. Wants wait for these windows; musts still
-        surface whenever they need attention.
-      </p>
-
       {error ? (
         <Alert variant="error">
           <AlertDescription>{error}</AlertDescription>

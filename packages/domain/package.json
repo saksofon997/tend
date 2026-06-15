@@ -7,6 +7,6 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "test": "bun test"
+    "test": "bun test tests"
   }
 }

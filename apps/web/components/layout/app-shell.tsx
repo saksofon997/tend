@@ -1,4 +1,5 @@
-import { SignOutButton } from "@/components/sign-out-button";
+import { TendLogoLink } from "@/components/layout/tend-logo-link";
+import { UserMenu } from "@/components/layout/user-menu";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -19,9 +20,7 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-10 border-b border-border bg-card">
         <div className="tend-content-column flex h-14 items-center gap-4">
-          <Link href="/" className="shrink-0 font-display text-lg font-medium text-primary">
-            Tend
-          </Link>
+          <TendLogoLink />
 
           <nav className="flex flex-1 items-center justify-center gap-4">
             {NAV_ITEMS.map((item) => (
@@ -40,14 +39,7 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
             ))}
           </nav>
 
-          <div className="flex shrink-0 items-center gap-3">
-            {user ? (
-              <span className="hidden text-sm text-muted-foreground sm:inline">
-                {user.displayName}
-              </span>
-            ) : null}
-            <SignOutButton />
-          </div>
+          <div className="flex shrink-0 items-center">{user ? <UserMenu /> : null}</div>
         </div>
       </header>
 

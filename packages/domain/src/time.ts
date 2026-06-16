@@ -4,6 +4,13 @@ export function daysBetween(earlier: Date, later: Date): number {
   return Math.floor((later.getTime() - earlier.getTime()) / MS_PER_DAY);
 }
 
+export function calendarDaysBetween(earlier: Date, later: Date): number {
+  const [ey, em, ed] = earlier.toISOString().slice(0, 10).split("-").map(Number);
+  const [ly, lm, ld] = later.toISOString().slice(0, 10).split("-").map(Number);
+
+  return Math.floor((Date.UTC(ly, lm - 1, ld) - Date.UTC(ey, em - 1, ed)) / MS_PER_DAY);
+}
+
 export function parseTimeToMinutes(time: string): number {
   const [hours, minutes] = time.split(":").map((part) => Number(part));
   if (

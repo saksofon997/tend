@@ -5,7 +5,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/layout/page-header";
 import { PresetSuggestions } from "@/components/tend/preset-suggestions";
 import { Button } from "@/components/ui/button";
-import { dateInputToIso } from "@/lib/onboarding/constants";
+import { dateInputToIso, todayDateInputValue } from "@/lib/onboarding/constants";
 import { cn } from "@/lib/utils";
 import type { TendPreset } from "@tend/domain";
 import { useRouter } from "next/navigation";
@@ -13,15 +13,15 @@ import { useId, useState } from "react";
 
 interface AddItemFormProps {
   user: { displayName: string };
-  todayDate: string;
 }
 
 const createEmptyDraft = (todayDate: string): Partial<ItemFormValues> => ({
   lastTendedDate: todayDate,
 });
 
-export function AddItemForm({ user, todayDate }: AddItemFormProps) {
+export function AddItemForm({ user }: AddItemFormProps) {
   const router = useRouter();
+  const todayDate = todayDateInputValue();
   const suggestionsId = useId();
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -121,7 +121,6 @@ export function AddItemForm({ user, todayDate }: AddItemFormProps) {
       </div>
       <ItemForm
         key={formKey}
-        todayDate={todayDate}
         initial={draft}
         onSubmit={handleSubmit}
         onCancel={() => router.push("/")}

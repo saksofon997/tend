@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { validateItemForm } from "@/lib/forms/item-form-validation";
 import { ITEM_NAME_MAX_LENGTH } from "@/lib/items/constants";
-import { LIFE_AREA_LABELS, LIFE_AREA_ORDER } from "@/lib/onboarding/constants";
+import { LIFE_AREA_LABELS, LIFE_AREA_ORDER, todayDateInputValue } from "@/lib/onboarding/constants";
 import type { LifeArea, TendItemType } from "@tend/domain";
 import * as React from "react";
 
@@ -23,7 +23,6 @@ export interface ItemFormValues {
 
 interface ItemFormProps {
   initial?: Partial<ItemFormValues>;
-  todayDate: string;
   onSubmit: (values: ItemFormValues) => Promise<void>;
   onCancel?: () => void;
   submitLabel?: string;
@@ -33,13 +32,13 @@ interface ItemFormProps {
 
 export function ItemForm({
   initial,
-  todayDate,
   onSubmit,
   onCancel,
   submitLabel = "Save",
   error,
   submitting = false,
 }: ItemFormProps) {
+  const todayDate = React.useMemo(() => todayDateInputValue(), []);
   const [name, setName] = React.useState(() =>
     (initial?.name ?? "").slice(0, ITEM_NAME_MAX_LENGTH),
   );

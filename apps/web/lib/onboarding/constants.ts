@@ -50,17 +50,25 @@ export function isPresetRhythm(
   return options.some((option) => option.days === days);
 }
 
-export function todayDateInputValue(from: Date = new Date()): string {
-  return from.toISOString().slice(0, 10);
+export function toLocalDateString(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
+export function todayDateInputValue(from: Date = new Date()): string {
+  return toLocalDateString(from);
+}
+
+/** Store calendar dates at UTC noon so the date portion is stable across timezones. */
 export function dateInputToIso(dateValue: string): string {
-  return new Date(`${dateValue}T12:00:00`).toISOString();
+  return `${dateValue}T12:00:00.000Z`;
 }
 
 export function isoToDateInputValue(iso: string | null | undefined, fallback?: string): string {
   if (iso) {
-    return iso.slice(0, 10);
+    return toLocalDateString(new Date(iso));
   }
 
   return fallback ?? todayDateInputValue();

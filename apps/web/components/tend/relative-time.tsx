@@ -10,9 +10,9 @@ interface RelativeTimeProps {
 
 export function RelativeTime({ date, daysSince, prefix, className }: RelativeTimeProps) {
   const text =
-    daysSince !== undefined
-      ? formatRelativeFromDays(daysSince)
-      : formatRelativeTended(date ? new Date(date) : null);
+    date != null
+      ? formatRelativeTended(typeof date === "string" ? new Date(date) : date)
+      : formatRelativeFromDays(daysSince ?? null);
 
   const display = prefix ? text.replace("Last tended", prefix) : text;
 

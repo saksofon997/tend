@@ -34,6 +34,10 @@ describe("formatRelativeTended", () => {
     expect(formatRelativeTended(new Date("2026-06-15T08:00:00"), now)).toBe("Last tended today");
   });
 
+  it("returns today when tended same calendar day at an early hour", () => {
+    expect(formatRelativeTended(new Date(2026, 5, 15, 1, 0, 0), now)).toBe("Last tended today");
+  });
+
   it("returns yesterday for one day ago", () => {
     expect(formatRelativeTended(new Date("2026-06-14T12:00:00"), now)).toBe(
       "Last tended yesterday",

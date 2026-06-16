@@ -6,7 +6,12 @@ import { PromoCarousel } from "@/components/onboarding/promo-carousel";
 import { PresetCard } from "@/components/tend/preset-card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { LIFE_AREA_LABELS, LIFE_AREA_ORDER, dateInputToIso } from "@/lib/onboarding/constants";
+import {
+  LIFE_AREA_LABELS,
+  LIFE_AREA_ORDER,
+  dateInputToIso,
+  todayDateInputValue,
+} from "@/lib/onboarding/constants";
 import { ONBOARDING_PROMO_SLIDES } from "@/lib/onboarding/promo-slides";
 import { cn } from "@/lib/utils";
 import { PRESETS_BY_AREA } from "@tend/domain";
@@ -41,8 +46,9 @@ const STEP_MAP: Record<Step, number> = {
   "preset-edit": 4,
 };
 
-export function OnboardingFlow({ todayDate }: { todayDate: string }) {
+export function OnboardingFlow() {
   const router = useRouter();
+  const todayDate = todayDateInputValue();
   const [step, setStep] = useState<Step>("welcome");
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -215,7 +221,6 @@ export function OnboardingFlow({ todayDate }: { todayDate: string }) {
           description="You can change type, rhythm, and last tended date before saving."
         >
           <ItemForm
-            todayDate={todayDate}
             initial={draft}
             onSubmit={saveFirstItem}
             onCancel={() => setStep("choose")}
@@ -289,7 +294,6 @@ export function OnboardingFlow({ todayDate }: { todayDate: string }) {
         description="Adjust type, rhythm, or last tended before saving."
       >
         <ItemForm
-          todayDate={todayDate}
           initial={draft}
           onSubmit={saveFirstItem}
           onCancel={() => setStep("preset")}

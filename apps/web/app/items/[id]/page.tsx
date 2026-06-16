@@ -2,7 +2,6 @@ import { ItemDetailView } from "@/components/tend/item-detail-view";
 import { validateSession } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { serializeItem, serializeTendEvent } from "@/lib/items/serialize";
-import { todayDateInputValue } from "@/lib/onboarding/constants";
 import {
   getItemForUser,
   getRecentEventsForItem,
@@ -42,7 +41,6 @@ export default async function ItemDetailPage({ params }: ItemDetailPageProps) {
       user={{ displayName: user.displayName }}
       initialItem={serializeItem(item, now)}
       initialEvents={recentEvents.map(serializeTendEvent)}
-      todayDate={todayDateInputValue(now)}
     />
   );
 }

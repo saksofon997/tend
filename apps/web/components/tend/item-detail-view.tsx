@@ -13,7 +13,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatRhythm } from "@/lib/design/relative-time";
 import type { ItemResponse, TendEventResponse } from "@/lib/items/serialize";
-import { LIFE_AREA_LABELS, dateInputToIso, isoToDateInputValue } from "@/lib/onboarding/constants";
+import {
+  LIFE_AREA_LABELS,
+  dateInputToIso,
+  isoToDateInputValue,
+  todayDateInputValue,
+} from "@/lib/onboarding/constants";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -23,16 +28,11 @@ interface ItemDetailViewProps {
   user: { displayName: string };
   initialItem: ItemResponse;
   initialEvents: TendEventResponse[];
-  todayDate: string;
 }
 
-export function ItemDetailView({
-  user,
-  initialItem,
-  initialEvents,
-  todayDate,
-}: ItemDetailViewProps) {
+export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailViewProps) {
   const router = useRouter();
+  const todayDate = todayDateInputValue();
   const [item, setItem] = useState(initialItem);
   const [events, setEvents] = useState(initialEvents);
   const [editing, setEditing] = useState(false);
@@ -175,7 +175,6 @@ export function ItemDetailView({
                 lifeArea: item.lifeArea,
                 lastTendedDate: isoToDateInputValue(item.lastTendedAt, todayDate),
               }}
-              todayDate={todayDate}
               onSubmit={handleEditSubmit}
               onCancel={() => {
                 setEditing(false);

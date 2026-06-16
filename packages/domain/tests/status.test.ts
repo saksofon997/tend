@@ -94,7 +94,13 @@ describe("daysSinceLastTended", () => {
     expect(daysSinceLastTended(null, now)).toBeNull();
   });
 
-  it("returns whole days since last tended", () => {
+  it("returns whole calendar days since last tended", () => {
     expect(daysSinceLastTended(daysAgo(11), now)).toBe(11);
+  });
+
+  it("uses calendar days instead of elapsed hours", () => {
+    const lastTendedAt = new Date("2026-06-15T23:00:00.000Z");
+    const earlyMorning = new Date("2026-06-16T01:00:00.000Z");
+    expect(daysSinceLastTended(lastTendedAt, earlyMorning)).toBe(1);
   });
 });

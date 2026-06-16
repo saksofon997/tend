@@ -1,4 +1,4 @@
-import { daysBetween } from "./time";
+import { calendarDaysBetween, daysBetween } from "./time";
 import type { TendStatus } from "./types";
 
 export interface StatusInput {
@@ -37,5 +37,5 @@ export function daysSinceLastTended(lastTendedAt: Date | null, now: Date): numbe
     return null;
   }
 
-  return Math.max(0, daysBetween(lastTendedAt, now));
+  return Math.max(0, calendarDaysBetween(lastTendedAt, now));
 }

@@ -86,3 +86,13 @@ export function hasItemsNeedingAttention(groups: AttentionGroups): boolean {
 export function shouldShowAllFreshBanner(groups: AttentionGroups): boolean {
   return !hasItemsNeedingAttention(groups) && groups.lookingGood.length > 0;
 }
+
+export function getAttentionSectionDefaults(needsAttentionCount: number) {
+  const needsAttentionExpanded = needsAttentionCount > 0;
+
+  return {
+    needsAttention: needsAttentionExpanded,
+    gettingStale: !needsAttentionExpanded,
+    lookingGood: false,
+  } as const;
+}

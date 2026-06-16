@@ -88,12 +88,32 @@
   .tend-collapsible-reveal[data-open="true"] .tend-collapsible-reveal__content {
     transform: translate3d(0, 0, 0);
   }
+
+  .tend-carousel-caption {
+    animation: tend-carousel-caption-enter var(--tend-duration-slow) var(--tend-ease);
+  }
+}
+
+@keyframes tend-carousel-caption-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.25rem, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tend-collapsible-reveal,
   .tend-collapsible-reveal__content {
     transition: none;
+  }
+
+  .tend-carousel-caption {
+    animation: none;
   }
 }
 

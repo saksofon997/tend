@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import {
   type AttentionListItem,
   buildAttentionGroups,
+  getAttentionSectionDefaults,
   shouldShowAllFreshBanner,
 } from "@/lib/design/home-groups";
 import type { ItemResponse } from "@/lib/items/serialize";
@@ -62,6 +63,10 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
   }, [items, lifeAreaFilter]);
 
   const groups = useMemo(() => buildAttentionGroups(filteredItems), [filteredItems]);
+  const sectionDefaults = useMemo(
+    () => getAttentionSectionDefaults(groups.needsAttention.length),
+    [groups.needsAttention.length],
+  );
 
   async function handleTend(itemId: string) {
     setTendError(null);
@@ -156,16 +161,20 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
           ) : null}
 
           <AttentionSection
+            key={sectionDefaults.needsAttention ? "needs-open" : "needs-closed"}
             title="Needs attention"
             count={groups.needsAttention.length}
+            defaultOpen={sectionDefaults.needsAttention}
             emptyMessage="Nothing needs attention right now."
           >
             {groups.needsAttention.map(renderItemCard)}
           </AttentionSection>
 
           <AttentionSection
+            key={sectionDefaults.gettingStale ? "stale-open" : "stale-closed"}
             title="Getting stale"
             count={groups.gettingStale.length}
+            defaultOpen={sectionDefaults.gettingStale}
             emptyMessage="Nothing is drifting yet."
           >
             {groups.gettingStale.map(renderItemCard)}
@@ -174,7 +183,7 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
           <AttentionSection
             title="Looking good"
             count={groups.lookingGood.length}
-            defaultOpen={false}
+            defaultOpen={sectionDefaults.lookingGood}
             emptyMessage="No fresh items yet."
           >
             {groups.lookingGood.map(renderItemCard)}

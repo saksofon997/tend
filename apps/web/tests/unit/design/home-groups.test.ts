@@ -1,6 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import {
   buildAttentionGroups,
+  getAttentionSectionDefaults,
   hasItemsNeedingAttention,
   shouldShowAllFreshBanner,
 } from "@/lib/design/home-groups";
@@ -95,5 +96,23 @@ describe("buildAttentionGroups", () => {
 
     expect(hasItemsNeedingAttention(groups)).toBe(false);
     expect(shouldShowAllFreshBanner(groups)).toBe(true);
+  });
+});
+
+describe("getAttentionSectionDefaults", () => {
+  it("expands only Needs attention when that section has items", () => {
+    expect(getAttentionSectionDefaults(2)).toEqual({
+      needsAttention: true,
+      gettingStale: false,
+      lookingGood: false,
+    });
+  });
+
+  it("expands Getting stale when Needs attention is empty", () => {
+    expect(getAttentionSectionDefaults(0)).toEqual({
+      needsAttention: false,
+      gettingStale: true,
+      lookingGood: false,
+    });
   });
 });

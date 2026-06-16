@@ -15,7 +15,7 @@ export function PresetCard({ name, type, rhythmDays, onSelect }: PresetCardProps
     <button type="button" onClick={onSelect} className="w-full text-left">
       <Card className="transition-colors duration-[var(--tend-duration-fast)] hover:bg-[var(--tend-bg-subtle)]">
         <div className="p-4">
-          <p className="font-medium text-foreground">{name}</p>
+          <p className="text-pretty break-words font-medium text-foreground">{name}</p>
           <p className="mt-1 text-sm text-muted-foreground">
             {TYPE_LABELS[type]} · {formatRhythm(rhythmDays)}
           </p>

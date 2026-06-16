@@ -1,11 +1,13 @@
 "use client";
 
 import { ItemForm, type ItemFormValues } from "@/components/forms/item-form";
+import { OnboardingLayout } from "@/components/layout/onboarding-layout";
 import { OnboardingStep } from "@/components/layout/onboarding-step";
 import { PromoCarousel } from "@/components/onboarding/promo-carousel";
 import { PresetCard } from "@/components/tend/preset-card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { SHARED_PROMO_CAROUSEL_OPTS } from "@/lib/carousel/promo-carousel-config";
 import {
   LIFE_AREA_LABELS,
   LIFE_AREA_ORDER,
@@ -13,14 +15,15 @@ import {
   todayDateInputValue,
 } from "@/lib/onboarding/constants";
 import { ONBOARDING_PROMO_SLIDES } from "@/lib/onboarding/promo-slides";
+import { ONBOARDING_STEP_NUMBERS, ONBOARDING_TOTAL_STEPS } from "@/lib/onboarding/steps";
 import { cn } from "@/lib/utils";
 import { PRESETS_BY_AREA } from "@tend/domain";
 import type { LifeArea, TendItemType, TendPreset } from "@tend/domain";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type Step = "welcome" | "choose" | "custom" | "preset" | "preset-edit";
+type Step = "welcome" | "choose" | "preset" | "item-form";
+type ItemFormOrigin = "choose" | "preset";
 
 interface ItemDraft {
   name: string;
@@ -39,11 +42,10 @@ const createDefaultDraft = (todayDate: string): ItemDraft => ({
 });
 
 const STEP_MAP: Record<Step, number> = {
-  welcome: 1,
-  choose: 2,
-  custom: 3,
-  preset: 3,
-  "preset-edit": 4,
+  welcome: ONBOARDING_STEP_NUMBERS.welcome,
+  choose: ONBOARDING_STEP_NUMBERS.choose,
+  preset: ONBOARDING_STEP_NUMBERS.preset,
+  "item-form": ONBOARDING_STEP_NUMBERS.itemForm,
 };
 
 export function OnboardingFlow() {
@@ -54,6 +56,7 @@ export function OnboardingFlow() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("household");
+  const [itemFormOrigin, setItemFormOrigin] = useState<ItemFormOrigin>("choose");
   const [draft, setDraft] = useState<ItemDraft>(() => createDefaultDraft(todayDate));
 
   async function finishOnboarding() {
@@ -116,22 +119,25 @@ export function OnboardingFlow() {
       lifeArea: preset.lifeArea,
       lastTendedDate: todayDate,
     });
-    setStep("preset-edit");
+    setItemFormOrigin("preset");
+    setStep("item-form");
+  }
+
+  function openCustomItemForm() {
+    setDraft(createDefaultDraft(todayDate));
+    setItemFormOrigin("choose");
+    setStep("item-form");
   }
 
   if (step === "welcome") {
     const promoSlide = ONBOARDING_PROMO_SLIDES[carouselIndex];
 
     return (
-      <div className="min-h-screen bg-background px-4">
-        <div className="mx-auto max-w-[30rem] pt-10">
-          <Link href="/" className="font-display text-lg font-medium text-primary">
-            Tend
-          </Link>
-        </div>
+      <OnboardingLayout>
         <OnboardingStep
           step={STEP_MAP[step]}
-          totalSteps={4}
+          totalSteps={ONBOARDING_TOTAL_STEPS}
+          stableCaption
           title={carouselIndex === 0 ? "Welcome to Tend" : promoSlide.title}
           description={promoSlide.description}
           footer={
@@ -154,6 +160,7 @@ export function OnboardingFlow() {
             slides={ONBOARDING_PROMO_SLIDES}
             activeIndex={carouselIndex}
             onActiveIndexChange={setCarouselIndex}
+            {...SHARED_PROMO_CAROUSEL_OPTS}
           />
           {error ? (
             <Alert variant="error" className="mt-4">
@@ -161,27 +168,21 @@ export function OnboardingFlow() {
             </Alert>
           ) : null}
         </OnboardingStep>
-      </div>
+      </OnboardingLayout>
     );
   }
 
   if (step === "choose") {
     return (
-      <div className="min-h-screen bg-background px-4">
+      <OnboardingLayout>
         <OnboardingStep
           step={STEP_MAP[step]}
-          totalSteps={4}
+          totalSteps={ONBOARDING_TOTAL_STEPS}
           title="What do you want to tend first?"
           description="Write your own, pick a suggestion, or skip and look around first."
           footer={
             <>
-              <Button
-                type="button"
-                onClick={() => {
-                  setDraft(createDefaultDraft(todayDate));
-                  setStep("custom");
-                }}
-              >
+              <Button type="button" onClick={openCustomItemForm}>
                 Add my own
               </Button>
               <Button type="button" variant="secondary" onClick={() => setStep("preset")}>
@@ -207,29 +208,38 @@ export function OnboardingFlow() {
             </Alert>
           ) : null}
         </OnboardingStep>
-      </div>
+      </OnboardingLayout>
     );
   }
 
-  if (step === "custom") {
+  if (step === "item-form") {
     return (
-      <div className="min-h-screen bg-background px-4">
+      <OnboardingLayout>
         <OnboardingStep
           step={STEP_MAP[step]}
-          totalSteps={4}
+          totalSteps={ONBOARDING_TOTAL_STEPS}
           title="Add your first item"
-          description="You can change type, rhythm, and last tended date before saving."
+          description="Adjust type, rhythm, or last tended before saving."
+          footer={
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setStep(itemFormOrigin === "preset" ? "preset" : "choose")}
+              disabled={submitting}
+            >
+              Back
+            </Button>
+          }
         >
           <ItemForm
             initial={draft}
             onSubmit={saveFirstItem}
-            onCancel={() => setStep("choose")}
             submitLabel="Save and continue"
             error={error}
             submitting={submitting}
           />
         </OnboardingStep>
-      </div>
+      </OnboardingLayout>
     );
   }
 
@@ -237,10 +247,10 @@ export function OnboardingFlow() {
     const presets = PRESETS_BY_AREA[selectedArea];
 
     return (
-      <div className="min-h-screen bg-background px-4">
+      <OnboardingLayout>
         <OnboardingStep
           step={STEP_MAP[step]}
-          totalSteps={4}
+          totalSteps={ONBOARDING_TOTAL_STEPS}
           title="Pick a suggestion"
           description="Choose a life area, then tap something that fits your life."
           footer={
@@ -281,27 +291,9 @@ export function OnboardingFlow() {
             ))}
           </div>
         </OnboardingStep>
-      </div>
+      </OnboardingLayout>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-background px-4">
-      <OnboardingStep
-        step={STEP_MAP[step]}
-        totalSteps={4}
-        title="Customize your item"
-        description="Adjust type, rhythm, or last tended before saving."
-      >
-        <ItemForm
-          initial={draft}
-          onSubmit={saveFirstItem}
-          onCancel={() => setStep("preset")}
-          submitLabel="Save and continue"
-          error={error}
-          submitting={submitting}
-        />
-      </OnboardingStep>
-    </div>
-  );
+  return null;
 }

@@ -48,6 +48,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [ItemDetailView](#itemdetailview) | `tend/item-detail-view.tsx` | 6, 7, 8, 14 |
 | [TendEventRow](#tendeventrow) | `tend/tend-event-row.tsx` | 6, 14 |
 | [OnboardingStep](#onboardingstep) | `layout/onboarding-step.tsx` | 2 |
+| [OnboardingLayout](#onboardinglayout) | `layout/onboarding-layout.tsx` | 2 |
 | [PromoCarousel](#promocarousel) | `onboarding/promo-carousel.tsx` | 2 |
 
 ---
@@ -155,6 +156,22 @@ interface OnboardingStepProps {
 **Anatomy:** Centered column, `max-w-[480px]`. Step dots (`totalSteps` wide, current filled). No heavy progress bar.
 
 **Stories:** 2, 4
+
+---
+
+### OnboardingLayout
+
+**File:** `components/layout/onboarding-layout.tsx`
+
+**Purpose:** Shared onboarding shell — page background, `max-w-[30rem]` column, and `TendLogoLink` header on every step.
+
+```tsx
+interface OnboardingLayoutProps {
+  children: React.ReactNode;
+}
+```
+
+**Anatomy:** Full-height background, logo row (`pt-6`), then step content. Pair with `OnboardingStep` (top-aligned by default).
 
 ---
 

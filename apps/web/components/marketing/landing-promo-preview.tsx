@@ -1,8 +1,10 @@
 "use client";
 
 import { PromoCarousel } from "@/components/onboarding/promo-carousel";
-import { LANDING_PROMO_AUTO_ADVANCE_MS } from "@/lib/carousel/auto-advance";
+import { PROMO_CAPTION_DESCRIPTION_CLASS } from "@/lib/carousel/promo-caption-layout";
+import { SHARED_PROMO_CAROUSEL_OPTS } from "@/lib/carousel/promo-carousel-config";
 import { ONBOARDING_PROMO_SLIDES } from "@/lib/onboarding/promo-slides";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 export function LandingPromoPreview() {
@@ -17,8 +19,7 @@ export function LandingPromoPreview() {
           activeIndex={activeIndex}
           onActiveIndexChange={setActiveIndex}
           imageSizes="(max-width: 1024px) 100vw, 34rem"
-          showArrowsOnHover
-          autoAdvanceIntervalMs={LANDING_PROMO_AUTO_ADVANCE_MS}
+          {...SHARED_PROMO_CAROUSEL_OPTS}
         />
       </div>
       <div
@@ -29,7 +30,12 @@ export function LandingPromoPreview() {
         <p className="h-[2.75rem] font-display text-base font-medium leading-snug text-foreground">
           {slide.title}
         </p>
-        <p className="h-[3rem] text-sm leading-relaxed text-muted-foreground">
+        <p
+          className={cn(
+            "text-sm leading-relaxed text-muted-foreground",
+            PROMO_CAPTION_DESCRIPTION_CLASS,
+          )}
+        >
           {slide.description}
         </p>
       </div>

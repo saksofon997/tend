@@ -16,7 +16,6 @@ export interface AttentionGroups {
   needsAttention: AttentionListItem[];
   gettingStale: AttentionListItem[];
   lookingGood: AttentionListItem[];
-  hero: AttentionListItem | undefined;
 }
 
 const STATUS_RANK: Record<TendStatus, number> = {
@@ -72,23 +71,16 @@ export function toAttentionListItem(item: ItemResponse): AttentionListItem {
 export function buildAttentionGroups(items: ItemResponse[]): AttentionGroups {
   const active = items.filter((item) => !item.archivedAt);
   const sorted = sortForAttention(active.map(toAttentionListItem));
-  const hero = sorted.find(
-    (item) => item.status === "needs_attention" || item.status === "getting_stale",
-  );
-  const heroId = hero?.id;
 
   return {
-    needsAttention: sorted.filter(
-      (item) => item.status === "needs_attention" && item.id !== heroId,
-    ),
-    gettingStale: sorted.filter((item) => item.status === "getting_stale" && item.id !== heroId),
+    needsAttention: sorted.filter((item) => item.status === "needs_attention"),
+    gettingStale: sorted.filter((item) => item.status === "getting_stale"),
     lookingGood: sorted.filter((item) => item.status === "fresh"),
-    hero,
   };
 }
 
 export function hasItemsNeedingAttention(groups: AttentionGroups): boolean {
-  return groups.hero != null || groups.needsAttention.length > 0 || groups.gettingStale.length > 0;
+  return groups.needsAttention.length > 0 || groups.gettingStale.length > 0;
 }
 
 export function shouldShowAllFreshBanner(groups: AttentionGroups): boolean {

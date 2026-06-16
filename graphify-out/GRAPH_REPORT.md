@@ -1,16 +1,16 @@
-# Graph Report - tend  (2026-06-15)
+# Graph Report - tend  (2026-06-16)
 
 ## Corpus Check
-- 212 files · ~60,895 words
+- 218 files · ~63,551 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1150 nodes · 2302 edges · 71 communities (64 shown, 7 thin omitted)
+- 1173 nodes · 2368 edges · 75 communities (67 shown, 8 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `91e701c3`
+- Built from commit: `4d340f42`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -85,6 +85,10 @@
 - [[_COMMUNITY_Community 68|Community 68]]
 - [[_COMMUNITY_Community 69|Community 69]]
 - [[_COMMUNITY_Community 70|Community 70]]
+- [[_COMMUNITY_Community 71|Community 71]]
+- [[_COMMUNITY_Community 72|Community 72]]
+- [[_COMMUNITY_Community 73|Community 73]]
+- [[_COMMUNITY_Community 74|Community 74]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `getDb()` - 47 edges
@@ -99,33 +103,33 @@
 10. `TendStatus` - 18 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `TypeSelectorProps` --references--> `TendItemType`  [EXTRACTED]
+  apps/web/components/forms/type-selector.tsx → packages/domain/src/types.ts
+- `StatusBadgeProps` --references--> `TendStatus`  [EXTRACTED]
+  apps/web/components/tend/status-badge.tsx → packages/domain/src/types.ts
+- `PATCH()` --calls--> `getEventForUser()`  [EXTRACTED]
+  apps/web/app/api/v1/activity/[eventId]/route.ts → packages/db/src/items.ts
 - `PATCH()` --calls--> `updateEventForUser()`  [EXTRACTED]
   apps/web/app/api/v1/activity/[eventId]/route.ts → packages/db/src/items.ts
 - `DELETE()` --calls--> `deleteEventForUser()`  [EXTRACTED]
   apps/web/app/api/v1/activity/[eventId]/route.ts → packages/db/src/items.ts
-- `GET()` --calls--> `listRecentEventsForUser()`  [EXTRACTED]
-  apps/web/app/api/v1/activity/route.ts → packages/db/src/items.ts
-- `PATCH()` --calls--> `updateItemForUser()`  [EXTRACTED]
-  apps/web/app/api/v1/items/[id]/route.ts → packages/db/src/items.ts
-- `DELETE()` --calls--> `deleteItemForUser()`  [EXTRACTED]
-  apps/web/app/api/v1/items/[id]/route.ts → packages/db/src/items.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (71 total, 7 thin omitted)
+## Communities (75 total, 8 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.07
-Nodes (73): GET(), formatZodError(), ListActivityQuery, listActivityQuerySchema, optionalIsoDateSchema, UpdateEventInput, updateEventSchema, HomePage() (+65 more)
+Cohesion: 0.06
+Nodes (89): GET(), formatZodError(), HomePage(), adapter, AuthUser, lucia, LuciaAuthUser, Register (+81 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.05
-Nodes (50): availabilityWindowSchema, replaceAvailabilitySchema, timeSchema, buildAggregatedReminderCopy(), buildReminderCopy(), freeTimePhrase(), ReminderCopyInput, ReminderResponse (+42 more)
+Cohesion: 0.06
+Nodes (42): availabilityWindowSchema, replaceAvailabilitySchema, timeSchema, buildAggregatedReminderCopy(), buildReminderCopy(), freeTimePhrase(), ReminderCopyInput, ReminderResponse (+34 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.26
-Nodes (8): allowsUnauthenticatedAccess(), isPublicPath(), isStaticAssetPath(), PUBLIC_PATHS, getCanonicalAppHost(), isVercelAppHost(), config, middleware()
+Cohesion: 0.12
+Nodes (29): allowsUnauthenticatedAccess(), isPublicPath(), isStaticAssetPath(), PUBLIC_PATHS, SiteFooter(), appUrl(), buildHostRedirectUrl(), getAppOrigin() (+21 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.04
@@ -133,7 +137,7 @@ Nodes (46): devDependencies, @biomejs/biome, husky, turbo, typescript, name, ove
 
 ### Community 4 - "Community 4"
 Cohesion: 0.12
-Nodes (17): ActivityListItem, AttentionHero, AttentionSection, Domain components, EmptyState, LifeAreaChip, LifeAreaFilter, MarkTendedButton (+9 more)
+Nodes (16): ActivityListItem, AttentionSection, Domain components, EmptyState, LifeAreaChip, LifeAreaFilter, MarkTendedButton, PresetCard (+8 more)
 
 ### Community 5 - "Community 5"
 Cohesion: 0.05
@@ -149,11 +153,11 @@ Nodes (32): 10. Accessibility, 11. shadcn theming notes, 12. Reference mood, 1. 
 
 ### Community 8 - "Community 8"
 Cohesion: 0.08
-Nodes (39): serializeAvailabilityWindow(), toDomainAvailabilityWindow(), GET(), checkHealth(), HealthResult, AvailabilityWindowInput, AvailabilityWindowRow, deleteAvailabilityWindowsForUser() (+31 more)
+Nodes (40): serializeAvailabilityWindow(), toDomainAvailabilityWindow(), GET(), checkHealth(), HealthResult, AvailabilityWindowInput, AvailabilityWindowRow, deleteAvailabilityWindowsForUser() (+32 more)
 
 ### Community 9 - "Community 9"
 Cohesion: 0.07
-Nodes (29): ActivityListItemProps, AppShellProps, AttentionHeroProps, AttentionSectionProps, AuthFormData, AuthFormProps, AvailabilityEditorProps, AvailabilityWindow (+21 more)
+Nodes (28): ActivityListItemProps, AppShellProps, AttentionSectionProps, AuthFormData, AuthFormProps, AvailabilityEditorProps, AvailabilityWindow, ConfirmDialogProps (+20 more)
 
 ### Community 10 - "Community 10"
 Cohesion: 0.18
@@ -164,12 +168,12 @@ Cohesion: 0.05
 Nodes (37): API surface (Phases 1–4 additions), Current state (pre-alpha gaps), Definition of done (Phases 1–4), Implementation phases, Iteration 1.1 — Route split & public middleware, Iteration 1.2 — Landing page, Iteration 1.3 — Sample legal pages, Iteration 1.4 — Site footer (+29 more)
 
 ### Community 12 - "Community 12"
-Cohesion: 0.11
+Cohesion: 0.10
 Nodes (22): ActivityPage(), ActivityEntryResponse, serializeActivityEntry(), AvailabilityWindowResponse, AvailabilityEditor(), AvailabilityEditorProps, DAYS, EditableWindow (+14 more)
 
 ### Community 13 - "Community 13"
-Cohesion: 0.18
-Nodes (9): FormFieldProps, UserMenu(), Badge(), BadgeProps, badgeVariants, DropdownMenuContent, DropdownMenuItem, Label (+1 more)
+Cohesion: 0.11
+Nodes (22): AddItemForm(), AddItemFormProps, FormFieldProps, AppShellProps, NAV_ITEMS, TendLogoLink(), TendLogoLinkProps, UserMenu() (+14 more)
 
 ### Community 14 - "Community 14"
 Cohesion: 0.06
@@ -180,12 +184,12 @@ Cohesion: 0.12
 Nodes (16): dependencies, drizzle-orm, postgres, devDependencies, dotenv, drizzle-kit, exports, name (+8 more)
 
 ### Community 16 - "Community 16"
-Cohesion: 0.14
-Nodes (26): formatRelativeFromDays(), formatRelativeTended(), formatRhythm(), heroAttentionCopy(), startOfDay(), LIFE_AREA_LABELS, STATUS_LABELS, statusStyles() (+18 more)
+Cohesion: 0.12
+Nodes (26): ItemDraft, AttentionListItem, LIFE_AREA_LABELS, STATUS_LABELS, statusStyles(), TYPE_LABELS, typeStyles(), ItemResponse (+18 more)
 
 ### Community 17 - "Community 17"
-Cohesion: 0.19
-Nodes (11): AttentionListItem, ItemResponse, AttentionHeroProps, AttentionSection(), AttentionSectionProps, EmptyState(), EmptyStatePresetProps, EmptyStateProps (+3 more)
+Cohesion: 0.13
+Nodes (15): ALL_PRESETS, finance, foodKitchen, getPresetsByArea(), health, homeMaintenance, household, kidsFamily (+7 more)
 
 ### Community 18 - "Community 18"
 Cohesion: 0.13
@@ -204,8 +208,8 @@ Cohesion: 0.14
 Nodes (13): compilerOptions, allowJs, incremental, jsx, lib, paths, plugins, exclude (+5 more)
 
 ### Community 22 - "Community 22"
-Cohesion: 0.08
-Nodes (23): AuthForm(), LoginForm(), RegisterForm(), AuthLayout(), AuthLayoutProps, SiteFooter(), TendLogoLink(), TendLogoLinkProps (+15 more)
+Cohesion: 0.19
+Nodes (10): getLegalDisclaimer(), LEGAL_DIR, LegalDocumentSlug, loadLegalDocument(), MarkdownContent(), parseInline(), LegalPage(), LegalPageProps (+2 more)
 
 ### Community 23 - "Community 23"
 Cohesion: 0.18
@@ -216,8 +220,8 @@ Cohesion: 0.18
 Nodes (10): MVP Principles, Non-Goals, Open Product Questions, Out of Scope for MVP, Pre-Alpha Scope Decisions, Product Summary, Recommended pre-alpha defaults (resolve open questions for build), Story Validation Summary (+2 more)
 
 ### Community 25 - "Community 25"
-Cohesion: 0.09
-Nodes (31): ItemDraft, Step, STEP_MAP, AddItemForm(), AddItemFormProps, ItemForm(), ItemFormProps, ItemFormValues (+23 more)
+Cohesion: 0.15
+Nodes (16): ItemFormProps, ItemFormValues, itemFormClientSchema, validateItemForm(), rhythmDaysFieldError(), RhythmSelect(), RhythmSelectProps, OPTIONS (+8 more)
 
 ### Community 26 - "Community 26"
 Cohesion: 0.09
@@ -237,7 +241,7 @@ Nodes (6): compilerOptions, noEmit, outDir, rootDir, extends, include
 
 ### Community 30 - "Community 30"
 Cohesion: 0.29
-Nodes (7): Acceptance Criteria, Acceptance Criteria, MVP User Stories, Use Case, Use Case, User Story 10, User Story 14
+Nodes (7): Acceptance Criteria, Acceptance Criteria, MVP User Stories, Use Case, Use Case, User Story 10, User Story 12
 
 ### Community 31 - "Community 31"
 Cohesion: 0.29
@@ -304,8 +308,8 @@ Cohesion: 0.67
 Nodes (3): Acceptance Criteria, Use Case, User Story 11
 
 ### Community 48 - "Community 48"
-Cohesion: 0.67
-Nodes (3): Acceptance Criteria, Use Case, User Story 12
+Cohesion: 0.35
+Nodes (8): formatRelativeFromDays(), formatRelativeTended(), formatRhythm(), startOfDay(), ItemDetailView(), PresetCard(), RelativeTime(), RelativeTimeProps
 
 ### Community 49 - "Community 49"
 Cohesion: 0.67
@@ -320,16 +324,16 @@ Cohesion: 0.11
 Nodes (17): Notes for testers, Smoke checks, Story 10 — Availability, Story 11 — In-app reminders, Story 12 — Must vs want guidance, Story 13 — Life area filter, Story 14 — Recent activity, Story 1 — Local account (+9 more)
 
 ### Community 59 - "Community 59"
-Cohesion: 0.16
-Nodes (22): formatEventDate(), AuthFormData, AuthFormProps, FormField(), TendEventResponse, dateInputToIso(), isoToDateInputValue(), ActivityListItem() (+14 more)
+Cohesion: 0.15
+Nodes (24): formatEventDate(), AuthFormData, AuthFormProps, TendEventResponse, dateInputToIso(), isoToDateInputValue(), ActivityListItem(), ItemDetailViewProps (+16 more)
 
 ### Community 60 - "Community 60"
 Cohesion: 0.22
 Nodes (7): AttentionGroups, buildAttentionGroups(), hasItemsNeedingAttention(), shouldShowAllFreshBanner(), sortForAttention(), STATUS_RANK, HomeView()
 
 ### Community 61 - "Community 61"
-Cohesion: 0.11
-Nodes (28): isEmailAllowed(), isRegistrationRestricted(), parseAllowedEmails(), adapter, AuthUser, lucia, LuciaAuthUser, toAuthUser() (+20 more)
+Cohesion: 0.18
+Nodes (11): isEmailAllowed(), isRegistrationRestricted(), parseAllowedEmails(), AuthForm(), LoginForm(), RegisterForm(), AuthLayout(), AuthLayoutProps (+3 more)
 
 ### Community 62 - "Community 62"
 Cohesion: 0.25
@@ -348,8 +352,8 @@ Cohesion: 0.67
 Nodes (3): Acceptance Criteria, Use Case, User Story 9
 
 ### Community 66 - "Community 66"
-Cohesion: 0.22
-Nodes (8): Example: Home page composition, LandingPage, LegalPage, lib helpers, Marketing, Migration from current code, Quick reference, Tend Component Catalog
+Cohesion: 0.33
+Nodes (5): Example: Home page composition, lib helpers, Migration from current code, Quick reference, Tend Component Catalog
 
 ### Community 67 - "Community 67"
 Cohesion: 0.22
@@ -364,28 +368,40 @@ Cohesion: 0.29
 Nodes (7): AuthForm, AvailabilityEditor, ConfirmDialog, Forms (composite), ItemDetailView, ItemForm, TendEventRow
 
 ### Community 70 - "Community 70"
-Cohesion: 0.43
-Nodes (4): PromoCarousel(), PromoCarouselProps, ONBOARDING_PROMO_SLIDES, OnboardingPromoSlide
+Cohesion: 0.22
+Nodes (7): OnboardingFlow(), Step, STEP_MAP, ItemForm(), OnboardingStep(), OnboardingStepProps, PRESETS_BY_AREA
+
+### Community 71 - "Community 71"
+Cohesion: 0.38
+Nodes (5): ListActivityQuery, listActivityQuerySchema, optionalIsoDateSchema, UpdateEventInput, updateEventSchema
+
+### Community 72 - "Community 72"
+Cohesion: 0.50
+Nodes (4): LandingPage, LandingPromoPreview, LegalPage, Marketing
+
+### Community 74 - "Community 74"
+Cohesion: 0.67
+Nodes (3): Acceptance Criteria, Use Case, User Story 14
 
 ## Knowledge Gaps
-- **543 isolated node(s):** `husky.sh script`, `RouteContext`, `RouteContext`, `RouteContext`, `ItemDetailPageProps` (+538 more)
+- **549 isolated node(s):** `husky.sh script`, `RouteContext`, `RouteContext`, `RouteContext`, `ItemDetailPageProps` (+544 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `getDb()` connect `Community 0` to `Community 8`, `Community 12`, `Community 61`?**
+- **Why does `getDb()` connect `Community 0` to `Community 8`, `Community 12`?**
   _High betweenness centrality (0.024) - this node is a cross-community bridge._
-- **Why does `LifeArea` connect `Community 25` to `Community 16`, `Community 0`, `Community 17`, `Community 1`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
-- **Why does `cn()` connect `Community 16` to `Community 70`, `Community 12`, `Community 13`, `Community 17`, `Community 22`, `Community 25`, `Community 59`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+- **Why does `LifeArea` connect `Community 16` to `Community 0`, `Community 1`, `Community 70`, `Community 13`, `Community 17`, `Community 25`?**
+  _High betweenness centrality (0.024) - this node is a cross-community bridge._
+- **Why does `cn()` connect `Community 13` to `Community 2`, `Community 70`, `Community 12`, `Community 48`, `Community 16`, `Community 25`, `Community 59`, `Community 61`?**
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
 - **What connects `husky.sh script`, `RouteContext`, `RouteContext` to the rest of the system?**
-  _543 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _549 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.07305470608222901 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06345408976987925 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.050721954831543875 - nodes in this community are weakly interconnected._
-- **Should `Community 3` be split into smaller, more focused modules?**
-  _Cohesion score 0.04081632653061224 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06498015873015874 - nodes in this community are weakly interconnected._
+- **Should `Community 2` be split into smaller, more focused modules?**
+  _Cohesion score 0.1207897793263647 - nodes in this community are weakly interconnected._

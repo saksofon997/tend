@@ -68,7 +68,7 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
     <li className="rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:bg-[var(--tend-bg-muted)]/30">
       {editing ? (
         <div className="flex flex-col gap-3">
-          <p className="text-sm font-medium text-foreground">{entry.itemName}</p>
+          <p className="break-words text-sm font-medium text-foreground">{entry.itemName}</p>
 
           <FormField id={`activity-date-${entry.id}`} label="Tended on">
             <Input
@@ -101,11 +101,11 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <Link
               href={`/items/${entry.itemId}`}
-              className="truncate font-medium text-foreground hover:text-primary hover:underline"
+              className="block break-words font-medium text-foreground hover:text-primary hover:underline"
             >
               {entry.itemName}
             </Link>

@@ -2,7 +2,6 @@
 
 import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/layout/page-header";
-import { AttentionHero } from "@/components/tend/attention-hero";
 import { AttentionSection } from "@/components/tend/attention-section";
 import { EmptyState, EmptyStatePreset } from "@/components/tend/empty-state";
 import { LifeAreaFilter } from "@/components/tend/life-area-filter";
@@ -102,8 +101,6 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
     );
   }
 
-  const heroItem = groups.hero;
-
   return (
     <AppShell user={user} activePath="/">
       <PageHeader
@@ -139,7 +136,7 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
         />
       ) : filteredItems.length === 0 ? (
         <>
-          <LifeAreaFilter selected={lifeAreaFilter} onChange={setLifeAreaFilter} />
+          <LifeAreaFilter selected={lifeAreaFilter} onChange={setLifeAreaFilter} defaultOpen />
           <EmptyState
             title="No items in this area"
             description="Try another life area, or add something that fits here."
@@ -153,8 +150,6 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
       ) : (
         <>
           <LifeAreaFilter selected={lifeAreaFilter} onChange={setLifeAreaFilter} />
-
-          {heroItem ? <AttentionHero item={heroItem} onTend={handleTend} /> : null}
 
           {shouldShowAllFreshBanner(groups) ? (
             <EmptyStatePreset preset="all-fresh" className="mb-8" />

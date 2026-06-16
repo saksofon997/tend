@@ -1,5 +1,6 @@
 import type { ItemFormValues } from "@/components/forms/item-form";
 import { rhythmDaysFieldError } from "@/lib/forms/rhythm";
+import { ITEM_NAME_MAX_LENGTH } from "@/lib/items/constants";
 import { z } from "zod";
 
 export const itemFormClientSchema = z.object({
@@ -7,7 +8,7 @@ export const itemFormClientSchema = z.object({
     .string()
     .trim()
     .min(1, "Name is required")
-    .max(200, "Name must be 200 characters or fewer"),
+    .max(ITEM_NAME_MAX_LENGTH, `Name must be ${ITEM_NAME_MAX_LENGTH} characters or fewer`),
   type: z.enum(["must", "want"]),
   rhythmDays: z.number(),
   lifeArea: z.string().nullable(),

@@ -441,7 +441,7 @@ Reviewed against Mike Cohn + Gherkin format and INVEST criteria. Original storie
 **Example reminder copy:**
 
 - "Bed sheets were last tended 11 days ago."
-- "You have free time this evening. Bed sheets and vacuuming could use attention."
+- Rotating softened headlines, e.g. `"If you're up for it, why not tend to these:"` or `"A quiet moment this evening. Take a look at what needs attention:"`
 - "Medication is marked as a must and needs attention."
 
 **Note:** Native push notifications are out of scope for pre-alpha.

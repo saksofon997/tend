@@ -22,10 +22,10 @@ function item(overrides: Partial<ItemResponse> & Pick<ItemResponse, "id" | "name
 }
 
 describe("buildAttentionGroups", () => {
-  it("excludes the hero item from section lists", () => {
+  it("groups items into attention sections in priority order", () => {
     const groups = buildAttentionGroups([
       item({
-        id: "hero",
+        id: "needs-attention",
         name: "Bed sheets",
         type: "must",
         status: "needs_attention",
@@ -42,11 +42,10 @@ describe("buildAttentionGroups", () => {
       }),
     ]);
 
-    expect(groups.hero?.id).toBe("hero");
-    expect(groups.needsAttention.map((entry) => entry.id)).toEqual(["other"]);
+    expect(groups.needsAttention.map((entry) => entry.id)).toEqual(["needs-attention", "other"]);
   });
 
-  it("keeps section lists unchanged when there is no hero", () => {
+  it("keeps fresh items in the looking good section", () => {
     const groups = buildAttentionGroups([
       item({
         id: "1",
@@ -57,14 +56,13 @@ describe("buildAttentionGroups", () => {
       }),
     ]);
 
-    expect(groups.hero).toBeUndefined();
     expect(groups.lookingGood.map((entry) => entry.id)).toEqual(["1"]);
   });
 
-  it("treats the hero item as needing attention even when section lists are empty", () => {
+  it("treats a lone needs-attention item as needing attention", () => {
     const groups = buildAttentionGroups([
       item({
-        id: "hero",
+        id: "needs-attention",
         name: "Clean bathroom",
         status: "needs_attention",
         daysSinceLastTended: 8,
@@ -79,8 +77,7 @@ describe("buildAttentionGroups", () => {
       }),
     ]);
 
-    expect(groups.hero?.id).toBe("hero");
-    expect(groups.needsAttention).toHaveLength(0);
+    expect(groups.needsAttention.map((entry) => entry.id)).toEqual(["needs-attention"]);
     expect(hasItemsNeedingAttention(groups)).toBe(true);
     expect(shouldShowAllFreshBanner(groups)).toBe(false);
   });

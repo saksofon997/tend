@@ -49,6 +49,21 @@ describe("validateItemForm", () => {
     expect(errors?.lastTendedDate).toBe("Last tended cannot be in the future");
   });
 
+  it("rejects names longer than the limit", () => {
+    const errors = validateItemForm(
+      {
+        name: "a".repeat(201),
+        type: "want",
+        rhythmDays: 7,
+        lifeArea: null,
+        lastTendedDate: todayDate,
+      },
+      todayDate,
+    );
+
+    expect(errors?.name).toBe("Name must be 200 characters or fewer");
+  });
+
   it("rejects custom rhythms outside the supported range", () => {
     const errors = validateItemForm(
       {

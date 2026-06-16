@@ -6,6 +6,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { readApiError } from "@/lib/api-client";
+import { availabilityWindowsEqual, normalizeTimeInput } from "@/lib/availability/compare-windows";
 import type { AvailabilityWindowResponse } from "@/lib/availability/serialize";
 import type { AvailabilityWindow } from "@tend/domain";
 import { Plus, Trash2 } from "lucide-react";
@@ -42,11 +43,6 @@ function toEditableWindows(windows: AvailabilityWindowResponse[]): EditableWindo
   }));
 }
 
-function normalizeTimeInput(value: string): string {
-  const [hours, minutes] = value.split(":");
-  return `${hours}:${minutes}`;
-}
-
 function createWindow(dayOfWeek: number): EditableWindow {
   return {
     key: `new-${dayOfWeek}-${Date.now()}-${Math.random().toString(36).slice(2)}`,
@@ -58,9 +54,14 @@ function createWindow(dayOfWeek: number): EditableWindow {
 
 export function AvailabilityEditor({ initialWindows, onSaved }: AvailabilityEditorProps) {
   const [windows, setWindows] = useState<EditableWindow[]>(() => toEditableWindows(initialWindows));
+  const [savedWindows, setSavedWindows] = useState<EditableWindow[]>(() =>
+    toEditableWindows(initialWindows),
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+  const hasChanges = !availabilityWindowsEqual(windows, savedWindows);
 
   const windowsByDay = useMemo(() => {
     const grouped = new Map<number, EditableWindow[]>();
@@ -121,7 +122,9 @@ export function AvailabilityEditor({ initialWindows, onSaved }: AvailabilityEdit
     }
 
     const body = (await response.json()) as { windows: AvailabilityWindowResponse[] };
-    setWindows(toEditableWindows(body.windows));
+    const saved = toEditableWindows(body.windows);
+    setWindows(saved);
+    setSavedWindows(saved);
     setSuccess(true);
     onSaved?.(body.windows);
   }
@@ -205,15 +208,15 @@ export function AvailabilityEditor({ initialWindows, onSaved }: AvailabilityEdit
         })}
       </div>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <Button type="button" onClick={handleSave} disabled={saving}>
-          {saving ? "Saving…" : "Save availability"}
-        </Button>
+      <div className="flex flex-wrap items-center justify-end gap-3">
         {success ? (
           <Alert variant="info" className="w-auto px-3 py-2">
             <AlertDescription>Availability saved.</AlertDescription>
           </Alert>
         ) : null}
+        <Button type="button" onClick={handleSave} disabled={saving || !hasChanges}>
+          {saving ? "Saving…" : "Save availability"}
+        </Button>
       </div>
     </div>
   );

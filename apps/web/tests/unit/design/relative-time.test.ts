@@ -3,7 +3,6 @@ import {
   formatRelativeFromDays,
   formatRelativeTended,
   formatRhythm,
-  heroAttentionCopy,
 } from "@/lib/design/relative-time";
 
 describe("formatRelativeFromDays", () => {
@@ -58,17 +57,5 @@ describe("formatRhythm", () => {
 
   it("formats custom day counts", () => {
     expect(formatRhythm(3)).toBe("Every 3 days");
-  });
-});
-
-describe("heroAttentionCopy", () => {
-  it("uses attention wording for needs_attention", () => {
-    expect(heroAttentionCopy("Bed sheets", "needs_attention")).toBe(
-      "Bed sheets could use attention",
-    );
-  });
-
-  it("uses stale wording for getting_stale", () => {
-    expect(heroAttentionCopy("Plants", "getting_stale")).toBe("Plants is getting stale");
   });
 });

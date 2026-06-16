@@ -1,3 +1,4 @@
+import { ITEM_NAME_MAX_LENGTH } from "@/lib/items/constants";
 import { z } from "zod";
 
 const tendItemTypeSchema = z.enum(["must", "want"]);
@@ -35,7 +36,7 @@ export const createItemSchema = z.object({
     .string()
     .trim()
     .min(1, "Name is required")
-    .max(200, "Name must be 200 characters or fewer"),
+    .max(ITEM_NAME_MAX_LENGTH, `Name must be ${ITEM_NAME_MAX_LENGTH} characters or fewer`),
   type: tendItemTypeSchema,
   rhythmDays: rhythmDaysSchema,
   lifeArea: lifeAreaSchema.nullable().optional(),
@@ -44,7 +45,7 @@ export const createItemSchema = z.object({
 
 export const updateItemSchema = z
   .object({
-    name: z.string().trim().min(1).max(200).optional(),
+    name: z.string().trim().min(1).max(ITEM_NAME_MAX_LENGTH).optional(),
     type: tendItemTypeSchema.optional(),
     rhythmDays: rhythmDaysSchema.optional(),
     lifeArea: lifeAreaSchema.nullable().optional(),

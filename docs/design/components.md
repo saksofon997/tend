@@ -30,7 +30,6 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [RelativeTime](#relativetime) | `tend/relative-time.tsx` | 5, 6, 11, 14 |
 | [TendItemCard](#tenditemcard) | `tend/tend-item-card.tsx` | 5, 7, 11 |
 | [AttentionSection](#attentionsection) | `tend/attention-section.tsx` | 5 |
-| [AttentionHero](#attentionhero) | `tend/attention-hero.tsx` | 5, 11 |
 | [MarkTendedButton](#marktendedbutton) | `tend/mark-tended-button.tsx` | 7, 11 |
 | [TypeSelector](#typeselector) | `forms/type-selector.tsx` | 3, 8, 12 |
 | [RhythmSelect](#rhythmselect) | `forms/rhythm-select.tsx` | 3, 4, 8 |
@@ -255,7 +254,7 @@ Same visual treatment as Input. Chevron icon muted. Dropdown panel: elevated car
 - Radius: `--tend-radius-lg`
 - Padding: `--tend-space-4` (content), `--tend-space-5` (header)
 
-Used for: auth forms, attention hero, preset picker container.
+Used for: auth forms, preset picker container.
 
 ---
 
@@ -284,6 +283,7 @@ interface FormFieldProps {
   helper?: string;
   error?: string;
   required?: boolean;
+  counter?: { length: number; max: number };
   children: React.ReactNode; // Input or Select
 }
 ```
@@ -293,7 +293,9 @@ interface FormFieldProps {
 Label (text-base, medium)     [optional *]
 Helper (text-sm, muted)       — if helper
 {children}
-Error (text-sm, error color)  — if error, role="alert"
+Footer row                    — if counter and/or error
+  Error (text-sm, error)      — left, if error
+  Counter (text-xs, muted)    — right, e.g. 85/200; destructive at max
 ```
 
 **Spacing:** `16px` between fields. Label `4px` above control.
@@ -489,33 +491,6 @@ interface AttentionSectionProps {
 
 ---
 
-### AttentionHero
-
-**File:** `components/tend/attention-hero.tsx`
-
-```tsx
-interface AttentionHeroProps {
-  item: {
-    id: string;
-    name: string;
-    type: TendItemType;
-    status: TendStatus;
-    lastTendedAt: Date | string | null;
-  };
-  onTend: (id: string) => void;
-}
-```
-
-**Purpose:** Single featured card at top of home for the highest-priority stale item (must first).
-
-**Styles:** Larger card (`padding: 24px`), `text-3xl` name in display font, prominent `MarkTendedButton` size `lg`.
-
-**Copy example:** "Bed sheets could use attention" (derived from name + status, not alarming).
-
-**Stories:** 5, 11
-
----
-
 ### MarkTendedButton
 
 **File:** `components/tend/mark-tended-button.tsx`
@@ -611,7 +586,7 @@ interface LifeAreaFilterProps {
 }
 ```
 
-Horizontal scroll row of `LifeAreaChip` + "All" chip. Sticky below header on home optional.
+Collapsible row of `LifeAreaChip` + "All" chip, hidden by default. **Filter by area?** toggle (secondary `sm` button, muted text) expands the chip row via `.tend-collapsible-reveal`. When a life area is selected, the toggle shows `Filter by area · {label}` so the active filter stays visible while collapsed. Pass `defaultOpen` when the user needs the chips immediately (e.g. empty filter results).
 
 **Stories:** 13
 
@@ -677,10 +652,7 @@ interface ReminderBannerProps {
 
 **Styles:** `Alert` variant `reminder`. Soft stale background — not modal.
 
-**Copy patterns (from Story 11):**
-- `"Bed sheets were last tended 11 days ago."`
-- `"You have free time this evening. Bed sheets and vacuuming could use attention."`
-- `"Medication is marked as a must and needs attention."`
+**Copy patterns (from Story 11):** Rotates daily among softened headlines (e.g. `"If you're up for it, why not tend to this:"`, `"A quiet moment this evening. Take a look at what needs attention:"`). Uses *this* vs *these* based on count. Names always appear in the list below, not in the headline.
 
 Include inline `MarkTendedButton` size `sm` per item when multiple.
 
@@ -905,7 +877,7 @@ export function formatRhythm(days: number): string; // "Every 7 days"
 | `onboarding-flow.tsx` bare `<main>` | `OnboardingStep` + `ItemForm` + styled primitives |
 | `login/page.tsx` inline form | `AuthForm` inside `Card` |
 | `register/page.tsx` inline form | `AuthForm` |
-| `page.tsx` placeholder home | `AttentionHero` + `AttentionSection` + `TendItemCard` |
+| `page.tsx` placeholder home | `AttentionSection` + `TendItemCard` |
 | `sign-out-button.tsx` | Keep; restyle with `Button` variant `ghost` |
 
 ---
@@ -920,8 +892,6 @@ export function formatRhythm(days: number): string; // "Every 7 days"
     subtitle={`Welcome back, ${user.displayName}`}
     action={<Button href="/items/new">Add item</Button>}
   />
-
-  {heroItem && <AttentionHero item={heroItem} onTend={handleTend} />}
 
   <AttentionSection title="Needs attention" count={groups.needsAttention.length}>
     {groups.needsAttention.map((item) => (

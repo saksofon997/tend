@@ -2,7 +2,7 @@
 
 import { MarkTendedButton } from "@/components/tend/mark-tended-button";
 import { TypeBadge } from "@/components/tend/type-badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { buildAggregatedReminderCopy } from "@/lib/reminders/reminder-copy";
 import type { ReminderResponse } from "@/lib/reminders/serialize";
 import { cn } from "@/lib/utils";
@@ -17,19 +17,16 @@ export function ReminderBanner({ reminders, onTend }: ReminderBannerProps) {
     return null;
   }
 
-  const aggregatedCopy =
-    reminders.length > 1
-      ? buildAggregatedReminderCopy(
-          reminders.map((reminder) => ({
-            name: reminder.name,
-            type: reminder.type,
-            status: reminder.status,
-            daysSinceLastTended: reminder.daysSinceLastTended,
-            emphasis: reminder.emphasis,
-          })),
-          new Date(),
-        )
-      : reminders[0].copy;
+  const headlineCopy = buildAggregatedReminderCopy(
+    reminders.map((reminder) => ({
+      name: reminder.name,
+      type: reminder.type,
+      status: reminder.status,
+      daysSinceLastTended: reminder.daysSinceLastTended,
+      emphasis: reminder.emphasis,
+    })),
+    new Date(),
+  );
 
   const hasMust = reminders.some((reminder) => reminder.type === "must");
 
@@ -39,29 +36,26 @@ export function ReminderBanner({ reminders, onTend }: ReminderBannerProps) {
       className={cn("mb-6", hasMust && "border-l-4 border-l-[var(--tend-type-must-border)]")}
     >
       <AlertDescription>
-        <p className="text-pretty text-foreground">{aggregatedCopy}</p>
+        <AlertTitle className="font-display text-pretty text-lg font-medium text-balance text-foreground">
+          {headlineCopy}
+        </AlertTitle>
 
-        {reminders.length > 1 ? (
-          <ul className="mt-4 flex flex-col gap-3">
-            {reminders.map((reminder) => (
-              <li
-                key={reminder.itemId}
-                className="flex flex-wrap items-center justify-between gap-3 rounded-md bg-background/60 px-3 py-2"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-foreground">{reminder.name}</span>
-                  {reminder.type === "must" ? <TypeBadge type="must" size="sm" /> : null}
-                </div>
+        <ul className="mt-4 flex flex-col gap-3">
+          {reminders.map((reminder) => (
+            <li
+              key={reminder.itemId}
+              className="flex flex-col gap-3 rounded-md bg-background/60 px-3 py-2 sm:flex-row sm:items-start sm:justify-between"
+            >
+              <p className="min-w-0 flex-1 text-pretty break-words font-medium text-foreground">
+                {reminder.name}
+              </p>
+              <div className="flex shrink-0 items-center justify-between gap-2 sm:flex-col sm:items-end">
+                {reminder.type === "must" ? <TypeBadge type="must" size="sm" /> : null}
                 <MarkTendedButton itemId={reminder.itemId} onTend={onTend} size="sm" />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            {reminders[0].type === "must" ? <TypeBadge type="must" size="sm" /> : null}
-            <MarkTendedButton itemId={reminders[0].itemId} onTend={onTend} size="sm" />
-          </div>
-        )}
+              </div>
+            </li>
+          ))}
+        </ul>
       </AlertDescription>
     </Alert>
   );

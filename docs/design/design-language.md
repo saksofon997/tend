@@ -241,7 +241,6 @@ Maps to routes in `docs/pre-alpha-development-plan.md`.
 ### Home (`/`)
 
 ```
-AttentionHero (optional — top stale must)
 ─────────────────────────────────────
 Needs attention          [count]
   TendItemCard × n

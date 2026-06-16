@@ -87,7 +87,7 @@ describe("sortForAttention", () => {
 });
 
 describe("groupForAttention", () => {
-  it("groups items into attention sections and picks a hero", () => {
+  it("groups items into attention sections", () => {
     const groups = groupForAttention(
       [
         item({ id: "1", name: "Fresh plants", lastTendedAt: new Date("2026-06-14T12:00:00") }),
@@ -109,6 +109,5 @@ describe("groupForAttention", () => {
     expect(groups.needsAttention.map((entry) => entry.name)).toContain("Bed sheets");
     expect(groups.gettingStale.map((entry) => entry.name)).toContain("Dinner with partner");
     expect(groups.lookingGood.map((entry) => entry.name)).toContain("Fresh plants");
-    expect(groups.hero?.name).toBe("Bed sheets");
   });
 });

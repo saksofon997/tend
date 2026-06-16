@@ -1,9 +1,19 @@
 import { describe, expect, it } from "bun:test";
 import {
   buildAggregatedReminderCopy,
+  buildFreeTimeReminderHeadline,
   buildReminderCopy,
   freeTimePhrase,
+  pickFreeTimeHeadlineVariantIndex,
 } from "@/lib/reminders/reminder-copy";
+
+const sampleReminder = {
+  name: "Bed sheets",
+  type: "want" as const,
+  status: "needs_attention" as const,
+  daysSinceLastTended: 11,
+  emphasis: "normal" as const,
+};
 
 describe("buildReminderCopy", () => {
   it("uses must-specific copy for musts needing attention", () => {
@@ -31,31 +41,66 @@ describe("buildReminderCopy", () => {
   });
 });
 
+describe("buildFreeTimeReminderHeadline", () => {
+  const evening = new Date("2026-06-15T19:00:00");
+
+  it("rotates through headline variants by day", () => {
+    const variantCount = 4;
+    const dayZero = new Date("1970-01-01T12:00:00");
+    const dayOne = new Date("1970-01-02T12:00:00");
+
+    expect(pickFreeTimeHeadlineVariantIndex(dayZero, variantCount)).toBe(0);
+    expect(pickFreeTimeHeadlineVariantIndex(dayOne, variantCount)).toBe(1);
+  });
+
+  it("uses this for one reminder and these for multiple", () => {
+    const dayWithVariantTwo = new Date("1970-01-03T19:00:00");
+    expect(pickFreeTimeHeadlineVariantIndex(dayWithVariantTwo, 4)).toBe(2);
+
+    expect(buildFreeTimeReminderHeadline(dayWithVariantTwo, 1)).toBe(
+      "When you have a moment, this could use tending:",
+    );
+    expect(buildFreeTimeReminderHeadline(dayWithVariantTwo, 2)).toBe(
+      "When you have a moment, these could use tending:",
+    );
+  });
+
+  it("includes the part of day when the variant uses it", () => {
+    const morning = new Date("2026-06-16T09:00:00");
+    const variantIndex = pickFreeTimeHeadlineVariantIndex(morning, 4);
+
+    if (variantIndex === 1) {
+      expect(buildFreeTimeReminderHeadline(morning, 1)).toBe(
+        "A quiet moment this morning. Take a look at what needs attention:",
+      );
+    }
+
+    if (variantIndex === 3) {
+      expect(buildFreeTimeReminderHeadline(morning, 1)).toBe(
+        "If you have a spare moment this morning, this could use a look:",
+      );
+    }
+  });
+});
+
 describe("buildAggregatedReminderCopy", () => {
-  it("lists multiple item names with a free-time phrase", () => {
-    const copy = buildAggregatedReminderCopy(
-      [
-        {
-          name: "Bed sheets",
-          type: "want",
-          status: "needs_attention",
-          daysSinceLastTended: 11,
-          emphasis: "normal",
-        },
-        {
-          name: "Vacuuming",
-          type: "want",
-          status: "needs_attention",
-          daysSinceLastTended: 9,
-          emphasis: "normal",
-        },
-      ],
-      new Date("2026-06-15T19:00:00"),
+  it("returns empty copy when there are no reminders", () => {
+    expect(buildAggregatedReminderCopy([], new Date("2026-06-15T19:00:00"))).toBe("");
+  });
+
+  it("delegates to the rotating free-time headline without item names", () => {
+    const evening = new Date("2026-06-15T19:00:00");
+
+    expect(buildAggregatedReminderCopy([sampleReminder], evening)).toBe(
+      "If you have a spare moment this evening, this could use a look:",
     );
 
-    expect(copy).toBe(
-      "You have free time this evening. Bed sheets and Vacuuming could use attention.",
-    );
+    expect(
+      buildAggregatedReminderCopy(
+        [sampleReminder, { ...sampleReminder, name: "Vacuuming", daysSinceLastTended: 9 }],
+        evening,
+      ),
+    ).toBe("If you have a spare moment this evening, these could use a look:");
   });
 });
 

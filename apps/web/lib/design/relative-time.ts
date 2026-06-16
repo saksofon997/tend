@@ -62,14 +62,3 @@ export function formatEventDate(date: Date | string): string {
     day: "numeric",
   });
 }
-
-export function heroAttentionCopy(
-  name: string,
-  status: "getting_stale" | "needs_attention",
-): string {
-  if (status === "needs_attention") {
-    return `${name} could use attention`;
-  }
-
-  return `${name} is getting stale`;
-}

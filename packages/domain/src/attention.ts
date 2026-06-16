@@ -59,8 +59,5 @@ export function groupForAttention(items: TendItemInput[], now: Date) {
     needsAttention: sorted.filter((item) => item.status === "needs_attention"),
     gettingStale: sorted.filter((item) => item.status === "getting_stale"),
     lookingGood: sorted.filter((item) => item.status === "fresh"),
-    hero: sorted.find(
-      (item) => item.status === "needs_attention" || item.status === "getting_stale",
-    ),
   };
 }

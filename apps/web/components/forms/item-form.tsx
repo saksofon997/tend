@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { validateItemForm } from "@/lib/forms/item-form-validation";
+import { ITEM_NAME_MAX_LENGTH } from "@/lib/items/constants";
 import { LIFE_AREA_LABELS, LIFE_AREA_ORDER } from "@/lib/onboarding/constants";
 import type { LifeArea, TendItemType } from "@tend/domain";
 import * as React from "react";
@@ -39,7 +40,9 @@ export function ItemForm({
   error,
   submitting = false,
 }: ItemFormProps) {
-  const [name, setName] = React.useState(initial?.name ?? "");
+  const [name, setName] = React.useState(() =>
+    (initial?.name ?? "").slice(0, ITEM_NAME_MAX_LENGTH),
+  );
   const [type, setType] = React.useState<TendItemType>(initial?.type ?? "want");
   const [rhythmDays, setRhythmDays] = React.useState(initial?.rhythmDays ?? 7);
   const [lifeArea, setLifeArea] = React.useState<LifeArea | null>(initial?.lifeArea ?? null);
@@ -63,12 +66,22 @@ export function ItemForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-      <FormField id="item-name" label="Name" required error={fieldErrors.name}>
+      <FormField
+        id="item-name"
+        label="Name"
+        required
+        error={fieldErrors.name}
+        counter={{ length: name.length, max: ITEM_NAME_MAX_LENGTH }}
+      >
         <Input
           id="item-name"
           value={name}
-          onChange={(event) => setName(event.target.value)}
+          onChange={(event) => setName(event.target.value.slice(0, ITEM_NAME_MAX_LENGTH))}
+          maxLength={ITEM_NAME_MAX_LENGTH}
           aria-invalid={Boolean(fieldErrors.name)}
+          aria-describedby={
+            fieldErrors.name ? "item-name-error item-name-counter" : "item-name-counter"
+          }
           required
         />
       </FormField>

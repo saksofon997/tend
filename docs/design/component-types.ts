@@ -36,6 +36,7 @@ export interface FormFieldProps {
   helper?: string;
   error?: string;
   required?: boolean;
+  counter?: { length: number; max: number };
   children: React.ReactNode;
 }
 
@@ -125,17 +126,6 @@ export interface AttentionSectionProps {
   children: React.ReactNode;
 }
 
-export interface AttentionHeroProps {
-  item: {
-    id: string;
-    name: string;
-    type: TendItemType;
-    status: TendStatus;
-    lastTendedAt: Date | string | null;
-  };
-  onTend: (id: string) => void;
-}
-
 export interface MarkTendedButtonProps {
   itemId: string;
   onTend: (id: string) => Promise<void>;
@@ -152,6 +142,7 @@ export interface LifeAreaChipProps {
 export interface LifeAreaFilterProps {
   selected: LifeArea | null;
   onChange: (area: LifeArea | null) => void;
+  defaultOpen?: boolean;
 }
 
 export interface PresetCardProps {

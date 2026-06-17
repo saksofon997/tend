@@ -6,6 +6,7 @@ import { ActivityListItem } from "@/components/tend/activity-list-item";
 import { EmptyStatePreset } from "@/components/tend/empty-state";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import type { ActivityEntryResponse } from "@/lib/activity/serialize";
+import { groupActivityEntriesByWeek } from "@/lib/activity/week-groups";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -18,6 +19,7 @@ export function ActivityView({ user, initialEvents }: ActivityViewProps) {
   const router = useRouter();
   const [events, setEvents] = useState(initialEvents);
   const [error, setError] = useState<string | null>(null);
+  const weekGroups = groupActivityEntriesByWeek(events);
 
   async function handleEventUpdate(eventId: string, tendedAt: string) {
     setError(null);
@@ -71,16 +73,34 @@ export function ActivityView({ user, initialEvents }: ActivityViewProps) {
       {events.length === 0 ? (
         <EmptyStatePreset preset="no-activity" />
       ) : (
-        <ul className="group flex flex-col gap-3">
-          {events.map((entry) => (
-            <ActivityListItem
-              key={entry.id}
-              entry={entry}
-              onUpdate={handleEventUpdate}
-              onDelete={handleEventDelete}
-            />
+        <div className="flex flex-col gap-6">
+          {weekGroups.map((group) => (
+            <section key={group.key} aria-labelledby={`activity-week-${group.key}`}>
+              <div className="mb-3 flex items-baseline justify-between gap-3">
+                <h2
+                  id={`activity-week-${group.key}`}
+                  className="font-medium text-foreground text-sm"
+                >
+                  {group.label}
+                </h2>
+                <span className="text-muted-foreground text-xs">
+                  {group.entries.length} {group.entries.length === 1 ? "event" : "events"}
+                </span>
+              </div>
+
+              <ul className="group flex flex-col gap-3">
+                {group.entries.map((entry) => (
+                  <ActivityListItem
+                    key={entry.id}
+                    entry={entry}
+                    onUpdate={handleEventUpdate}
+                    onDelete={handleEventDelete}
+                  />
+                ))}
+              </ul>
+            </section>
           ))}
-        </ul>
+        </div>
       )}
     </AppShell>
   );

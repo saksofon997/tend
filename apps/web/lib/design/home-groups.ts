@@ -87,12 +87,15 @@ export function shouldShowAllFreshBanner(groups: AttentionGroups): boolean {
   return !hasItemsNeedingAttention(groups) && groups.lookingGood.length > 0;
 }
 
-export function getAttentionSectionDefaults(needsAttentionCount: number) {
+export function getAttentionSectionDefaults(
+  needsAttentionCount: number,
+  gettingStaleCount: number,
+) {
   const needsAttentionExpanded = needsAttentionCount > 0;
 
   return {
     needsAttention: needsAttentionExpanded,
-    gettingStale: !needsAttentionExpanded,
+    gettingStale: !needsAttentionExpanded && gettingStaleCount > 0,
     lookingGood: false,
   } as const;
 }

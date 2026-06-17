@@ -1,5 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { checkHealth } from "@/lib/health";
+import { API_VERSION } from "@/lib/version";
 import { isDatabaseAvailable } from "@tend/db";
 
 describe("checkHealth", () => {
@@ -9,6 +10,7 @@ describe("checkHealth", () => {
     expect(result.ok).toBe(false);
     expect(result.status).toBe(503);
     expect(result.body.database).toBe("not_configured");
+    expect(result.body.version).toBe(API_VERSION);
   });
 
   it("returns connected when database is available", async () => {
@@ -21,6 +23,10 @@ describe("checkHealth", () => {
 
     expect(result.ok).toBe(true);
     expect(result.status).toBe(200);
-    expect(result.body).toEqual({ status: "ok", database: "connected" });
+    expect(result.body).toEqual({
+      status: "ok",
+      database: "connected",
+      version: API_VERSION,
+    });
   });
 });

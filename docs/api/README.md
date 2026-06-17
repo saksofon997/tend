@@ -27,6 +27,7 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 
 | Date | Change |
 |------|--------|
+| 2026-06-17 | Health responses include API `version`; footer shows app and API versions |
 | 2026-06-15 | Added availability and reminders endpoints |
 | 2026-06-15 | Added `GET /api/v1/activity` |
 | 2026-06-15 | Added activity endpoints (correct/remove tend events) |

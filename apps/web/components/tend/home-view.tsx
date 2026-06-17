@@ -16,11 +16,12 @@ import {
   shouldShowAllFreshBanner,
 } from "@/lib/design/home-groups";
 import type { ItemResponse } from "@/lib/items/serialize";
-import type { RemindersApiResponse } from "@/lib/reminders/serialize";
+import type { ReminderResponse, RemindersApiResponse } from "@/lib/reminders/serialize";
+import { pickReminderBannerItems, reminderItemIdsKey } from "@/lib/reminders/surface-reminders";
 import type { LifeArea } from "@tend/domain";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const REMINDER_POLL_MS = 60_000;
 
@@ -32,9 +33,22 @@ interface HomeViewProps {
 export function HomeView({ user, initialItems }: HomeViewProps) {
   const router = useRouter();
   const [items, setItems] = useState(initialItems);
-  const [reminders, setReminders] = useState<RemindersApiResponse["surfaceNow"]>([]);
+  const [bannerReminders, setBannerReminders] = useState<ReminderResponse[]>([]);
+  const bannerReminderSetKeyRef = useRef("");
+
   const [lifeAreaFilter, setLifeAreaFilter] = useState<LifeArea | null>(null);
   const [tendError, setTendError] = useState<string | null>(null);
+
+  const updateBannerReminders = useCallback((surfaceNow: ReminderResponse[]) => {
+    const nextKey = reminderItemIdsKey(surfaceNow);
+
+    if (nextKey === bannerReminderSetKeyRef.current) {
+      return;
+    }
+
+    bannerReminderSetKeyRef.current = nextKey;
+    setBannerReminders(pickReminderBannerItems(surfaceNow));
+  }, []);
 
   const fetchReminders = useCallback(async () => {
     const response = await fetch("/api/v1/reminders");
@@ -44,8 +58,8 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
     }
 
     const body = (await response.json()) as RemindersApiResponse;
-    setReminders(body.surfaceNow);
-  }, []);
+    updateBannerReminders(body.surfaceNow);
+  }, [updateBannerReminders]);
 
   useEffect(() => {
     fetchReminders();
@@ -64,8 +78,8 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
 
   const groups = useMemo(() => buildAttentionGroups(filteredItems), [filteredItems]);
   const sectionDefaults = useMemo(
-    () => getAttentionSectionDefaults(groups.needsAttention.length),
-    [groups.needsAttention.length],
+    () => getAttentionSectionDefaults(groups.needsAttention.length, groups.gettingStale.length),
+    [groups.needsAttention.length, groups.gettingStale.length],
   );
 
   async function handleTend(itemId: string) {
@@ -128,7 +142,9 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
         </Alert>
       ) : null}
 
-      {reminders.length > 0 ? <ReminderBanner reminders={reminders} onTend={handleTend} /> : null}
+      {bannerReminders.length > 0 ? (
+        <ReminderBanner reminders={bannerReminders} onTend={handleTend} />
+      ) : null}
 
       {items.length === 0 ? (
         <EmptyStatePreset

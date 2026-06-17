@@ -96,7 +96,7 @@ interface AppShellProps {
 
 **Purpose:** Legal links and locale switcher placeholder on public and app surfaces.
 
-**Links:** Privacy (`/privacy`), Terms (`/terms`), Language (disabled until i18n Phase 4).
+**Links:** Privacy (`/privacy`), Terms (`/terms`), Language (disabled until i18n Phase 4), app and API version labels (from `version.json`).
 
 **Used in:** `AppShell`, `AuthLayout`, `LandingPage`, `LegalPage`.
 
@@ -467,13 +467,13 @@ interface TendItemCardProps {
 **Anatomy:**
 ```
 ┌─────────────────────────────────────────────────┐
-│ [Name text-lg medium]              [StatusBadge]│
+│ [Name text-lg medium]                           │
 │ [TypeBadge]  [RelativeTime]                     │
-│                                    [Mark tended]│
+│ [StatusBadge]                     [Mark tended] │
 └─────────────────────────────────────────────────┘
 ```
 
-**Layout:** Flex row. Left: name + metadata stack. Right: status + action.
+**Layout:** Single-column stack. Name and metadata are grouped first; status and action sit in a second row below, with status left and `MarkTendedButton` right.
 
 **Variants:**
 - **Default:** Card border, white bg
@@ -523,9 +523,11 @@ interface MarkTendedButtonProps {
 
 - Label: "Mark tended" (not "Complete" or "Done")
 - Loading: "Updating…"
+- Confirmation: "Tended" for less than 1 second when the parent surface does not immediately remove the item
 - Icon: `Check` 16px before label
 - Variant: `default` (primary green)
-- On success: parent removes card from section (optimistic update encouraged)
+- Motion: subtle hover lift and check scale, using Tend duration tokens and respecting reduced motion
+- On success: parent removes card from section when appropriate (optimistic update encouraged)
 
 ---
 
@@ -671,7 +673,9 @@ interface ReminderBannerProps {
 
 **Copy patterns (from Story 11):** Rotates daily among softened headlines (e.g. `"If you're up for it, why not tend to this:"`, `"A quiet moment this evening. Take a look at what needs attention:"`). Uses *this* vs *these* based on count. Names always appear in the list below, not in the headline.
 
-Include inline `MarkTendedButton` size `sm` per item when multiple.
+Shows at most **3** reminders per visit. When more are eligible, a random subset is chosen on page load and re-shuffled when the eligible set changes (e.g. after tending).
+
+Include inline `MarkTendedButton` size `sm` per item when multiple. Place the action in its own row below the item name, with the optional `TypeBadge` on the left and the button aligned right.
 
 **Stories:** 11
 

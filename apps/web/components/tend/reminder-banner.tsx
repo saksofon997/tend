@@ -44,14 +44,21 @@ export function ReminderBanner({ reminders, onTend }: ReminderBannerProps) {
           {reminders.map((reminder) => (
             <li
               key={reminder.itemId}
-              className="flex flex-col gap-3 rounded-md bg-background/60 px-3 py-2 sm:flex-row sm:items-start sm:justify-between"
+              className="flex flex-col gap-3 rounded-md bg-background/60 px-3 py-2"
             >
-              <p className="min-w-0 flex-1 text-pretty break-words font-medium text-foreground">
-                {reminder.name}
-              </p>
-              <div className="flex shrink-0 items-center justify-between gap-2 sm:flex-col sm:items-end">
+              <div className="min-w-0 flex-1">
+                <p className="text-pretty break-words font-medium text-foreground">
+                  {reminder.name}
+                </p>
+              </div>
+              <div className="flex shrink-0 items-center gap-2">
                 {reminder.type === "must" ? <TypeBadge type="must" size="sm" /> : null}
-                <MarkTendedButton itemId={reminder.itemId} onTend={onTend} size="sm" />
+                <MarkTendedButton
+                  itemId={reminder.itemId}
+                  onTend={onTend}
+                  size="sm"
+                  className="ml-auto"
+                />
               </div>
             </li>
           ))}

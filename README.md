@@ -195,6 +195,29 @@ Production hosting uses **Vercel** (app), **Neon** (Postgres), and **Cloudflare*
 
 HTTP endpoints are documented under [`docs/api/`](docs/api/README.md) as they are implemented. Base path: `/api/v1`.
 
+### Versions
+
+App and API versions live in [`version.json`](version.json) at the repo root. That file is the single source of truth.
+
+| Field | Meaning | When to bump |
+|-------|---------|--------------|
+| `app` | Tend web client (UI) | User-facing releases, deploys, or any shipped web change you want to label |
+| `api` | `/api/v1` HTTP contract | Request or response shape changes, new or changed endpoints, breaking behavior |
+
+When bumping `app`, also update `apps/web/package.json` `version` to match.
+
+`apps/web/lib/version.ts` reads `version.json` and exports `APP_VERSION` and `API_VERSION`. Both versions appear in the site footer (`SiteFooter`) and the API version is returned by `GET /api/v1/health` as `version`.
+
+Example release bump:
+
+```bash
+# Edit version.json, then sync package.json for the app version
+# version.json: { "app": "0.2.0", "api": "0.2.0" }
+# apps/web/package.json: "version": "0.2.0"
+```
+
+Use [semver](https://semver.org/) (`MAJOR.MINOR.PATCH`). Bump `api` independently when only the HTTP surface changes; bump `app` when only the client changes; bump both for a coordinated release.
+
 ---
 
 ## License

@@ -46,7 +46,7 @@ export function TendItemCard({
         subdued && "opacity-85",
       )}
     >
-      <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex flex-col gap-4 p-4">
         <Link
           href={`/items/${id}`}
           className="min-w-0 flex-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -58,7 +58,7 @@ export function TendItemCard({
           </div>
         </Link>
 
-        <div className="flex shrink-0 items-center justify-between gap-2 sm:flex-col sm:items-end">
+        <div className="flex shrink-0 items-center justify-between gap-2">
           <StatusBadge status={status} />
           {onTend ? <MarkTendedButton itemId={id} onTend={onTend} size="sm" /> : null}
         </div>

@@ -101,17 +101,25 @@ describe("buildAttentionGroups", () => {
 
 describe("getAttentionSectionDefaults", () => {
   it("expands only Needs attention when that section has items", () => {
-    expect(getAttentionSectionDefaults(2)).toEqual({
+    expect(getAttentionSectionDefaults(2, 1)).toEqual({
       needsAttention: true,
       gettingStale: false,
       lookingGood: false,
     });
   });
 
-  it("expands Getting stale when Needs attention is empty", () => {
-    expect(getAttentionSectionDefaults(0)).toEqual({
+  it("expands Getting stale when Needs attention is empty and stale has items", () => {
+    expect(getAttentionSectionDefaults(0, 1)).toEqual({
       needsAttention: false,
       gettingStale: true,
+      lookingGood: false,
+    });
+  });
+
+  it("keeps Getting stale collapsed when it is empty", () => {
+    expect(getAttentionSectionDefaults(0, 0)).toEqual({
+      needsAttention: false,
+      gettingStale: false,
       lookingGood: false,
     });
   });

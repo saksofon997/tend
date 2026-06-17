@@ -1,4 +1,5 @@
 import { marketingUrl } from "@/lib/canonical-host";
+import { API_VERSION, APP_VERSION } from "@/lib/version";
 import Link from "next/link";
 
 export function SiteFooter() {
@@ -30,6 +31,15 @@ export function SiteFooter() {
           title="Serbian and English locale switching ships in a later alpha phase"
         >
           Language: coming soon
+        </span>
+        <span aria-hidden="true" className="hidden text-border sm:inline">
+          ·
+        </span>
+        <span
+          className="text-xs text-muted-foreground/70"
+          aria-label={`App version ${APP_VERSION}, API version ${API_VERSION}`}
+        >
+          App {APP_VERSION} · API {API_VERSION}
         </span>
       </div>
     </footer>

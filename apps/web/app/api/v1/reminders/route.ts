@@ -6,6 +6,8 @@ import { serializeReminderResult, toTendItemInput } from "@/lib/reminders/serial
 import { listAvailabilityWindowsForUser, listItemsForUser } from "@tend/db";
 import { eligibleReminders } from "@tend/domain";
 
+export const runtime = "nodejs";
+
 export async function GET(request: Request) {
   const userOrError = await requireUser(request);
   if (isErrorResponse(userOrError)) {

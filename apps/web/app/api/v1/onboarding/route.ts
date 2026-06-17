@@ -4,6 +4,8 @@ import { getDb } from "@/lib/db";
 import { completeOnboardingSchema, formatZodError } from "@/lib/onboarding/validation";
 import { completeOnboarding, getUserSettings, isOnboardingComplete } from "@tend/db";
 
+export const runtime = "nodejs";
+
 export async function GET(request: Request) {
   const userOrError = await requireUser(request);
   if (isErrorResponse(userOrError)) {

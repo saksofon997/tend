@@ -6,6 +6,8 @@ import { applySessionCookie } from "@/lib/auth/session";
 import { findUserByEmailAddress } from "@/lib/auth/users";
 import { formatZodError, loginSchema } from "@/lib/auth/validation";
 
+export const runtime = "nodejs";
+
 export async function POST(request: Request) {
   try {
     let body: unknown;

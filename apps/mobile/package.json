@@ -1,0 +1,45 @@
+{
+  "name": "@tend/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "dev": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "build:android:apk": "npx eas-cli build --platform android --profile preview",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test tests",
+    "verify:deps": "node ./scripts/verify-deps.mjs",
+    "verify": "bun run verify:deps && bun run typecheck && bun test tests",
+    "predev": "bun run verify:deps"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.20.0",
+    "@react-native-async-storage/async-storage": "~2.2.0",
+    "@react-native-community/datetimepicker": "8.4.4",
+    "@tend/domain": "workspace:*",
+    "expo": "~54.0.0",
+    "expo-asset": "~12.0.13",
+    "expo-constants": "~18.0.13",
+    "expo-device": "~8.0.10",
+    "expo-file-system": "~19.0.23",
+    "expo-font": "~14.0.12",
+    "expo-keep-awake": "~15.0.8",
+    "expo-modules-core": "3.0.30",
+    "expo-notifications": "~0.32.17",
+    "expo-status-bar": "~3.0.9",
+    "lucide-react-native": "^1.18.0",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-svg": "15.12.1"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.10",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "babel-preset-expo": "~54.0.10",
+    "typescript": "~5.9.2"
+  }
+}

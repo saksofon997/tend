@@ -6,6 +6,8 @@ import {
   validateSessionFromId,
 } from "@/lib/auth/session";
 
+export const runtime = "nodejs";
+
 export async function POST(request: Request) {
   const sessionId = getSessionIdFromRequest(request);
   const { session } = await validateSessionFromId(sessionId);

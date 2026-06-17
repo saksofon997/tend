@@ -5,7 +5,14 @@ import { validateSession } from "@/lib/auth/session";
 import { serializeAvailabilityWindow } from "@/lib/availability/serialize";
 import { getDb } from "@/lib/db";
 import { listAvailabilityWindowsForUser } from "@tend/db";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Availability · Tend",
+};
 
 export default async function AvailabilitySettingsPage() {
   const { user } = await validateSession();

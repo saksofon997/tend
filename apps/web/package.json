@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3000",
-    "dev:clean": "rm -rf .next && next dev --port 3000",
+    "dev": "next dev --hostname 0.0.0.0 --port 3000",
+    "dev:clean": "rm -rf .next && next dev --hostname 0.0.0.0 --port 3000",
     "build": "next build",
     "start": "next start --port 3000",
     "test": "bun --env-file=../../.env test tests"
@@ -14,6 +14,7 @@
     "@radix-ui/react-dropdown-menu": "^2.1.18",
     "@radix-ui/react-label": "^2.1.9",
     "@radix-ui/react-slot": "^1.2.5",
+    "@sentry/nextjs": "^10.58.0",
     "@tailwindcss/postcss": "^4.3.1",
     "@tend/db": "workspace:*",
     "@tend/domain": "workspace:*",

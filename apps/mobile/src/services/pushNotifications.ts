@@ -1,3 +1,4 @@
+import type { ReminderResponse, RemindersResponse } from "@/types";
 import { isPushNotificationsSupported } from "@utils/pushNotificationsSupport";
 import { storage } from "@utils/storage";
 import * as Device from "expo-device";
@@ -17,6 +18,13 @@ export type PushRegistrationResult =
       status: "denied" | "simulator" | "unavailable";
       reason: string;
     };
+
+export interface TendNotificationRequest {
+  title: string;
+  body: string;
+  itemId: string;
+  triggerAt: Date | null;
+}
 
 type NotificationsModule = typeof import("expo-notifications");
 
@@ -130,4 +138,81 @@ export async function registerForPushNotifications(): Promise<PushRegistrationRe
 
 export function getStoredPushToken() {
   return storage.getString(PUSH_TOKEN_STORAGE_KEY);
+}
+
+const NOTIFICATION_BODY_VARIANTS = [
+  "Why not tend to something?",
+  "When you have a moment, this could use tending.",
+  "A quiet moment might be enough to tend this.",
+  "Take a look when you have a little space.",
+] as const;
+
+function stableDayIndex(now: Date, seed: string, variantCount: number): number {
+  const dayNumber = Math.floor(now.getTime() / 86_400_000);
+  const seedTotal = Array.from(seed).reduce(
+    (total, character) => total + character.charCodeAt(0),
+    0,
+  );
+  return (dayNumber + seedTotal) % variantCount;
+}
+
+function reminderBody(reminder: ReminderResponse, now: Date): string {
+  const index = stableDayIndex(now, reminder.itemId, NOTIFICATION_BODY_VARIANTS.length);
+  return NOTIFICATION_BODY_VARIANTS[index];
+}
+
+export function buildTendNotificationRequest(
+  reminders: RemindersResponse,
+  now = new Date(),
+): TendNotificationRequest | null {
+  const immediateReminder = reminders.surfaceNow[0];
+  if (immediateReminder) {
+    return {
+      title: `${immediateReminder.name} could use tending`,
+      body: reminderBody(immediateReminder, now),
+      itemId: immediateReminder.itemId,
+      triggerAt: null,
+    };
+  }
+
+  if (!reminders.nextWindowAt) {
+    return null;
+  }
+
+  const deferredReminder = reminders.reminders.find(
+    (reminder) => reminder.visibility === "next_window",
+  );
+  if (!deferredReminder) {
+    return null;
+  }
+
+  return {
+    title: `${deferredReminder.name} could use tending`,
+    body: reminderBody(deferredReminder, now),
+    itemId: deferredReminder.itemId,
+    triggerAt: new Date(reminders.nextWindowAt),
+  };
+}
+
+export async function scheduleTendNotification(request: TendNotificationRequest): Promise<boolean> {
+  const Notifications = await loadNotificationsModule();
+  if (!Notifications) {
+    return false;
+  }
+
+  await configurePushNotifications();
+  await Notifications.cancelAllScheduledNotificationsAsync();
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: request.title,
+      body: request.body,
+      data: { itemId: request.itemId },
+      sound: false,
+    },
+    trigger: request.triggerAt
+      ? { type: Notifications.SchedulableTriggerInputTypes.DATE, date: request.triggerAt }
+      : null,
+  });
+
+  return true;
 }

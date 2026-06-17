@@ -4,6 +4,7 @@
     "slug": "tend",
     "version": "0.1.0",
     "orientation": "portrait",
+    "icon": "./assets/tend-logo.png",
     "userInterfaceStyle": "light",
     "scheme": "tend",
     "assetBundlePatterns": ["**/*"],
@@ -11,6 +12,7 @@
       "package": "com.saksofon997.tend",
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
+        "foregroundImage": "./assets/tend-logo.png",
         "backgroundColor": "#f7f5f2"
       },
       "edgeToEdgeEnabled": true,

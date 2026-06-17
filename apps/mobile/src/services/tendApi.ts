@@ -3,7 +3,9 @@ import type {
   AvailabilityWindowResponse,
   ItemResponse,
   OnboardingStatusResponse,
+  RemindersResponse,
   UserResponse,
+  UserSettingsResponse,
 } from "@/types";
 import { ApiError } from "@api/apiError";
 import type { AvailabilityWindow } from "@tend/domain";
@@ -152,6 +154,21 @@ export class TendApi {
       method: "PUT",
       body: { windows },
     });
+  }
+
+  async getSettings() {
+    return this.request<{ settings: UserSettingsResponse }>("/api/v1/settings");
+  }
+
+  async saveSettings(body: { timezone: string }) {
+    return this.request<{ settings: UserSettingsResponse }>("/api/v1/settings", {
+      method: "PUT",
+      body,
+    });
+  }
+
+  async listReminders() {
+    return this.request<RemindersResponse>("/api/v1/reminders");
   }
 
   private async request<T>(

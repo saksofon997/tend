@@ -96,6 +96,10 @@ const AUTH_PROMO_SLIDES = [
   },
 ] as const;
 
+function deviceTimeZone() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone ?? "UTC";
+}
+
 type AuthMode = "splash" | "signIn" | "register";
 
 export default function App() {
@@ -1593,11 +1597,57 @@ function SettingsScreen({
 }) {
   const [apiBaseUrl, setApiBaseUrl] = useState(api.baseUrl);
   const [saved, setSaved] = useState(false);
-  const { pushToken, register, registering, statusMessage } = usePushNotifications();
+  const [timezone, setTimezone] = useState(deviceTimeZone());
+  const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
+  const [settingsError, setSettingsError] = useState<string | null>(null);
+  const [timezoneSaving, setTimezoneSaving] = useState(false);
+  const { pushToken, register, registering, scheduleReminder, statusMessage } =
+    usePushNotifications(api);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadSettings() {
+      try {
+        const response = await api.getSettings();
+        if (mounted) {
+          setTimezone(response.settings.timezone);
+        }
+      } catch {
+        if (mounted) {
+          setSettingsError(t("errors.settings.load"));
+        }
+      }
+    }
+
+    loadSettings();
+    return () => {
+      mounted = false;
+    };
+  }, [api]);
 
   async function saveSettings() {
     await api.setBaseUrl(apiBaseUrl.trim());
     setSaved(true);
+  }
+
+  async function saveTimezone() {
+    setTimezoneSaving(true);
+    setSettingsMessage(null);
+    setSettingsError(null);
+
+    try {
+      const response = await api.saveSettings({ timezone: timezone.trim() });
+      setTimezone(response.settings.timezone);
+      if (pushToken) {
+        await scheduleReminder().catch(() => null);
+      }
+      setSettingsMessage(t("settings.timezone.saved"));
+    } catch (saveError) {
+      setSettingsError(getErrorMessage(saveError, t("errors.settings.save")));
+    } finally {
+      setTimezoneSaving(false);
+    }
   }
 
   async function signOut() {
@@ -1617,6 +1667,35 @@ function SettingsScreen({
       <View style={styles.settingsCard}>
         <Text style={styles.cardTitle}>{user.displayName}</Text>
         <Text style={styles.metaText}>{user.email}</Text>
+      </View>
+
+      <View style={styles.settingsCard}>
+        <Text style={styles.cardTitle}>{t("settings.timezone.title")}</Text>
+        <Text style={styles.metaText}>{t("settings.timezone.subtitle")}</Text>
+        <TextInput
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={timezone}
+          onChangeText={(value) => {
+            setTimezone(value);
+            setSettingsMessage(null);
+            setSettingsError(null);
+          }}
+          style={styles.input}
+          placeholder={t("settings.timezone.placeholder")}
+          placeholderTextColor={colors.textSubtle}
+        />
+        {settingsMessage ? <AlertBox message={settingsMessage} tone="info" /> : null}
+        {settingsError ? <AlertBox message={settingsError} tone="error" /> : null}
+        <TouchableOpacity
+          style={[styles.secondaryButton, timezoneSaving ? styles.buttonDisabled : null]}
+          disabled={timezoneSaving}
+          onPress={saveTimezone}
+        >
+          <Text style={styles.secondaryButtonText}>
+            {timezoneSaving ? t("settings.timezone.saving") : t("settings.timezone.save")}
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.settingsCard}>

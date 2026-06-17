@@ -6,6 +6,11 @@ export interface UserResponse {
   email: string;
 }
 
+export interface UserSettingsResponse {
+  timezone: string;
+  onboardingCompletedAt: string | null;
+}
+
 export interface ItemResponse {
   id: string;
   name: string;
@@ -41,4 +46,22 @@ export interface AvailabilityWindowResponse {
 export interface OnboardingStatusResponse {
   completed: boolean;
   onboardingCompletedAt: string | null;
+}
+
+export interface ReminderResponse {
+  itemId: string;
+  name: string;
+  type: TendItemType;
+  status: Exclude<TendStatus, "fresh">;
+  daysSinceLastTended: number | null;
+  emphasis: "strong" | "normal";
+  visibility: "now" | "next_window";
+  copy: string;
+}
+
+export interface RemindersResponse {
+  reminders: ReminderResponse[];
+  surfaceNow: ReminderResponse[];
+  nextWindowAt: string | null;
+  inAvailabilityWindow: boolean;
 }

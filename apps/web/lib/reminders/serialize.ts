@@ -52,14 +52,17 @@ export function serializeReminder(reminder: EligibleReminder): ReminderResponse 
   };
 }
 
-export function serializeReminderResult(result: ReminderResult): RemindersApiResponse {
+export function serializeReminderResult(
+  result: ReminderResult,
+  toInstant: (date: Date) => Date = (date) => date,
+): RemindersApiResponse {
   const reminders = result.reminders.map((reminder) => serializeReminder(reminder));
   const surfaceNow = reminders.filter((reminder) => reminder.visibility === "now");
 
   return {
     reminders,
     surfaceNow,
-    nextWindowAt: result.nextWindowAt?.toISOString() ?? null,
+    nextWindowAt: result.nextWindowAt ? toInstant(result.nextWindowAt).toISOString() : null,
     inAvailabilityWindow: result.inAvailabilityWindow,
   };
 }

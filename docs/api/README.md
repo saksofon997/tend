@@ -21,12 +21,14 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 | Activity | [activity.md](./activity.md) | Correct or remove tended events |
 | Availability | [availability.md](./availability.md) | Weekly free-time windows |
 | Reminders | [reminders.md](./reminders.md) | In-app reminder eligibility |
+| Settings | [settings.md](./settings.md) | User preferences such as timezone |
 | Onboarding | [onboarding.md](./onboarding.md) | First-run setup status |
 
 ## Changelog
 
 | Date | Change |
 |------|--------|
+| 2026-06-17 | Added user settings endpoint for timezone-aware reminders |
 | 2026-06-17 | Health responses include API `version`; footer shows app and API versions |
 | 2026-06-15 | Added availability and reminders endpoints |
 | 2026-06-15 | Added `GET /api/v1/activity` |

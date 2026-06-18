@@ -8,7 +8,17 @@ import {
   getUserSettings,
   isOnboardingComplete,
 } from "@tend/db";
+import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: ItemDetailPageProps): Promise<Metadata> {
+  const { id } = await params;
+  return {
+    title: "Item · Tend",
+  };
+}
 
 interface ItemDetailPageProps {
   params: Promise<{ id: string }>;

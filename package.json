@@ -24,6 +24,10 @@
   },
   "packageManager": "bun@1.2.0",
   "overrides": {
-    "drizzle-orm": "0.45.2"
+    "drizzle-orm": "0.45.2",
+    "@types/react": "19.1.17",
+    "@types/react-dom": "19.1.5",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
   }
 }

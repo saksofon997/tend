@@ -3,7 +3,14 @@ import { serializeActivityEntry } from "@/lib/activity/serialize";
 import { validateSession } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { listRecentEventsForUser } from "@tend/db";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Activity · Tend",
+};
 
 export default async function ActivityPage() {
   const { user } = await validateSession();

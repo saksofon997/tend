@@ -9,6 +9,8 @@ type RouteContext = {
   params: Promise<{ eventId: string }>;
 };
 
+export const runtime = "nodejs";
+
 export async function PATCH(request: Request, context: RouteContext) {
   const userOrError = await requireUser(request);
   if (isErrorResponse(userOrError)) {

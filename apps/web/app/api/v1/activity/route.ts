@@ -5,6 +5,8 @@ import { isErrorResponse, requireUser } from "@/lib/auth/require-user";
 import { getDb } from "@/lib/db";
 import { listRecentEventsForUser } from "@tend/db";
 
+export const runtime = "nodejs";
+
 export async function GET(request: Request) {
   const userOrError = await requireUser(request);
   if (isErrorResponse(userOrError)) {

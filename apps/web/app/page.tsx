@@ -4,7 +4,14 @@ import { validateSession } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { serializeItem } from "@/lib/items/serialize";
 import { getUserSettings, isOnboardingComplete, listItemsForUser } from "@tend/db";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Home · Tend",
+};
 
 export default async function HomePage() {
   const { user } = await validateSession();

@@ -5,6 +5,8 @@ import { serializeItem, statusForItem } from "@/lib/items/serialize";
 import { createItemSchema, formatZodError, listItemsQuerySchema } from "@/lib/items/validation";
 import { createItemForUser, listItemsForUser } from "@tend/db";
 
+export const runtime = "nodejs";
+
 export async function GET(request: Request) {
   const userOrError = await requireUser(request);
   if (isErrorResponse(userOrError)) {

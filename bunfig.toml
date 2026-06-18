@@ -1,4 +1,7 @@
 # Root `bun test` only runs packages/* tests. @tend/web tests use @/ path aliases
 # and must run via `bun run test` (turbo) or `cd apps/web && bun test`.
+[install]
+linker = "hoisted"
+
 [test]
 root = "./packages"

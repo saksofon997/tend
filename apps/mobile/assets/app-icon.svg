@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" role="img" aria-label="Tend">
+  <defs>
+    <style>
+      @font-face {
+        font-family: "Newsreader";
+        src: url("./fonts/Newsreader_600SemiBold.ttf") format("truetype");
+        font-weight: 600;
+      }
+      .letter {
+        font-family: "Newsreader", Georgia, "Times New Roman", serif;
+        font-size: 690px;
+        font-weight: 600;
+      }
+    </style>
+  </defs>
+  <rect width="1024" height="1024" fill="#ffffff"/>
+  <text class="letter" x="512" y="760" fill="#5c7352" text-anchor="middle">T</text>
+  <g transform="translate(664 620) rotate(-14) scale(2.05)">
+    <path
+      d="M84 26C48 29 30 46 30 84c35-1 55-21 54-58Z"
+      fill="#e8efe5"
+      stroke="#5c7352"
+      stroke-width="2.5"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M36 78c16-20 30-31 43-42"
+      stroke="#5c7352"
+      stroke-width="2.5"
+      stroke-linecap="round"
+    />
+  </g>
+</svg>

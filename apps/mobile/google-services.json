@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "6441163208",
+    "project_id": "tend-eb22b",
+    "storage_bucket": "tend-eb22b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6441163208:android:53cc75d8c2416a378248fd",
+        "android_client_info": {
+          "package_name": "com.saksofon997.tend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYdazXcg2nY6yj1_GLO6C2jEqIWyoslYM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

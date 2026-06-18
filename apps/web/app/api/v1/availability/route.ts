@@ -5,6 +5,8 @@ import { formatZodError, replaceAvailabilitySchema } from "@/lib/availability/va
 import { getDb } from "@/lib/db";
 import { listAvailabilityWindowsForUser, replaceAvailabilityWindowsForUser } from "@tend/db";
 
+export const runtime = "nodejs";
+
 export async function GET(request: Request) {
   const userOrError = await requireUser(request);
   if (isErrorResponse(userOrError)) {

@@ -1,6 +1,8 @@
 import { jsonData, jsonError } from "@/lib/api";
 import { validateSession } from "@/lib/auth/session";
 
+export const runtime = "nodejs";
+
 export async function GET() {
   const { user } = await validateSession();
 

@@ -1,16 +1,9 @@
 import { describe, expect, it, mock } from "bun:test";
+import "../helpers/nativeModuleMocks";
 import type { RemindersResponse } from "@/types";
 
 mock.module("expo-device", () => ({
   default: { isDevice: true },
-}));
-
-mock.module("react-native", () => ({
-  Platform: { OS: "ios" },
-}));
-
-mock.module("@utils/pushNotificationsSupport", () => ({
-  isPushNotificationsSupported: () => true,
 }));
 
 mock.module("@utils/storage", () => ({

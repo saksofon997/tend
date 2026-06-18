@@ -10,6 +10,7 @@ import type {
 import { ApiError } from "@api/apiError";
 import type { AvailabilityWindow } from "@tend/domain";
 import { resolveStoredApiBaseUrl } from "@utils/apiBaseUrl";
+import { isDevMode } from "@utils/devMode";
 import { toNetworkApiError } from "@utils/networkError";
 import { storage } from "@utils/storage";
 import Constants from "expo-constants";
@@ -19,6 +20,7 @@ declare const process: { env: { EXPO_PUBLIC_TEND_API_URL?: string } };
 
 const API_BASE_STORAGE_KEY = "tend.apiBaseUrl";
 const SESSION_COOKIE_STORAGE_KEY = "tend.sessionCookie";
+export const PRODUCTION_API_BASE_URL = "https://app.tend.qzz.io";
 
 function resolveDevApiBaseUrl() {
   if (Platform.OS === "android" && !Constants.isDevice) {
@@ -42,8 +44,18 @@ function resolveDevApiBaseUrl() {
   return "http://localhost:3000";
 }
 
-export const defaultApiBaseUrl =
-  process.env.EXPO_PUBLIC_TEND_API_URL?.replace(/\/$/, "") ?? resolveDevApiBaseUrl();
+function resolveConfiguredApiBaseUrl() {
+  return process.env.EXPO_PUBLIC_TEND_API_URL?.replace(/\/$/, "") ?? null;
+}
+
+export function resolveDefaultApiBaseUrl() {
+  return (
+    resolveConfiguredApiBaseUrl() ??
+    (isDevMode() ? resolveDevApiBaseUrl() : PRODUCTION_API_BASE_URL)
+  );
+}
+
+export const defaultApiBaseUrl = resolveDefaultApiBaseUrl();
 
 type JsonRecord = Record<string, unknown>;
 

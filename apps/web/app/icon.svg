@@ -1,17 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="Tend">
-  <rect width="32" height="32" rx="8" fill="#5c7352"/>
-  <path
-    d="M16 23V13.5"
-    stroke="#f7f5f2"
-    stroke-width="2"
-    stroke-linecap="round"
-  />
-  <path
-    d="M16 13.5C16 13.5 10.5 12.5 10 8.5C11.5 12 16 13.5 16 13.5Z"
-    fill="#f7f5f2"
-  />
-  <path
-    d="M16 13.5C16 13.5 21.5 11.5 22 7.5C20.5 11 16 13.5 16 13.5Z"
-    fill="#e8efe5"
-  />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="none" role="img" aria-label="Tend">
+  <rect width="1024" height="1024" fill="#ffffff"/>
+  <text
+    x="512"
+    y="760"
+    fill="#5c7352"
+    font-family="Newsreader, Georgia, Times New Roman, serif"
+    font-size="690"
+    font-weight="600"
+    text-anchor="middle"
+  >
+    T
+  </text>
+  <g transform="translate(664 620) rotate(-14) scale(2.05)">
+    <path
+      d="M84 26C48 29 30 46 30 84c35-1 55-21 54-58Z"
+      fill="#e8efe5"
+      stroke="#5c7352"
+      stroke-width="2.5"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M36 78c16-20 30-31 43-42"
+      stroke="#5c7352"
+      stroke-width="2.5"
+      stroke-linecap="round"
+    />
+  </g>
 </svg>

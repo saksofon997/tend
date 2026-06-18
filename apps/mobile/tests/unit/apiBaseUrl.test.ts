@@ -23,6 +23,15 @@ describe("apiBaseUrl", () => {
     );
   });
 
+  it("refreshes stale dev URLs to the production API in built apps", () => {
+    expect(resolveStoredApiBaseUrl("http://10.0.2.2:3000", "https://app.tend.qzz.io")).toBe(
+      "https://app.tend.qzz.io",
+    );
+    expect(resolveStoredApiBaseUrl("http://localhost:3000", "https://app.tend.qzz.io")).toBe(
+      "https://app.tend.qzz.io",
+    );
+  });
+
   it("keeps custom production API URLs", () => {
     expect(shouldRefreshDevApiBaseUrl("https://api.tend.app", "http://192.168.0.194:3000")).toBe(
       false,

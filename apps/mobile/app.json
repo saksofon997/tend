@@ -4,7 +4,7 @@
     "slug": "tend",
     "version": "0.1.0",
     "orientation": "portrait",
-    "icon": "./assets/tend-logo.png",
+    "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
     "scheme": "tend",
     "assetBundlePatterns": ["**/*"],
@@ -12,8 +12,8 @@
       "package": "com.saksofon997.tend",
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/tend-logo.png",
-        "backgroundColor": "#f7f5f2"
+        "foregroundImage": "./assets/app-icon.png",
+        "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
       "usesCleartextTraffic": true
@@ -31,7 +31,7 @@
       "@react-native-community/datetimepicker"
     ],
     "extra": {
-      "defaultApiBaseUrl": "http://10.0.2.2:3000",
+      "defaultApiBaseUrl": "https://app.tend.qzz.io",
       "eas": {
         "projectId": "d66401db-0760-4e31-a496-7e990d1691ba"
       }

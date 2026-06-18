@@ -51,6 +51,51 @@ describe("eligibleReminders", () => {
     });
   });
 
+  it("surfaces musts outside availability windows for attention banners", () => {
+    const result = eligibleReminders(
+      [
+        item({
+          id: "1",
+          name: "Medication",
+          type: "must",
+          lastTendedAt: new Date("2026-05-01T12:00:00"),
+        }),
+      ],
+      mondayEvening,
+      new Date("2026-06-15T12:00:00"),
+    );
+
+    expect(result.reminders[0]).toMatchObject({
+      item: { name: "Medication" },
+      emphasis: "strong",
+      visibility: "now",
+    });
+    expect(result.nextWindowAt).toEqual(new Date("2026-06-15T18:00:00"));
+    expect(remindersToSurfaceNow(result)[0]?.item.name).toBe("Medication");
+  });
+
+  it("keeps musts ahead of deferred wants outside availability windows", () => {
+    const result = eligibleReminders(
+      [
+        item({ id: "want-1", name: "Bed sheets", type: "want" }),
+        item({
+          id: "must-1",
+          name: "Medication",
+          type: "must",
+          lastTendedAt: new Date("2026-05-01T12:00:00"),
+        }),
+      ],
+      mondayEvening,
+      new Date("2026-06-15T12:00:00"),
+    );
+
+    expect(result.reminders.map((reminder) => reminder.item.name)).toEqual([
+      "Medication",
+      "Bed sheets",
+    ]);
+    expect(result.reminders.map((reminder) => reminder.visibility)).toEqual(["now", "next_window"]);
+  });
+
   it("defers wants outside availability windows", () => {
     const result = eligibleReminders(
       [item({ id: "1", name: "Bed sheets", type: "want" })],

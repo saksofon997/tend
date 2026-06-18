@@ -25,7 +25,7 @@ export const PRODUCTION_API_BASE_URL = "https://app.tend.qzz.io";
 function resolveDevApiBaseUrl() {
   if (Platform.OS === "android" && !Constants.isDevice) {
     // Android emulator alias for the host machine's localhost
-    return "http://10.0.2.2:3000";
+    return "http://192.168.1.64:3000";
   }
 
   if (Platform.OS === "ios" && !Constants.isDevice) {
@@ -140,6 +140,13 @@ export class TendApi {
 
   async createItem(body: JsonRecord) {
     return this.request<{ item: ItemResponse }>("/api/v1/items", { method: "POST", body });
+  }
+
+  async updateItem(itemId: string, body: JsonRecord) {
+    return this.request<{ item: ItemResponse }>(`/api/v1/items/${itemId}`, {
+      method: "PATCH",
+      body,
+    });
   }
 
   async tendItem(itemId: string) {

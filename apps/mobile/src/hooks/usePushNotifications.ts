@@ -2,6 +2,7 @@ import {
   type PushRegistrationResult,
   buildTendNotificationRequest,
   configurePushNotifications,
+  disablePushNotifications,
   getStoredPushToken,
   registerForPushNotifications,
   scheduleTendNotification,
@@ -55,7 +56,23 @@ export function usePushNotifications(api: TendApi) {
     }
   }, [scheduleReminder]);
 
+  const disable = useCallback(async () => {
+    setRegistering(true);
+    setStatusMessage(null);
+
+    try {
+      await disablePushNotifications();
+      setPushToken(null);
+      setStatusMessage(t("settings.notifications.disabled"));
+    } catch {
+      setStatusMessage(t("errors.notifications.disable"));
+    } finally {
+      setRegistering(false);
+    }
+  }, []);
+
   return {
+    disable,
     pushToken,
     register,
     registering,

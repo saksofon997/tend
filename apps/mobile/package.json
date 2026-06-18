@@ -11,8 +11,10 @@
     "build:android:apk": "npx eas-cli build --platform android --profile preview",
     "typecheck": "tsc --noEmit",
     "test": "bun test tests",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
     "verify:deps": "node ./scripts/verify-deps.mjs",
-    "verify": "bun run verify:deps && bun run typecheck && bun test tests",
+    "verify": "bun run verify:deps && bun run lint && bun run typecheck && bun test tests",
     "predev": "bun run verify:deps"
   },
   "dependencies": {

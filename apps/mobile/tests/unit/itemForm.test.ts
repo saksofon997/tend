@@ -1,5 +1,6 @@
 import { describe, expect, it } from "bun:test";
-import { todayDateInputValue } from "../../src/constants";
+import { ITEM_NAME_MAX_LENGTH, todayDateInputValue } from "../../src/constants";
+import { t } from "../../src/i18n";
 import { validateItemForm } from "../../src/utils/itemFormValidation";
 
 describe("validateItemForm", () => {
@@ -32,7 +33,24 @@ describe("validateItemForm", () => {
         },
         todayDate,
       ),
-    ).toEqual({ name: "Name is required" });
+    ).toEqual({ name: t("errors.item.nameRequired") });
+  });
+
+  it("rejects names over the max length", () => {
+    expect(
+      validateItemForm(
+        {
+          name: "x".repeat(ITEM_NAME_MAX_LENGTH + 1),
+          type: "want",
+          rhythmDays: 7,
+          lifeArea: null,
+          lastTendedDate: todayDate,
+        },
+        todayDate,
+      ),
+    ).toEqual({
+      name: t("errors.item.nameTooLong", { max: ITEM_NAME_MAX_LENGTH }),
+    });
   });
 
   it("rejects future last tended dates", () => {
@@ -47,7 +65,7 @@ describe("validateItemForm", () => {
         },
         todayDate,
       ),
-    ).toEqual({ lastTendedDate: "Last tended cannot be in the future" });
+    ).toEqual({ lastTendedDate: t("errors.item.lastTendedFuture") });
   });
 
   it("rejects invalid rhythm days", () => {
@@ -62,6 +80,6 @@ describe("validateItemForm", () => {
         },
         todayDate,
       ),
-    ).toEqual({ rhythmDays: "Rhythm must be at least 1 day" });
+    ).toEqual({ rhythmDays: t("errors.item.rhythmMin") });
   });
 });

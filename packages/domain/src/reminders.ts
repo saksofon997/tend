@@ -70,7 +70,6 @@ export function eligibleReminders(
         return left.emphasis === "strong" ? -1 : 1;
       }
 
-      const statusDiff = left.status === "needs_attention" ? -1 : 1;
       if (left.status !== right.status) {
         return left.status === "needs_attention" ? -1 : 1;
       }

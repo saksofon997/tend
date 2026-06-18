@@ -9,6 +9,7 @@ interface DatePickerFieldProps {
   value: string;
   onChange: (value: string) => void;
   maxDate?: string;
+  invalid?: boolean;
 }
 
 function parseDateInput(value: string) {
@@ -31,7 +32,12 @@ function formatDisplayDate(value: string) {
   }).format(parseDateInput(value));
 }
 
-export function DatePickerField({ value, onChange, maxDate }: DatePickerFieldProps) {
+export function DatePickerField({
+  value,
+  onChange,
+  maxDate,
+  invalid = false,
+}: DatePickerFieldProps) {
   const [showPicker, setShowPicker] = useState(false);
   const maximumDate = useMemo(
     () => (maxDate ? parseDateInput(maxDate) : parseDateInput(todayDateInputValue())),
@@ -56,7 +62,7 @@ export function DatePickerField({ value, onChange, maxDate }: DatePickerFieldPro
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Select last tended date"
-        style={styles.trigger}
+        style={[styles.trigger, invalid ? styles.triggerInvalid : null]}
         onPress={() => setShowPicker((open) => !open)}
       >
         <Calendar size={18} color={colors.textMuted} />
@@ -92,5 +98,8 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontFamily: fonts.body,
     fontSize: 16,
+  },
+  triggerInvalid: {
+    borderColor: colors.error,
   },
 });

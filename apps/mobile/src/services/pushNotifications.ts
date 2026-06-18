@@ -140,8 +140,20 @@ export function getStoredPushToken() {
   return storage.getString(PUSH_TOKEN_STORAGE_KEY);
 }
 
+export async function disablePushNotifications(): Promise<boolean> {
+  await storage.remove(PUSH_TOKEN_STORAGE_KEY);
+
+  const Notifications = await loadNotificationsModule();
+  if (!Notifications) {
+    return false;
+  }
+
+  await Notifications.cancelAllScheduledNotificationsAsync();
+  return true;
+}
+
 const NOTIFICATION_BODY_VARIANTS = [
-  "Why not tend to something?",
+  "When you have a moment, these could use tending.",
   "When you have a moment, this could use tending.",
   "A quiet moment might be enough to tend this.",
   "Take a look when you have a little space.",
@@ -161,11 +173,41 @@ function reminderBody(reminder: ReminderResponse, now: Date): string {
   return NOTIFICATION_BODY_VARIANTS[index];
 }
 
+function pickPriorityReminder(reminders: ReminderResponse[]): ReminderResponse | undefined {
+  return [...reminders].sort((left, right) => {
+    if (left.type !== right.type) {
+      return left.type === "must" ? -1 : 1;
+    }
+
+    if (left.status !== right.status) {
+      return left.status === "needs_attention" ? -1 : 1;
+    }
+
+    const leftDays = left.daysSinceLastTended ?? Number.MAX_SAFE_INTEGER;
+    const rightDays = right.daysSinceLastTended ?? Number.MAX_SAFE_INTEGER;
+    return rightDays - leftDays;
+  })[0];
+}
+
 export function buildTendNotificationRequest(
   reminders: RemindersResponse,
   now = new Date(),
 ): TendNotificationRequest | null {
-  const immediateReminder = reminders.surfaceNow[0];
+  if (!reminders.inAvailabilityWindow && reminders.nextWindowAt) {
+    const deferredReminder = pickPriorityReminder(reminders.reminders);
+    if (!deferredReminder) {
+      return null;
+    }
+
+    return {
+      title: `${deferredReminder.name} could use tending`,
+      body: reminderBody(deferredReminder, now),
+      itemId: deferredReminder.itemId,
+      triggerAt: new Date(reminders.nextWindowAt),
+    };
+  }
+
+  const immediateReminder = pickPriorityReminder(reminders.surfaceNow);
   if (immediateReminder) {
     return {
       title: `${immediateReminder.name} could use tending`,
@@ -179,9 +221,7 @@ export function buildTendNotificationRequest(
     return null;
   }
 
-  const deferredReminder = reminders.reminders.find(
-    (reminder) => reminder.visibility === "next_window",
-  );
+  const deferredReminder = pickPriorityReminder(reminders.reminders);
   if (!deferredReminder) {
     return null;
   }

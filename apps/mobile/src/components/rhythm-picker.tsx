@@ -15,9 +15,15 @@ interface RhythmPickerProps {
   value: number;
   onChange: (days: number) => void;
   options?: readonly RhythmOption[];
+  invalid?: boolean;
 }
 
-export function RhythmPicker({ value, onChange, options = RHYTHM_OPTIONS }: RhythmPickerProps) {
+export function RhythmPicker({
+  value,
+  onChange,
+  options = RHYTHM_OPTIONS,
+  invalid = false,
+}: RhythmPickerProps) {
   const [isCustomMode, setIsCustomMode] = useState(() => !isPresetRhythm(value, options));
   const [customDaysInput, setCustomDaysInput] = useState(() => String(value));
   const previousValueRef = useRef(value);
@@ -94,7 +100,7 @@ export function RhythmPicker({ value, onChange, options = RHYTHM_OPTIONS }: Rhyt
             value={customDaysInput}
             onChangeText={handleCustomDaysChange}
             keyboardType="number-pad"
-            style={styles.input}
+            style={[styles.input, invalid ? styles.inputInvalid : null]}
             placeholder={t("items.add.rhythm.daysPlaceholder")}
             placeholderTextColor={colors.textSubtle}
             accessibilityLabel="Custom rhythm in days"
@@ -153,6 +159,9 @@ const styles = StyleSheet.create({
     minHeight: 48,
     paddingHorizontal: spacing.md,
     width: 120,
+  },
+  inputInvalid: {
+    borderColor: colors.error,
   },
   helper: {
     color: colors.textMuted,

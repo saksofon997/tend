@@ -55,4 +55,5 @@ Replace all availability windows for the user. Sending an empty `windows` array 
 **Notes**
 
 - Days without windows are treated as unavailable.
-- Wants defer to availability windows; musts surface whenever they need attention.
+- Wants defer to availability windows; musts still surface for attention banners.
+- Scheduled notifications defer to availability windows; musts still sort ahead of wants for notification titles.

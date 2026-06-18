@@ -151,13 +151,14 @@ describe("reminders integration", () => {
     }
 
     const { email, userId, sessionId } = await registerTestUser();
+    const futureDayOfWeek = (new Date().getUTCDay() + 3) % 7;
 
     try {
       await putAvailability(
         authedRequest("http://localhost/api/v1/availability", sessionId, {
           method: "PUT",
           body: JSON.stringify({
-            windows: [{ dayOfWeek: 1, startTime: "18:00", endTime: "22:00" }],
+            windows: [{ dayOfWeek: futureDayOfWeek, startTime: "18:00", endTime: "22:00" }],
           }),
         }),
       );
@@ -201,9 +202,9 @@ describe("reminders integration", () => {
         surfaceNow: Array<{ name: string }>;
       };
 
-      expect(body.reminders.some((reminder) => reminder.name === "Medication")).toBe(true);
-      expect(body.reminders.some((reminder) => reminder.name === "Bed sheets")).toBe(true);
-      expect(body.surfaceNow.some((reminder) => reminder.name === "Medication")).toBe(true);
+      expect(body.reminders.map((reminder) => reminder.name)).toEqual(["Medication", "Bed sheets"]);
+      expect(body.reminders.map((reminder) => reminder.visibility)).toEqual(["now", "next_window"]);
+      expect(body.surfaceNow.map((reminder) => reminder.name)).toEqual(["Medication"]);
     } finally {
       await deleteAvailabilityWindowsForUser(getDb(), userId);
       await deleteItemsForUser(getDb(), userId);

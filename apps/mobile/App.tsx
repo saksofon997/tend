@@ -1,5 +1,4 @@
 import {
-  ITEM_NAME_MAX_LENGTH,
   LIFE_AREA_LABELS,
   LIFE_AREA_ORDER,
   WEEKDAYS,
@@ -8,15 +7,15 @@ import {
 } from "@/constants";
 import { tendFonts } from "@/fonts";
 import { colors, fonts, radius, spacing } from "@/theme";
-import type { ItemResponse, UserResponse } from "@/types";
+import type { ItemResponse, ReminderResponse, UserResponse } from "@/types";
 import { getAttentionSectionDefaults } from "@/utils/homeGroups";
 import { formatRelativeFromDays } from "@/utils/relativeTime";
 import { type TabKey, getTabSwitchDirection } from "@/utils/tabTransition";
 import { TendApi } from "@api/tendApi";
-import { DatePickerField } from "@components/date-picker-field";
+import { ItemForm } from "@components/item-form";
+import { Chip } from "@components/life-area-picker";
 import { PresetSuggestions } from "@components/preset-suggestions";
-import { RhythmPicker } from "@components/rhythm-picker";
-import { TypeSelector } from "@components/type-selector";
+import { PrimaryButton } from "@components/primary-button";
 import { useActivityEvents } from "@hooks/useActivityEvents";
 import { useAvailabilityWindows } from "@hooks/useAvailabilityWindows";
 import { useHomeItems } from "@hooks/useHomeItems";
@@ -25,7 +24,7 @@ import { lifeAreaFilterToggleLabel, t } from "@i18n";
 import { PRESETS_BY_AREA } from "@tend/domain";
 import type { LifeArea, TendItemType, TendPreset, TendStatus } from "@tend/domain";
 import { isDevMode } from "@utils/devMode";
-import { validateItemForm } from "@utils/itemFormValidation";
+import { itemFormValuesFromItem } from "@utils/itemFormValues";
 import { getErrorMessage } from "@utils/networkError";
 import { restoreSession } from "@utils/sessionRestore";
 import { useFonts } from "expo-font";
@@ -42,12 +41,13 @@ import {
   SlidersHorizontal,
   Trash2,
 } from "lucide-react-native";
-import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
   Animated,
   Image,
+  Modal,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -96,8 +96,95 @@ const AUTH_PROMO_SLIDES = [
   },
 ] as const;
 
+const REMINDER_POLL_MS = 60_000;
+const REMINDER_BANNER_MAX_ITEMS = 3;
+const TIMEZONE_OPTIONS = [
+  "UTC",
+  "Europe/Belgrade",
+  "Europe/London",
+  "Europe/Paris",
+  "Europe/Berlin",
+  "Europe/Madrid",
+  "Europe/Rome",
+  "Europe/Amsterdam",
+  "America/New_York",
+  "America/Chicago",
+  "America/Denver",
+  "America/Los_Angeles",
+  "America/Toronto",
+  "America/Mexico_City",
+  "America/Sao_Paulo",
+  "Asia/Dubai",
+  "Asia/Kolkata",
+  "Asia/Singapore",
+  "Asia/Tokyo",
+  "Australia/Sydney",
+] as const;
+
 function deviceTimeZone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone ?? "UTC";
+}
+
+function reminderItemIdsKey(reminders: Array<{ itemId: string }>) {
+  return reminders
+    .map((reminder) => reminder.itemId)
+    .sort()
+    .join("\0");
+}
+
+function pickReminderBannerItems(reminders: ReminderResponse[]) {
+  if (reminders.length <= REMINDER_BANNER_MAX_ITEMS) {
+    return reminders;
+  }
+
+  const picked = [...reminders];
+  for (let i = 0; i < REMINDER_BANNER_MAX_ITEMS; i++) {
+    const j = i + Math.floor(Math.random() * (picked.length - i));
+    [picked[i], picked[j]] = [picked[j], picked[i]];
+  }
+
+  return picked.slice(0, REMINDER_BANNER_MAX_ITEMS);
+}
+
+function freeTimePhrase(now: Date) {
+  const hour = now.getHours();
+  if (hour < 12) {
+    return "this morning";
+  }
+
+  if (hour < 17) {
+    return "this afternoon";
+  }
+
+  return "this evening";
+}
+
+type FreeTimeHeadlineBuilder = (timePhrase: string, plural: boolean) => string;
+
+const FREE_TIME_HEADLINE_VARIANTS: FreeTimeHeadlineBuilder[] = [
+  (_timePhrase, plural) =>
+    plural
+      ? "If you're up for it, why not tend to these:"
+      : "If you're up for it, why not tend to this:",
+  (timePhrase) => `A quiet moment ${timePhrase}. Take a look at what needs attention:`,
+  (_timePhrase, plural) =>
+    plural
+      ? "When you have a moment, these could use tending:"
+      : "When you have a moment, this could use tending:",
+  (timePhrase, plural) =>
+    plural
+      ? `If you have a spare moment ${timePhrase}, these could use a look:`
+      : `If you have a spare moment ${timePhrase}, this could use a look:`,
+];
+
+function pickFreeTimeHeadlineVariantIndex(now: Date, variantCount: number) {
+  const dayNumber = Math.floor(now.getTime() / 86_400_000);
+  return ((dayNumber % variantCount) + variantCount) % variantCount;
+}
+
+function reminderBannerHeadline(reminderCount: number, now = new Date()) {
+  const variantIndex = pickFreeTimeHeadlineVariantIndex(now, FREE_TIME_HEADLINE_VARIANTS.length);
+  return FREE_TIME_HEADLINE_VARIANTS[variantIndex](freeTimePhrase(now), reminderCount > 1);
 }
 
 type AuthMode = "splash" | "signIn" | "register";
@@ -859,18 +946,6 @@ function OnboardingFlow({ api, onComplete }: { api: TendApi; onComplete: () => v
   }
 
   async function saveFirstItem(values: ItemDraft) {
-    const validationErrors = validateItemForm(values, todayDate);
-
-    if (validationErrors) {
-      setError(
-        validationErrors.name ??
-          validationErrors.rhythmDays ??
-          validationErrors.lastTendedDate ??
-          t("errors.item.create"),
-      );
-      return;
-    }
-
     setSubmitting(true);
     setError(null);
 
@@ -1030,12 +1105,14 @@ function OnboardingFlow({ api, onComplete }: { api: TendApi; onComplete: () => v
         </TouchableOpacity>
       }
     >
-      <FirstItemForm
-        draft={draft}
-        error={error}
-        submitting={submitting}
-        onChange={setDraft}
+      <ItemForm
+        values={draft}
+        onChange={(patch) => setDraft((current) => ({ ...current, ...patch }))}
         onSubmit={saveFirstItem}
+        submitLabel={t("onboarding.form.save")}
+        submittingLabel={t("onboarding.form.saving")}
+        submitting={submitting}
+        formError={error}
       />
     </OnboardingShell>
   );
@@ -1161,75 +1238,10 @@ function PromoPager({
   );
 }
 
-function FirstItemForm({
-  draft,
-  error,
-  onChange,
-  onSubmit,
-  submitting,
-}: {
-  draft: ItemDraft;
-  error: string | null;
-  onChange: (draft: ItemDraft) => void;
-  onSubmit: (draft: ItemDraft) => void;
-  submitting: boolean;
-}) {
-  const todayDate = useMemo(() => todayDateInputValue(), []);
-
-  function updateDraft(nextDraft: Partial<ItemDraft>) {
-    onChange({ ...draft, ...nextDraft });
-  }
-
-  return (
-    <View>
-      <Field label={t("items.add.name.label")} required>
-        <TextInput
-          maxLength={ITEM_NAME_MAX_LENGTH}
-          value={draft.name}
-          onChangeText={(name) => updateDraft({ name })}
-          style={styles.input}
-        />
-      </Field>
-
-      <Field label={t("items.add.type.label")}>
-        <TypeSelector value={draft.type} onChange={(type) => updateDraft({ type })} />
-      </Field>
-
-      <Field label={t("items.add.rhythm.label")}>
-        <RhythmPicker
-          value={draft.rhythmDays}
-          onChange={(rhythmDays) => updateDraft({ rhythmDays })}
-        />
-      </Field>
-
-      <Field label={t("items.add.lifeArea.label")}>
-        <Text style={styles.fieldHelper}>{t("items.add.lifeArea.helper")}</Text>
-        <LifeAreaPicker
-          selected={draft.lifeArea}
-          onChange={(lifeArea) => updateDraft({ lifeArea })}
-          includeNone
-        />
-      </Field>
-
-      <Field label={t("items.add.lastTended.label")}>
-        <DatePickerField
-          value={draft.lastTendedDate}
-          onChange={(lastTendedDate) => updateDraft({ lastTendedDate })}
-          maxDate={todayDate}
-        />
-      </Field>
-
-      {error ? <AlertBox message={error} tone="error" /> : null}
-      <PrimaryButton
-        label={submitting ? t("onboarding.form.saving") : t("onboarding.form.save")}
-        disabled={submitting}
-        onPress={() => onSubmit(draft)}
-      />
-    </View>
-  );
-}
-
 function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
+  const [bannerReminders, setBannerReminders] = useState<ReminderResponse[]>([]);
+  const [editingItem, setEditingItem] = useState<ItemResponse | null>(null);
+  const bannerReminderSetKeyRef = useRef("");
   const {
     error,
     groups,
@@ -1247,9 +1259,37 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
     [groups.needsAttention.length, groups.gettingStale.length],
   );
 
+  const updateBannerReminders = useCallback((surfaceNow: ReminderResponse[]) => {
+    const nextKey = reminderItemIdsKey(surfaceNow);
+
+    if (nextKey === bannerReminderSetKeyRef.current) {
+      return;
+    }
+
+    bannerReminderSetKeyRef.current = nextKey;
+    setBannerReminders(pickReminderBannerItems(surfaceNow));
+  }, []);
+
+  const fetchReminders = useCallback(async () => {
+    try {
+      const reminders = await api.listReminders();
+      updateBannerReminders(reminders.surfaceNow);
+    } catch {
+      // Home still has the item list if reminder surfacing is temporarily unavailable.
+    }
+  }, [api, updateBannerReminders]);
+
+  useEffect(() => {
+    fetchReminders();
+
+    const interval = setInterval(fetchReminders, REMINDER_POLL_MS);
+    return () => clearInterval(interval);
+  }, [fetchReminders]);
+
   async function handleMarkTended(itemId: string) {
     try {
       await markTendedItem(itemId);
+      await fetchReminders();
     } catch (tendError) {
       Alert.alert(t("errors.item.mark"), getErrorMessage(tendError, t("errors.retry")));
     }
@@ -1272,6 +1312,9 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
       </View>
 
       {error ? <AlertBox message={error} tone="error" /> : null}
+      {bannerReminders.length > 0 ? (
+        <ReminderBanner reminders={bannerReminders} onTend={handleMarkTended} />
+      ) : null}
       {loading ? <LoadingState label={t("common.loadingItems")} /> : null}
 
       {!loading && items.length === 0 ? (
@@ -1288,6 +1331,7 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
             defaultOpen={sectionDefaults.needsAttention}
             emptyMessage={t("sections.empty.needsAttention")}
             items={groups.needsAttention}
+            onEdit={setEditingItem}
             onTend={handleMarkTended}
           />
           <AttentionSection
@@ -1297,6 +1341,7 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
             defaultOpen={sectionDefaults.gettingStale}
             emptyMessage={t("sections.empty.gettingStale")}
             items={groups.gettingStale}
+            onEdit={setEditingItem}
             onTend={handleMarkTended}
           />
           <AttentionSection
@@ -1305,11 +1350,32 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
             defaultOpen={sectionDefaults.lookingGood}
             emptyMessage={t("sections.empty.lookingGood")}
             items={groups.lookingGood}
+            onEdit={setEditingItem}
             onTend={handleMarkTended}
             subdued
           />
         </>
       ) : null}
+
+      <Modal
+        animationType="slide"
+        presentationStyle="pageSheet"
+        visible={editingItem !== null}
+        onRequestClose={() => setEditingItem(null)}
+      >
+        {editingItem ? (
+          <EditItemScreen
+            api={api}
+            item={editingItem}
+            onClose={() => setEditingItem(null)}
+            onSaved={async () => {
+              setEditingItem(null);
+              await loadItems();
+              await fetchReminders();
+            }}
+          />
+        ) : null}
+      </Modal>
     </ScreenScroll>
   );
 }
@@ -1378,62 +1444,95 @@ function ActivityScreen({ api }: { api: TendApi }) {
   );
 }
 
+function ReminderBanner({
+  reminders,
+  onTend,
+}: {
+  reminders: ReminderResponse[];
+  onTend: (id: string) => void;
+}) {
+  const hasMust = reminders.some((reminder) => reminder.type === "must");
+
+  if (reminders.length === 0) {
+    return null;
+  }
+
+  return (
+    <View style={[styles.reminderBanner, hasMust ? styles.reminderBannerMust : null]}>
+      <Text style={styles.reminderBannerTitle}>{reminderBannerHeadline(reminders.length)}</Text>
+      <View style={styles.reminderList}>
+        {reminders.map((reminder) => (
+          <View key={reminder.itemId} style={styles.reminderRow}>
+            <View style={styles.reminderText}>
+              <Text style={styles.reminderName}>{reminder.name}</Text>
+            </View>
+            <View style={styles.reminderActions}>
+              <TypeBadge type={reminder.type} />
+              <TouchableOpacity
+                style={styles.markButtonCompact}
+                onPress={() => onTend(reminder.itemId)}
+              >
+                <Check size={15} color={colors.inverse} />
+                <Text style={styles.markButtonText}>{t("items.markTended")}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
 function AddItemScreen({ api, onSaved }: { api: TendApi; onSaved: () => void }) {
   const todayDate = useMemo(() => todayDateInputValue(), []);
-  const [name, setName] = useState("");
-  const [type, setType] = useState<TendItemType>("want");
-  const [rhythmDays, setRhythmDays] = useState(7);
-  const [lifeArea, setLifeArea] = useState<LifeArea | null>(null);
-  const [lastTendedDate, setLastTendedDate] = useState(todayDate);
+  const [values, setValues] = useState({
+    name: "",
+    type: "want" as TendItemType,
+    rhythmDays: 7,
+    lifeArea: null as LifeArea | null,
+    lastTendedDate: todayDate,
+  });
+  const [formKey, setFormKey] = useState(0);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedPresetName, setSelectedPresetName] = useState<string | undefined>();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   function applyPreset(preset: TendPreset) {
-    setName(preset.name);
-    setType(preset.type);
-    setRhythmDays(preset.rhythmDays);
-    setLifeArea(preset.lifeArea);
-    setLastTendedDate(todayDate);
+    setValues({
+      name: preset.name,
+      type: preset.type,
+      rhythmDays: preset.rhythmDays,
+      lifeArea: preset.lifeArea,
+      lastTendedDate: todayDate,
+    });
     setSelectedPresetName(preset.name);
     setError(null);
+    setFormKey((current) => current + 1);
   }
 
-  async function saveItem() {
-    const validationErrors = validateItemForm(
-      { name, type, rhythmDays, lifeArea, lastTendedDate },
-      todayDate,
-    );
-
-    if (validationErrors) {
-      setError(
-        validationErrors.name ??
-          validationErrors.rhythmDays ??
-          validationErrors.lastTendedDate ??
-          t("errors.item.create"),
-      );
-      return;
-    }
-
+  async function saveItem(formValues: typeof values) {
     setSubmitting(true);
     setError(null);
 
     try {
       await api.createItem({
-        name: name.trim(),
-        type,
-        rhythmDays,
-        lifeArea,
-        lastTendedAt: dateInputToIso(lastTendedDate),
+        name: formValues.name.trim(),
+        type: formValues.type,
+        rhythmDays: formValues.rhythmDays,
+        lifeArea: formValues.lifeArea,
+        lastTendedAt: dateInputToIso(formValues.lastTendedDate),
       });
-      setName("");
-      setType("want");
-      setRhythmDays(7);
-      setLifeArea(null);
-      setLastTendedDate(todayDate);
+      setValues({
+        name: "",
+        type: "want",
+        rhythmDays: 7,
+        lifeArea: null,
+        lastTendedDate: todayDate,
+      });
       setSelectedPresetName(undefined);
       setShowSuggestions(false);
+      setFormKey((current) => current + 1);
       onSaved();
     } catch (saveError) {
       setError(getErrorMessage(saveError, t("errors.item.create")));
@@ -1465,41 +1564,87 @@ function AddItemScreen({ api, onSaved }: { api: TendApi; onSaved: () => void }) 
         <PresetSuggestions onSelect={applyPreset} selectedPresetName={selectedPresetName} />
       ) : null}
 
-      <Field label={t("items.add.name.label")}>
-        <TextInput
-          maxLength={ITEM_NAME_MAX_LENGTH}
-          value={name}
-          onChangeText={setName}
-          style={styles.input}
-          placeholder={t("items.add.name.placeholder")}
-          placeholderTextColor={colors.textSubtle}
-        />
-      </Field>
-
-      <Field label={t("items.add.type.label")}>
-        <TypeSelector value={type} onChange={setType} />
-      </Field>
-
-      <Field label={t("items.add.rhythm.label")}>
-        <RhythmPicker value={rhythmDays} onChange={setRhythmDays} />
-      </Field>
-
-      <Field label={t("items.add.lifeArea.label")}>
-        <Text style={styles.fieldHelper}>{t("items.add.lifeArea.helper")}</Text>
-        <LifeAreaPicker selected={lifeArea} onChange={setLifeArea} includeNone />
-      </Field>
-
-      <Field label={t("items.add.lastTended.label")}>
-        <DatePickerField value={lastTendedDate} onChange={setLastTendedDate} maxDate={todayDate} />
-      </Field>
-
-      {error ? <AlertBox message={error} tone="error" /> : null}
-      <PrimaryButton
-        label={submitting ? t("items.add.saving") : t("items.add.save")}
-        disabled={submitting}
-        onPress={saveItem}
+      <ItemForm
+        key={formKey}
+        values={values}
+        onChange={(patch) => setValues((current) => ({ ...current, ...patch }))}
+        onSubmit={saveItem}
+        submitLabel={t("items.add.save")}
+        submittingLabel={t("items.add.saving")}
+        submitting={submitting}
+        formError={error}
       />
     </ScreenScroll>
+  );
+}
+
+function EditItemScreen({
+  api,
+  item,
+  onClose,
+  onSaved,
+}: {
+  api: TendApi;
+  item: ItemResponse;
+  onClose: () => void;
+  onSaved: () => void | Promise<void>;
+}) {
+  const initialValues = useMemo(() => itemFormValuesFromItem(item), [item]);
+  const [values, setValues] = useState(initialValues);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function saveItem(formValues: typeof values) {
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      await api.updateItem(item.id, {
+        name: formValues.name.trim(),
+        type: formValues.type,
+        rhythmDays: formValues.rhythmDays,
+        lifeArea: formValues.lifeArea,
+        lastTendedAt: dateInputToIso(formValues.lastTendedDate),
+      });
+      await onSaved();
+    } catch (saveError) {
+      setError(getErrorMessage(saveError, t("errors.item.update")));
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <SafeAreaView style={styles.modalScreen}>
+      <ScreenScroll keyboardShouldPersistTaps="handled">
+        <View style={styles.pageHeader}>
+          <View style={styles.pageHeaderRow}>
+            <View style={styles.pageHeaderText}>
+              <Pressable
+                accessibilityRole="button"
+                onPress={onClose}
+                style={styles.modalBackButton}
+              >
+                <Text style={styles.onboardingGhostButtonText}>{t("onboarding.back")}</Text>
+              </Pressable>
+              <Text style={styles.pageTitle}>{t("items.edit.title")}</Text>
+              <Text style={styles.pageSubtitle}>{t("items.edit.subtitle")}</Text>
+            </View>
+          </View>
+        </View>
+
+        <ItemForm
+          key={item.id}
+          values={values}
+          onChange={(patch) => setValues((current) => ({ ...current, ...patch }))}
+          onSubmit={saveItem}
+          submitLabel={t("items.edit.save")}
+          submittingLabel={t("items.edit.saving")}
+          submitting={submitting}
+          formError={error}
+        />
+      </ScreenScroll>
+    </SafeAreaView>
   );
 }
 
@@ -1601,7 +1746,7 @@ function SettingsScreen({
   const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
   const [settingsError, setSettingsError] = useState<string | null>(null);
   const [timezoneSaving, setTimezoneSaving] = useState(false);
-  const { pushToken, register, registering, scheduleReminder, statusMessage } =
+  const { disable, pushToken, register, registering, scheduleReminder, statusMessage } =
     usePushNotifications(api);
 
   useEffect(() => {
@@ -1672,18 +1817,13 @@ function SettingsScreen({
       <View style={styles.settingsCard}>
         <Text style={styles.cardTitle}>{t("settings.timezone.title")}</Text>
         <Text style={styles.metaText}>{t("settings.timezone.subtitle")}</Text>
-        <TextInput
-          autoCapitalize="none"
-          autoCorrect={false}
+        <TimezoneDropdown
           value={timezone}
-          onChangeText={(value) => {
+          onChange={(value) => {
             setTimezone(value);
             setSettingsMessage(null);
             setSettingsError(null);
           }}
-          style={styles.input}
-          placeholder={t("settings.timezone.placeholder")}
-          placeholderTextColor={colors.textSubtle}
         />
         {settingsMessage ? <AlertBox message={settingsMessage} tone="info" /> : null}
         {settingsError ? <AlertBox message={settingsError} tone="error" /> : null}
@@ -1701,19 +1841,20 @@ function SettingsScreen({
       <View style={styles.settingsCard}>
         <Text style={styles.cardTitle}>{t("settings.notifications.title")}</Text>
         <Text style={styles.metaText}>{t("settings.notifications.subtitle")}</Text>
-        {pushToken ? (
-          <Text style={styles.tokenText} numberOfLines={1}>
-            {pushToken}
-          </Text>
-        ) : null}
         {statusMessage ? <AlertBox message={statusMessage} tone="info" /> : null}
         <TouchableOpacity
           style={[styles.secondaryButton, registering ? styles.buttonDisabled : null]}
           disabled={registering}
-          onPress={register}
+          onPress={pushToken ? disable : register}
         >
           <Text style={styles.secondaryButtonText}>
-            {registering ? t("settings.notifications.loading") : t("settings.notifications.button")}
+            {registering
+              ? pushToken
+                ? t("settings.notifications.disabling")
+                : t("settings.notifications.loading")
+              : pushToken
+                ? t("settings.notifications.disableButton")
+                : t("settings.notifications.button")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -1755,6 +1896,7 @@ function AttentionSection({
   defaultOpen = true,
   emptyMessage = t("sections.empty.needsAttention"),
   items,
+  onEdit,
   onTend,
   subdued = false,
 }: {
@@ -1763,6 +1905,7 @@ function AttentionSection({
   defaultOpen?: boolean;
   emptyMessage?: string;
   items: ItemResponse[];
+  onEdit: (item: ItemResponse) => void;
   onTend: (id: string) => void;
   subdued?: boolean;
 }) {
@@ -1789,6 +1932,7 @@ function AttentionSection({
               <ItemCard
                 key={item.id}
                 item={item}
+                onEdit={() => onEdit(item)}
                 onTend={() => onTend(item.id)}
                 subdued={subdued}
               />
@@ -1804,13 +1948,18 @@ function AttentionSection({
 
 function ItemCard({
   item,
+  onEdit,
   onTend,
   subdued,
-}: { item: ItemResponse; onTend: () => void; subdued?: boolean }) {
+}: { item: ItemResponse; onEdit: () => void; onTend: () => void; subdued?: boolean }) {
   const mustAttention = item.type === "must" && item.status === "needs_attention";
 
   return (
-    <View
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={item.name}
+      accessibilityHint={t("items.edit.title")}
+      onPress={onEdit}
       style={[
         styles.itemCard,
         mustAttention ? styles.mustAttentionCard : null,
@@ -1829,7 +1978,7 @@ function ItemCard({
           <Text style={styles.markButtonText}>{t("items.markTended")}</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -1876,32 +2025,68 @@ function LifeAreaFilter({
   );
 }
 
-function LifeAreaPicker({
-  selected,
+function TimezoneDropdown({
+  value,
   onChange,
-  includeNone = false,
 }: {
-  selected: LifeArea | null;
-  onChange: (area: LifeArea | null) => void;
-  includeNone?: boolean;
+  value: string;
+  onChange: (value: string) => void;
 }) {
+  const [open, setOpen] = useState(false);
+  const options = useMemo(() => {
+    if (TIMEZONE_OPTIONS.includes(value as (typeof TIMEZONE_OPTIONS)[number])) {
+      return [...TIMEZONE_OPTIONS];
+    }
+
+    return [value, ...TIMEZONE_OPTIONS];
+  }, [value]);
+
   return (
-    <View style={styles.chipRow}>
-      {includeNone ? (
-        <Chip
-          label={t("common.none")}
-          selected={selected === null}
-          onPress={() => onChange(null)}
-        />
+    <View style={styles.dropdownWrap}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ expanded: open }}
+        style={styles.dropdownButton}
+        onPress={() => setOpen((current) => !current)}
+      >
+        <Text style={styles.dropdownButtonText} numberOfLines={1}>
+          {value || t("settings.timezone.placeholder")}
+        </Text>
+        <View style={[styles.dropdownChevron, open ? styles.sectionChevronOpen : null]}>
+          <ChevronDown size={16} color={colors.textMuted} />
+        </View>
+      </Pressable>
+
+      {open ? (
+        <View style={styles.dropdownMenu}>
+          {options.map((option) => {
+            const selected = option === value;
+
+            return (
+              <Pressable
+                key={option}
+                accessibilityRole="button"
+                accessibilityState={{ selected }}
+                style={[styles.dropdownOption, selected ? styles.dropdownOptionSelected : null]}
+                onPress={() => {
+                  onChange(option);
+                  setOpen(false);
+                }}
+              >
+                <Text
+                  style={[
+                    styles.dropdownOptionText,
+                    selected ? styles.dropdownOptionTextSelected : null,
+                  ]}
+                >
+                  {option}
+                </Text>
+                {selected ? <Check size={16} color={colors.primary} /> : null}
+              </Pressable>
+            );
+          })}
+        </View>
       ) : null}
-      {LIFE_AREA_ORDER.map((area) => (
-        <Chip
-          key={area}
-          label={LIFE_AREA_LABELS[area]}
-          selected={selected === area}
-          onPress={() => onChange(area)}
-        />
-      ))}
     </View>
   );
 }
@@ -1937,23 +2122,6 @@ function SegmentedControl({
   );
 }
 
-function Chip({
-  label,
-  selected,
-  onPress,
-}: { label: string; selected: boolean; onPress: () => void }) {
-  return (
-    <TouchableOpacity
-      accessibilityRole="button"
-      accessibilityState={{ selected }}
-      style={[styles.chip, selected ? styles.chipSelected : null]}
-      onPress={onPress}
-    >
-      <Text style={[styles.chipText, selected ? styles.chipTextSelected : null]}>{label}</Text>
-    </TouchableOpacity>
-  );
-}
-
 function Field({
   children,
   helper,
@@ -1974,26 +2142,6 @@ function Field({
       {helper ? <Text style={styles.fieldHelper}>{helper}</Text> : null}
       {children}
     </View>
-  );
-}
-
-function PrimaryButton({
-  label,
-  onPress,
-  disabled = false,
-}: {
-  label: string;
-  onPress: () => void;
-  disabled?: boolean;
-}) {
-  return (
-    <TouchableOpacity
-      style={[styles.primaryButton, disabled ? styles.buttonDisabled : null]}
-      disabled={disabled}
-      onPress={onPress}
-    >
-      <Text style={styles.primaryButtonText}>{label}</Text>
-    </TouchableOpacity>
   );
 }
 
@@ -2130,6 +2278,14 @@ const styles = StyleSheet.create({
   app: {
     flex: 1,
     backgroundColor: colors.bg,
+  },
+  modalBackButton: {
+    alignSelf: "flex-start",
+    marginBottom: spacing.sm,
+  },
+  modalScreen: {
+    backgroundColor: colors.bg,
+    flex: 1,
   },
   screenFrame: {
     flex: 1,
@@ -2289,6 +2445,48 @@ const styles = StyleSheet.create({
   listStack: {
     gap: spacing.md,
   },
+  reminderBanner: {
+    backgroundColor: colors.staleBg,
+    borderColor: "#e7d8bd",
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    marginBottom: spacing.xl,
+    padding: spacing.lg,
+  },
+  reminderBannerMust: {
+    borderColor: "#e7d8bd",
+  },
+  reminderBannerTitle: {
+    color: colors.text,
+    fontFamily: fonts.displaySemibold,
+    fontSize: 19,
+    lineHeight: 25,
+  },
+  reminderList: {
+    gap: spacing.sm,
+  },
+  reminderRow: {
+    backgroundColor: colors.card,
+    borderRadius: radius.md,
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  reminderText: {
+    gap: spacing.xs,
+  },
+  reminderName: {
+    color: colors.text,
+    fontFamily: fonts.bodySemibold,
+    fontSize: 15,
+    lineHeight: 21,
+  },
+  reminderActions: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "flex-start",
+  },
   itemCard: {
     backgroundColor: colors.card,
     borderColor: colors.border,
@@ -2297,8 +2495,7 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
   mustAttentionCard: {
-    backgroundColor: colors.mustBg,
-    borderColor: "#d4b8ad",
+    borderColor: colors.border,
   },
   subduedCard: {
     opacity: 0.85,
@@ -2369,6 +2566,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.xs,
     minHeight: 40,
+    paddingHorizontal: spacing.md,
+  },
+  markButtonCompact: {
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderRadius: radius.md,
+    flexDirection: "row",
+    gap: spacing.xs,
+    marginLeft: "auto",
+    minHeight: 36,
     paddingHorizontal: spacing.md,
   },
   markButtonText: {
@@ -2456,6 +2663,58 @@ const styles = StyleSheet.create({
     minHeight: 48,
     paddingHorizontal: spacing.md,
   },
+  dropdownWrap: {
+    marginTop: spacing.md,
+  },
+  dropdownButton: {
+    alignItems: "center",
+    backgroundColor: colors.card,
+    borderColor: colors.borderSubtle,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    minHeight: 48,
+    paddingHorizontal: spacing.md,
+  },
+  dropdownButtonText: {
+    color: colors.text,
+    flex: 1,
+    fontFamily: fonts.body,
+    fontSize: 16,
+  },
+  dropdownChevron: {
+    marginLeft: spacing.sm,
+  },
+  dropdownMenu: {
+    backgroundColor: colors.card,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    marginTop: spacing.sm,
+    overflow: "hidden",
+  },
+  dropdownOption: {
+    alignItems: "center",
+    borderBottomColor: colors.borderSubtle,
+    borderBottomWidth: 1,
+    flexDirection: "row",
+    gap: spacing.sm,
+    minHeight: 44,
+    paddingHorizontal: spacing.md,
+  },
+  dropdownOptionSelected: {
+    backgroundColor: colors.primaryMuted,
+  },
+  dropdownOptionText: {
+    color: colors.textMuted,
+    flex: 1,
+    fontFamily: fonts.body,
+    fontSize: 14,
+  },
+  dropdownOptionTextSelected: {
+    color: colors.primary,
+    fontFamily: fonts.bodySemibold,
+  },
   inputInset: {
     marginTop: spacing.sm,
     width: 120,
@@ -2535,6 +2794,7 @@ const styles = StyleSheet.create({
   alertBox: {
     borderRadius: radius.md,
     marginBottom: spacing.lg,
+    marginTop: spacing.md,
     padding: spacing.md,
   },
   alertError: {
@@ -2634,14 +2894,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: spacing.lg,
     padding: spacing.lg,
-  },
-  tokenText: {
-    backgroundColor: colors.subtle,
-    borderRadius: radius.md,
-    color: colors.textMuted,
-    fontSize: 12,
-    marginTop: spacing.md,
-    padding: spacing.sm,
   },
   signOutButton: {
     alignItems: "center",

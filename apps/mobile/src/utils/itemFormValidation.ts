@@ -1,5 +1,6 @@
 import { ITEM_NAME_MAX_LENGTH } from "@/constants";
 import { rhythmDaysFieldError } from "@/utils/rhythm";
+import { t } from "@i18n";
 import type { LifeArea, TendItemType } from "@tend/domain";
 
 export interface ItemFormValues {
@@ -18,15 +19,15 @@ export function validateItemForm(
   const trimmedName = values.name.trim();
 
   if (!trimmedName) {
-    errors.name = "Name is required";
+    errors.name = t("errors.item.nameRequired");
   } else if (trimmedName.length > ITEM_NAME_MAX_LENGTH) {
-    errors.name = `Name must be ${ITEM_NAME_MAX_LENGTH} characters or fewer`;
+    errors.name = t("errors.item.nameTooLong", { max: ITEM_NAME_MAX_LENGTH });
   }
 
   if (!values.lastTendedDate) {
-    errors.lastTendedDate = "Last tended date is required";
+    errors.lastTendedDate = t("errors.item.lastTendedRequired");
   } else if (values.lastTendedDate > todayDate) {
-    errors.lastTendedDate = "Last tended cannot be in the future";
+    errors.lastTendedDate = t("errors.item.lastTendedFuture");
   }
 
   const rhythmError = rhythmDaysFieldError(values.rhythmDays);

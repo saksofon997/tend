@@ -58,7 +58,8 @@ Compute reminders for items that could use attention, using domain eligibility r
 **Notes**
 
 - Fresh items are excluded.
-- Musts needing attention always have `visibility: "now"`.
+- Musts needing attention always have `visibility: "now"` so attention banners can surface them.
 - Wants outside availability windows have `visibility: "next_window"` and are omitted from `surfaceNow`.
-- When no availability is configured, wants surface like musts (no deferral).
+- Notification clients should still defer scheduled notifications until `nextWindowAt` when `inAvailabilityWindow` is false.
+- When no availability is configured, wants surface like musts without deferral.
 - Availability is evaluated in the timezone saved through [settings.md](./settings.md).

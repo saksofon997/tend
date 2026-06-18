@@ -27,7 +27,7 @@ export default async function AvailabilitySettingsPage() {
     <AppShell user={{ displayName: user.displayName }} activePath="/settings/availability">
       <PageHeader
         title="Availability"
-        subtitle="Set when you are usually free to tend things. Wants wait for these windows; musts still surface whenever they need attention."
+        subtitle="Set when you are usually free to tend things. Notifications wait for these windows; musts still get priority over wants."
       />
       <AvailabilityEditor initialWindows={windows.map(serializeAvailabilityWindow)} />
     </AppShell>

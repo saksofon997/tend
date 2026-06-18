@@ -1,6 +1,6 @@
 ### `GET /api/v1/reminders`
 
-Compute in-app reminders for items that could use attention, using domain eligibility rules and the user's availability windows.
+Compute reminders for items that could use attention, using domain eligibility rules, the user's availability windows, and the user's saved timezone.
 
 **Auth:** Session cookie (required)
 
@@ -61,3 +61,4 @@ Compute in-app reminders for items that could use attention, using domain eligib
 - Musts needing attention always have `visibility: "now"`.
 - Wants outside availability windows have `visibility: "next_window"` and are omitted from `surfaceNow`.
 - When no availability is configured, wants surface like musts (no deferral).
+- Availability is evaluated in the timezone saved through [settings.md](./settings.md).

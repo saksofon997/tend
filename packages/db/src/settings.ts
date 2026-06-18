@@ -36,6 +36,24 @@ export async function completeOnboarding(
   return settings;
 }
 
+export async function updateUserTimezone(
+  database: Database,
+  userId: string,
+  timezone: string,
+): Promise<UserSettingsRow> {
+  const [settings] = await database
+    .update(userSettings)
+    .set({ timezone })
+    .where(eq(userSettings.userId, userId))
+    .returning();
+
+  if (!settings) {
+    throw new Error("User settings not found");
+  }
+
+  return settings;
+}
+
 export function isOnboardingComplete(settings: UserSettingsRow | null): boolean {
   return Boolean(settings?.onboardingCompletedAt);
 }

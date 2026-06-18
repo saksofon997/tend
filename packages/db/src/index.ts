@@ -6,6 +6,7 @@ export {
   completeOnboarding,
   getUserSettings,
   isOnboardingComplete,
+  updateUserTimezone,
   type UserSettingsRow,
 } from "./settings";
 export {

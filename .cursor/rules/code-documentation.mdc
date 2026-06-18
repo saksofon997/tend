@@ -1,0 +1,40 @@
+---
+description: Documentation standards — self-documenting code and when to add docs
+alwaysApply: true
+---
+
+# Code Documentation
+
+## Default: Self-Documenting Code
+
+- Use descriptive names for functions, types, variables, and modules.
+- Keep functions focused on one responsibility.
+- Extract non-obvious business rules into well-named helpers rather than inline comments.
+
+## When to Add Comments or Docs
+
+Add brief comments or docstrings only when the **why** or **constraint** is not obvious from the code:
+
+- Domain rules (e.g. rhythm/status derivation, reminder timing)
+- Non-obvious algorithms or edge-case handling
+- Public APIs, exported types, and package/module entry points
+
+```typescript
+// ❌ BAD — narrates the obvious
+// Increment counter by 1
+counter += 1;
+
+// ✅ GOOD — explains a business rule
+// "Want" items never enter a punitive overdue state; only "Must" items escalate reminders.
+if (item.type === 'must' && daysSinceLastTended > rhythmDays * 1.5) { ... }
+```
+
+## Module-Level Docs
+
+For new packages, services, or top-level directories, add a short `README.md` when the folder's purpose or layout is not immediately clear.
+
+## Do Not
+
+- Add comments that duplicate what the code already says.
+- Leave TODO comments without a linked issue or story reference.
+- Ship large undocumented public interfaces.

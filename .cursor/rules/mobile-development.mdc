@@ -1,0 +1,64 @@
+---
+description: Mobile app development workflow — keep Expo bundler runnable
+globs: apps/mobile/**
+alwaysApply: false
+---
+
+# Mobile Development (`apps/mobile/`)
+
+Every change under `apps/mobile/` must leave the app able to start in Expo without bundler or runtime errors.
+
+## Before marking a mobile task complete
+
+Run from `apps/mobile/`:
+
+```bash
+bun run verify
+```
+
+`verify` runs dependency resolution, **Biome lint/format checks**, TypeScript, and unit tests. `bun run dev` also runs `verify:deps` via `predev`.
+
+To lint or fix only the files you changed:
+
+```bash
+cd apps/mobile
+bun run lint
+bun run lint:fix   # apply safe Biome fixes (format, organize imports)
+```
+
+Biome is configured at the repo root (`biome.json`). From the root you can also run `bun run lint` on the whole monorepo, or `bun run biome check apps/mobile` for mobile only.
+
+Fix every Biome error and warning in files you created or modified before marking the task complete.
+
+If dependencies were added or `bun.lock` changed, run `bun install` from the **repo root** first (hoisted monorepo install).
+
+## Adding dependencies
+
+1. Add packages to `apps/mobile/package.json` `dependencies` or `devDependencies` — never import a package that is not listed there.
+2. Run `bun install` from the repo root.
+3. Run `bun run verify:deps` in `apps/mobile/` to confirm Metro can resolve every dependency from the monorepo `node_modules` roots.
+4. If Metro still cannot resolve a hoisted package, update `apps/mobile/metro.config.js` — do not rely on ad-hoc imports or skipped installs.
+
+## Monorepo / Metro constraints
+
+- Mobile runs inside a Bun hoisted workspace. Dependencies may live in the root `node_modules`, not only `apps/mobile/node_modules`.
+- `metro.config.js` must keep both `apps/mobile/node_modules` and the workspace root `node_modules` in `resolver.nodeModulesPaths`.
+- **Fonts and static assets** ship from `apps/mobile/assets/` via `require()` — do not depend on `@expo-google-fonts/*` packages (Metro resolution is unreliable in this monorepo).
+- Prefer existing web copy via `apps/mobile/src/i18n/en.ts` and `t()`; align UI with `docs/design/design-language.md`.
+
+## Manual smoke check (when UI or native modules change)
+
+After `bun run verify`, start the dev server and confirm the bundle completes:
+
+```bash
+cd apps/mobile && bun run dev
+```
+
+Reload once on a simulator or device if fonts, assets, or native modules changed.
+
+## Do not
+
+- Import packages without declaring them in `apps/mobile/package.json`.
+- Finish a mobile task without running `bun run verify` (includes lint).
+- Skip `bun run lint` on changed mobile files and rely on TypeScript alone — Biome catches formatting and import-order issues `tsc` does not.
+- Assume `bun add` in a subfolder updated the lockfile — confirm with `bun install` at the repo root when CI or another machine might run the app.

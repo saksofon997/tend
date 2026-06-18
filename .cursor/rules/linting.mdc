@@ -1,0 +1,35 @@
+---
+description: Lint every changed file before completing a task
+alwaysApply: true
+---
+
+# Linting
+
+Every code change MUST be linted before the task is complete.
+
+## Required Steps
+
+1. Identify the project's linter from config files (`eslint.config.*`, `.eslintrc*`, `biome.json`, `golangci.yml`, `ruff.toml`, etc.).
+2. Run the linter on **all files you created or modified**.
+3. Fix every error and warning the linter reports for those files.
+4. If the project has a formatter (`prettier`, `biome format`, `gofmt`), run it on changed files.
+
+## Preferred Commands (use what the repo defines)
+
+```bash
+# After tooling is set up — adjust to match package.json / Makefile / CI
+npm run lint          # or: pnpm lint, bun run lint
+npm run format        # if separate from lint
+```
+
+If no lint script exists yet, set one up as part of the first implementation task and document the command in the project README.
+
+## Do Not
+
+- Disable lint rules inline (`eslint-disable`, `//nolint`) without a one-line justification for non-obvious cases.
+- Commit code with linter errors in changed files.
+- Assume CI will catch issues — verify locally first.
+
+## Completion Signal
+
+In the task summary, state which lint command was run and that it passed on changed files.

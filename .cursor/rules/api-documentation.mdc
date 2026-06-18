@@ -1,0 +1,58 @@
+---
+description: Document all exposed HTTP endpoints in docs/api/
+alwaysApply: true
+---
+
+# HTTP API Documentation
+
+Any exposed HTTP endpoint MUST be documented so other clients and agents can integrate without reading source code.
+
+## Location
+
+- Index: `docs/api/README.md`
+- Per-area or versioned detail: `docs/api/<resource>.md` (e.g. `items.md`, `reminders.md`)
+
+Update the index when adding a new resource doc.
+
+## When to Document
+
+Document when you add or change:
+
+- Route path, method, or handler behavior
+- Request or response shape
+- Status codes or error payloads
+- Auth requirements or headers
+
+## Entry Template
+
+Use this structure for each endpoint in the resource doc:
+
+```markdown
+### `POST /api/v1/items`
+
+Create a tend item.
+
+**Auth:** Bearer token (required)
+
+**Request body**
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| title | string | yes | Display name |
+| type | `"must"` \| `"want"` | yes | Reminder strictness |
+
+**Responses**
+| Status | Body | Description |
+|--------|------|-------------|
+| 201 | `Item` | Created |
+| 400 | `{ error: string }` | Validation failure |
+| 401 | `{ error: string }` | Missing or invalid auth |
+
+**Example**
+\`\`\`json
+{ "title": "Water plants", "type": "want", "rhythmDays": 3 }
+\`\`\`
+```
+
+## Keep Docs in Sync
+
+API docs are part of the change — update them in the same PR/commit as the endpoint, not later.

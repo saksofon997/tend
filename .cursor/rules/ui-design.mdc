@@ -1,0 +1,113 @@
+---
+description: Tend design system and reusable UI components for apps/web
+globs: apps/web/**/*.{tsx,css}
+alwaysApply: false
+---
+
+# UI & Design System
+
+All visual work in `apps/web/` MUST follow the design spec in `docs/design/`. Read it before building or changing UI.
+
+## Required reading (in order)
+
+1. [`PRODUCT.md`](../../PRODUCT.md) — product direction, users, brand personality, anti-references
+2. [`docs/design/README.md`](../../docs/design/README.md) — index, stack, file layout
+3. [`docs/design/design-language.md`](../../docs/design/design-language.md) — principles, tokens, typography, copy tone
+4. [`docs/design/components.md`](../../docs/design/components.md) — component catalog, props, screen mapping
+
+Tokens live in [`docs/design/tokens.css`](../../docs/design/tokens.css), imported from `apps/web/app/globals.css`. Do not add a second color or spacing system.
+
+## UI and copy changes
+
+When changing layout, styling, microcopy, labels, empty states, or any user-facing wording:
+
+- **Product direction** — Read [`PRODUCT.md`](../../PRODUCT.md) first. Tend is calm life-maintenance, not a task manager. Match brand personality (warm, honest, useful), design principles (awareness not pressure, sparse musts), and anti-references (no guilt UX, streaks, alarm dashboards, productivity-suite patterns).
+- **Design language** — Apply [`docs/design/design-language.md`](../../docs/design/design-language.md) for visual tone, typography, color, motion, and copy voice. Do not invent ad-hoc styling or phrasing that conflicts with the spec.
+- **Consistency** — Reuse existing components and copy helpers (`lib/design/status-labels.ts`, `RelativeTime`, etc.) before writing new strings or markup.
+
+If a requested change would violate `PRODUCT.md` or the design language, push back or propose an alternative that fits Tend's constraints.
+
+## Product constraints (non-negotiable)
+
+- No guilt-driven UX: no red overdue styling, no "OVERDUE" / "LATE" copy, no streaks
+- Status labels: `Fresh`, `Getting stale`, `Needs attention`
+- Mild palette, subtle inputs, gentle fonts (Newsreader + DM Sans), straightforward layout
+- Must items get stronger emphasis than wants — still never alarm-red
+
+## Component layers
+
+```
+apps/web/components/
+├── ui/       # Primitives (Button, Input, Card, Alert, Badge, Select, Label)
+├── layout/   # AppShell, PageHeader, OnboardingStep, AuthLayout
+├── tend/     # Domain UI (TendItemCard, StatusBadge, AttentionSection, …)
+└── forms/    # Composed forms (AuthForm, ItemForm, FormField, TypeSelector, …)
+```
+
+Helpers: `apps/web/lib/design/` (`status-labels.ts`, `relative-time.ts`).
+
+## Reusable components — required practice
+
+**Before writing JSX for a screen, check `docs/design/components.md` and `apps/web/components/` for an existing component.**
+
+### Use existing components
+
+| Need | Use | Do not |
+|------|-----|--------|
+| Primary / secondary action | `Button` | Raw `<button>` with ad-hoc classes |
+| Text field | `Input` + `FormField` | Unstyled `<input>` |
+| Dropdown | `Select` + `FormField` | Inline `<select>` without shared styling |
+| Page chrome | `AppShell`, `PageHeader` | Duplicate header markup per page |
+| Auth | `AuthLayout` + `AuthForm` | Inline login/register forms |
+| Item create/edit | `ItemForm`, `TypeSelector`, `RhythmSelect` | Copy field markup into pages |
+| List item | `TendItemCard` | One-off card markup on home/reminders |
+| Status / type | `StatusBadge`, `TypeBadge` | Hard-coded badge colors |
+| Age copy | `RelativeTime` | Manual "X days ago" strings |
+| Mark tended | `MarkTendedButton` | Duplicate fetch + button logic |
+| Empty states | `EmptyState`, `EmptyStatePreset` | Inline empty copy blocks |
+| Feedback | `Alert` | Custom error/info divs |
+
+### When to create a new component
+
+Create a reusable component (and add it to `docs/design/components.md`) when:
+
+- The same UI pattern appears **twice** or is expected on **two or more routes**
+- The pattern is named in the design catalog but not yet implemented
+- A page would otherwise exceed ~80 lines of presentational JSX
+
+Do **not** create a component for one-off layout glue that is unlikely to repeat.
+
+### New component checklist
+
+1. Place in the correct layer (`ui/`, `layout/`, `tend/`, or `forms/`)
+2. Use design tokens / Tailwind theme vars — no raw hex in component files
+3. Export typed props; import domain types from `@tend/domain`
+4. Add entry to `docs/design/components.md` (path, props, usage)
+5. Use the new component everywhere the pattern appears — not only the current task
+
+### Styling rules
+
+- Tailwind utilities + CSS variables from `tokens.css`
+- `cn()` from `@/lib/utils` for conditional classes
+- `font-display` for headings; default `font-sans` for body/UI
+- Domain copy helpers in `lib/design/` — not duplicated in components
+
+### Screen composition pattern
+
+```tsx
+<AppShell user={user} activePath="/">
+  <PageHeader title="…" subtitle="…" action={<Button>…</Button>} />
+  {/* domain sections using tend/ components */}
+</AppShell>
+```
+
+Auth and onboarding use `AuthLayout` / `OnboardingStep` — not full `AppShell` nav.
+
+## Final polish (required)
+
+After functional UI work is done — and before marking the task complete — load the **impeccable** skill and finish with **`adapt`** then **`polish`** on the screens or components you changed.
+
+- **`adapt`:** fit the UI to Tend's product constraints and existing components/tokens; fix hierarchy, spacing, and responsive behavior without reinventing the design system
+- **`polish`:** refine typography, copy tone, micro-interactions, empty/error states, and accessibility
+
+Keep Tend's non-negotiables: no guilt-driven UX, no alarm-red overdue styling, status labels from the design spec. Impeccable is the last pass, not a license to ignore `docs/design/`.

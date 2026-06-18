@@ -1,0 +1,57 @@
+---
+description: Unit and integration test requirements for every feature
+alwaysApply: true
+---
+
+# Testing
+
+Every feature and behavior change MUST include tests before the task is considered done.
+
+## Unit Tests (required)
+
+- Cover happy path, primary edge cases, and error paths for new or changed logic.
+- One logical unit per test; descriptive test names (`it('returns Fresh when tended within rhythm')`).
+- Mock external I/O (DB, HTTP, clock, notifications) in unit tests — do not hit real services.
+
+## Integration Tests (when applicable)
+
+Add integration tests when the change involves:
+
+- HTTP route handlers or middleware
+- Database queries or migrations
+- Cross-module workflows (e.g. create item → compute status → schedule reminder)
+- Auth, webhooks, or third-party clients
+
+Aim for a small, high-value set — not exhaustive E2E coverage of every path.
+
+## Test Placement
+
+Tests live in a dedicated `tests/` folder within each package — not next to source files.
+
+| Package | Unit tests | Integration tests |
+|---------|------------|-------------------|
+| `@tend/web` | `apps/web/tests/unit/` | `apps/web/tests/integration/` |
+| `@tend/domain` | `packages/domain/tests/` | — |
+| `@tend/db` | `packages/db/tests/` | — |
+
+Run from the repo root with `bun run test`, or per package with `bun test` from that package directory.
+
+## Agents Must
+
+1. Write tests as part of the same change, not as a follow-up.
+2. Run the project's test command and confirm new tests pass.
+3. Not delete or weaken existing tests to make new code pass without user approval.
+
+## Minimum Bar
+
+If you add a function, handler, hook, or service method with branching logic, there must be at least one unit test per meaningful branch.
+
+## Bug Fixes
+
+When fixing a bug, follow red → green → keep:
+
+1. Add a test that reproduces the bug and **fails** with the current code.
+2. Fix the bug so that test **passes**.
+3. Leave the test in place as a regression guard — it is part of the deliverable, not a temporary scaffold.
+
+Name tests after the broken behavior (`it('does not mark Want items overdue')`), not the fix. Run the full relevant test command before marking the task complete.

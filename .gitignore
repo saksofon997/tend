@@ -56,3 +56,4 @@ graphify-out/.cache/
 *.pem
 .vercel
 .netlify
+!.cursor/

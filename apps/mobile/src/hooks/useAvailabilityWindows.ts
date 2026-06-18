@@ -3,6 +3,7 @@ import type { TendApi } from "@api/tendApi";
 import { t } from "@i18n";
 import type { AvailabilityWindow } from "@tend/domain";
 import { getErrorMessage } from "@utils/networkError";
+import { normalizeTimeValue } from "@utils/timeOptions";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export type EditableWindow = {
@@ -82,8 +83,8 @@ export function useAvailabilityWindows(api: TendApi) {
 
     const payload: AvailabilityWindow[] = windows.map(({ dayOfWeek, startTime, endTime }) => ({
       dayOfWeek,
-      startTime: normalizeTime(startTime),
-      endTime: normalizeTime(endTime),
+      startTime: normalizeTimeValue(startTime),
+      endTime: normalizeTimeValue(endTime),
     }));
 
     try {
@@ -123,11 +124,6 @@ function toEditableWindow(window: AvailabilityWindowResponse): EditableWindow {
     startTime: window.startTime,
     endTime: window.endTime,
   };
-}
-
-function normalizeTime(value: string) {
-  const trimmed = value.trim();
-  return /^\d{2}:\d{2}$/.test(trimmed) ? trimmed : "18:00";
 }
 
 function groupWindowsByDay(windows: EditableWindow[]) {

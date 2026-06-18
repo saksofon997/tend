@@ -9,6 +9,7 @@ import { tendFonts } from "@/fonts";
 import { colors, fonts, radius, spacing } from "@/theme";
 import type { ItemResponse, ReminderResponse, UserResponse } from "@/types";
 import { getAttentionSectionDefaults } from "@/utils/homeGroups";
+import { refreshHomeData } from "@/utils/homeRefresh";
 import { formatRelativeFromDays } from "@/utils/relativeTime";
 import { type TabKey, getTabSwitchDirection } from "@/utils/tabTransition";
 import { TendApi } from "@api/tendApi";
@@ -16,17 +17,26 @@ import { ItemForm } from "@components/item-form";
 import { Chip } from "@components/life-area-picker";
 import { PresetSuggestions } from "@components/preset-suggestions";
 import { PrimaryButton } from "@components/primary-button";
+import { ActivitySkeleton, AvailabilitySkeleton, HomeItemsSkeleton } from "@components/skeleton";
+import { TimeSelect } from "@components/time-select";
 import { useActivityEvents } from "@hooks/useActivityEvents";
 import { useAvailabilityWindows } from "@hooks/useAvailabilityWindows";
 import { useHomeItems } from "@hooks/useHomeItems";
 import { usePushNotifications } from "@hooks/usePushNotifications";
 import { lifeAreaFilterToggleLabel, t } from "@i18n";
 import { PRESETS_BY_AREA } from "@tend/domain";
-import type { LifeArea, TendItemType, TendPreset, TendStatus } from "@tend/domain";
+import {
+  type LifeArea,
+  type TendItemType,
+  type TendPreset,
+  type TendStatus,
+  parseTimeToMinutes,
+} from "@tend/domain";
 import { isDevMode } from "@utils/devMode";
 import { itemFormValuesFromItem } from "@utils/itemFormValues";
 import { getErrorMessage } from "@utils/networkError";
 import { restoreSession } from "@utils/sessionRestore";
+import { timeOptionsAfter } from "@utils/timeOptions";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -192,8 +202,10 @@ type AuthMode = "splash" | "signIn" | "register";
 export default function App() {
   return (
     <SafeAreaProvider>
-      <StatusBar style="dark" />
-      <AppBootstrap />
+      <View style={styles.root}>
+        <StatusBar style="dark" />
+        <AppBootstrap />
+      </View>
     </SafeAreaProvider>
   );
 }
@@ -608,6 +620,7 @@ function AuthFormShell({
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.onboardingContent}
+        style={styles.screen}
       >
         <View style={styles.onboardingLogoWrap}>
           <Image
@@ -1136,6 +1149,7 @@ function OnboardingShell({
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.onboardingContent}
+        style={styles.screen}
       >
         <View style={styles.onboardingLogoWrap}>
           <Image
@@ -1270,14 +1284,20 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
     setBannerReminders(pickReminderBannerItems(surfaceNow));
   }, []);
 
-  const fetchReminders = useCallback(async () => {
-    try {
-      const reminders = await api.listReminders();
-      updateBannerReminders(reminders.surfaceNow);
-    } catch {
-      // Home still has the item list if reminder surfacing is temporarily unavailable.
-    }
-  }, [api, updateBannerReminders]);
+  const fetchReminders = useCallback(
+    async (options?: { force?: boolean }) => {
+      try {
+        const reminders = await api.listReminders();
+        if (options?.force) {
+          bannerReminderSetKeyRef.current = "";
+        }
+        updateBannerReminders(reminders.surfaceNow);
+      } catch {
+        // Home still has the item list if reminder surfacing is temporarily unavailable.
+      }
+    },
+    [api, updateBannerReminders],
+  );
 
   useEffect(() => {
     fetchReminders();
@@ -1295,8 +1315,12 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
     }
   }
 
+  async function handleRefresh() {
+    await refreshHomeData(loadItems, fetchReminders);
+  }
+
   return (
-    <ScreenScroll refreshing={refreshing} onRefresh={() => loadItems(true)}>
+    <ScreenScroll refreshing={refreshing} onRefresh={handleRefresh}>
       <View style={styles.pageHeader}>
         <View style={styles.pageHeaderRow}>
           <View style={styles.pageHeaderText}>
@@ -1315,7 +1339,7 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
       {bannerReminders.length > 0 ? (
         <ReminderBanner reminders={bannerReminders} onTend={handleMarkTended} />
       ) : null}
-      {loading ? <LoadingState label={t("common.loadingItems")} /> : null}
+      {loading ? <HomeItemsSkeleton label={t("common.loadingItems")} /> : null}
 
       {!loading && items.length === 0 ? (
         <EmptyState title={t("home.empty.title")} body={t("home.empty.body")} />
@@ -1411,35 +1435,37 @@ function ActivityScreen({ api }: { api: TendApi }) {
       </View>
 
       {error ? <AlertBox message={error} tone="error" /> : null}
-      {loading ? <LoadingState label={t("common.loadingActivity")} /> : null}
+      {loading ? <ActivitySkeleton label={t("common.loadingActivity")} /> : null}
       {!loading && events.length === 0 ? (
         <EmptyState title={t("activity.empty.title")} body={t("activity.empty.body")} />
       ) : null}
 
-      {groups.map((group) => (
-        <View key={group.label} style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>{group.label}</Text>
-            <Text style={styles.sectionCount}>{group.events.length}</Text>
-          </View>
-          <View style={styles.listStack}>
-            {group.events.map((event) => (
-              <View key={event.id} style={styles.activityRow}>
-                <View style={styles.activityText}>
-                  <Text style={styles.cardTitle}>{event.itemName}</Text>
-                  <Text style={styles.metaText}>{formatEventDate(event.tendedAt)}</Text>
-                </View>
-                <IconButton
-                  label={t("activity.removeEvent")}
-                  onPress={() => confirmDelete(event.id)}
-                >
-                  <Trash2 size={18} color={colors.textMuted} />
-                </IconButton>
+      {!loading
+        ? groups.map((group) => (
+            <View key={group.label} style={styles.section}>
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>{group.label}</Text>
+                <Text style={styles.sectionCount}>{group.events.length}</Text>
               </View>
-            ))}
-          </View>
-        </View>
-      ))}
+              <View style={styles.listStack}>
+                {group.events.map((event) => (
+                  <View key={event.id} style={styles.activityRow}>
+                    <View style={styles.activityText}>
+                      <Text style={styles.cardTitle}>{event.itemName}</Text>
+                      <Text style={styles.metaText}>{formatEventDate(event.tendedAt)}</Text>
+                    </View>
+                    <IconButton
+                      label={t("activity.removeEvent")}
+                      onPress={() => confirmDelete(event.id)}
+                    >
+                      <Trash2 size={18} color={colors.textMuted} />
+                    </IconButton>
+                  </View>
+                ))}
+              </View>
+            </View>
+          ))
+        : null}
     </ScreenScroll>
   );
 }
@@ -1669,64 +1695,74 @@ function AvailabilityScreen({ api }: { api: TendApi }) {
         <Text style={styles.pageSubtitle}>{t("availability.subtitle")}</Text>
       </View>
 
-      {error ? <AlertBox message={error} tone="error" /> : null}
-      {success ? <AlertBox message={t("availability.saved")} tone="info" /> : null}
-      {loading ? <LoadingState label={t("common.loadingAvailability")} /> : null}
+      {loading ? <AvailabilitySkeleton label={t("common.loadingAvailability")} /> : null}
 
-      {WEEKDAYS.map((label, dayOfWeek) => {
-        const dayWindows = byDay.get(dayOfWeek) ?? [];
+      {!loading
+        ? WEEKDAYS.map((label, dayOfWeek) => {
+            const dayWindows = byDay.get(dayOfWeek) ?? [];
 
-        return (
-          <View key={label} style={styles.dayCard}>
-            <View style={styles.dayHeader}>
-              <Text style={styles.cardTitle}>{label}</Text>
-              <TouchableOpacity
-                style={styles.secondaryButtonSmall}
-                onPress={() => addWindow(dayOfWeek)}
-              >
-                <Plus size={16} color={colors.primary} />
-                <Text style={styles.secondaryButtonText}>{t("availability.addWindow")}</Text>
-              </TouchableOpacity>
-            </View>
+            return (
+              <View key={label} style={styles.dayCard}>
+                <View style={styles.dayHeader}>
+                  <Text style={styles.cardTitle}>{label}</Text>
+                  <TouchableOpacity
+                    style={styles.secondaryButtonSmall}
+                    onPress={() => addWindow(dayOfWeek)}
+                  >
+                    <Plus size={16} color={colors.primary} />
+                    <Text style={styles.secondaryButtonText}>{t("availability.addWindow")}</Text>
+                  </TouchableOpacity>
+                </View>
 
-            {dayWindows.length === 0 ? (
-              <Text style={styles.metaText}>{t("availability.noWindows")}</Text>
-            ) : null}
+                {dayWindows.length === 0 ? (
+                  <Text style={styles.metaText}>{t("availability.noWindows")}</Text>
+                ) : null}
 
-            {dayWindows.map((window) => (
-              <View key={window.key} style={styles.windowRow}>
-                <TextInput
-                  value={window.startTime}
-                  onChangeText={(value) => updateWindow(window.key, { startTime: value })}
-                  style={[styles.input, styles.timeInput]}
-                  placeholder="18:00"
-                  placeholderTextColor={colors.textSubtle}
-                />
-                <Text style={styles.toText}>{t("common.to")}</Text>
-                <TextInput
-                  value={window.endTime}
-                  onChangeText={(value) => updateWindow(window.key, { endTime: value })}
-                  style={[styles.input, styles.timeInput]}
-                  placeholder="20:00"
-                  placeholderTextColor={colors.textSubtle}
-                />
-                <IconButton
-                  label={t("availability.removeWindow")}
-                  onPress={() => removeWindow(window.key)}
-                >
-                  <Trash2 size={18} color={colors.textMuted} />
-                </IconButton>
+                {dayWindows.map((window) => (
+                  <View key={window.key} style={styles.windowRow}>
+                    <TimeSelect
+                      value={window.startTime}
+                      accessibilityLabel={t("availability.startTime")}
+                      onChange={(startTime) => {
+                        const endAfterStart = timeOptionsAfter(startTime);
+                        const endTime =
+                          parseTimeToMinutes(window.endTime) <= parseTimeToMinutes(startTime)
+                            ? (endAfterStart[0] ?? window.endTime)
+                            : window.endTime;
+
+                        updateWindow(window.key, { startTime, endTime });
+                      }}
+                    />
+                    <Text style={styles.toText}>{t("common.to")}</Text>
+                    <TimeSelect
+                      value={window.endTime}
+                      afterTime={window.startTime}
+                      accessibilityLabel={t("availability.endTime")}
+                      onChange={(endTime) => updateWindow(window.key, { endTime })}
+                    />
+                    <IconButton
+                      label={t("availability.removeWindow")}
+                      onPress={() => removeWindow(window.key)}
+                    >
+                      <Trash2 size={18} color={colors.textMuted} />
+                    </IconButton>
+                  </View>
+                ))}
               </View>
-            ))}
-          </View>
-        );
-      })}
+            );
+          })
+        : null}
 
-      <PrimaryButton
-        label={saving ? t("availability.saving") : t("availability.save")}
-        disabled={!hasChanges || saving}
-        onPress={saveWindows}
-      />
+      {!loading && error ? <AlertBox message={error} tone="error" /> : null}
+      {!loading && success ? <AlertBox message={t("availability.saved")} tone="info" /> : null}
+
+      {!loading ? (
+        <PrimaryButton
+          label={saving ? t("availability.saving") : t("availability.save")}
+          disabled={!hasChanges || saving}
+          onPress={saveWindows}
+        />
+      ) : null}
     </ScreenScroll>
   );
 }
@@ -2209,15 +2245,6 @@ function EmptyState({ title, body }: { title: string; body: string }) {
   );
 }
 
-function LoadingState({ label }: { label: string }) {
-  return (
-    <View style={styles.loadingState}>
-      <ActivityIndicator color={colors.primary} />
-      <Text style={styles.metaText}>{label}</Text>
-    </View>
-  );
-}
-
 function ScreenScroll({
   children,
   keyboardShouldPersistTaps,
@@ -2275,6 +2302,10 @@ function formatEventDate(iso: string) {
 }
 
 const styles = StyleSheet.create({
+  root: {
+    backgroundColor: colors.bg,
+    flex: 1,
+  },
   app: {
     flex: 1,
     backgroundColor: colors.bg,
@@ -2288,14 +2319,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   screenFrame: {
+    backgroundColor: colors.bg,
     flex: 1,
   },
   screen: {
+    backgroundColor: colors.bg,
     flex: 1,
   },
   screenContent: {
     padding: spacing.lg,
-    paddingBottom: 120,
+    paddingBottom: spacing.xxl,
   },
   centeredScreen: {
     alignItems: "center",
@@ -2834,12 +2867,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
   },
-  loadingState: {
-    alignItems: "center",
-    flexDirection: "row",
-    gap: spacing.sm,
-    marginVertical: spacing.lg,
-  },
   activityRow: {
     alignItems: "center",
     backgroundColor: colors.card,
@@ -2879,9 +2906,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     gap: spacing.sm,
-  },
-  timeInput: {
-    flex: 1,
   },
   toText: {
     color: colors.textMuted,

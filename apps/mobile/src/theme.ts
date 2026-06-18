@@ -8,6 +8,7 @@ export const fonts = {
 } as const;
 
 export const colors = {
+  // Keep in sync with docs/design/tokens.css (--tend-bg and related surface tokens).
   bg: "#f7f5f2",
   card: "#ffffff",
   muted: "#efede8",

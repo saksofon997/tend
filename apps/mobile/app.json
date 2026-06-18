@@ -13,7 +13,7 @@
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/app-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#f7f5f2"
       },
       "edgeToEdgeEnabled": true
     },

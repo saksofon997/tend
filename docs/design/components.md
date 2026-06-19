@@ -12,6 +12,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 |-----------|------|---------|
 | [AppShell](#appshell) | `layout/app-shell.tsx` | All |
 | [SiteFooter](#sitefooter) | `layout/site-footer.tsx` | 1, All |
+| [LanguageSelect](#languageselect) | `layout/language-select.tsx` | 1 |
 | [LandingPage](#landingpage) | `marketing/landing-page.tsx` | 1 |
 | [LegalPage](#legalpage) | `marketing/legal-page.tsx` | 1 |
 | [TendLogoLink](#tendlogolink) | `layout/tend-logo-link.tsx` | 1, All |
@@ -75,7 +76,7 @@ interface AppShellProps {
 ├──────────────────────────────────────────────┤
 │  {children}                                   │
 ├──────────────────────────────────────────────┤
-│  Privacy · Terms · Language (coming soon)     │  ← SiteFooter
+│  Privacy · Terms · App/API version · Release  │  ← SiteFooter
 └──────────────────────────────────────────────┘
 ```
 
@@ -94,9 +95,9 @@ interface AppShellProps {
 
 **File:** `components/layout/site-footer.tsx`
 
-**Purpose:** Legal links and locale switcher placeholder on public and app surfaces.
+**Purpose:** Legal links, app/API version labels, and a quiet app release link on public and app surfaces.
 
-**Links:** Privacy (`/privacy`), Terms (`/terms`), Language (disabled until i18n Phase 4), app and API version labels (from `version.json`).
+**Links:** Privacy (`/privacy`), Terms (`/terms`), app/API version labels (from `version.json`), and app release link.
 
 **Used in:** `AppShell`, `AuthLayout`, `LandingPage`, `LegalPage`.
 
@@ -108,13 +109,19 @@ interface AppShellProps {
 
 Linked Tend wordmark image. Used in `AppShell`, `AuthLayout`, and anywhere the brand mark links home.
 
+### LanguageSelect
+
+**File:** `components/layout/language-select.tsx`
+
+Native select for public language switching. Used in the landing header near sign in. Authenticated app language switching lives inside `UserMenu` as radio items.
+
 ---
 
 ### UserMenu
 
 **File:** `components/layout/user-menu.tsx`
 
-Account dropdown in the app header. Currently contains **Sign out**; structured for additional items later.
+Account dropdown in the app header. Contains language radio items above **Sign out**.
 
 ---
 

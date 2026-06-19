@@ -8,12 +8,9 @@ import { PresetCard } from "@/components/tend/preset-card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { SHARED_PROMO_CAROUSEL_OPTS } from "@/lib/carousel/promo-carousel-config";
-import {
-  LIFE_AREA_LABELS,
-  LIFE_AREA_ORDER,
-  dateInputToIso,
-  todayDateInputValue,
-} from "@/lib/onboarding/constants";
+import { useI18n } from "@/lib/i18n/client";
+import { LIFE_AREA_TRANSLATION_KEYS } from "@/lib/i18n/labels";
+import { LIFE_AREA_ORDER, dateInputToIso, todayDateInputValue } from "@/lib/onboarding/constants";
 import { ONBOARDING_PROMO_SLIDES } from "@/lib/onboarding/promo-slides";
 import { ONBOARDING_STEP_NUMBERS, ONBOARDING_TOTAL_STEPS } from "@/lib/onboarding/steps";
 import { cn } from "@/lib/utils";
@@ -50,6 +47,7 @@ const STEP_MAP: Record<Step, number> = {
 
 export function OnboardingFlow() {
   const router = useRouter();
+  const { t } = useI18n();
   const todayDate = todayDateInputValue();
   const [step, setStep] = useState<Step>("welcome");
   const [carouselIndex, setCarouselIndex] = useState(0);
@@ -71,7 +69,7 @@ export function OnboardingFlow() {
 
     if (!response.ok) {
       const body = (await response.json()) as { error?: string };
-      setError(body.error ?? "Unable to finish setup");
+      setError(body.error ?? t("errors.onboarding.finish"));
       setSubmitting(false);
       return;
     }
@@ -82,7 +80,7 @@ export function OnboardingFlow() {
 
   async function saveFirstItem(values: ItemFormValues) {
     if (!values.name.trim()) {
-      setError("Give your item a name");
+      setError(t("errors.item.nameRequired"));
       return;
     }
 
@@ -103,7 +101,7 @@ export function OnboardingFlow() {
 
     if (!createResponse.ok) {
       const body = (await createResponse.json()) as { error?: string };
-      setError(body.error ?? "Unable to create item");
+      setError(body.error ?? t("errors.item.create"));
       setSubmitting(false);
       return;
     }
@@ -138,12 +136,12 @@ export function OnboardingFlow() {
           step={STEP_MAP[step]}
           totalSteps={ONBOARDING_TOTAL_STEPS}
           stableCaption
-          title={carouselIndex === 0 ? "Welcome to Tend" : promoSlide.title}
+          title={carouselIndex === 0 ? t("onboarding.welcome.title") : promoSlide.title}
           description={promoSlide.description}
           footer={
             <>
               <Button type="button" onClick={() => setStep("choose")}>
-                Add your first item
+                {t("onboarding.addFirstItem")}
               </Button>
               <Button
                 type="button"
@@ -151,7 +149,7 @@ export function OnboardingFlow() {
                 onClick={finishOnboarding}
                 disabled={submitting}
               >
-                {submitting ? "Skipping…" : "Skip to the app"}
+                {submitting ? t("onboarding.skipping") : t("onboarding.skipToApp")}
               </Button>
             </>
           }
@@ -178,15 +176,15 @@ export function OnboardingFlow() {
         <OnboardingStep
           step={STEP_MAP[step]}
           totalSteps={ONBOARDING_TOTAL_STEPS}
-          title="What do you want to tend first?"
-          description="Write your own, pick a suggestion, or skip and look around first."
+          title={t("onboarding.choose.title")}
+          description={t("onboarding.choose.description")}
           footer={
             <>
               <Button type="button" onClick={openCustomItemForm}>
-                Add my own
+                {t("onboarding.addMyOwn")}
               </Button>
               <Button type="button" variant="secondary" onClick={() => setStep("preset")}>
-                Browse suggestions
+                {t("onboarding.browseSuggestions")}
               </Button>
               <Button
                 type="button"
@@ -194,10 +192,10 @@ export function OnboardingFlow() {
                 onClick={finishOnboarding}
                 disabled={submitting}
               >
-                {submitting ? "Skipping…" : "Skip for now"}
+                {submitting ? t("onboarding.skipping") : t("onboarding.skipForNow")}
               </Button>
               <Button type="button" variant="ghost" onClick={() => setStep("welcome")}>
-                Back
+                {t("onboarding.back")}
               </Button>
             </>
           }
@@ -218,8 +216,8 @@ export function OnboardingFlow() {
         <OnboardingStep
           step={STEP_MAP[step]}
           totalSteps={ONBOARDING_TOTAL_STEPS}
-          title="Add your first item"
-          description="Adjust type, rhythm, or last tended before saving."
+          title={t("onboarding.addFirstItem")}
+          description={t("onboarding.form.description")}
           footer={
             <Button
               type="button"
@@ -227,14 +225,14 @@ export function OnboardingFlow() {
               onClick={() => setStep(itemFormOrigin === "preset" ? "preset" : "choose")}
               disabled={submitting}
             >
-              Back
+              {t("onboarding.back")}
             </Button>
           }
         >
           <ItemForm
             initial={draft}
             onSubmit={saveFirstItem}
-            submitLabel="Save and continue"
+            submitLabel={t("onboarding.form.save")}
             error={error}
             submitting={submitting}
           />
@@ -251,15 +249,19 @@ export function OnboardingFlow() {
         <OnboardingStep
           step={STEP_MAP[step]}
           totalSteps={ONBOARDING_TOTAL_STEPS}
-          title="Pick a suggestion"
-          description="Choose a life area, then tap something that fits your life."
+          title={t("onboarding.preset.title")}
+          description={t("onboarding.preset.description")}
           footer={
             <Button type="button" variant="ghost" onClick={() => setStep("choose")}>
-              Back
+              {t("onboarding.back")}
             </Button>
           }
         >
-          <div className="mb-4 flex flex-wrap gap-2" role="tablist" aria-label="Life areas">
+          <div
+            className="mb-4 flex flex-wrap gap-2"
+            role="tablist"
+            aria-label={t("items.add.lifeArea.label")}
+          >
             {LIFE_AREA_ORDER.map((area) => (
               <button
                 key={area}
@@ -274,7 +276,7 @@ export function OnboardingFlow() {
                     : "bg-[var(--tend-bg-muted)] text-muted-foreground hover:bg-[var(--tend-bg-subtle)]",
                 )}
               >
-                {LIFE_AREA_LABELS[area]}
+                {t(LIFE_AREA_TRANSLATION_KEYS[area])}
               </button>
             ))}
           </div>

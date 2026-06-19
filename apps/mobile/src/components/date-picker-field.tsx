@@ -1,5 +1,6 @@
 import { todayDateInputValue } from "@/constants";
 import { colors, fonts, radius, spacing } from "@/theme";
+import { t } from "@i18n";
 import DateTimePicker, { type DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { Calendar } from "lucide-react-native";
 import { useMemo, useState } from "react";
@@ -61,7 +62,7 @@ export function DatePickerField({
     <View>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Select last tended date"
+        accessibilityLabel={t("items.add.lastTended.label")}
         style={[styles.trigger, invalid ? styles.triggerInvalid : null]}
         onPress={() => setShowPicker((open) => !open)}
       >

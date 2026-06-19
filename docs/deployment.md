@@ -78,6 +78,7 @@ In **Project → Settings → Environment Variables**, add:
 | `DATABASE_URL` | Neon **pooled** connection string | Production, Preview, Development |
 | `DATABASE_URL_UNPOOLED` | Neon **direct** connection string | Production, Preview, Development |
 | `SESSION_SECRET` | Random 32+ char secret (`openssl rand -base64 32`) | Production, Preview, Development |
+| `CRON_SECRET` | Random token for the 30-minute notification job | Production, Preview |
 | `NODE_ENV` | `production` | Production only |
 
 **Optional:** install the [Neon Vercel integration](https://vercel.com/integrations/neon) — it can inject `DATABASE_URL` and `DATABASE_URL_UNPOOLED` automatically.

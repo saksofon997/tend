@@ -1,16 +1,5 @@
-import { afterEach, describe, expect, it, mock } from "bun:test";
+import { afterEach, describe, expect, it } from "bun:test";
 import { constantsState, platformState } from "../helpers/nativeModuleMocks";
-
-mock.module("expo-device", () => ({
-  default: { isDevice: true },
-}));
-
-mock.module("@utils/storage", () => ({
-  storage: {
-    getString: async () => null,
-    setString: async () => undefined,
-  },
-}));
 
 // On CI, pushNotifications.test.ts runs before pushNotificationsSupport.test.ts and
 // loads this module graph first. Mutable shared mocks must stay controllable afterward.

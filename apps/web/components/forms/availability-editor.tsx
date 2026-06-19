@@ -8,18 +8,19 @@ import { Input } from "@/components/ui/input";
 import { readApiError } from "@/lib/api-client";
 import { availabilityWindowsEqual, normalizeTimeInput } from "@/lib/availability/compare-windows";
 import type { AvailabilityWindowResponse } from "@/lib/availability/serialize";
+import { type TranslationKey, useI18n } from "@/lib/i18n/client";
 import type { AvailabilityWindow } from "@tend/domain";
 import { Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 
 const DAYS = [
-  { dayOfWeek: 0, label: "Sunday" },
-  { dayOfWeek: 1, label: "Monday" },
-  { dayOfWeek: 2, label: "Tuesday" },
-  { dayOfWeek: 3, label: "Wednesday" },
-  { dayOfWeek: 4, label: "Thursday" },
-  { dayOfWeek: 5, label: "Friday" },
-  { dayOfWeek: 6, label: "Saturday" },
+  { dayOfWeek: 0, labelKey: "availability.day.sunday" },
+  { dayOfWeek: 1, labelKey: "availability.day.monday" },
+  { dayOfWeek: 2, labelKey: "availability.day.tuesday" },
+  { dayOfWeek: 3, labelKey: "availability.day.wednesday" },
+  { dayOfWeek: 4, labelKey: "availability.day.thursday" },
+  { dayOfWeek: 5, labelKey: "availability.day.friday" },
+  { dayOfWeek: 6, labelKey: "availability.day.saturday" },
 ] as const;
 
 interface EditableWindow {
@@ -53,6 +54,7 @@ function createWindow(dayOfWeek: number): EditableWindow {
 }
 
 export function AvailabilityEditor({ initialWindows, onSaved }: AvailabilityEditorProps) {
+  const { t } = useI18n();
   const [windows, setWindows] = useState<EditableWindow[]>(() => toEditableWindows(initialWindows));
   const [savedWindows, setSavedWindows] = useState<EditableWindow[]>(() =>
     toEditableWindows(initialWindows),
@@ -117,7 +119,7 @@ export function AvailabilityEditor({ initialWindows, onSaved }: AvailabilityEdit
     setSaving(false);
 
     if (!response.ok) {
-      setError(await readApiError(response, "Could not save availability."));
+      setError(await readApiError(response, t("errors.availability.save")));
       return;
     }
 
@@ -140,12 +142,13 @@ export function AvailabilityEditor({ initialWindows, onSaved }: AvailabilityEdit
       {windows.length === 0 ? <EmptyStatePreset preset="no-availability" /> : null}
 
       <div className="flex flex-col gap-4">
-        {DAYS.map(({ dayOfWeek, label }) => {
+        {DAYS.map(({ dayOfWeek, labelKey }) => {
           const dayWindows = windowsByDay.get(dayOfWeek) ?? [];
+          const label = t(labelKey as TranslationKey);
 
           return (
             <div
-              key={label}
+              key={labelKey}
               className="rounded-lg border border-border bg-card p-4 shadow-[var(--tend-shadow-sm)]"
             >
               <div className="flex items-center justify-between gap-3">
@@ -157,17 +160,21 @@ export function AvailabilityEditor({ initialWindows, onSaved }: AvailabilityEdit
                   onClick={() => addWindow(dayOfWeek)}
                 >
                   <Plus className="h-4 w-4" aria-hidden />
-                  Add window
+                  {t("availability.addWindow")}
                 </Button>
               </div>
 
               {dayWindows.length === 0 ? (
-                <p className="mt-3 text-sm text-muted-foreground">No windows set</p>
+                <p className="mt-3 text-sm text-muted-foreground">{t("availability.noWindows")}</p>
               ) : (
                 <ul className="mt-3 flex flex-col gap-3">
                   {dayWindows.map((window) => (
                     <li key={window.key} className="flex flex-wrap items-end gap-3">
-                      <FormField id={`start-${window.key}`} label="Start" className="min-w-[8rem]">
+                      <FormField
+                        id={`start-${window.key}`}
+                        label={t("availability.start")}
+                        className="min-w-[8rem]"
+                      >
                         <Input
                           id={`start-${window.key}`}
                           type="time"
@@ -178,7 +185,11 @@ export function AvailabilityEditor({ initialWindows, onSaved }: AvailabilityEdit
                         />
                       </FormField>
 
-                      <FormField id={`end-${window.key}`} label="End" className="min-w-[8rem]">
+                      <FormField
+                        id={`end-${window.key}`}
+                        label={t("availability.end")}
+                        className="min-w-[8rem]"
+                      >
                         <Input
                           id={`end-${window.key}`}
                           type="time"
@@ -195,7 +206,7 @@ export function AvailabilityEditor({ initialWindows, onSaved }: AvailabilityEdit
                         size="sm"
                         className="text-muted-foreground"
                         onClick={() => removeWindow(window.key)}
-                        aria-label={`Remove window on ${label}`}
+                        aria-label={t("availability.removeWindowOnDay", { day: label })}
                       >
                         <Trash2 className="h-4 w-4" aria-hidden />
                       </Button>
@@ -211,11 +222,11 @@ export function AvailabilityEditor({ initialWindows, onSaved }: AvailabilityEdit
       <div className="flex flex-wrap items-center justify-end gap-3">
         {success ? (
           <Alert variant="info" className="w-auto px-3 py-2">
-            <AlertDescription>Availability saved.</AlertDescription>
+            <AlertDescription>{t("availability.saved")}</AlertDescription>
           </Alert>
         ) : null}
         <Button type="button" onClick={handleSave} disabled={saving || !hasChanges}>
-          {saving ? "Saving…" : "Save availability"}
+          {saving ? t("availability.saving") : t("availability.save")}
         </Button>
       </div>
     </div>

@@ -3,6 +3,8 @@
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { RHYTHM_CUSTOM_SELECT_VALUE } from "@/lib/forms/rhythm";
+import { useI18n } from "@/lib/i18n/client";
+import { RHYTHM_TRANSLATION_KEYS } from "@/lib/i18n/labels";
 import {
   RHYTHM_MAX_DAYS,
   RHYTHM_MIN_DAYS,
@@ -19,6 +21,7 @@ interface RhythmSelectProps {
 }
 
 export function RhythmSelect({ value, onChange, options }: RhythmSelectProps) {
+  const { t } = useI18n();
   const rhythmOptions = options ?? RHYTHM_OPTIONS;
   const [isCustomMode, setIsCustomMode] = React.useState(
     () => !isPresetRhythm(value, rhythmOptions),
@@ -68,10 +71,12 @@ export function RhythmSelect({ value, onChange, options }: RhythmSelectProps) {
       >
         {rhythmOptions.map((option) => (
           <option key={option.days} value={option.days}>
-            {option.label}
+            {RHYTHM_TRANSLATION_KEYS[option.days]
+              ? t(RHYTHM_TRANSLATION_KEYS[option.days])
+              : option.label}
           </option>
         ))}
-        <option value={RHYTHM_CUSTOM_SELECT_VALUE}>Custom interval</option>
+        <option value={RHYTHM_CUSTOM_SELECT_VALUE}>{t("items.add.rhythm.custom")}</option>
       </Select>
 
       {isCustomMode ? (
@@ -85,9 +90,9 @@ export function RhythmSelect({ value, onChange, options }: RhythmSelectProps) {
             step={1}
             value={customDaysInput}
             onChange={(event) => handleCustomDaysChange(event.target.value)}
-            aria-label="Custom rhythm in days"
+            aria-label={t("items.add.rhythm.customLabel")}
           />
-          <p className="text-sm text-muted-foreground">How often, in days? (1–365)</p>
+          <p className="text-sm text-muted-foreground">{t("items.add.rhythm.customHelper")}</p>
         </div>
       ) : null}
     </div>

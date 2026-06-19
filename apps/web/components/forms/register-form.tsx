@@ -2,10 +2,12 @@
 
 import { AuthForm } from "@/components/forms/auth-form";
 import { readApiError } from "@/lib/api-client";
+import { useI18n } from "@/lib/i18n/client";
 import { useRouter } from "next/navigation";
 
 export function RegisterForm() {
   const router = useRouter();
+  const { t } = useI18n();
 
   async function handleSubmit(data: {
     displayName?: string;
@@ -19,7 +21,7 @@ export function RegisterForm() {
     });
 
     if (!response.ok) {
-      throw new Error(await readApiError(response, "Unable to create account"));
+      throw new Error(await readApiError(response, t("errors.createAccount")));
     }
 
     router.push("/onboarding");

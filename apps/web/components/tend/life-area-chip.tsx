@@ -1,4 +1,5 @@
-import { LIFE_AREA_LABELS } from "@/lib/design/status-labels";
+import { useI18n } from "@/lib/i18n/client";
+import { LIFE_AREA_TRANSLATION_KEYS } from "@/lib/i18n/labels";
 import { cn } from "@/lib/utils";
 import type { LifeArea } from "@tend/domain";
 
@@ -9,7 +10,8 @@ interface LifeAreaChipProps {
 }
 
 export function LifeAreaChip({ area, selected, onClick }: LifeAreaChipProps) {
-  const label = area === "all" ? "All" : LIFE_AREA_LABELS[area];
+  const { t } = useI18n();
+  const label = area === "all" ? t("common.all") : t(LIFE_AREA_TRANSLATION_KEYS[area]);
 
   return (
     <button

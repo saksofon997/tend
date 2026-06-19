@@ -2,7 +2,9 @@
 
 import { LifeAreaChip } from "@/components/tend/life-area-chip";
 import { Button } from "@/components/ui/button";
-import { LIFE_AREA_LABELS } from "@/lib/design/status-labels";
+import { useI18n } from "@/lib/i18n/client";
+import { type TranslationKey, en } from "@/lib/i18n/dictionaries";
+import { LIFE_AREA_TRANSLATION_KEYS } from "@/lib/i18n/labels";
 import { LIFE_AREA_ORDER } from "@/lib/onboarding/constants";
 import { cn } from "@/lib/utils";
 import type { LifeArea } from "@tend/domain";
@@ -14,15 +16,29 @@ interface LifeAreaFilterProps {
   defaultOpen?: boolean;
 }
 
-export function lifeAreaFilterToggleLabel(selected: LifeArea | null): string {
+type Translate = (key: TranslationKey, params?: Record<string, string | number>) => string;
+
+const defaultTranslate: Translate = (key, params = {}) => {
+  let value = en[key];
+  for (const [paramKey, paramValue] of Object.entries(params)) {
+    value = value.replace(`{{${paramKey}}}`, String(paramValue)) as typeof value;
+  }
+  return value;
+};
+
+export function lifeAreaFilterToggleLabel(
+  selected: LifeArea | null,
+  t: Translate = defaultTranslate,
+): string {
   if (selected === null) {
-    return "Filter by area?";
+    return t("filter.byArea.prompt");
   }
 
-  return `Filter by area · ${LIFE_AREA_LABELS[selected]}`;
+  return t("filter.byArea.selected", { area: t(LIFE_AREA_TRANSLATION_KEYS[selected]) });
 }
 
 export function LifeAreaFilter({ selected, onChange, defaultOpen = false }: LifeAreaFilterProps) {
+  const { t } = useI18n();
   const panelId = useId();
   const [open, setOpen] = useState(defaultOpen);
 
@@ -37,7 +53,7 @@ export function LifeAreaFilter({ selected, onChange, defaultOpen = false }: Life
         aria-controls={panelId}
         onClick={() => setOpen((current) => !current)}
       >
-        {lifeAreaFilterToggleLabel(selected)}
+        {lifeAreaFilterToggleLabel(selected, t)}
       </Button>
 
       <div
@@ -49,7 +65,7 @@ export function LifeAreaFilter({ selected, onChange, defaultOpen = false }: Life
         <div className="tend-collapsible-reveal__inner">
           <div className="tend-collapsible-reveal__content">
             <fieldset className="mt-3 flex flex-wrap gap-2 border-0 p-0">
-              <legend className="sr-only">Filter by life area</legend>
+              <legend className="sr-only">{t("filter.byArea.legend")}</legend>
               <LifeAreaChip
                 area="all"
                 selected={selected === null}

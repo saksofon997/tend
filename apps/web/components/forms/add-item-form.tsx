@@ -5,6 +5,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/layout/page-header";
 import { PresetSuggestions } from "@/components/tend/preset-suggestions";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n/client";
 import { dateInputToIso, todayDateInputValue } from "@/lib/onboarding/constants";
 import { cn } from "@/lib/utils";
 import type { TendPreset } from "@tend/domain";
@@ -21,6 +22,7 @@ const createEmptyDraft = (todayDate: string): Partial<ItemFormValues> => ({
 
 export function AddItemForm({ user }: AddItemFormProps) {
   const router = useRouter();
+  const { t } = useI18n();
   const todayDate = todayDateInputValue();
   const suggestionsId = useId();
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +34,7 @@ export function AddItemForm({ user }: AddItemFormProps) {
 
   async function handleSubmit(values: ItemFormValues) {
     if (!values.name.trim()) {
-      setError("Give your item a name");
+      setError(t("errors.item.nameRequired"));
       return;
     }
 
@@ -53,7 +55,7 @@ export function AddItemForm({ user }: AddItemFormProps) {
 
     if (!response.ok) {
       const body = (await response.json()) as { error?: string };
-      setError(body.error ?? "Unable to create item");
+      setError(body.error ?? t("errors.item.create"));
       setSubmitting(false);
       return;
     }
@@ -88,8 +90,8 @@ export function AddItemForm({ user }: AddItemFormProps) {
   return (
     <AppShell user={user} activePath="/">
       <PageHeader
-        title="Add item"
-        subtitle="Something you want to keep up with over time."
+        title={t("items.add.title")}
+        subtitle={t("items.add.subtitle")}
         action={
           <Button
             type="button"
@@ -100,7 +102,7 @@ export function AddItemForm({ user }: AddItemFormProps) {
             aria-controls={suggestionsId}
             onClick={() => setShowSuggestions((open) => !open)}
           >
-            Need ideas?
+            {t("items.add.suggestions.button")}
           </Button>
         }
       />
@@ -124,7 +126,7 @@ export function AddItemForm({ user }: AddItemFormProps) {
         initial={draft}
         onSubmit={handleSubmit}
         onCancel={() => router.push("/")}
-        submitLabel="Save item"
+        submitLabel={t("items.add.save")}
         error={error}
         submitting={submitting}
       />

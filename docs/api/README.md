@@ -21,6 +21,7 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 | Activity | [activity.md](./activity.md) | Correct or remove tended events |
 | Availability | [availability.md](./availability.md) | Weekly free-time windows |
 | Reminders | [reminders.md](./reminders.md) | In-app reminder eligibility |
+| Notifications | [notifications.md](./notifications.md) | Push subscriptions and server-side notification job |
 | Settings | [settings.md](./settings.md) | User preferences such as timezone |
 | Onboarding | [onboarding.md](./onboarding.md) | First-run setup status |
 
@@ -28,6 +29,7 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 
 | Date | Change |
 |------|--------|
+| 2026-06-19 | Added push subscription endpoints and 30-minute server-side notification job |
 | 2026-06-17 | Added user settings endpoint for timezone-aware reminders |
 | 2026-06-17 | Health responses include API `version`; footer shows app and API versions |
 | 2026-06-15 | Added availability and reminders endpoints |

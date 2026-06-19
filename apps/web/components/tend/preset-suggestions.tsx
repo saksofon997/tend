@@ -1,6 +1,7 @@
 "use client";
 
 import { LifeAreaChip } from "@/components/tend/life-area-chip";
+import { useI18n } from "@/lib/i18n/client";
 import { LIFE_AREA_ORDER } from "@/lib/onboarding/constants";
 import { cn } from "@/lib/utils";
 import { PRESETS_BY_AREA } from "@tend/domain";
@@ -20,6 +21,7 @@ export function PresetSuggestions({
   className,
   id,
 }: PresetSuggestionsProps) {
+  const { t } = useI18n();
   const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("household");
   const presets = PRESETS_BY_AREA[selectedArea];
 
@@ -30,13 +32,17 @@ export function PresetSuggestions({
         "rounded-lg border border-[var(--tend-border-subtle)] bg-[var(--tend-bg-elevated)] p-4",
         className,
       )}
-      aria-label="Item suggestions"
+      aria-label={t("items.add.suggestions.label")}
     >
       <div className="mb-4">
-        <p className="text-sm text-muted-foreground/90">Tap one to pre-fill the form below.</p>
+        <p className="text-sm text-muted-foreground/90">{t("items.add.suggestions.hint")}</p>
       </div>
 
-      <div className="mb-3 flex flex-wrap gap-2" role="tablist" aria-label="Life areas">
+      <div
+        className="mb-3 flex flex-wrap gap-2"
+        role="tablist"
+        aria-label={t("items.add.lifeArea.label")}
+      >
         {LIFE_AREA_ORDER.map((area) => (
           <LifeAreaChip
             key={area}

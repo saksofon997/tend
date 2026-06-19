@@ -80,17 +80,17 @@ function weekLabel(start: Date) {
   currentWeekStart.setDate(today.getDate() - today.getDay());
 
   if (start.toDateString() === currentWeekStart.toDateString()) {
-    return "This week";
+    return t("activity.group.thisWeek");
   }
 
   const previousWeekStart = new Date(currentWeekStart);
   previousWeekStart.setDate(currentWeekStart.getDate() - 7);
 
   if (start.toDateString() === previousWeekStart.toDateString()) {
-    return "Last week";
+    return t("activity.group.lastWeek");
   }
 
-  return `Week of ${formatEventDate(start.toISOString())}`;
+  return t("activity.group.weekOf", { date: formatEventDate(start.toISOString()) });
 }
 
 function formatEventDate(iso: string) {

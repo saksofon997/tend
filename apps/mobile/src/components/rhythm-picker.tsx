@@ -103,7 +103,7 @@ export function RhythmPicker({
             style={[styles.input, invalid ? styles.inputInvalid : null]}
             placeholder={t("items.add.rhythm.daysPlaceholder")}
             placeholderTextColor={colors.textSubtle}
-            accessibilityLabel="Custom rhythm in days"
+            accessibilityLabel={t("items.add.rhythm.customLabel")}
           />
           <Text style={styles.helper}>{t("items.add.rhythm.customHelper")}</Text>
         </View>

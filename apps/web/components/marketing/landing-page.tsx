@@ -1,15 +1,13 @@
 "use client";
 
+import { LanguageSelect } from "@/components/layout/language-select";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { TendLogoLink } from "@/components/layout/tend-logo-link";
 import { LandingPromoPreview } from "@/components/marketing/landing-promo-preview";
 import { Button } from "@/components/ui/button";
 import { appUrl } from "@/lib/canonical-host";
 import { useI18n } from "@/lib/i18n/client";
-import { ExternalLink } from "lucide-react";
 import Link from "next/link";
-
-const LATEST_EXPO_BUILD_URL = "https://expo.dev/accounts/saksofon997/projects/tend/builds";
 
 const VALUE_POINTS = [
   {
@@ -33,9 +31,12 @@ export function LandingPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <header className="tend-marketing-column flex items-center justify-between py-6">
         <TendLogoLink imageClassName="h-8 w-auto" priority />
-        <Button variant="ghost" size="sm" asChild>
-          <Link href={appUrl("/login")}>{t("landing.signIn")}</Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <LanguageSelect id="landing-language" />
+          <Button variant="ghost" size="sm" asChild>
+            <Link href={appUrl("/login")}>{t("landing.signIn")}</Link>
+          </Button>
+        </div>
       </header>
 
       <main className="tend-marketing-column flex flex-1 flex-col pb-12 pt-4 lg:pt-10">
@@ -56,12 +57,6 @@ export function LandingPage() {
               <Button variant="secondary" size="lg" asChild>
                 <Link href={appUrl("/login")}>{t("landing.signIn")}</Link>
               </Button>
-              <Button variant="ghost" size="lg" asChild>
-                <a href={LATEST_EXPO_BUILD_URL} target="_blank" rel="noreferrer">
-                  {t("landing.buildCta")}
-                  <ExternalLink className="h-4 w-4" aria-hidden="true" />
-                </a>
-              </Button>
             </div>
           </div>
 
@@ -70,7 +65,7 @@ export function LandingPage() {
           </div>
         </section>
 
-        <section aria-label="How Tend works" className="mt-14 grid gap-6 sm:grid-cols-3">
+        <section aria-label={t("landing.howItWorks")} className="mt-14 grid gap-6 sm:grid-cols-3">
           {VALUE_POINTS.map((point) => (
             <article key={point.titleKey}>
               <h2 className="font-display text-lg font-medium text-foreground">

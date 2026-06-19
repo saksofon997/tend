@@ -8,6 +8,6 @@ describe("web i18n dictionaries", () => {
 
   it("includes Serbian shell and landing copy", () => {
     expect(dictionaries.sr["nav.home"]).toBe("Početna");
-    expect(dictionaries.sr["landing.buildCta"]).toBe("Otvori najnoviji Expo build");
+    expect(dictionaries.sr["footer.appReleaseSoon"]).toBe("Izdanje aplikacije uskoro...");
   });
 });

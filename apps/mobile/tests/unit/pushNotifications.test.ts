@@ -1,201 +1,74 @@
-import { describe, expect, it, mock } from "bun:test";
+import { beforeEach, describe, expect, it, mock } from "bun:test";
+import { constantsState, storageCalls } from "../helpers/nativeModuleMocks";
 import "../helpers/nativeModuleMocks";
-import type { RemindersResponse } from "@/types";
 
-mock.module("expo-device", () => ({
-  default: { isDevice: true },
-}));
+let permissionStatus = "granted";
+let expoTokenOptions: unknown = null;
+let cancelScheduledCalls = 0;
 
-mock.module("@utils/storage", () => ({
-  storage: {
-    getString: async () => null,
-    setString: async () => undefined,
+mock.module("expo-notifications", () => ({
+  AndroidImportance: { DEFAULT: 3 },
+  cancelAllScheduledNotificationsAsync: async () => {
+    cancelScheduledCalls += 1;
   },
+  getExpoPushTokenAsync: async (options?: unknown) => {
+    expoTokenOptions = options ?? null;
+    return { data: "ExpoPushToken[test-token]" };
+  },
+  getPermissionsAsync: async () => ({ status: permissionStatus }),
+  requestPermissionsAsync: async () => ({ status: permissionStatus }),
+  setNotificationChannelAsync: async () => undefined,
+  setNotificationHandler: () => undefined,
 }));
 
-const { buildTendNotificationRequest } = await import("@api/pushNotifications");
+const { clearScheduledPushNotifications, disablePushNotifications, registerForPushNotifications } =
+  await import("@api/pushNotifications");
 
-function remindersResponse(overrides: Partial<RemindersResponse> = {}): RemindersResponse {
-  return {
-    reminders: [],
-    surfaceNow: [],
-    nextWindowAt: null,
-    inAvailabilityWindow: false,
-    ...overrides,
-  };
-}
-
-describe("buildTendNotificationRequest", () => {
-  it("uses the first surface-now reminder", () => {
-    const request = buildTendNotificationRequest(
-      remindersResponse({
-        surfaceNow: [
-          {
-            itemId: "must-1",
-            name: "Medication",
-            type: "must",
-            status: "needs_attention",
-            daysSinceLastTended: 2,
-            emphasis: "strong",
-            visibility: "now",
-            copy: "Medication is marked as a must and needs attention.",
-          },
-        ],
-      }),
-      new Date("2026-06-17T10:00:00.000Z"),
-    );
-
-    expect(request).toEqual({
-      title: "Medication could use tending",
-      body: "Marked as a must, so Tend keeps it easy to see.",
-      itemId: "must-1",
-      triggerAt: null,
+describe("push notifications", () => {
+  beforeEach(() => {
+    storageCalls.length = 0;
+    permissionStatus = "granted";
+    expoTokenOptions = null;
+    cancelScheduledCalls = 0;
+    Object.assign(constantsState, {
+      appOwnership: "standalone",
+      easConfig: { projectId: "project-from-eas" },
+      expoConfig: { extra: { eas: { projectId: "project-from-config" } } },
     });
   });
 
-  it("uses musts before wants for immediate notification titles", () => {
-    const request = buildTendNotificationRequest(
-      remindersResponse({
-        surfaceNow: [
-          {
-            itemId: "want-1",
-            name: "Bed sheets",
-            type: "want",
-            status: "needs_attention",
-            daysSinceLastTended: 14,
-            emphasis: "normal",
-            visibility: "now",
-            copy: "Bed sheets needs attention.",
-          },
-          {
-            itemId: "must-1",
-            name: "Medication",
-            type: "must",
-            status: "getting_stale",
-            daysSinceLastTended: 2,
-            emphasis: "strong",
-            visibility: "now",
-            copy: "Medication is marked as a must and is getting stale.",
-          },
-        ],
-      }),
-      new Date("2026-06-17T10:00:00.000Z"),
-    );
+  it("registers an Expo push token with the configured project id", async () => {
+    const result = await registerForPushNotifications();
 
-    expect(request?.title).toBe("Medication could use tending");
-    expect(request?.itemId).toBe("must-1");
-    expect(request?.body).toBe("Marked as a must, so Tend keeps it easy to see.");
+    expect(result).toEqual({
+      status: "registered",
+      token: "ExpoPushToken[test-token]",
+    });
+    expect(expoTokenOptions).toEqual({ projectId: "project-from-eas" });
+    expect(storageCalls).toEqual([
+      { action: "set", key: "tend.pushToken", value: "ExpoPushToken[test-token]" },
+    ]);
   });
 
-  it("defers surface-now musts until the next availability window for notifications", () => {
-    const request = buildTendNotificationRequest(
-      remindersResponse({
-        nextWindowAt: "2026-06-17T16:00:00.000Z",
-        inAvailabilityWindow: false,
-        surfaceNow: [
-          {
-            itemId: "must-1",
-            name: "Medication",
-            type: "must",
-            status: "needs_attention",
-            daysSinceLastTended: 2,
-            emphasis: "strong",
-            visibility: "now",
-            copy: "Medication is marked as a must and needs attention.",
-          },
-        ],
-        reminders: [
-          {
-            itemId: "must-1",
-            name: "Medication",
-            type: "must",
-            status: "needs_attention",
-            daysSinceLastTended: 2,
-            emphasis: "strong",
-            visibility: "now",
-            copy: "Medication is marked as a must and needs attention.",
-          },
-          {
-            itemId: "want-1",
-            name: "Bed sheets",
-            type: "want",
-            status: "getting_stale",
-            daysSinceLastTended: 8,
-            emphasis: "normal",
-            visibility: "next_window",
-            copy: "Bed sheets was last tended 8 days ago.",
-          },
-        ],
-      }),
-      new Date("2026-06-17T10:00:00.000Z"),
-    );
+  it("does not store a token when permission is denied", async () => {
+    permissionStatus = "denied";
 
-    expect(request?.title).toBe("Medication could use tending");
-    expect(request?.itemId).toBe("must-1");
-    expect(request?.triggerAt?.toISOString()).toBe("2026-06-17T16:00:00.000Z");
+    const result = await registerForPushNotifications();
+
+    expect(result.status).toBe("denied");
+    expect(storageCalls).toEqual([]);
   });
 
-  it("schedules deferred wants for the next availability window", () => {
-    const request = buildTendNotificationRequest(
-      remindersResponse({
-        nextWindowAt: "2026-06-17T16:00:00.000Z",
-        reminders: [
-          {
-            itemId: "want-1",
-            name: "Bed sheets",
-            type: "want",
-            status: "getting_stale",
-            daysSinceLastTended: 8,
-            emphasis: "normal",
-            visibility: "next_window",
-            copy: "Bed sheets was last tended 8 days ago.",
-          },
-        ],
-      }),
-      new Date("2026-06-17T10:00:00.000Z"),
-    );
+  it("clears any local schedules left from older app versions", async () => {
+    await clearScheduledPushNotifications();
 
-    expect(request?.title).toBe("Bed sheets could use tending");
-    expect(request?.body).toBe("Starting to drift from its rhythm, with no rush attached.");
-    expect(request?.triggerAt?.toISOString()).toBe("2026-06-17T16:00:00.000Z");
+    expect(cancelScheduledCalls).toBe(1);
   });
 
-  it("uses musts before wants for deferred notification titles", () => {
-    const request = buildTendNotificationRequest(
-      remindersResponse({
-        nextWindowAt: "2026-06-17T16:00:00.000Z",
-        reminders: [
-          {
-            itemId: "want-1",
-            name: "Bed sheets",
-            type: "want",
-            status: "needs_attention",
-            daysSinceLastTended: 14,
-            emphasis: "normal",
-            visibility: "next_window",
-            copy: "Bed sheets needs attention.",
-          },
-          {
-            itemId: "must-1",
-            name: "Medication",
-            type: "must",
-            status: "getting_stale",
-            daysSinceLastTended: 2,
-            emphasis: "strong",
-            visibility: "next_window",
-            copy: "Medication is marked as a must and is getting stale.",
-          },
-        ],
-      }),
-      new Date("2026-06-17T10:00:00.000Z"),
-    );
+  it("removes local token state when notifications are disabled", async () => {
+    await disablePushNotifications();
 
-    expect(request?.title).toBe("Medication could use tending");
-    expect(request?.itemId).toBe("must-1");
-    expect(request?.triggerAt?.toISOString()).toBe("2026-06-17T16:00:00.000Z");
-  });
-
-  it("returns null when nothing can surface now or later", () => {
-    expect(buildTendNotificationRequest(remindersResponse())).toBeNull();
+    expect(storageCalls).toEqual([{ action: "remove", key: "tend.pushToken" }]);
+    expect(cancelScheduledCalls).toBe(1);
   });
 });

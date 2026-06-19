@@ -12,9 +12,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatRhythm } from "@/lib/design/relative-time";
+import { useI18n } from "@/lib/i18n/client";
+import { LIFE_AREA_TRANSLATION_KEYS } from "@/lib/i18n/labels";
 import type { ItemResponse, TendEventResponse } from "@/lib/items/serialize";
 import {
-  LIFE_AREA_LABELS,
   dateInputToIso,
   isoToDateInputValue,
   todayDateInputValue,
@@ -32,6 +33,7 @@ interface ItemDetailViewProps {
 
 export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailViewProps) {
   const router = useRouter();
+  const { t } = useI18n();
   const todayDate = todayDateInputValue();
   const [item, setItem] = useState(initialItem);
   const [events, setEvents] = useState(initialEvents);
@@ -51,7 +53,7 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
     });
 
     if (!response.ok) {
-      setError("Could not mark this item as tended. Please try again.");
+      setError(t("errors.item.markDetail"));
       return;
     }
 
@@ -63,7 +65,7 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
 
   async function handleEditSubmit(values: ItemFormValues) {
     if (!values.name.trim()) {
-      setError("Give your item a name");
+      setError(t("errors.item.nameRequired"));
       return;
     }
 
@@ -84,7 +86,7 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
 
     if (!response.ok) {
       const body = (await response.json()) as { error?: string };
-      setError(body.error ?? "Unable to save changes");
+      setError(body.error ?? t("errors.item.update"));
       setSubmitting(false);
       return;
     }
@@ -115,7 +117,7 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
     });
 
     if (!response.ok) {
-      throw new Error("Update failed");
+      throw new Error(t("errors.activity.update"));
     }
 
     const body = (await response.json()) as { item: ItemResponse; event: TendEventResponse };
@@ -134,7 +136,7 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
     });
 
     if (!response.ok) {
-      throw new Error("Delete failed");
+      throw new Error(t("errors.activity.delete"));
     }
 
     const body = (await response.json()) as { item: ItemResponse };
@@ -147,10 +149,10 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
     <AppShell user={user} activePath="/">
       <PageHeader
         title={item.name}
-        subtitle="Rhythm, status, and recent tending history."
+        subtitle={t("items.detail.subtitle")}
         action={
           <Button asChild variant="secondary">
-            <Link href="/">Back to home</Link>
+            <Link href="/">{t("items.detail.backHome")}</Link>
           </Button>
         }
       />
@@ -164,7 +166,7 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
       {editing ? (
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>Edit item</CardTitle>
+            <CardTitle>{t("items.edit.title")}</CardTitle>
           </CardHeader>
           <CardContent>
             <ItemForm
@@ -180,7 +182,7 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
                 setEditing(false);
                 setError(null);
               }}
-              submitLabel="Save changes"
+              submitLabel={t("items.edit.save")}
               submitting={submitting}
             />
           </CardContent>
@@ -206,14 +208,16 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
                 className="block"
               />
               {item.lifeArea ? (
-                <p className="text-sm text-muted-foreground">{LIFE_AREA_LABELS[item.lifeArea]}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t(LIFE_AREA_TRANSLATION_KEYS[item.lifeArea])}
+                </p>
               ) : null}
             </div>
             <MarkTendedButton itemId={item.id} onTend={handleTend} />
           </CardHeader>
           <CardContent>
             <Button type="button" variant="secondary" onClick={() => setEditing(true)}>
-              Edit item
+              {t("items.detail.editAction")}
             </Button>
           </CardContent>
         </Card>
@@ -225,15 +229,15 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
             id="recent-events-heading"
             className="font-display text-xl font-medium text-foreground"
           >
-            Recent tending
+            {t("items.detail.recentEvents.title")}
           </h2>
           <p className="text-sm text-muted-foreground">
-            Correct dates if you logged something wrong.
+            {t("items.detail.recentEvents.description")}
           </p>
         </div>
 
         {events.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No tending logged yet for this item.</p>
+          <p className="text-sm text-muted-foreground">{t("items.detail.noEvents")}</p>
         ) : (
           <ul className="flex flex-col gap-3">
             {events.map((event) => (

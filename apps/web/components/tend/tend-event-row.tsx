@@ -5,6 +5,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatEventDate } from "@/lib/design/relative-time";
+import { useI18n } from "@/lib/i18n/client";
 import type { TendEventResponse } from "@/lib/items/serialize";
 import { dateInputToIso, isoToDateInputValue } from "@/lib/onboarding/constants";
 import { Loader2, Pencil, Trash2 } from "lucide-react";
@@ -17,6 +18,7 @@ interface TendEventRowProps {
 }
 
 export function TendEventRow({ event, onUpdate, onDelete }: TendEventRowProps) {
+  const { t } = useI18n();
   const [editing, setEditing] = useState(false);
   const [dateValue, setDateValue] = useState(isoToDateInputValue(event.tendedAt));
   const [saving, setSaving] = useState(false);
@@ -31,7 +33,7 @@ export function TendEventRow({ event, onUpdate, onDelete }: TendEventRowProps) {
       await onUpdate(event.id, dateInputToIso(dateValue));
       setEditing(false);
     } catch {
-      setError("Could not update this event. Please try again.");
+      setError(t("errors.activity.update"));
     } finally {
       setSaving(false);
     }
@@ -40,7 +42,7 @@ export function TendEventRow({ event, onUpdate, onDelete }: TendEventRowProps) {
   async function handleDelete() {
     if (
       !window.confirm(
-        "Remove this tended event? The item status will update from remaining history.",
+        `${t("activity.event.confirmRemove.title")} ${t("activity.event.confirmRemove.message")}`,
       )
     ) {
       return;
@@ -52,7 +54,7 @@ export function TendEventRow({ event, onUpdate, onDelete }: TendEventRowProps) {
     try {
       await onDelete(event.id);
     } catch {
-      setError("Could not remove this event. Please try again.");
+      setError(t("errors.activity.delete"));
       setDeleting(false);
     }
   }
@@ -67,7 +69,7 @@ export function TendEventRow({ event, onUpdate, onDelete }: TendEventRowProps) {
     <li className="rounded-lg border border-border bg-card px-4 py-3">
       {editing ? (
         <div className="flex flex-col gap-3">
-          <FormField id={`event-date-${event.id}`} label="Tended on">
+          <FormField id={`event-date-${event.id}`} label={t("activity.event.tendedOn")}>
             <Input
               id={`event-date-${event.id}`}
               type="date"
@@ -84,7 +86,7 @@ export function TendEventRow({ event, onUpdate, onDelete }: TendEventRowProps) {
 
           <div className="flex flex-wrap gap-2">
             <Button type="button" size="sm" onClick={handleSave} disabled={saving}>
-              {saving ? "Saving…" : "Save date"}
+              {saving ? t("common.saving") : t("activity.event.saveDate")}
             </Button>
             <Button
               type="button"
@@ -93,7 +95,7 @@ export function TendEventRow({ event, onUpdate, onDelete }: TendEventRowProps) {
               onClick={handleCancel}
               disabled={saving}
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
           </div>
         </div>
@@ -110,7 +112,7 @@ export function TendEventRow({ event, onUpdate, onDelete }: TendEventRowProps) {
               variant="ghost"
               onClick={() => setEditing(true)}
               disabled={deleting}
-              aria-label="Edit tended date"
+              aria-label={t("activity.event.edit")}
             >
               <Pencil className="h-4 w-4" aria-hidden />
             </Button>
@@ -120,7 +122,7 @@ export function TendEventRow({ event, onUpdate, onDelete }: TendEventRowProps) {
               variant="ghost"
               onClick={handleDelete}
               disabled={deleting}
-              aria-label="Remove tended event"
+              aria-label={t("activity.event.remove")}
             >
               {deleting ? (
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden />

@@ -90,3 +90,18 @@ export const availabilityWindows = pgTable("availability_windows", {
   startTime: time("start_time").notNull(),
   endTime: time("end_time").notNull(),
 });
+
+export const pushSubscriptions = pgTable("push_subscriptions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  token: text("token").notNull().unique(),
+  platform: text("platform").notNull(),
+  lastNotifiedItemId: uuid("last_notified_item_id").references(() => tendItems.id, {
+    onDelete: "set null",
+  }),
+  lastNotifiedAt: timestamp("last_notified_at", { withTimezone: true, mode: "date" }),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+});

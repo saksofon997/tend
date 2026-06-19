@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { lifeAreaEnum, tendItemTypeEnum, tendStatusEnum } from "../src/schema";
+import { lifeAreaEnum, pushSubscriptions, tendItemTypeEnum, tendStatusEnum } from "../src/schema";
 
 describe("schema enums", () => {
   it("defines tend item types", () => {
@@ -26,5 +26,11 @@ describe("schema enums", () => {
       "kids_family",
       "personal",
     ]);
+  });
+
+  it("defines push subscription notification history columns", () => {
+    expect(pushSubscriptions.token.name).toBe("token");
+    expect(pushSubscriptions.lastNotifiedItemId.name).toBe("last_notified_item_id");
+    expect(pushSubscriptions.lastNotifiedAt.name).toBe("last_notified_at");
   });
 });

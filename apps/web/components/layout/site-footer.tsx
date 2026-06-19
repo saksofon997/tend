@@ -5,8 +5,10 @@ import { useI18n } from "@/lib/i18n/client";
 import { API_VERSION, APP_VERSION } from "@/lib/version";
 import Link from "next/link";
 
+const LATEST_EXPO_BUILD_URL = "https://expo.dev/accounts/saksofon997/projects/tend/builds";
+
 export function SiteFooter() {
-  const { locale, t } = useI18n();
+  const { t } = useI18n();
 
   return (
     <footer className="mt-auto border-t border-border bg-card">
@@ -28,23 +30,20 @@ export function SiteFooter() {
             {t("footer.terms")}
           </Link>
         </nav>
-        <span aria-hidden="true" className="hidden text-border sm:inline">
-          ·
-        </span>
-        <span
-          className="text-muted-foreground/80"
-          title={`${t("footer.language")}: ${locale === "sr" ? t("language.serbian") : t("language.english")}`}
-        >
-          {t("footer.language")}: {locale === "sr" ? t("language.serbian") : t("language.english")}
-        </span>
-        <span aria-hidden="true" className="hidden text-border sm:inline">
-          ·
-        </span>
         <span
           className="text-xs text-muted-foreground/70"
           aria-label={`App version ${APP_VERSION}, API version ${API_VERSION}`}
         >
           {t("footer.appVersion", { appVersion: APP_VERSION, apiVersion: API_VERSION })}
+          <span aria-hidden="true"> · </span>
+          <a
+            href={LATEST_EXPO_BUILD_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            {t("footer.appReleaseSoon")}
+          </a>
         </span>
       </div>
     </footer>

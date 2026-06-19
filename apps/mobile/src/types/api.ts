@@ -65,3 +65,11 @@ export interface RemindersResponse {
   nextWindowAt: string | null;
   inAvailabilityWindow: boolean;
 }
+
+export interface PushSubscriptionResponse {
+  id: string;
+  token: string;
+  platform: "ios" | "android";
+  createdAt: string;
+  updatedAt: string;
+}

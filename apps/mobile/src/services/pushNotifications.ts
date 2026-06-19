@@ -1,7 +1,6 @@
-import type { ReminderResponse, RemindersResponse } from "@/types";
-import { t } from "@i18n";
 import { isPushNotificationsSupported } from "@utils/pushNotificationsSupport";
 import { storage } from "@utils/storage";
+import Constants from "expo-constants";
 import * as Device from "expo-device";
 import { Platform } from "react-native";
 
@@ -19,13 +18,6 @@ export type PushRegistrationResult =
       status: "denied" | "simulator" | "unavailable";
       reason: string;
     };
-
-export interface TendNotificationRequest {
-  title: string;
-  body: string;
-  itemId: string;
-  triggerAt: Date | null;
-}
 
 type NotificationsModule = typeof import("expo-notifications");
 
@@ -79,6 +71,10 @@ export async function configurePushNotifications() {
   }
 }
 
+function getExpoProjectId(): string | undefined {
+  return Constants.easConfig?.projectId ?? Constants.expoConfig?.extra?.eas?.projectId;
+}
+
 export async function registerForPushNotifications(): Promise<PushRegistrationResult> {
   if (!isPushNotificationsSupported()) {
     return {
@@ -121,7 +117,10 @@ export async function registerForPushNotifications(): Promise<PushRegistrationRe
   }
 
   try {
-    const tokenResponse = await Notifications.getDevicePushTokenAsync();
+    const projectId = getExpoProjectId();
+    const tokenResponse = projectId
+      ? await Notifications.getExpoPushTokenAsync({ projectId })
+      : await Notifications.getExpoPushTokenAsync();
     const token = tokenResponse.data;
     await storage.setString(PUSH_TOKEN_STORAGE_KEY, token);
 
@@ -141,114 +140,17 @@ export function getStoredPushToken() {
   return storage.getString(PUSH_TOKEN_STORAGE_KEY);
 }
 
+export async function clearScheduledPushNotifications(): Promise<boolean> {
+  const Notifications = await loadNotificationsModule();
+  if (!Notifications) {
+    return false;
+  }
+
+  await Notifications.cancelAllScheduledNotificationsAsync();
+  return true;
+}
+
 export async function disablePushNotifications(): Promise<boolean> {
   await storage.remove(PUSH_TOKEN_STORAGE_KEY);
-
-  const Notifications = await loadNotificationsModule();
-  if (!Notifications) {
-    return false;
-  }
-
-  await Notifications.cancelAllScheduledNotificationsAsync();
-  return true;
-}
-
-function reminderBody(reminder: ReminderResponse): string {
-  if (reminder.type === "must") {
-    return t("notifications.body.must");
-  }
-
-  if (reminder.status === "needs_attention") {
-    return t("notifications.body.needsAttention");
-  }
-
-  if (reminder.status === "getting_stale") {
-    return t("notifications.body.gettingStale");
-  }
-
-  return t("notifications.body.default");
-}
-
-function pickPriorityReminder(reminders: ReminderResponse[]): ReminderResponse | undefined {
-  return [...reminders].sort((left, right) => {
-    if (left.type !== right.type) {
-      return left.type === "must" ? -1 : 1;
-    }
-
-    if (left.status !== right.status) {
-      return left.status === "needs_attention" ? -1 : 1;
-    }
-
-    const leftDays = left.daysSinceLastTended ?? Number.MAX_SAFE_INTEGER;
-    const rightDays = right.daysSinceLastTended ?? Number.MAX_SAFE_INTEGER;
-    return rightDays - leftDays;
-  })[0];
-}
-
-export function buildTendNotificationRequest(
-  reminders: RemindersResponse,
-  _now = new Date(),
-): TendNotificationRequest | null {
-  if (!reminders.inAvailabilityWindow && reminders.nextWindowAt) {
-    const deferredReminder = pickPriorityReminder(reminders.reminders);
-    if (!deferredReminder) {
-      return null;
-    }
-
-    return {
-      title: t("notifications.title", { name: deferredReminder.name }),
-      body: reminderBody(deferredReminder),
-      itemId: deferredReminder.itemId,
-      triggerAt: new Date(reminders.nextWindowAt),
-    };
-  }
-
-  const immediateReminder = pickPriorityReminder(reminders.surfaceNow);
-  if (immediateReminder) {
-    return {
-      title: t("notifications.title", { name: immediateReminder.name }),
-      body: reminderBody(immediateReminder),
-      itemId: immediateReminder.itemId,
-      triggerAt: null,
-    };
-  }
-
-  if (!reminders.nextWindowAt) {
-    return null;
-  }
-
-  const deferredReminder = pickPriorityReminder(reminders.reminders);
-  if (!deferredReminder) {
-    return null;
-  }
-
-  return {
-    title: t("notifications.title", { name: deferredReminder.name }),
-    body: reminderBody(deferredReminder),
-    itemId: deferredReminder.itemId,
-    triggerAt: new Date(reminders.nextWindowAt),
-  };
-}
-
-export async function scheduleTendNotification(request: TendNotificationRequest): Promise<boolean> {
-  const Notifications = await loadNotificationsModule();
-  if (!Notifications) {
-    return false;
-  }
-
-  await configurePushNotifications();
-  await Notifications.cancelAllScheduledNotificationsAsync();
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: request.title,
-      body: request.body,
-      data: { itemId: request.itemId },
-      sound: false,
-    },
-    trigger: request.triggerAt
-      ? { type: Notifications.SchedulableTriggerInputTypes.DATE, date: request.triggerAt }
-      : null,
-  });
-
-  return true;
+  return clearScheduledPushNotifications();
 }

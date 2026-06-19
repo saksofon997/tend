@@ -1,6 +1,7 @@
 "use client";
 
 import { nextCarouselIndex } from "@/lib/carousel/auto-advance";
+import { useI18n } from "@/lib/i18n/client";
 import type { OnboardingPromoSlide } from "@/lib/onboarding/promo-slides";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -27,6 +28,7 @@ export function PromoCarousel({
   showArrowsOnHover = false,
   autoAdvanceIntervalMs,
 }: PromoCarouselProps) {
+  const { t } = useI18n();
   const slideCount = slides.length;
 
   function goTo(index: number) {
@@ -76,7 +78,7 @@ export function PromoCarousel({
                 showArrowsOnHover &&
                   "opacity-0 group-hover:opacity-100 group-focus-within:opacity-100",
               )}
-              aria-label="Previous slide"
+              aria-label={t("carousel.previousSlide")}
             >
               <ChevronLeft className="h-4 w-4" aria-hidden />
             </button>
@@ -89,7 +91,7 @@ export function PromoCarousel({
                 showArrowsOnHover &&
                   "opacity-0 group-hover:opacity-100 group-focus-within:opacity-100",
               )}
-              aria-label="Next slide"
+              aria-label={t("carousel.nextSlide")}
             >
               <ChevronRight className="h-4 w-4" aria-hidden />
             </button>
@@ -101,7 +103,7 @@ export function PromoCarousel({
         <div
           className="flex shrink-0 justify-center gap-2"
           role="tablist"
-          aria-label="Product preview slides"
+          aria-label={t("carousel.productPreview")}
         >
           {slides.map((entry, index) => (
             <button
@@ -109,7 +111,11 @@ export function PromoCarousel({
               type="button"
               role="tab"
               aria-selected={index === activeIndex}
-              aria-label={`Slide ${index + 1} of ${slideCount}: ${entry.title}`}
+              aria-label={t("carousel.slideLabel", {
+                index: index + 1,
+                count: slideCount,
+                title: entry.title,
+              })}
               onClick={() => onActiveIndexChange(index)}
               className={cn(
                 "h-2 w-2 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",

@@ -3,6 +3,7 @@ import type {
   AvailabilityWindowResponse,
   ItemResponse,
   OnboardingStatusResponse,
+  PushSubscriptionResponse,
   RemindersResponse,
   UserResponse,
   UserSettingsResponse,
@@ -188,6 +189,20 @@ export class TendApi {
 
   async listReminders() {
     return this.request<RemindersResponse>("/api/v1/reminders");
+  }
+
+  async savePushSubscription(token: string, platform: "ios" | "android") {
+    return this.request<{ subscription: PushSubscriptionResponse }>("/api/v1/push-subscriptions", {
+      method: "POST",
+      body: { token, platform },
+    });
+  }
+
+  async deletePushSubscription(token: string) {
+    return this.request<{ ok: true }>("/api/v1/push-subscriptions", {
+      method: "DELETE",
+      body: { token },
+    });
   }
 
   private async request<T>(

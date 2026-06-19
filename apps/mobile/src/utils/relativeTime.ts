@@ -1,15 +1,17 @@
+import { t } from "@i18n";
+
 export function formatRelativeFromDays(daysSince: number | null): string {
   if (daysSince === null) {
-    return "Never tended";
+    return t("relative.lastTendedNever");
   }
 
   if (daysSince === 0) {
-    return "Last tended today";
+    return t("relative.lastTendedToday");
   }
 
   if (daysSince === 1) {
-    return "Last tended yesterday";
+    return t("relative.lastTendedYesterday");
   }
 
-  return `Last tended ${daysSince} days ago`;
+  return t("relative.lastTendedDaysAgo", { days: daysSince });
 }

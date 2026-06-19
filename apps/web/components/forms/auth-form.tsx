@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { loginSchema, registerFormSchema } from "@/lib/auth/validation";
 import { fieldErrorsFromZod, registerFormFieldErrors } from "@/lib/forms/client-validation";
+import { useI18n } from "@/lib/i18n/client";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -23,6 +24,7 @@ interface AuthFormProps {
 }
 
 export function AuthForm({ mode, onSubmit }: AuthFormProps) {
+  const { t } = useI18n();
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -73,7 +75,7 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
           password: parsed.data.password,
         });
       } catch (submitError) {
-        setError(submitError instanceof Error ? submitError.message : "Something went wrong");
+        setError(submitError instanceof Error ? submitError.message : t("auth.error.fallback"));
         setSubmitting(false);
       }
       return;
@@ -89,7 +91,7 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
     try {
       await onSubmit(parsed.data);
     } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : "Something went wrong");
+      setError(submitError instanceof Error ? submitError.message : t("auth.error.fallback"));
       setSubmitting(false);
     }
   }
@@ -99,11 +101,9 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>{isRegister ? "Create your account" : "Sign in"}</CardTitle>
+        <CardTitle>{isRegister ? t("auth.createAccount.title") : t("auth.signIn.title")}</CardTitle>
         <CardDescription>
-          {isRegister
-            ? "What should we call you? We'll greet you by this name on the home screen."
-            : "Welcome back. See what could use a little attention today."}
+          {isRegister ? t("auth.register.description") : t("auth.description")}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -111,7 +111,7 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
           {isRegister ? (
             <FormField
               id="displayName"
-              label="Display name"
+              label={t("auth.displayName.label")}
               required
               error={fieldErrors.displayName}
             >
@@ -129,7 +129,7 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
             </FormField>
           ) : null}
 
-          <FormField id="email" label="Email" required error={fieldErrors.email}>
+          <FormField id="email" label={t("auth.email.label")} required error={fieldErrors.email}>
             <Input
               id="email"
               name="email"
@@ -145,10 +145,10 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
 
           <FormField
             id="password"
-            label="Password"
+            label={t("auth.password.label")}
             required
             error={fieldErrors.password}
-            helper={isRegister ? "At least 8 characters" : undefined}
+            helper={isRegister ? t("auth.password.helper") : undefined}
           >
             <PasswordInput
               id="password"
@@ -172,7 +172,7 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
           {isRegister ? (
             <FormField
               id="confirmPassword"
-              label="Confirm password"
+              label={t("auth.passwordConfirm.label")}
               required
               error={fieldErrors.confirmPassword}
             >
@@ -202,27 +202,27 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
           <Button type="submit" className="w-full" disabled={submitting}>
             {submitting
               ? isRegister
-                ? "Creating account…"
-                : "Signing in…"
+                ? t("auth.createAccount.loading")
+                : t("auth.signIn.loading")
               : isRegister
-                ? "Create account"
-                : "Sign in"}
+                ? t("auth.createAccount.button")
+                : t("auth.signIn.button")}
           </Button>
         </form>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           {isRegister ? (
             <>
-              Already have an account?{" "}
+              {t("auth.createAccount.prompt")}{" "}
               <Link href="/login" className="text-primary hover:underline">
-                Sign in
+                {t("auth.signIn.inlineLink")}
               </Link>
             </>
           ) : (
             <>
-              New here?{" "}
+              {t("auth.signIn.prompt")}{" "}
               <Link href="/register" className="text-primary hover:underline">
-                Create an account
+                {t("auth.createAccount.inlineLink")}
               </Link>
             </>
           )}

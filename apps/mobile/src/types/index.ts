@@ -3,6 +3,7 @@ export type {
   AvailabilityWindowResponse,
   ItemResponse,
   OnboardingStatusResponse,
+  PushSubscriptionResponse,
   ReminderResponse,
   RemindersResponse,
   UserSettingsResponse,

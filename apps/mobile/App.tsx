@@ -168,32 +168,30 @@ function pickReminderBannerItems(reminders: ReminderResponse[]) {
 function freeTimePhrase(now: Date) {
   const hour = now.getHours();
   if (hour < 12) {
-    return "this morning";
+    return t("notifications.headline.morning");
   }
 
   if (hour < 17) {
-    return "this afternoon";
+    return t("notifications.headline.afternoon");
   }
 
-  return "this evening";
+  return t("notifications.headline.evening");
 }
 
 type FreeTimeHeadlineBuilder = (timePhrase: string, plural: boolean) => string;
 
 const FREE_TIME_HEADLINE_VARIANTS: FreeTimeHeadlineBuilder[] = [
   (_timePhrase, plural) =>
-    plural
-      ? "If you're up for it, why not tend to these:"
-      : "If you're up for it, why not tend to this:",
-  (timePhrase) => `A quiet moment ${timePhrase}. Take a look at what needs attention:`,
+    plural ? t("notifications.headline.upForItPlural") : t("notifications.headline.upForItSingle"),
+  (timePhrase) => t("notifications.headline.quietMoment", { time: timePhrase }),
   (_timePhrase, plural) =>
     plural
-      ? "When you have a moment, these could use tending:"
-      : "When you have a moment, this could use tending:",
+      ? t("notifications.headline.whenMomentPlural")
+      : t("notifications.headline.whenMomentSingle"),
   (timePhrase, plural) =>
     plural
-      ? `If you have a spare moment ${timePhrase}, these could use a look:`
-      : `If you have a spare moment ${timePhrase}, this could use a look:`,
+      ? t("notifications.headline.spareMomentPlural", { time: timePhrase })
+      : t("notifications.headline.spareMomentSingle", { time: timePhrase }),
 ];
 
 function pickFreeTimeHeadlineVariantIndex(now: Date, variantCount: number) {
@@ -1826,8 +1824,7 @@ function SettingsScreen({
   const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
   const [settingsError, setSettingsError] = useState<string | null>(null);
   const [timezoneSaving, setTimezoneSaving] = useState(false);
-  const { disable, pushToken, register, registering, scheduleReminder, statusMessage } =
-    usePushNotifications(api);
+  const { disable, pushToken, register, registering, statusMessage } = usePushNotifications(api);
 
   useEffect(() => {
     let mounted = true;
@@ -1864,9 +1861,6 @@ function SettingsScreen({
     try {
       const response = await api.saveSettings({ timezone: timezone.trim() });
       setTimezone(response.settings.timezone);
-      if (pushToken) {
-        await scheduleReminder().catch(() => null);
-      }
       setSettingsMessage(t("settings.timezone.saved"));
     } catch (saveError) {
       setSettingsError(getErrorMessage(saveError, t("errors.settings.save")));

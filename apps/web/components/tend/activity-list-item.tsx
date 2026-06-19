@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { ActivityEntryResponse } from "@/lib/activity/serialize";
 import { formatEventDate } from "@/lib/design/relative-time";
+import { useI18n } from "@/lib/i18n/client";
 import { dateInputToIso, isoToDateInputValue } from "@/lib/onboarding/constants";
 import { Loader2, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -18,6 +19,7 @@ interface ActivityListItemProps {
 }
 
 export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItemProps) {
+  const { t } = useI18n();
   const [editing, setEditing] = useState(false);
   const [dateValue, setDateValue] = useState(isoToDateInputValue(entry.tendedAt));
   const [saving, setSaving] = useState(false);
@@ -32,7 +34,7 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
       await onUpdate(entry.id, dateInputToIso(dateValue));
       setEditing(false);
     } catch {
-      setError("Could not update this event. Please try again.");
+      setError(t("errors.activity.update"));
     } finally {
       setSaving(false);
     }
@@ -41,7 +43,7 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
   async function handleDelete() {
     if (
       !window.confirm(
-        "Remove this tended event? The item status will update from remaining history.",
+        `${t("activity.event.confirmRemove.title")} ${t("activity.event.confirmRemove.message")}`,
       )
     ) {
       return;
@@ -53,7 +55,7 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
     try {
       await onDelete(entry.id);
     } catch {
-      setError("Could not remove this event. Please try again.");
+      setError(t("errors.activity.delete"));
       setDeleting(false);
     }
   }
@@ -70,7 +72,7 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
         <div className="flex flex-col gap-3">
           <p className="break-words text-sm font-medium text-foreground">{entry.itemName}</p>
 
-          <FormField id={`activity-date-${entry.id}`} label="Tended on">
+          <FormField id={`activity-date-${entry.id}`} label={t("activity.event.tendedOn")}>
             <Input
               id={`activity-date-${entry.id}`}
               type="date"
@@ -87,7 +89,7 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
 
           <div className="flex flex-wrap gap-2">
             <Button type="button" size="sm" onClick={handleSave} disabled={saving}>
-              {saving ? "Saving…" : "Save date"}
+              {saving ? t("common.saving") : t("activity.event.saveDate")}
             </Button>
             <Button
               type="button"
@@ -96,7 +98,7 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
               onClick={handleCancel}
               disabled={saving}
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
           </div>
         </div>
@@ -121,7 +123,7 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
               variant="ghost"
               onClick={() => setEditing(true)}
               disabled={deleting}
-              aria-label={`Edit tended date for ${entry.itemName}`}
+              aria-label={t("activity.event.editForItem", { name: entry.itemName })}
             >
               <Pencil className="h-4 w-4" aria-hidden />
             </Button>
@@ -131,7 +133,7 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
               variant="ghost"
               onClick={handleDelete}
               disabled={deleting}
-              aria-label={`Remove tended event for ${entry.itemName}`}
+              aria-label={t("activity.event.removeForItem", { name: entry.itemName })}
             >
               {deleting ? (
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden />

@@ -3,7 +3,6 @@
 import { SiteFooter } from "@/components/layout/site-footer";
 import { TendLogoLink } from "@/components/layout/tend-logo-link";
 import { UserMenu } from "@/components/layout/user-menu";
-import { Select } from "@/components/ui/select";
 import { useI18n } from "@/lib/i18n/client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -21,7 +20,7 @@ const NAV_ITEMS = [
 ] as const;
 
 export function AppShell({ children, user, activePath }: AppShellProps) {
-  const { locale, setLocale, t } = useI18n();
+  const { t } = useI18n();
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -47,24 +46,7 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
           </nav>
 
           <div className="ml-auto flex shrink-0 items-center gap-2">
-            {user ? (
-              <>
-                <label className="sr-only" htmlFor="app-language">
-                  {t("language.label")}
-                </label>
-                <Select
-                  id="app-language"
-                  aria-label={t("language.label")}
-                  className="h-9 w-[6.75rem] py-1 pr-7 pl-2 text-sm sm:w-[7.5rem]"
-                  value={locale}
-                  onChange={(event) => setLocale(event.target.value === "sr" ? "sr" : "en")}
-                >
-                  <option value="en">{t("language.english")}</option>
-                  <option value="sr">{t("language.serbian")}</option>
-                </Select>
-                <UserMenu />
-              </>
-            ) : null}
+            {user ? <UserMenu /> : null}
           </div>
         </div>
       </header>

@@ -1,3 +1,6 @@
+"use client";
+
+import { type TranslationKey, useI18n } from "@/lib/i18n/client";
 import { cn } from "@/lib/utils";
 
 interface EmptyStateProps {
@@ -7,23 +10,23 @@ interface EmptyStateProps {
   className?: string;
 }
 
-type PresetCopy = { title: string; description?: string };
+type PresetCopy = { titleKey: TranslationKey; descriptionKey?: TranslationKey };
 
 const PRESETS: Record<"no-items" | "all-fresh" | "no-activity" | "no-availability", PresetCopy> = {
   "no-items": {
-    title: "Nothing to tend yet",
-    description: "Add something you want to keep up with: plants, sheets, a friendship.",
+    titleKey: "home.empty.title",
+    descriptionKey: "home.empty.body",
   },
   "all-fresh": {
-    title: "Nothing needs attention right now",
-    description: "Your rhythms look good. Tend will nudge you when something starts to drift.",
+    titleKey: "home.allFresh.title",
+    descriptionKey: "home.allFresh.body",
   },
   "no-activity": {
-    title: "No tending logged yet",
-    description: "Mark items as tended and they'll show up here.",
+    titleKey: "activity.empty.title",
+    descriptionKey: "activity.empty.body",
   },
   "no-availability": {
-    title: "No availability set yet",
+    titleKey: "availability.empty.title",
   },
 };
 
@@ -51,11 +54,12 @@ export function EmptyState({ title, description, action, className }: EmptyState
 }
 
 export function EmptyStatePreset({ preset, action, className }: EmptyStatePresetProps) {
+  const { t } = useI18n();
   const copy = PRESETS[preset];
   return (
     <EmptyState
-      title={copy.title}
-      description={copy.description}
+      title={t(copy.titleKey)}
+      description={copy.descriptionKey ? t(copy.descriptionKey) : undefined}
       action={action}
       className={className}
     />

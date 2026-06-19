@@ -7,6 +7,7 @@ import { EmptyStatePreset } from "@/components/tend/empty-state";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import type { ActivityEntryResponse } from "@/lib/activity/serialize";
 import { groupActivityEntriesByWeek } from "@/lib/activity/week-groups";
+import { useI18n } from "@/lib/i18n/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -17,6 +18,7 @@ interface ActivityViewProps {
 
 export function ActivityView({ user, initialEvents }: ActivityViewProps) {
   const router = useRouter();
+  const { t } = useI18n();
   const [events, setEvents] = useState(initialEvents);
   const [error, setError] = useState<string | null>(null);
   const weekGroups = groupActivityEntriesByWeek(events);
@@ -62,7 +64,7 @@ export function ActivityView({ user, initialEvents }: ActivityViewProps) {
 
   return (
     <AppShell user={user} activePath="/activity">
-      <PageHeader title="Recent activity" subtitle="What you've tended lately." />
+      <PageHeader title={t("activity.title")} subtitle={t("activity.subtitle")} />
 
       {error ? (
         <Alert variant="error" className="mb-6">
@@ -84,7 +86,9 @@ export function ActivityView({ user, initialEvents }: ActivityViewProps) {
                   {group.label}
                 </h2>
                 <span className="text-muted-foreground text-xs">
-                  {group.entries.length} {group.entries.length === 1 ? "event" : "events"}
+                  {group.entries.length === 1
+                    ? t("activity.eventCountOne")
+                    : t("activity.eventCount", { count: group.entries.length })}
                 </span>
               </div>
 

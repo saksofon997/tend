@@ -7,12 +7,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useI18n } from "@/lib/i18n/client";
 import { ChevronDown, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function UserMenu() {
   const router = useRouter();
+  const { t } = useI18n();
   const [signingOut, setSigningOut] = useState(false);
 
   async function handleSignOut() {
@@ -38,7 +40,7 @@ export function UserMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem disabled={signingOut} onSelect={() => void handleSignOut()}>
-          {signingOut ? "Signing out…" : "Sign out"}
+          {signingOut ? t("settings.signingOut") : t("settings.signOut")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

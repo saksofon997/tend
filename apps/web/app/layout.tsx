@@ -1,3 +1,4 @@
+import { I18nProvider } from "@/lib/i18n/client";
 import type { Metadata } from "next";
 import { DM_Sans, Newsreader } from "next/font/google";
 import "./globals.css";
@@ -23,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
       <body className="min-h-screen font-sans" suppressHydrationWarning>
-        {children}
+        <I18nProvider>{children}</I18nProvider>
       </body>
     </html>
   );

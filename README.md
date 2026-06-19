@@ -13,6 +13,8 @@ Tend is a lightweight life-maintenance app for recurring things that matter — 
 
 > What parts of my life could use attention now?
 
+Latest mobile test build: [Expo preview builds](https://expo.dev/accounts/saksofon997/projects/tend/builds).
+
 ![Tend home — gentle attention for recurring life care](apps/web/public/promo/tend-remember.jpg)
 
 ---

@@ -1,4 +1,5 @@
 import type { ReminderResponse, RemindersResponse } from "@/types";
+import { t } from "@i18n";
 import { isPushNotificationsSupported } from "@utils/pushNotificationsSupport";
 import { storage } from "@utils/storage";
 import * as Device from "expo-device";
@@ -152,25 +153,20 @@ export async function disablePushNotifications(): Promise<boolean> {
   return true;
 }
 
-const NOTIFICATION_BODY_VARIANTS = [
-  "When you have a moment, these could use tending.",
-  "When you have a moment, this could use tending.",
-  "A quiet moment might be enough to tend this.",
-  "Take a look when you have a little space.",
-] as const;
+function reminderBody(reminder: ReminderResponse): string {
+  if (reminder.type === "must") {
+    return t("notifications.body.must");
+  }
 
-function stableDayIndex(now: Date, seed: string, variantCount: number): number {
-  const dayNumber = Math.floor(now.getTime() / 86_400_000);
-  const seedTotal = Array.from(seed).reduce(
-    (total, character) => total + character.charCodeAt(0),
-    0,
-  );
-  return (dayNumber + seedTotal) % variantCount;
-}
+  if (reminder.status === "needs_attention") {
+    return t("notifications.body.needsAttention");
+  }
 
-function reminderBody(reminder: ReminderResponse, now: Date): string {
-  const index = stableDayIndex(now, reminder.itemId, NOTIFICATION_BODY_VARIANTS.length);
-  return NOTIFICATION_BODY_VARIANTS[index];
+  if (reminder.status === "getting_stale") {
+    return t("notifications.body.gettingStale");
+  }
+
+  return t("notifications.body.default");
 }
 
 function pickPriorityReminder(reminders: ReminderResponse[]): ReminderResponse | undefined {
@@ -191,7 +187,7 @@ function pickPriorityReminder(reminders: ReminderResponse[]): ReminderResponse |
 
 export function buildTendNotificationRequest(
   reminders: RemindersResponse,
-  now = new Date(),
+  _now = new Date(),
 ): TendNotificationRequest | null {
   if (!reminders.inAvailabilityWindow && reminders.nextWindowAt) {
     const deferredReminder = pickPriorityReminder(reminders.reminders);
@@ -200,8 +196,8 @@ export function buildTendNotificationRequest(
     }
 
     return {
-      title: `${deferredReminder.name} could use tending`,
-      body: reminderBody(deferredReminder, now),
+      title: t("notifications.title", { name: deferredReminder.name }),
+      body: reminderBody(deferredReminder),
       itemId: deferredReminder.itemId,
       triggerAt: new Date(reminders.nextWindowAt),
     };
@@ -210,8 +206,8 @@ export function buildTendNotificationRequest(
   const immediateReminder = pickPriorityReminder(reminders.surfaceNow);
   if (immediateReminder) {
     return {
-      title: `${immediateReminder.name} could use tending`,
-      body: reminderBody(immediateReminder, now),
+      title: t("notifications.title", { name: immediateReminder.name }),
+      body: reminderBody(immediateReminder),
       itemId: immediateReminder.itemId,
       triggerAt: null,
     };
@@ -227,8 +223,8 @@ export function buildTendNotificationRequest(
   }
 
   return {
-    title: `${deferredReminder.name} could use tending`,
-    body: reminderBody(deferredReminder, now),
+    title: t("notifications.title", { name: deferredReminder.name }),
+    body: reminderBody(deferredReminder),
     itemId: deferredReminder.itemId,
     triggerAt: new Date(reminders.nextWindowAt),
   };

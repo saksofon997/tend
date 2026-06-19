@@ -1,10 +1,4 @@
-import {
-  LIFE_AREA_LABELS,
-  LIFE_AREA_ORDER,
-  WEEKDAYS,
-  dateInputToIso,
-  todayDateInputValue,
-} from "@/constants";
+import { LIFE_AREA_ORDER, WEEKDAYS, dateInputToIso, todayDateInputValue } from "@/constants";
 import { tendFonts } from "@/fonts";
 import { colors, fonts, radius, spacing } from "@/theme";
 import type { ItemResponse, ReminderResponse, UserResponse } from "@/types";
@@ -23,7 +17,17 @@ import { useActivityEvents } from "@hooks/useActivityEvents";
 import { useAvailabilityWindows } from "@hooks/useAvailabilityWindows";
 import { useHomeItems } from "@hooks/useHomeItems";
 import { usePushNotifications } from "@hooks/usePushNotifications";
-import { lifeAreaFilterToggleLabel, t } from "@i18n";
+import {
+  LOCALE_OPTIONS,
+  LOCALE_STORAGE_KEY,
+  type Locale,
+  getLocale,
+  isLocale,
+  lifeAreaFilterToggleLabel,
+  lifeAreaLabel,
+  setLocale,
+  t,
+} from "@i18n";
 import { PRESETS_BY_AREA } from "@tend/domain";
 import {
   type LifeArea,
@@ -36,6 +40,7 @@ import { isDevMode } from "@utils/devMode";
 import { itemFormValuesFromItem } from "@utils/itemFormValues";
 import { getErrorMessage } from "@utils/networkError";
 import { restoreSession } from "@utils/sessionRestore";
+import { storage } from "@utils/storage";
 import { timeOptionsAfter } from "@utils/timeOptions";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
@@ -71,40 +76,44 @@ import {
 import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
-const TAB_ITEMS = [
-  { key: "home", label: t("nav.home"), Icon: Home },
-  { key: "activity", label: t("nav.activity"), Icon: Activity },
-  { key: "add", label: t("nav.add"), Icon: Plus },
-  { key: "availability", label: t("nav.availability"), Icon: CalendarClock },
-  { key: "settings", label: t("nav.settings"), Icon: Settings },
-] as const;
+function tabItems() {
+  return [
+    { key: "home", label: t("nav.home"), Icon: Home },
+    { key: "activity", label: t("nav.activity"), Icon: Activity },
+    { key: "add", label: t("nav.add"), Icon: Plus },
+    { key: "availability", label: t("nav.availability"), Icon: CalendarClock },
+    { key: "settings", label: t("nav.settings"), Icon: Settings },
+  ] as const;
+}
 
-const AUTH_PROMO_SLIDES = [
-  {
-    key: "remember",
-    image: require("./assets/promo/tend-remember.jpg"),
-    title: t("auth.splash.remember.title"),
-    description: t("auth.splash.remember.description"),
-  },
-  {
-    key: "care",
-    image: require("./assets/promo/tend-care.jpg"),
-    title: t("auth.splash.care.title"),
-    description: t("auth.splash.care.description"),
-  },
-  {
-    key: "reminder",
-    image: require("./assets/promo/tend-reminder.jpg"),
-    title: t("auth.splash.reminder.title"),
-    description: t("auth.splash.reminder.description"),
-  },
-  {
-    key: "activity",
-    image: require("./assets/promo/tend-activity.jpg"),
-    title: t("auth.splash.activity.title"),
-    description: t("auth.splash.activity.description"),
-  },
-] as const;
+function authPromoSlides() {
+  return [
+    {
+      key: "remember",
+      image: require("./assets/promo/tend-remember.jpg"),
+      title: t("auth.splash.remember.title"),
+      description: t("auth.splash.remember.description"),
+    },
+    {
+      key: "care",
+      image: require("./assets/promo/tend-care.jpg"),
+      title: t("auth.splash.care.title"),
+      description: t("auth.splash.care.description"),
+    },
+    {
+      key: "reminder",
+      image: require("./assets/promo/tend-reminder.jpg"),
+      title: t("auth.splash.reminder.title"),
+      description: t("auth.splash.reminder.description"),
+    },
+    {
+      key: "activity",
+      image: require("./assets/promo/tend-activity.jpg"),
+      title: t("auth.splash.activity.title"),
+      description: t("auth.splash.activity.description"),
+    },
+  ] as const;
+}
 
 const REMINDER_POLL_MS = 60_000;
 const REMINDER_BANNER_MAX_ITEMS = 3;
@@ -231,6 +240,7 @@ function AppBootstrap() {
   const [authMode, setAuthMode] = useState<AuthMode>("splash");
   const [booting, setBooting] = useState(true);
   const [checkingSession, setCheckingSession] = useState(false);
+  const [locale, setLocaleState] = useState<Locale>(getLocale());
   const [fontsLoaded, fontError] = useFonts(tendFonts);
   const [fontsTimedOut, setFontsTimedOut] = useState(false);
   const fontsReady = fontsLoaded || fontError !== null || fontsTimedOut;
@@ -245,6 +255,14 @@ function AppBootstrap() {
 
     async function boot() {
       try {
+        const savedLocale = await storage.getString(LOCALE_STORAGE_KEY);
+        if (isLocale(savedLocale)) {
+          setLocale(savedLocale);
+          if (mounted) {
+            setLocaleState(savedLocale);
+          }
+        }
+
         const client = await TendApi.load();
         if (!mounted) {
           return;
@@ -345,6 +363,12 @@ function AppBootstrap() {
   return (
     <AuthedApp
       api={api}
+      locale={locale}
+      onLocaleChange={(nextLocale) => {
+        setLocale(nextLocale);
+        setLocaleState(nextLocale);
+        void storage.setString(LOCALE_STORAGE_KEY, nextLocale);
+      }}
       user={user}
       onSignedOut={() => {
         setUser(null);
@@ -364,6 +388,7 @@ function AuthSplashScreen({
 }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const carouselRef = useRef<ScrollView>(null);
+  const slides = authPromoSlides();
   const { height, width } = useWindowDimensions();
   const slideWidth = Math.max(1, width);
   const imageWidth = Math.min(width - spacing.md * 2, 430);
@@ -373,18 +398,18 @@ function AuthSplashScreen({
   useEffect(() => {
     const intervalId = setInterval(() => {
       setActiveSlide((currentSlide) => {
-        const nextSlide = (currentSlide + 1) % AUTH_PROMO_SLIDES.length;
+        const nextSlide = (currentSlide + 1) % slides.length;
         carouselRef.current?.scrollTo({ x: nextSlide * slideWidth, animated: true });
         return nextSlide;
       });
     }, 4_000);
 
     return () => clearInterval(intervalId);
-  }, [slideWidth]);
+  }, [slideWidth, slides.length]);
 
   function handleScrollEnd(event: NativeSyntheticEvent<NativeScrollEvent>) {
     const nextSlide = Math.round(event.nativeEvent.contentOffset.x / slideWidth);
-    setActiveSlide(Math.min(AUTH_PROMO_SLIDES.length - 1, Math.max(0, nextSlide)));
+    setActiveSlide(Math.min(slides.length - 1, Math.max(0, nextSlide)));
   }
 
   return (
@@ -409,7 +434,7 @@ function AuthSplashScreen({
           onMomentumScrollEnd={handleScrollEnd}
           style={[styles.splashCarousel, { height: carouselHeight }]}
         >
-          {AUTH_PROMO_SLIDES.map((slide) => (
+          {slides.map((slide) => (
             <View key={slide.key} style={[styles.splashSlide, { width: slideWidth }]}>
               <Image
                 resizeMode="contain"
@@ -427,7 +452,7 @@ function AuthSplashScreen({
 
       <View style={styles.splashFooter}>
         <View style={styles.splashDots} accessibilityRole="adjustable">
-          {AUTH_PROMO_SLIDES.map((slide, index) => (
+          {slides.map((slide, index) => (
             <View
               key={slide.key}
               style={[styles.splashDot, index === activeSlide ? styles.splashDotActive : null]}
@@ -445,10 +470,14 @@ function AuthSplashScreen({
 
 function AuthedApp({
   api,
+  locale,
+  onLocaleChange,
   user,
   onSignedOut,
 }: {
   api: TendApi;
+  locale: Locale;
+  onLocaleChange: (locale: Locale) => void;
   user: UserResponse;
   onSignedOut: () => void;
 }) {
@@ -474,7 +503,15 @@ function AuthedApp({
             return <AvailabilityScreen api={api} />;
           }
 
-          return <SettingsScreen api={api} user={user} onSignedOut={onSignedOut} />;
+          return (
+            <SettingsScreen
+              api={api}
+              locale={locale}
+              onLocaleChange={onLocaleChange}
+              user={user}
+              onSignedOut={onSignedOut}
+            />
+          );
         }}
       </AnimatedTabScreen>
       <BottomBar activeTab={activeTab} onChange={setActiveTab} />
@@ -549,10 +586,11 @@ function BottomBar({
   onChange,
 }: { activeTab: TabKey; onChange: (tab: TabKey) => void }) {
   const insets = useSafeAreaInsets();
+  const items = tabItems();
 
   return (
     <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, spacing.sm) }]}>
-      {TAB_ITEMS.map(({ key, label, Icon }) => {
+      {items.map(({ key, label, Icon }) => {
         const active = activeTab === key;
         const isAdd = key === "add";
 
@@ -919,6 +957,7 @@ function OnboardingFlow({ api, onComplete }: { api: TendApi; onComplete: () => v
   const todayDate = useMemo(() => todayDateInputValue(), []);
   const [step, setStep] = useState<OnboardingStepKey>("welcome");
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const promoSlides = authPromoSlides();
   const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("household");
   const [itemFormOrigin, setItemFormOrigin] = useState<ItemFormOrigin>("choose");
   const [draft, setDraft] = useState<ItemDraft>(() => createDefaultDraft(todayDate));
@@ -979,7 +1018,7 @@ function OnboardingFlow({ api, onComplete }: { api: TendApi; onComplete: () => v
   }
 
   if (step === "welcome") {
-    const promoSlide = AUTH_PROMO_SLIDES[carouselIndex];
+    const promoSlide = promoSlides[carouselIndex];
 
     return (
       <OnboardingShell
@@ -1073,7 +1112,7 @@ function OnboardingFlow({ api, onComplete }: { api: TendApi; onComplete: () => v
           {LIFE_AREA_ORDER.map((area) => (
             <Chip
               key={area}
-              label={LIFE_AREA_LABELS[area]}
+              label={lifeAreaLabel(area)}
               selected={selectedArea === area}
               onPress={() => setSelectedArea(area)}
             />
@@ -1199,6 +1238,7 @@ function PromoPager({
   onActiveIndexChange: (index: number) => void;
 }) {
   const carouselRef = useRef<ScrollView>(null);
+  const slides = authPromoSlides();
   const { height, width } = useWindowDimensions();
   const slideWidth = Math.max(1, width - spacing.xxl * 2);
   const imageWidth = Math.min(slideWidth - spacing.lg * 2, 430);
@@ -1206,17 +1246,17 @@ function PromoPager({
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      const nextIndex = (activeIndex + 1) % AUTH_PROMO_SLIDES.length;
+      const nextIndex = (activeIndex + 1) % slides.length;
       carouselRef.current?.scrollTo({ x: nextIndex * slideWidth, animated: true });
       onActiveIndexChange(nextIndex);
     }, 4_000);
 
     return () => clearInterval(intervalId);
-  }, [activeIndex, onActiveIndexChange, slideWidth]);
+  }, [activeIndex, onActiveIndexChange, slideWidth, slides.length]);
 
   function handleScrollEnd(event: NativeSyntheticEvent<NativeScrollEvent>) {
     const nextIndex = Math.round(event.nativeEvent.contentOffset.x / slideWidth);
-    onActiveIndexChange(Math.min(AUTH_PROMO_SLIDES.length - 1, Math.max(0, nextIndex)));
+    onActiveIndexChange(Math.min(slides.length - 1, Math.max(0, nextIndex)));
   }
 
   return (
@@ -1230,7 +1270,7 @@ function PromoPager({
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={handleScrollEnd}
       >
-        {AUTH_PROMO_SLIDES.map((slide) => (
+        {slides.map((slide) => (
           <View key={slide.key} style={[styles.onboardingPromoSlide, { width: slideWidth }]}>
             <Image
               resizeMode="contain"
@@ -1241,7 +1281,7 @@ function PromoPager({
         ))}
       </ScrollView>
       <View style={styles.splashDots}>
-        {AUTH_PROMO_SLIDES.map((slide, index) => (
+        {slides.map((slide, index) => (
           <View
             key={slide.key}
             style={[styles.splashDot, index === activeIndex ? styles.splashDotActive : null]}
@@ -1769,10 +1809,14 @@ function AvailabilityScreen({ api }: { api: TendApi }) {
 
 function SettingsScreen({
   api,
+  locale,
+  onLocaleChange,
   user,
   onSignedOut,
 }: {
   api: TendApi;
+  locale: Locale;
+  onLocaleChange: (locale: Locale) => void;
   user: UserResponse;
   onSignedOut: () => void;
 }) {
@@ -1848,6 +1892,38 @@ function SettingsScreen({
       <View style={styles.settingsCard}>
         <Text style={styles.cardTitle}>{user.displayName}</Text>
         <Text style={styles.metaText}>{user.email}</Text>
+      </View>
+
+      <View style={styles.settingsCard}>
+        <Text style={styles.cardTitle}>{t("settings.language.title")}</Text>
+        <Text style={styles.metaText}>{t("settings.language.subtitle")}</Text>
+        <View style={styles.languageSwitch} accessibilityLabel={t("language.label")}>
+          {LOCALE_OPTIONS.map((option) => {
+            const selected = locale === option.value;
+
+            return (
+              <TouchableOpacity
+                key={option.value}
+                accessibilityRole="button"
+                accessibilityState={{ selected }}
+                style={[
+                  styles.languageSwitchOption,
+                  selected ? styles.languageSwitchSelected : null,
+                ]}
+                onPress={() => onLocaleChange(option.value)}
+              >
+                <Text
+                  style={[
+                    styles.languageSwitchText,
+                    selected ? styles.languageSwitchTextSelected : null,
+                  ]}
+                >
+                  {t(option.labelKey)}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </View>
 
       <View style={styles.settingsCard}>
@@ -2050,7 +2126,7 @@ function LifeAreaFilter({
           {LIFE_AREA_ORDER.map((area) => (
             <Chip
               key={area}
-              label={LIFE_AREA_LABELS[area]}
+              label={lifeAreaLabel(area)}
               selected={selected === area}
               onPress={() => onChange(area)}
             />
@@ -2918,6 +2994,36 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: spacing.lg,
     padding: spacing.lg,
+  },
+  languageSwitch: {
+    backgroundColor: colors.muted,
+    borderRadius: radius.md,
+    flexDirection: "row",
+    gap: spacing.xs,
+    marginTop: spacing.md,
+    padding: spacing.xs,
+  },
+  languageSwitchOption: {
+    alignItems: "center",
+    borderRadius: radius.sm,
+    flex: 1,
+    justifyContent: "center",
+    minHeight: 44,
+    paddingHorizontal: spacing.md,
+  },
+  languageSwitchSelected: {
+    backgroundColor: colors.card,
+    borderColor: colors.borderSubtle,
+    borderWidth: 1,
+  },
+  languageSwitchText: {
+    color: colors.textMuted,
+    fontFamily: fonts.bodyMedium,
+    fontSize: 14,
+  },
+  languageSwitchTextSelected: {
+    color: colors.text,
+    fontFamily: fonts.bodySemibold,
   },
   signOutButton: {
     alignItems: "center",

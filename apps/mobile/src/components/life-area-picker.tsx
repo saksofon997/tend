@@ -1,6 +1,6 @@
-import { LIFE_AREA_LABELS, LIFE_AREA_ORDER } from "@/constants";
+import { LIFE_AREA_ORDER } from "@/constants";
 import { colors, fonts, radius, spacing } from "@/theme";
-import { t } from "@i18n";
+import { lifeAreaLabel, t } from "@i18n";
 import type { LifeArea } from "@tend/domain";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -42,7 +42,7 @@ export function LifeAreaPicker({
       {LIFE_AREA_ORDER.map((area) => (
         <Chip
           key={area}
-          label={LIFE_AREA_LABELS[area]}
+          label={lifeAreaLabel(area)}
           selected={selected === area}
           onPress={() => onChange(area)}
         />

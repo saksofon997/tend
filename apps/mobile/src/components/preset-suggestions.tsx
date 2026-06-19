@@ -1,6 +1,6 @@
-import { LIFE_AREA_LABELS, LIFE_AREA_ORDER } from "@/constants";
+import { LIFE_AREA_ORDER } from "@/constants";
 import { colors, fonts, radius, spacing } from "@/theme";
-import { t } from "@i18n";
+import { lifeAreaLabel, t } from "@i18n";
 import { PRESETS_BY_AREA } from "@tend/domain";
 import type { LifeArea, TendPreset } from "@tend/domain";
 import { useState } from "react";
@@ -29,7 +29,7 @@ export function PresetSuggestions({ onSelect, selectedPresetName }: PresetSugges
             onPress={() => setSelectedArea(area)}
           >
             <Text style={[styles.chipText, selectedArea === area ? styles.chipTextSelected : null]}>
-              {LIFE_AREA_LABELS[area]}
+              {lifeAreaLabel(area)}
             </Text>
           </TouchableOpacity>
         ))}

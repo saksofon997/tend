@@ -47,7 +47,7 @@ describe("buildTendNotificationRequest", () => {
 
     expect(request).toEqual({
       title: "Medication could use tending",
-      body: "When you have a moment, these could use tending.",
+      body: "Marked as a must, so Tend keeps it easy to see.",
       itemId: "must-1",
       triggerAt: null,
     });
@@ -84,6 +84,7 @@ describe("buildTendNotificationRequest", () => {
 
     expect(request?.title).toBe("Medication could use tending");
     expect(request?.itemId).toBe("must-1");
+    expect(request?.body).toBe("Marked as a must, so Tend keeps it easy to see.");
   });
 
   it("defers surface-now musts until the next availability window for notifications", () => {
@@ -155,6 +156,7 @@ describe("buildTendNotificationRequest", () => {
     );
 
     expect(request?.title).toBe("Bed sheets could use tending");
+    expect(request?.body).toBe("Starting to drift from its rhythm, with no rush attached.");
     expect(request?.triggerAt?.toISOString()).toBe("2026-06-17T16:00:00.000Z");
   });
 

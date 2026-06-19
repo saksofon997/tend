@@ -15,6 +15,7 @@ import {
   getAttentionSectionDefaults,
   shouldShowAllFreshBanner,
 } from "@/lib/design/home-groups";
+import { useI18n } from "@/lib/i18n/client";
 import type { ItemResponse } from "@/lib/items/serialize";
 import type { ReminderResponse, RemindersApiResponse } from "@/lib/reminders/serialize";
 import { pickReminderBannerItems, reminderItemIdsKey } from "@/lib/reminders/surface-reminders";
@@ -32,6 +33,7 @@ interface HomeViewProps {
 
 export function HomeView({ user, initialItems }: HomeViewProps) {
   const router = useRouter();
+  const { t } = useI18n();
   const [items, setItems] = useState(initialItems);
   const [bannerReminders, setBannerReminders] = useState<ReminderResponse[]>([]);
   const bannerReminderSetKeyRef = useRef("");
@@ -92,7 +94,7 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
     });
 
     if (!response.ok) {
-      setTendError("Could not mark that item as tended. Please try again.");
+      setTendError(t("errors.item.mark"));
       return;
     }
 
@@ -123,15 +125,10 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
   return (
     <AppShell user={user} activePath="/">
       <PageHeader
-        title={
-          <>
-            Welcome back,
-            <br className="md:hidden" aria-hidden="true" /> {user.displayName}
-          </>
-        }
+        title={t("home.title", { name: user.displayName })}
         action={
           <Button asChild>
-            <Link href="/items/new">Add item</Link>
+            <Link href="/items/new">{t("home.addItem")}</Link>
           </Button>
         }
       />
@@ -151,7 +148,7 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
           preset="no-items"
           action={
             <Button asChild>
-              <Link href="/items/new">Add your first item</Link>
+              <Link href="/items/new">{t("home.addFirstItem")}</Link>
             </Button>
           }
         />
@@ -159,11 +156,11 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
         <>
           <LifeAreaFilter selected={lifeAreaFilter} onChange={setLifeAreaFilter} defaultOpen />
           <EmptyState
-            title="No items in this area"
-            description="Try another life area, or add something that fits here."
+            title={t("home.areaEmpty.title")}
+            description={t("home.areaEmpty.body")}
             action={
               <Button type="button" variant="secondary" onClick={() => setLifeAreaFilter(null)}>
-                Show all items
+                {t("common.showAllItems")}
               </Button>
             }
           />
@@ -178,29 +175,29 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
 
           <AttentionSection
             key={sectionDefaults.needsAttention ? "needs-open" : "needs-closed"}
-            title="Needs attention"
+            title={t("sections.needsAttention")}
             count={groups.needsAttention.length}
             defaultOpen={sectionDefaults.needsAttention}
-            emptyMessage="Nothing needs attention right now."
+            emptyMessage={t("sections.empty.needsAttention")}
           >
             {groups.needsAttention.map(renderItemCard)}
           </AttentionSection>
 
           <AttentionSection
             key={sectionDefaults.gettingStale ? "stale-open" : "stale-closed"}
-            title="Getting stale"
+            title={t("sections.gettingStale")}
             count={groups.gettingStale.length}
             defaultOpen={sectionDefaults.gettingStale}
-            emptyMessage="Nothing is drifting yet."
+            emptyMessage={t("sections.empty.gettingStale")}
           >
             {groups.gettingStale.map(renderItemCard)}
           </AttentionSection>
 
           <AttentionSection
-            title="Looking good"
+            title={t("sections.lookingGood")}
             count={groups.lookingGood.length}
             defaultOpen={sectionDefaults.lookingGood}
-            emptyMessage="No fresh items yet."
+            emptyMessage={t("sections.empty.lookingGood")}
           >
             {groups.lookingGood.map(renderItemCard)}
           </AttentionSection>

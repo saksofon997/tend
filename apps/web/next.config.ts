@@ -1,4 +1,6 @@
 import path from "node:path";
+import { isSentryEnabled } from "@/lib/sentry/options";
+import { withSentryConfig } from "@sentry/nextjs";
 import { config } from "dotenv";
 import type { NextConfig } from "next";
 
@@ -8,4 +10,16 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@tend/db", "@tend/domain"],
 };
 
-export default nextConfig;
+const sentryWebpackPluginOptions = {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  silent: !process.env.CI,
+  widenClientFileUpload: true,
+  tunnelRoute: "/monitoring",
+  disableLogger: true,
+};
+
+export default isSentryEnabled()
+  ? withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+  : nextConfig;

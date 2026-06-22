@@ -2,6 +2,7 @@ import { ItemDetailView } from "@/components/tend/item-detail-view";
 import { validateSession } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { serializeItem, serializeTendEvent } from "@/lib/items/serialize";
+import { getSharedUserMapForItems, sharedUserForItem } from "@/lib/items/sharing";
 import {
   getItemForUser,
   getRecentEventsForItem,
@@ -31,25 +32,29 @@ export default async function ItemDetailPage({ params }: ItemDetailPageProps) {
     redirect("/login");
   }
 
-  const settings = await getUserSettings(getDb(), user.id);
+  const database = getDb();
+  const settings = await getUserSettings(database, user.id);
   if (!isOnboardingComplete(settings)) {
     redirect("/onboarding");
   }
 
   const { id } = await params;
   const now = new Date();
-  const item = await getItemForUser(getDb(), user.id, id);
+  const item = await getItemForUser(database, user.id, id);
 
   if (!item) {
     notFound();
   }
 
-  const recentEvents = await getRecentEventsForItem(getDb(), user.id, id, 10);
+  const [recentEvents, sharedUserMap] = await Promise.all([
+    getRecentEventsForItem(database, user.id, id, 10),
+    getSharedUserMapForItems(database, user.id, [item]),
+  ]);
 
   return (
     <ItemDetailView
       user={{ displayName: user.displayName }}
-      initialItem={serializeItem(item, now)}
+      initialItem={serializeItem(item, now, sharedUserForItem(item, user.id, sharedUserMap))}
       initialEvents={recentEvents.map(serializeTendEvent)}
     />
   );

@@ -1,4 +1,5 @@
 import { toDomainAvailabilityWindow } from "@/lib/availability/serialize";
+import { getSharedUserMapForItems, sharedUserForItem } from "@/lib/items/sharing";
 import { serializeReminderResult, toTendItemInput } from "@/lib/reminders/serialize";
 import type { RemindersApiResponse } from "@/lib/reminders/serialize";
 import {
@@ -37,6 +38,14 @@ export async function getReminderResponseForUser(
     };
   });
   const result = eligibleReminders(itemInputs, availability, localNow);
+  const sharedUserMap = await getSharedUserMapForItems(database, userId, items);
+  const sharedUsersByItemId = new Map(
+    items.map((item) => [item.id, sharedUserForItem(item, userId, sharedUserMap)]),
+  );
 
-  return serializeReminderResult(result, (date) => zonedLocalDateToInstant(date, timezone));
+  return serializeReminderResult(
+    result,
+    (date) => zonedLocalDateToInstant(date, timezone),
+    sharedUsersByItemId,
+  );
 }

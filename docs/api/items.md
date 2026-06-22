@@ -15,7 +15,7 @@ List the signed-in user's tend items with computed status.
 
 | Status | Body | Description |
 |--------|------|-------------|
-| 200 | `{ items: Item[] }` | Items for the current user |
+| 200 | `{ items: Item[] }` | Items owned by or shared with the current user |
 | 401 | `{ error: string }` | Not signed in |
 
 ---
@@ -35,6 +35,7 @@ Create a tend item. If `lastTendedAt` is omitted, it defaults to now and an init
 | rhythmDays | integer | yes | Target rhythm in days (1–365) |
 | lifeArea | string | no | Life area enum value |
 | lastTendedAt | ISO datetime | no | Defaults to now |
+| sharedWithEmail | email \| null | no | Existing Tend user's email to share the item with |
 
 **Responses**
 
@@ -78,6 +79,7 @@ Update an item. Recomputes stored and returned status from rhythm and last tende
 | lifeArea | string \| null | no | Life area |
 | lastTendedAt | ISO datetime \| null | no | Correct last tended time |
 | archived | boolean | no | `true` archives; `false` restores |
+| sharedWithEmail | email \| null | no | Existing Tend user's email to share with; `null` removes sharing |
 
 **Responses**
 
@@ -109,7 +111,7 @@ Permanently delete an item and its tend history.
 
 ### `POST /api/v1/items/:id/tend`
 
-Mark an item as tended. Appends a tend event and updates `lastTendedAt`.
+Mark an item as tended. Appends a tend event and updates `lastTendedAt`. Either participant can mark a shared item as tended.
 
 **Auth:** Session cookie (required)
 
@@ -153,12 +155,21 @@ Starter suggestions from the domain catalog.
 | type | `"must"` \| `"want"` | Reminder strictness |
 | rhythmDays | integer | Target rhythm in days |
 | lifeArea | string \| null | Optional life area |
+| sharedWith | SharedUser \| null | Other participant for a shared Tend, from the current user's perspective |
 | lastTendedAt | ISO datetime \| null | Last tended timestamp |
 | status | `"fresh"` \| `"getting_stale"` \| `"needs_attention"` | Computed on read |
 | daysSinceLastTended | integer \| null | Whole days since last tended |
 | archivedAt | ISO datetime \| null | Archive timestamp |
 | createdAt | ISO datetime | Created at |
 | updatedAt | ISO datetime | Updated at |
+
+### `SharedUser`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | string (uuid) | User id |
+| displayName | string | Display name shown in shared Tend labels |
+| email | string | Email used to edit sharing |
 
 ### `TendEvent`
 

@@ -1,5 +1,11 @@
 import { describe, expect, it } from "bun:test";
-import { lifeAreaEnum, pushSubscriptions, tendItemTypeEnum, tendStatusEnum } from "../src/schema";
+import {
+  lifeAreaEnum,
+  pushSubscriptions,
+  tendItemTypeEnum,
+  tendItems,
+  tendStatusEnum,
+} from "../src/schema";
 
 describe("schema enums", () => {
   it("defines tend item types", () => {
@@ -32,5 +38,9 @@ describe("schema enums", () => {
     expect(pushSubscriptions.token.name).toBe("token");
     expect(pushSubscriptions.lastNotifiedItemId.name).toBe("last_notified_item_id");
     expect(pushSubscriptions.lastNotifiedAt.name).toBe("last_notified_at");
+  });
+
+  it("defines optional friend sharing on tend items", () => {
+    expect(tendItems.sharedWithUserId.name).toBe("shared_with_user_id");
   });
 });

@@ -9,6 +9,7 @@ export interface AttentionListItem {
   lastTendedAt: string | null;
   rhythmDays: number;
   lifeArea: ItemResponse["lifeArea"];
+  sharedWith: ItemResponse["sharedWith"];
   daysSinceLastTended: number | null;
 }
 
@@ -64,6 +65,7 @@ export function toAttentionListItem(item: ItemResponse): AttentionListItem {
     lastTendedAt: item.lastTendedAt,
     rhythmDays: item.rhythmDays,
     lifeArea: item.lifeArea,
+    sharedWith: item.sharedWith,
     daysSinceLastTended: item.daysSinceLastTended,
   };
 }

@@ -35,6 +35,9 @@ export const en = {
   "auth.splash.care.description":
     "Onboarding is a soft prompt. Pick one recurring thing and move on.",
   "auth.splash.care.title": "Begin with one small act of care.",
+  "auth.splash.friend.description":
+    "Add a friend's email so dinner, check-ins, or shared routines can appear for both of you.",
+  "auth.splash.friend.title": "Some care is easier to share.",
   "auth.splash.remember.description":
     "Household care, health, relationships, and life admin, gathered without overdue badges.",
   "auth.splash.remember.title": "The stuff that drifts, remembered softly.",
@@ -68,6 +71,7 @@ export const en = {
   "errors.availability.load": "Could not load availability",
   "errors.availability.save": "Could not save availability.",
   "errors.item.create": "Unable to create item",
+  "errors.item.friendEmailInvalid": "Enter a valid friend email address",
   "errors.item.update": "Unable to save changes",
   "errors.item.load": "Could not load items",
   "errors.item.mark": "Could not mark that item as tended. Please try again.",
@@ -120,6 +124,9 @@ export const en = {
   "items.add.rhythm.label": "Rhythm",
   "items.add.save": "Save item",
   "items.add.saving": "Saving…",
+  "items.add.sharedWith.helper": "Optional. The friend needs a Tend account already.",
+  "items.add.sharedWith.label": "Tend with a friend",
+  "items.add.sharedWith.placeholder": "friend@example.com",
   "items.add.subtitle": "Something you want to keep up with over time.",
   "items.add.suggestions.button": "Need ideas?",
   "items.add.suggestions.hint": "Tap one to pre-fill the form below.",
@@ -134,6 +141,7 @@ export const en = {
   "items.add.type.must.hint": "Use must sparingly for things that truly cannot drift.",
   "items.add.type.want.description": "Flexible, no guilt if it drifts",
   "items.markTended": "Mark tended",
+  "items.sharedWith": "With {{name}}",
   "nav.activity": "Activity",
   "nav.add": "Add",
   "nav.availability": "Availability",

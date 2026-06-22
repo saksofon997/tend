@@ -1,66 +1,48 @@
 import { describe, expect, it } from "bun:test";
 import {
   REMINDER_BANNER_MAX_ITEMS,
-  pickReminderBannerItems,
   reminderItemIdsKey,
+  selectReminderBannerItems,
 } from "@/lib/reminders/surface-reminders";
 
-describe("pickReminderBannerItems", () => {
-  it("returns every reminder when there are three or fewer", () => {
+describe("selectReminderBannerItems", () => {
+  it("keeps only must items that need attention", () => {
     const reminders = [
-      { itemId: "a", name: "A" },
-      { itemId: "b", name: "B" },
+      reminder({ itemId: "must-attention", name: "Medication" }),
+      reminder({ itemId: "must-stale", name: "Pet food", status: "getting_stale" }),
+      reminder({ itemId: "want-attention", name: "Bed sheets", type: "want" }),
     ];
 
-    expect(pickReminderBannerItems(reminders)).toEqual(reminders);
+    expect(selectReminderBannerItems(reminders).map((entry) => entry.itemId)).toEqual([
+      "must-attention",
+    ]);
   });
 
-  it("returns exactly three reminders when more are eligible", () => {
-    const reminders = Array.from({ length: 5 }, (_, index) => ({
-      itemId: `item-${index}`,
-      name: `Item ${index}`,
-    }));
+  it("returns the three most urgent must reminders", () => {
+    const reminders = [
+      reminder({ itemId: "five", name: "Five", daysSinceLastTended: 5 }),
+      reminder({ itemId: "never", name: "Never", daysSinceLastTended: null }),
+      reminder({ itemId: "twelve", name: "Twelve", daysSinceLastTended: 12 }),
+      reminder({ itemId: "eight", name: "Eight", daysSinceLastTended: 8 }),
+    ];
 
-    const picked = pickReminderBannerItems(reminders);
+    const selected = selectReminderBannerItems(reminders);
 
-    expect(picked).toHaveLength(REMINDER_BANNER_MAX_ITEMS);
-    expect(new Set(picked.map((reminder) => reminder.itemId)).size).toBe(REMINDER_BANNER_MAX_ITEMS);
-    expect(picked.every((reminder) => reminders.includes(reminder))).toBe(true);
+    expect(selected).toHaveLength(REMINDER_BANNER_MAX_ITEMS);
+    expect(selected.map((entry) => entry.itemId)).toEqual(["never", "twelve", "eight"]);
   });
 
   it("does not mutate the source list", () => {
     const reminders = [
-      { itemId: "a", name: "A" },
-      { itemId: "b", name: "B" },
-      { itemId: "c", name: "C" },
-      { itemId: "d", name: "D" },
+      reminder({ itemId: "a", name: "A", daysSinceLastTended: 1 }),
+      reminder({ itemId: "b", name: "B", daysSinceLastTended: 3 }),
+      reminder({ itemId: "c", name: "C", daysSinceLastTended: 2 }),
     ];
-    const snapshot = reminders.map((reminder) => ({ ...reminder }));
+    const snapshot = reminders.map((entry) => ({ ...entry }));
 
-    pickReminderBannerItems(reminders);
+    selectReminderBannerItems(reminders);
 
     expect(reminders).toEqual(snapshot);
-  });
-
-  it("can pick different subsets across calls", () => {
-    const reminders = Array.from({ length: 6 }, (_, index) => ({
-      itemId: `item-${index}`,
-      name: `Item ${index}`,
-    }));
-
-    const seen = new Set<string>();
-
-    for (let attempt = 0; attempt < 20; attempt++) {
-      const picked = pickReminderBannerItems(reminders);
-      seen.add(
-        picked
-          .map((reminder) => reminder.itemId)
-          .sort()
-          .join(","),
-      );
-    }
-
-    expect(seen.size).toBeGreaterThan(1);
   });
 });
 
@@ -72,3 +54,22 @@ describe("reminderItemIdsKey", () => {
     expect(first).toBe(second);
   });
 });
+
+function reminder(
+  overrides: Partial<{
+    itemId: string;
+    name: string;
+    type: "must" | "want";
+    status: "getting_stale" | "needs_attention";
+    daysSinceLastTended: number | null;
+  }>,
+) {
+  return {
+    itemId: "item",
+    name: "Item",
+    type: "must" as const,
+    status: "needs_attention" as const,
+    daysSinceLastTended: 10,
+    ...overrides,
+  };
+}

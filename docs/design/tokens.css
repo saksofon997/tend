@@ -31,6 +31,10 @@
   --tend-secondary-hover: #6a7d87;
   --tend-secondary-muted: #eef2f4;
 
+  --tend-shared: #5b6f79; /* shared care badge text, AA on shared bg */
+  --tend-shared-bg: #eef2f4;
+  --tend-shared-border: #7a8f9a;
+
   /* ── Color: status (never punitive red) ──────────────── */
   --tend-status-fresh: #6b8f71;
   --tend-status-fresh-bg: #edf4ee;

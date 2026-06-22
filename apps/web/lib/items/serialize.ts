@@ -8,12 +8,19 @@ export interface ItemResponse {
   type: TendItemType;
   rhythmDays: number;
   lifeArea: LifeArea | null;
+  sharedWith: SharedTendUserResponse | null;
   lastTendedAt: string | null;
   status: TendStatus;
   daysSinceLastTended: number | null;
   archivedAt: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface SharedTendUserResponse {
+  id: string;
+  displayName: string;
+  email: string;
 }
 
 export interface TendEventResponse {
@@ -27,7 +34,11 @@ export function toIso(date: Date | null | undefined): string | null {
   return date ? date.toISOString() : null;
 }
 
-export function serializeItem(item: TendItemRow, now = new Date()): ItemResponse {
+export function serializeItem(
+  item: TendItemRow,
+  now = new Date(),
+  sharedWith: SharedTendUserResponse | null = null,
+): ItemResponse {
   const status = computeStatus({
     lastTendedAt: item.lastTendedAt,
     rhythmDays: item.rhythmDays,
@@ -40,6 +51,7 @@ export function serializeItem(item: TendItemRow, now = new Date()): ItemResponse
     type: item.type,
     rhythmDays: item.rhythmDays,
     lifeArea: item.lifeArea,
+    sharedWith,
     lastTendedAt: toIso(item.lastTendedAt),
     status,
     daysSinceLastTended: daysSinceLastTended(item.lastTendedAt, now),

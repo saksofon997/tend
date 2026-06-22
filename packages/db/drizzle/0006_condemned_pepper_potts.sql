@@ -1,0 +1,2 @@
+ALTER TABLE "tend_items" ADD COLUMN "shared_with_user_id" uuid;--> statement-breakpoint
+ALTER TABLE "tend_items" ADD CONSTRAINT "tend_items_shared_with_user_id_users_id_fk" FOREIGN KEY ("shared_with_user_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;

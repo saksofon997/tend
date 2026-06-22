@@ -12,6 +12,7 @@ function item(overrides: Partial<ItemResponse> & Pick<ItemResponse, "id" | "name
     type: "want",
     rhythmDays: 7,
     lifeArea: null,
+    sharedWith: null,
     lastTendedAt: "2026-06-10T12:00:00.000Z",
     status: "getting_stale",
     daysSinceLastTended: 5,
@@ -58,6 +59,22 @@ describe("buildAttentionGroups", () => {
     ]);
 
     expect(groups.lookingGood.map((entry) => entry.id)).toEqual(["1"]);
+  });
+
+  it("keeps shared user metadata on grouped items", () => {
+    const groups = buildAttentionGroups([
+      item({
+        id: "shared",
+        name: "Dinner",
+        sharedWith: {
+          id: "friend",
+          displayName: "Mira",
+          email: "mira@example.com",
+        },
+      }),
+    ]);
+
+    expect(groups.gettingStale[0]?.sharedWith?.displayName).toBe("Mira");
   });
 
   it("treats a lone needs-attention item as needing attention", () => {

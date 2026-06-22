@@ -5,6 +5,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/layout/page-header";
 import { MarkTendedButton } from "@/components/tend/mark-tended-button";
 import { RelativeTime } from "@/components/tend/relative-time";
+import { SharedWithBadge } from "@/components/tend/shared-with-badge";
 import { StatusBadge } from "@/components/tend/status-badge";
 import { TendEventRow } from "@/components/tend/tend-event-row";
 import { TypeBadge } from "@/components/tend/type-badge";
@@ -81,6 +82,7 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
         rhythmDays: values.rhythmDays,
         lifeArea: values.lifeArea,
         lastTendedAt: dateInputToIso(values.lastTendedDate),
+        sharedWithEmail: values.sharedWithEmail.trim() || null,
       }),
     });
 
@@ -176,6 +178,7 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
                 rhythmDays: item.rhythmDays,
                 lifeArea: item.lifeArea,
                 lastTendedDate: isoToDateInputValue(item.lastTendedAt, todayDate),
+                sharedWithEmail: item.sharedWith?.email ?? "",
               }}
               onSubmit={handleEditSubmit}
               onCancel={() => {
@@ -199,6 +202,9 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
             <div className="space-y-3">
               <div className="flex flex-wrap items-center gap-2">
                 <TypeBadge type={item.type} />
+                {item.sharedWith ? (
+                  <SharedWithBadge displayName={item.sharedWith.displayName} />
+                ) : null}
                 <StatusBadge status={item.status} />
               </div>
               <p className="text-sm text-muted-foreground">{formatRhythm(item.rhythmDays)}</p>

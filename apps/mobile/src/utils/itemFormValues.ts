@@ -8,6 +8,7 @@ export interface ItemFormValues {
   rhythmDays: number;
   lifeArea: LifeArea | null;
   lastTendedDate: string;
+  sharedWithEmail: string;
 }
 
 export function itemFormValuesFromItem(item: ItemResponse): ItemFormValues {
@@ -17,5 +18,6 @@ export function itemFormValuesFromItem(item: ItemResponse): ItemFormValues {
     rhythmDays: item.rhythmDays,
     lifeArea: item.lifeArea,
     lastTendedDate: isoToDateInputValue(item.lastTendedAt),
+    sharedWithEmail: item.sharedWith?.email ?? "",
   };
 }

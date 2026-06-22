@@ -13,6 +13,7 @@ describe("validateItemForm", () => {
           rhythmDays: 7,
           lifeArea: null,
           lastTendedDate: todayDate,
+          sharedWithEmail: "",
         },
         todayDate,
       ),
@@ -27,6 +28,7 @@ describe("validateItemForm", () => {
         rhythmDays: 7,
         lifeArea: null,
         lastTendedDate: todayDate,
+        sharedWithEmail: "",
       },
       todayDate,
     );
@@ -42,6 +44,7 @@ describe("validateItemForm", () => {
         rhythmDays: 7,
         lifeArea: null,
         lastTendedDate: "2026-06-16",
+        sharedWithEmail: "",
       },
       todayDate,
     );
@@ -57,6 +60,7 @@ describe("validateItemForm", () => {
         rhythmDays: 7,
         lifeArea: null,
         lastTendedDate: todayDate,
+        sharedWithEmail: "",
       },
       todayDate,
     );
@@ -72,10 +76,27 @@ describe("validateItemForm", () => {
         rhythmDays: 400,
         lifeArea: "health",
         lastTendedDate: todayDate,
+        sharedWithEmail: "",
       },
       todayDate,
     );
 
     expect(errors?.rhythmDays).toBe("Rhythm must be 365 days or fewer");
+  });
+
+  it("rejects invalid friend emails", () => {
+    const errors = validateItemForm(
+      {
+        name: "Dinner",
+        type: "want",
+        rhythmDays: 14,
+        lifeArea: "relationships",
+        lastTendedDate: todayDate,
+        sharedWithEmail: "not-an-email",
+      },
+      todayDate,
+    );
+
+    expect(errors?.sharedWithEmail).toBe("Enter a valid friend email address");
   });
 });

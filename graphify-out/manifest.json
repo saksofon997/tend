@@ -1,2977 +1,1927 @@
 {
   "apps/web/app/activity/page.tsx": {
-    "mtime": 1781536724.1053858,
-    "ast_hash": "cec5ab2306789ae5dd98807cfbff39e5",
-    "semantic_hash": ""
+    "mtime": 1781777999.1434338,
+    "ast_hash": "232f491d9fbfd830f8362561c88c9041",
+    "semantic_hash": "232f491d9fbfd830f8362561c88c9041"
   },
   "apps/web/app/api/v1/activity/[eventId]/route.ts": {
-    "mtime": 1781533801.4854193,
-    "ast_hash": "065c3353d4b9f87f45d76c3ed683df84",
+    "mtime": 1781885554.2567248,
+    "ast_hash": "9f62c3a61286a1844d0d546aaf4423fb",
     "semantic_hash": ""
   },
   "apps/web/app/api/v1/auth/login/route.ts": {
-    "mtime": 1781542472.1561007,
-    "ast_hash": "88b8cea0c7e1b8dee3837b5a57174491",
-    "semantic_hash": ""
+    "mtime": 1781777999.1438894,
+    "ast_hash": "98cac67388b67435f5ae219ee5890a4d",
+    "semantic_hash": "98cac67388b67435f5ae219ee5890a4d"
   },
   "apps/web/app/api/v1/auth/logout/route.ts": {
-    "mtime": 1781536285.583022,
-    "ast_hash": "1d92416bc17f0e46cd75b1cea8e7f08c",
-    "semantic_hash": ""
+    "mtime": 1781777999.1440668,
+    "ast_hash": "c0d1057a5e3dbedcadf8593a215521da",
+    "semantic_hash": "c0d1057a5e3dbedcadf8593a215521da"
   },
   "apps/web/app/api/v1/auth/register/route.ts": {
-    "mtime": 1781542469.7021294,
-    "ast_hash": "5009bb950287d21c934643f6e3b271d6",
-    "semantic_hash": ""
+    "mtime": 1781777999.1441958,
+    "ast_hash": "8152433b45a7d5024b5443e6447758d9",
+    "semantic_hash": "8152433b45a7d5024b5443e6447758d9"
   },
   "apps/web/app/api/v1/health/route.ts": {
-    "mtime": 1781524434.6805396,
-    "ast_hash": "9a9095f25f1393bfdb1818daf4062621",
-    "semantic_hash": ""
+    "mtime": 1781777999.1448004,
+    "ast_hash": "67d671e3bfcb833b9b3d892b80f54db5",
+    "semantic_hash": "67d671e3bfcb833b9b3d892b80f54db5"
   },
   "apps/web/app/api/v1/items/[id]/route.ts": {
-    "mtime": 1781527305.2891197,
-    "ast_hash": "74c16aacd06dd7eb09ae76fcd8e1e2f8",
+    "mtime": 1781885583.990567,
+    "ast_hash": "2de70b2385a9f24bb4c12e7826f1ab75",
     "semantic_hash": ""
   },
   "apps/web/app/api/v1/items/[id]/tend/route.ts": {
-    "mtime": 1781527293.2994242,
-    "ast_hash": "a23fc545a9a87a401e826796cbdf1005",
+    "mtime": 1781885510.4317997,
+    "ast_hash": "40c8fac16f7c0d17161d8ee9d7b86508",
     "semantic_hash": ""
   },
   "apps/web/app/api/v1/items/presets/route.ts": {
-    "mtime": 1781527293.2965357,
-    "ast_hash": "66ff2fb753e801b98965257eb3418490",
-    "semantic_hash": ""
+    "mtime": 1781777999.145258,
+    "ast_hash": "3fa5a5f21cdccbf098abc1c209c73f2c",
+    "semantic_hash": "3fa5a5f21cdccbf098abc1c209c73f2c"
   },
   "apps/web/app/api/v1/items/route.ts": {
-    "mtime": 1781527293.301147,
-    "ast_hash": "cfa45c6879e3ba1a4c1edfa46ede1cff",
+    "mtime": 1781885510.207833,
+    "ast_hash": "17d5e5f2e94d93903225153e73799fcf",
     "semantic_hash": ""
   },
   "apps/web/app/api/v1/me/route.ts": {
-    "mtime": 1781526442.5470085,
-    "ast_hash": "9f3d0377c893ee5bde8cfc2377a89b1a",
-    "semantic_hash": ""
+    "mtime": 1781777999.145447,
+    "ast_hash": "26cde95bdaa29ab74b03579b5904beb5",
+    "semantic_hash": "26cde95bdaa29ab74b03579b5904beb5"
   },
   "apps/web/app/api/v1/onboarding/route.ts": {
-    "mtime": 1781527787.719731,
-    "ast_hash": "2a744f8b9196ba786a7b1c61ad9007e1",
-    "semantic_hash": ""
+    "mtime": 1781777999.1455705,
+    "ast_hash": "351e102aed5a23df056be0e00d2b74b1",
+    "semantic_hash": "351e102aed5a23df056be0e00d2b74b1"
   },
   "apps/web/app/items/[id]/page.tsx": {
-    "mtime": 1781603857.4633718,
-    "ast_hash": "c7c7051f5c7bfe611f6d0b498e03d54e",
+    "mtime": 1781885554.134306,
+    "ast_hash": "0d44669b80a13c2e1b68b584d092da30",
     "semantic_hash": ""
   },
   "apps/web/app/items/new/page.tsx": {
-    "mtime": 1781603853.92264,
-    "ast_hash": "46bc7dbd4ad157d4dcc80581b6d9b431",
-    "semantic_hash": ""
+    "mtime": 1781777999.1502926,
+    "ast_hash": "8212720ef783f32b48134f117a4cf24a",
+    "semantic_hash": "8212720ef783f32b48134f117a4cf24a"
   },
   "apps/web/app/layout.tsx": {
-    "mtime": 1781535324.6229649,
-    "ast_hash": "dd701f6231a7e3f1a0ed2a16820af590",
-    "semantic_hash": ""
+    "mtime": 1781862368.5356667,
+    "ast_hash": "d233ebaafd500ca9dc292dc0b4531c52",
+    "semantic_hash": "d233ebaafd500ca9dc292dc0b4531c52"
   },
   "apps/web/app/login/page.tsx": {
-    "mtime": 1781560686.2531693,
-    "ast_hash": "0603cf9fe2316ce0719c0d7321cc9140",
-    "semantic_hash": ""
+    "mtime": 1781777999.150517,
+    "ast_hash": "6e19300ba95b1dc57ce370cb4dd1dec5",
+    "semantic_hash": "6e19300ba95b1dc57ce370cb4dd1dec5"
   },
   "apps/web/app/onboarding/page.tsx": {
-    "mtime": 1781603856.2273135,
-    "ast_hash": "24355af9845fa2c73cd09e005f136e57",
-    "semantic_hash": ""
+    "mtime": 1781777999.150703,
+    "ast_hash": "74e6f7ef27d3823a6fb78ec6d2ea013e",
+    "semantic_hash": "74e6f7ef27d3823a6fb78ec6d2ea013e"
   },
   "apps/web/app/page.tsx": {
-    "mtime": 1781561528.4791079,
-    "ast_hash": "19d165417f6a9bdb1512c6923b8d21b6",
+    "mtime": 1781885554.0093236,
+    "ast_hash": "02fad0f95e063974c90342012bcfbfa7",
     "semantic_hash": ""
   },
   "apps/web/app/register/page.tsx": {
-    "mtime": 1781560686.2531333,
-    "ast_hash": "e2370a38584cef7f1ae9be05abbf6f82",
-    "semantic_hash": ""
+    "mtime": 1781777999.1509683,
+    "ast_hash": "b97f98aa0474511ff2773989b2d9194c",
+    "semantic_hash": "b97f98aa0474511ff2773989b2d9194c"
   },
   "apps/web/app/settings/availability/page.tsx": {
-    "mtime": 1781559549.5497591,
-    "ast_hash": "41addb22eb4402cfc0fbd974ae2eb9f1",
+    "mtime": 1781873667.8071563,
+    "ast_hash": "41d023a8637bf027697b4612c4175381",
     "semantic_hash": ""
   },
   "apps/web/components/forms/add-item-form.tsx": {
-    "mtime": 1781603831.937232,
-    "ast_hash": "1a7e4566a94829394850ba0f38ba4b54",
+    "mtime": 1781885584.3114753,
+    "ast_hash": "45de559aa963c7e054513376dc4fd081",
     "semantic_hash": ""
   },
   "apps/web/components/forms/auth-form.tsx": {
-    "mtime": 1781559530.7228224,
-    "ast_hash": "79a86d7e67657f3c64e3b592095b1f19",
+    "mtime": 1781871642.672271,
+    "ast_hash": "2ba386705de40fceb126a9ac81ff5468",
     "semantic_hash": ""
   },
   "apps/web/components/forms/form-field.tsx": {
     "mtime": 1781595479.1145487,
     "ast_hash": "f81a759e746d3d6bc25d78f3bd070838",
-    "semantic_hash": ""
+    "semantic_hash": "f81a759e746d3d6bc25d78f3bd070838"
   },
   "apps/web/components/forms/item-form.tsx": {
-    "mtime": 1781603830.3206575,
-    "ast_hash": "ca8f2e7291a0d821b752b859c30529d2",
+    "mtime": 1781885584.206202,
+    "ast_hash": "ebf9fefa7f73b83a7f855d5762087a30",
     "semantic_hash": ""
   },
   "apps/web/components/forms/login-form.tsx": {
-    "mtime": 1781533380.8683293,
-    "ast_hash": "58cee0257b790014ddd704a8895602a7",
+    "mtime": 1781871648.8498218,
+    "ast_hash": "e0ee77aef496faf6f9d99ba3e1a2086d",
     "semantic_hash": ""
   },
   "apps/web/components/forms/register-form.tsx": {
-    "mtime": 1781533381.5004854,
-    "ast_hash": "567c0182cc9127f16937d4b6c322e27e",
+    "mtime": 1781871654.248471,
+    "ast_hash": "cefb51292b876d4639e0ceafc9583cf7",
     "semantic_hash": ""
   },
   "apps/web/components/forms/rhythm-select.tsx": {
-    "mtime": 1781563067.1715503,
-    "ast_hash": "6ad4fddc462c6ef4f6c1557ee08dba86",
+    "mtime": 1781873583.4629881,
+    "ast_hash": "b30b64c8be326364b14ba070c23101fc",
     "semantic_hash": ""
   },
   "apps/web/components/forms/type-selector.tsx": {
-    "mtime": 1781528754.0311067,
-    "ast_hash": "3897627e18effd9b7f3788d768d6e984",
+    "mtime": 1781873592.8869374,
+    "ast_hash": "f68122cb2a7d5572d2eff7d0db7eb646",
     "semantic_hash": ""
   },
   "apps/web/components/layout/app-shell.tsx": {
-    "mtime": 1781561528.5920978,
-    "ast_hash": "e5e62dbc6a9c07cfc1a2c112248e2660",
+    "mtime": 1781873947.5718443,
+    "ast_hash": "9add828aef0dde11027fbabbf6ff7f05",
     "semantic_hash": ""
   },
   "apps/web/components/layout/auth-layout.tsx": {
-    "mtime": 1781561528.6242645,
-    "ast_hash": "9fcee747c935e5d4503bc26f9fd73bfa",
+    "mtime": 1781871621.7994359,
+    "ast_hash": "9534c4cbfbda62a70e32590578598d9e",
     "semantic_hash": ""
   },
   "apps/web/components/layout/onboarding-step.tsx": {
     "mtime": 1781608083.5348325,
     "ast_hash": "7de700b1dfb07b3d8185209af403c1a9",
-    "semantic_hash": ""
+    "semantic_hash": "7de700b1dfb07b3d8185209af403c1a9"
   },
   "apps/web/components/layout/page-header.tsx": {
     "mtime": 1781606192.8838859,
     "ast_hash": "b43a0ff7360eb7691e8f90abeb47ff5e",
-    "semantic_hash": ""
+    "semantic_hash": "b43a0ff7360eb7691e8f90abeb47ff5e"
   },
   "apps/web/components/onboarding-flow.tsx": {
-    "mtime": 1781608673.9904091,
-    "ast_hash": "4658d48b0e0be769da96cdaff3e7ca85",
+    "mtime": 1781873947.58128,
+    "ast_hash": "58417b4e244f8bc670c9c9ac0687ffda",
     "semantic_hash": ""
   },
   "apps/web/components/tend/attention-section.tsx": {
     "mtime": 1781533237.8970337,
     "ast_hash": "fd0e5a2ae90fc61f145f105e042dd184",
-    "semantic_hash": ""
+    "semantic_hash": "fd0e5a2ae90fc61f145f105e042dd184"
   },
   "apps/web/components/tend/empty-state.tsx": {
-    "mtime": 1781563603.2205393,
-    "ast_hash": "5a9e0bf9ef2ce1083db3a24702b926e2",
-    "semantic_hash": ""
+    "mtime": 1781862368.536008,
+    "ast_hash": "43e425e0d038d6486c43807e9dcd726d",
+    "semantic_hash": "43e425e0d038d6486c43807e9dcd726d"
   },
   "apps/web/components/tend/home-view.tsx": {
-    "mtime": 1781687661.5828679,
-    "ast_hash": "6c149293739d5c87759519e218adefd5",
-    "semantic_hash": ""
+    "mtime": 1781862368.5361025,
+    "ast_hash": "76cdc1afca672b9e9485131e31a5f1a3",
+    "semantic_hash": "76cdc1afca672b9e9485131e31a5f1a3"
   },
   "apps/web/components/tend/item-detail-view.tsx": {
-    "mtime": 1781603883.6594005,
-    "ast_hash": "99e88ea61825fb682ddd010730d5e4f4",
+    "mtime": 1781885584.5248024,
+    "ast_hash": "d76d35a572ef5ee24242f9ed11e3fa57",
     "semantic_hash": ""
   },
   "apps/web/components/tend/life-area-chip.tsx": {
-    "mtime": 1781528754.0333166,
-    "ast_hash": "b03ac0daf57e1a8cd47e66f8e48a4170",
+    "mtime": 1781873626.549625,
+    "ast_hash": "300b9159cba878463f8b6ff1bd46d6f0",
     "semantic_hash": ""
   },
   "apps/web/components/tend/life-area-filter.tsx": {
-    "mtime": 1781595291.8791792,
-    "ast_hash": "0cc7ce01102f38efbc05984bee64c2b7",
+    "mtime": 1781873947.578955,
+    "ast_hash": "beaa8dcae1f6ca1f2e36f8f986022c2a",
     "semantic_hash": ""
   },
   "apps/web/components/tend/mark-tended-button.tsx": {
     "mtime": 1781687164.2923548,
     "ast_hash": "1c47ce9c23d0d8b0cf4b9c731ff6eb19",
-    "semantic_hash": ""
+    "semantic_hash": "1c47ce9c23d0d8b0cf4b9c731ff6eb19"
   },
   "apps/web/components/tend/preset-card.tsx": {
     "mtime": 1781606192.8473282,
     "ast_hash": "a9392899a037d3429ffa83b7a689dc09",
-    "semantic_hash": ""
+    "semantic_hash": "a9392899a037d3429ffa83b7a689dc09"
   },
   "apps/web/components/tend/relative-time.tsx": {
     "mtime": 1781603821.6236932,
     "ast_hash": "a86578a784351100e68dc98a94c67b21",
-    "semantic_hash": ""
+    "semantic_hash": "a86578a784351100e68dc98a94c67b21"
   },
   "apps/web/components/tend/status-badge.tsx": {
     "mtime": 1781528754.034418,
     "ast_hash": "0c4032276c33881ffd71a4c130dce560",
-    "semantic_hash": ""
+    "semantic_hash": "0c4032276c33881ffd71a4c130dce560"
   },
   "apps/web/components/tend/tend-event-row.tsx": {
-    "mtime": 1781533838.36279,
-    "ast_hash": "c7d320babe50505fc901ad26ca914956",
+    "mtime": 1781873734.4150686,
+    "ast_hash": "763e6cb272f1fae6484cbd04c3c30cca",
     "semantic_hash": ""
   },
   "apps/web/components/tend/tend-item-card.tsx": {
-    "mtime": 1781686610.7562323,
-    "ast_hash": "6d7b86635cf1000e772d4a48ecb9bb6e",
+    "mtime": 1781886084.364605,
+    "ast_hash": "b93b1ad939bf7381d8118d311fe3ed57",
     "semantic_hash": ""
   },
   "apps/web/components/tend/type-badge.tsx": {
     "mtime": 1781528754.035037,
     "ast_hash": "74cce5e1f98fe8d7c7f2e3f60582c0da",
-    "semantic_hash": ""
+    "semantic_hash": "74cce5e1f98fe8d7c7f2e3f60582c0da"
   },
   "apps/web/components/ui/alert.tsx": {
     "mtime": 1781528754.0490787,
     "ast_hash": "fc66eac61307c97e8e4d81d8509491b3",
-    "semantic_hash": ""
+    "semantic_hash": "fc66eac61307c97e8e4d81d8509491b3"
   },
   "apps/web/components/ui/badge.tsx": {
     "mtime": 1781528754.0365617,
     "ast_hash": "53ac946a34aab0180775a2af6b20400a",
-    "semantic_hash": ""
+    "semantic_hash": "53ac946a34aab0180775a2af6b20400a"
   },
   "apps/web/components/ui/button.tsx": {
     "mtime": 1781528754.03576,
     "ast_hash": "f06a329c03f108938fedaa4c759ee96e",
-    "semantic_hash": ""
+    "semantic_hash": "f06a329c03f108938fedaa4c759ee96e"
   },
   "apps/web/components/ui/card.tsx": {
     "mtime": 1781528754.0381901,
     "ast_hash": "165db4c0a0c7e8db222bd63a95e32db3",
-    "semantic_hash": ""
+    "semantic_hash": "165db4c0a0c7e8db222bd63a95e32db3"
   },
   "apps/web/components/ui/input.tsx": {
     "mtime": 1781528754.0364256,
     "ast_hash": "9428b926c5eca1b535cc94b4021961f3",
-    "semantic_hash": ""
+    "semantic_hash": "9428b926c5eca1b535cc94b4021961f3"
   },
   "apps/web/components/ui/label.tsx": {
     "mtime": 1781528754.0368922,
     "ast_hash": "cb84ac49995750c67f9119f8e0a539bc",
-    "semantic_hash": ""
+    "semantic_hash": "cb84ac49995750c67f9119f8e0a539bc"
   },
   "apps/web/components/ui/select.tsx": {
     "mtime": 1781537306.265278,
     "ast_hash": "445d4178ed57e8333d91517cb0440d24",
-    "semantic_hash": ""
+    "semantic_hash": "445d4178ed57e8333d91517cb0440d24"
   },
   "apps/web/lib/activity/validation.ts": {
     "mtime": 1781536709.8872955,
     "ast_hash": "b51fe726219ade9145cac2b93c3308ed",
-    "semantic_hash": ""
+    "semantic_hash": "b51fe726219ade9145cac2b93c3308ed"
   },
   "apps/web/lib/api-client.ts": {
     "mtime": 1781528164.298684,
     "ast_hash": "f78236fb0b1dbf28369c41ad14a01097",
-    "semantic_hash": ""
+    "semantic_hash": "f78236fb0b1dbf28369c41ad14a01097"
   },
   "apps/web/lib/api.ts": {
     "mtime": 1781526391.7594173,
     "ast_hash": "dace557f2c63d5d3e244ab4be675e6ca",
-    "semantic_hash": ""
+    "semantic_hash": "dace557f2c63d5d3e244ab4be675e6ca"
   },
   "apps/web/lib/auth/constants.ts": {
     "mtime": 1781526435.5342782,
     "ast_hash": "0ffd5487b9a50a01e05f40d7528e721e",
-    "semantic_hash": ""
+    "semantic_hash": "0ffd5487b9a50a01e05f40d7528e721e"
   },
   "apps/web/lib/auth/lucia.ts": {
     "mtime": 1781526621.754141,
     "ast_hash": "80b870a46fa36dd153f477be6615056e",
-    "semantic_hash": ""
+    "semantic_hash": "80b870a46fa36dd153f477be6615056e"
   },
   "apps/web/lib/auth/require-user.ts": {
     "mtime": 1781527293.3036375,
     "ast_hash": "82da9101b02e3d37bd7538f5e60eff17",
-    "semantic_hash": ""
+    "semantic_hash": "82da9101b02e3d37bd7538f5e60eff17"
   },
   "apps/web/lib/auth/session.ts": {
     "mtime": 1781527283.8935866,
     "ast_hash": "c4da800f819dee4a5081a85cf48a9c2b",
-    "semantic_hash": ""
+    "semantic_hash": "c4da800f819dee4a5081a85cf48a9c2b"
   },
   "apps/web/lib/auth/users.ts": {
     "mtime": 1781526483.2700832,
     "ast_hash": "854f565dd3e4c5fee6dea89921f5321d",
-    "semantic_hash": ""
+    "semantic_hash": "854f565dd3e4c5fee6dea89921f5321d"
   },
   "apps/web/lib/auth/validation.ts": {
     "mtime": 1781559530.6573582,
     "ast_hash": "65611ddfd5852d13a51cfd5e74b4dea2",
-    "semantic_hash": ""
+    "semantic_hash": "65611ddfd5852d13a51cfd5e74b4dea2"
   },
   "apps/web/lib/db.ts": {
     "mtime": 1781526442.5521207,
     "ast_hash": "194d0a111a2400451f461f6b0c4a2f33",
-    "semantic_hash": ""
+    "semantic_hash": "194d0a111a2400451f461f6b0c4a2f33"
   },
   "apps/web/lib/design/home-groups.ts": {
     "mtime": 1781687731.9527042,
     "ast_hash": "a892d5e65217d2695c0cddf9ddfe54c6",
-    "semantic_hash": ""
+    "semantic_hash": "a892d5e65217d2695c0cddf9ddfe54c6"
   },
   "apps/web/lib/design/relative-time.ts": {
     "mtime": 1781595053.1294706,
     "ast_hash": "9a93e30ab04f824ddffccee56139d89e",
-    "semantic_hash": ""
+    "semantic_hash": "9a93e30ab04f824ddffccee56139d89e"
   },
   "apps/web/lib/design/status-labels.ts": {
     "mtime": 1781562648.7424707,
     "ast_hash": "26b04ddc2b32ba5101083a16d850e297",
-    "semantic_hash": ""
+    "semantic_hash": "26b04ddc2b32ba5101083a16d850e297"
   },
   "apps/web/lib/health.ts": {
     "mtime": 1781684434.9807725,
     "ast_hash": "14237aee10442cc80ce26f568d3614dc",
-    "semantic_hash": ""
+    "semantic_hash": "14237aee10442cc80ce26f568d3614dc"
   },
   "apps/web/lib/items/serialize.ts": {
-    "mtime": 1781527293.3071887,
-    "ast_hash": "46ac251e47677aad6089f01f08903cdc",
+    "mtime": 1781885429.1614227,
+    "ast_hash": "9be9a9000d86d5c8ead527dd40102f2b",
     "semantic_hash": ""
   },
   "apps/web/lib/items/validation.ts": {
-    "mtime": 1781595452.441108,
-    "ast_hash": "d6189e21099935529ad967960e1ee059",
+    "mtime": 1781885510.1009655,
+    "ast_hash": "eeb54a2f3b60e3cbc9260d8dd1130ecf",
     "semantic_hash": ""
   },
   "apps/web/lib/onboarding/constants.ts": {
     "mtime": 1781603819.7378483,
     "ast_hash": "77804f7cb70f26340975e235fb7b4f12",
-    "semantic_hash": ""
+    "semantic_hash": "77804f7cb70f26340975e235fb7b4f12"
   },
   "apps/web/lib/onboarding/validation.ts": {
     "mtime": 1781527787.7197554,
     "ast_hash": "5cd70eceb5357d57e6f54b3cc64facc2",
-    "semantic_hash": ""
+    "semantic_hash": "5cd70eceb5357d57e6f54b3cc64facc2"
   },
   "apps/web/lib/utils.ts": {
     "mtime": 1781528619.3694932,
     "ast_hash": "618d00bf4537ce84f9ba62c5b215fb30",
-    "semantic_hash": ""
+    "semantic_hash": "618d00bf4537ce84f9ba62c5b215fb30"
   },
   "apps/web/middleware.ts": {
     "mtime": 1781684263.9603195,
     "ast_hash": "dff1bbbbc71e9ae46e9040385b361061",
-    "semantic_hash": ""
+    "semantic_hash": "dff1bbbbc71e9ae46e9040385b361061"
   },
   "apps/web/next-env.d.ts": {
     "mtime": 1781526596.3598948,
     "ast_hash": "ba64ff7d54714a8f64db89b1003207d8",
-    "semantic_hash": ""
+    "semantic_hash": "ba64ff7d54714a8f64db89b1003207d8"
   },
   "apps/web/next.config.ts": {
-    "mtime": 1781524426.8607755,
-    "ast_hash": "70a9ba2829b1a57594f2fa7233805ce7",
+    "mtime": 1782114055.5645657,
+    "ast_hash": "a28dd96b4a40594c4ed42c4c221c39d4",
     "semantic_hash": ""
   },
   "apps/web/package.json": {
-    "mtime": 1781684391.2674737,
-    "ast_hash": "8bc3aa55642760e3effd9fbfa37eea05",
-    "semantic_hash": ""
+    "mtime": 1781777999.1515782,
+    "ast_hash": "77f77f38f5a3e1e773d45f1ff76699a8",
+    "semantic_hash": "77f77f38f5a3e1e773d45f1ff76699a8"
   },
   "apps/web/postcss.config.mjs": {
     "mtime": 1781528617.5583768,
     "ast_hash": "239f3ebf717465dc636818a1a619398d",
-    "semantic_hash": ""
+    "semantic_hash": "239f3ebf717465dc636818a1a619398d"
   },
   "apps/web/tsconfig.json": {
     "mtime": 1781526592.564447,
     "ast_hash": "bccfe2378a1bcbd59013a225c655c777",
-    "semantic_hash": ""
+    "semantic_hash": "bccfe2378a1bcbd59013a225c655c777"
   },
   "biome.json": {
     "mtime": 1781524515.7458704,
     "ast_hash": "4a5e0d09a619b2baa7a0def289e6eabe",
-    "semantic_hash": ""
+    "semantic_hash": "4a5e0d09a619b2baa7a0def289e6eabe"
   },
   "docs/design/component-types.ts": {
     "mtime": 1781595465.6959112,
     "ast_hash": "a8d5a8cb368b56e4c4bec5c378fef44b",
-    "semantic_hash": ""
+    "semantic_hash": "a8d5a8cb368b56e4c4bec5c378fef44b"
   },
   "package.json": {
-    "mtime": 1781558440.8220618,
-    "ast_hash": "9909710fd08f1b9625cbf9ed5c66c5e1",
-    "semantic_hash": ""
+    "mtime": 1781777999.160438,
+    "ast_hash": "d99946e77a2441c68a3b00c04e27eb59",
+    "semantic_hash": "d99946e77a2441c68a3b00c04e27eb59"
   },
   "packages/db/drizzle.config.ts": {
     "mtime": 1781524487.0751188,
     "ast_hash": "fccdab6046ac48ae2fd28b370a24ab74",
-    "semantic_hash": ""
+    "semantic_hash": "fccdab6046ac48ae2fd28b370a24ab74"
   },
   "packages/db/drizzle/0000_nifty_oracle.sql": {
     "mtime": 1781524488.169823,
     "ast_hash": "82b20ea78e7d88b60362412f08c3f2a5",
-    "semantic_hash": ""
+    "semantic_hash": "82b20ea78e7d88b60362412f08c3f2a5"
   },
   "packages/db/drizzle/meta/0000_snapshot.json": {
     "mtime": 1781524488.1696486,
     "ast_hash": "dc43e6b7732777ed14fe170fab799c3b",
-    "semantic_hash": ""
+    "semantic_hash": "dc43e6b7732777ed14fe170fab799c3b"
   },
   "packages/db/drizzle/meta/_journal.json": {
-    "mtime": 1781563523.4361544,
-    "ast_hash": "97cac080ca1c1728d997db6ec53b8704",
+    "mtime": 1781886071.109364,
+    "ast_hash": "f0d0afdf16d26811bb59b76f815c6111",
     "semantic_hash": ""
   },
   "packages/db/package.json": {
     "mtime": 1781557479.244583,
     "ast_hash": "03f678559bc24874bff5892ba5c29ef4",
-    "semantic_hash": ""
+    "semantic_hash": "03f678559bc24874bff5892ba5c29ef4"
   },
   "packages/db/src/client.ts": {
     "mtime": 1781540274.39019,
     "ast_hash": "734dbe1f26adeabc9bf67727267f17da",
-    "semantic_hash": ""
+    "semantic_hash": "734dbe1f26adeabc9bf67727267f17da"
   },
   "packages/db/src/index.ts": {
-    "mtime": 1781536708.1048894,
-    "ast_hash": "bc83d1c936bfa7c86226375c8e0e0155",
+    "mtime": 1781885388.766735,
+    "ast_hash": "05d558426f0e21080298a19f9ebc5b22",
     "semantic_hash": ""
   },
   "packages/db/src/items.ts": {
-    "mtime": 1781537807.9987004,
-    "ast_hash": "6cffb12eaa55dcf5686badc1e84407b6",
+    "mtime": 1781886094.6948106,
+    "ast_hash": "e6a7ed0139543dd5f99078d3ee5b39e1",
     "semantic_hash": ""
   },
   "packages/db/src/migrate.ts": {
     "mtime": 1781540275.070946,
     "ast_hash": "59d4824f0d02f70115af098d43a851bf",
-    "semantic_hash": ""
+    "semantic_hash": "59d4824f0d02f70115af098d43a851bf"
   },
   "packages/db/src/ping.ts": {
     "mtime": 1781524524.158036,
     "ast_hash": "da7cf58b36e8a98b986c3cf8f8b74e2c",
-    "semantic_hash": ""
+    "semantic_hash": "da7cf58b36e8a98b986c3cf8f8b74e2c"
   },
   "packages/db/src/schema.ts": {
-    "mtime": 1781562647.8187346,
-    "ast_hash": "d9ccb15f5dce9cc447d373930cc29063",
+    "mtime": 1781885388.4235103,
+    "ast_hash": "4da0cd31ac95902f684e24e20145d46f",
     "semantic_hash": ""
   },
   "packages/db/src/settings.ts": {
-    "mtime": 1781527787.719837,
-    "ast_hash": "cf4d04d7885a53460e99e983a29a38bb",
-    "semantic_hash": ""
+    "mtime": 1781777999.1607184,
+    "ast_hash": "848ab20791920bc24f382a9cdb47aadb",
+    "semantic_hash": "848ab20791920bc24f382a9cdb47aadb"
   },
   "packages/db/src/test-helpers.ts": {
     "mtime": 1781526483.2731051,
     "ast_hash": "c4268b423f8e177f40da48c049ad2b29",
-    "semantic_hash": ""
+    "semantic_hash": "c4268b423f8e177f40da48c049ad2b29"
   },
   "packages/db/src/users.ts": {
-    "mtime": 1781526474.0124924,
-    "ast_hash": "bcc5120bdd6ae0409ee93b911911c4ae",
+    "mtime": 1781885388.5453014,
+    "ast_hash": "3d2a7f8f708ac621acd4a9d1db44e665",
     "semantic_hash": ""
   },
   "packages/db/src/wait-for-database.ts": {
     "mtime": 1781528050.429782,
     "ast_hash": "0bc2112a1c92b68fbcb05b408b8145a8",
-    "semantic_hash": ""
+    "semantic_hash": "0bc2112a1c92b68fbcb05b408b8145a8"
   },
   "packages/db/tsconfig.json": {
     "mtime": 1781557479.8468711,
     "ast_hash": "b42c04640ed97435901f4a86d6a2f76a",
-    "semantic_hash": ""
+    "semantic_hash": "b42c04640ed97435901f4a86d6a2f76a"
   },
   "packages/domain/package.json": {
     "mtime": 1781557479.016206,
     "ast_hash": "db8bdf2ea73ade3329640bb7f26ba199",
-    "semantic_hash": ""
+    "semantic_hash": "db8bdf2ea73ade3329640bb7f26ba199"
   },
   "packages/domain/src/attention.ts": {
     "mtime": 1781595027.8410249,
     "ast_hash": "2a486a0e834adf97e1187b3329478f2b",
-    "semantic_hash": ""
+    "semantic_hash": "2a486a0e834adf97e1187b3329478f2b"
   },
   "packages/domain/src/availability.ts": {
     "mtime": 1781525799.0474217,
     "ast_hash": "b3df6356b8bf25a4670903cdaa3a9519",
-    "semantic_hash": ""
+    "semantic_hash": "b3df6356b8bf25a4670903cdaa3a9519"
   },
   "packages/domain/src/index.ts": {
     "mtime": 1781525776.0093706,
     "ast_hash": "fd9be23619723fa45da971932c34f669",
-    "semantic_hash": ""
+    "semantic_hash": "fd9be23619723fa45da971932c34f669"
   },
   "packages/domain/src/presets.ts": {
     "mtime": 1781562650.7125797,
     "ast_hash": "b142c5862eb1aaaa55748f3d6153771c",
-    "semantic_hash": ""
+    "semantic_hash": "b142c5862eb1aaaa55748f3d6153771c"
   },
   "packages/domain/src/reminders.ts": {
-    "mtime": 1781525778.0818427,
-    "ast_hash": "90d85c524aec30ed4088a657713603cc",
-    "semantic_hash": ""
+    "mtime": 1781779852.5436928,
+    "ast_hash": "f6002eafa78f4baec4c8035268fc6149",
+    "semantic_hash": "f6002eafa78f4baec4c8035268fc6149"
   },
   "packages/domain/src/status.ts": {
     "mtime": 1781603821.3669813,
     "ast_hash": "a2ba871162de47c7a912b52d61307cd8",
-    "semantic_hash": ""
+    "semantic_hash": "a2ba871162de47c7a912b52d61307cd8"
   },
   "packages/domain/src/time.ts": {
-    "mtime": 1781603820.7162747,
-    "ast_hash": "8de23c6099ddd4e6057f304cd34b37cf",
-    "semantic_hash": ""
+    "mtime": 1781777999.1608448,
+    "ast_hash": "1e435ed6f47afe93510183682d518b8a",
+    "semantic_hash": "1e435ed6f47afe93510183682d518b8a"
   },
   "packages/domain/src/types.ts": {
     "mtime": 1781562647.6464126,
     "ast_hash": "75322b10f96f35b220380b7399441313",
-    "semantic_hash": ""
+    "semantic_hash": "75322b10f96f35b220380b7399441313"
   },
   "packages/domain/tsconfig.json": {
     "mtime": 1781557479.3802133,
     "ast_hash": "835eb450f28bb2346a15bed2579e1ed8",
-    "semantic_hash": ""
+    "semantic_hash": "835eb450f28bb2346a15bed2579e1ed8"
   },
   "tsconfig.json": {
     "mtime": 1781524240.9605587,
     "ast_hash": "7562158403a868d3caa812f155f54838",
-    "semantic_hash": ""
+    "semantic_hash": "7562158403a868d3caa812f155f54838"
   },
   "turbo.json": {
     "mtime": 1781543192.1905096,
     "ast_hash": "554831612328eb848ae1145b0c55a007",
-    "semantic_hash": ""
+    "semantic_hash": "554831612328eb848ae1145b0c55a007"
   },
   ".github/workflows/ci.yml": {
     "mtime": 1781538021.1403668,
     "ast_hash": "2e9c33f8836e87b7ffa129dbf312e920",
-    "semantic_hash": ""
+    "semantic_hash": "2e9c33f8836e87b7ffa129dbf312e920"
   },
   "README.md": {
-    "mtime": 1781684530.1440206,
-    "ast_hash": "b24b7f83b355062a8560d59a1fbf4303",
-    "semantic_hash": ""
+    "mtime": 1781862368.534692,
+    "ast_hash": "8c0bd6d7733ac839afb233d1a11354f2",
+    "semantic_hash": "8c0bd6d7733ac839afb233d1a11354f2"
   },
   "docker-compose.yml": {
     "mtime": 1781524236.9134858,
     "ast_hash": "d2414565882451b135c4a24ca3592264",
-    "semantic_hash": ""
+    "semantic_hash": "d2414565882451b135c4a24ca3592264"
   },
   "docs/api/README.md": {
-    "mtime": 1781684418.4194002,
-    "ast_hash": "cd36a29388f6477474c5bf9d4a282ff4",
+    "mtime": 1781870744.4898627,
+    "ast_hash": "79c43aa5d4cb3abee733e281cf201511",
     "semantic_hash": ""
   },
   "docs/api/activity.md": {
     "mtime": 1781536751.8281906,
     "ast_hash": "1fef224544e1ce0a606ccfad4f6a137b",
-    "semantic_hash": ""
+    "semantic_hash": "1fef224544e1ce0a606ccfad4f6a137b"
   },
   "docs/api/auth.md": {
     "mtime": 1781542476.9571497,
     "ast_hash": "04033ffb00a37a45a3b90e84f91df2b0",
-    "semantic_hash": ""
+    "semantic_hash": "04033ffb00a37a45a3b90e84f91df2b0"
   },
   "docs/api/health.md": {
     "mtime": 1781684421.781737,
     "ast_hash": "d5824cae19732b0311fa0367e5cd186e",
-    "semantic_hash": ""
+    "semantic_hash": "d5824cae19732b0311fa0367e5cd186e"
   },
   "docs/api/items.md": {
-    "mtime": 1781527274.1651,
-    "ast_hash": "76e50116e8e7b839c60385031ad37b68",
+    "mtime": 1781885943.8958097,
+    "ast_hash": "3a727239a44be9bc5e364a20908e8f0d",
     "semantic_hash": ""
   },
   "docs/api/onboarding.md": {
     "mtime": 1781527787.7197862,
     "ast_hash": "107499ac09f37103b8a25780c7d507dd",
-    "semantic_hash": ""
+    "semantic_hash": "107499ac09f37103b8a25780c7d507dd"
   },
   "docs/design/README.md": {
     "mtime": 1781562925.859598,
     "ast_hash": "eebbf0b7b4389757f19f3fb0b3428c70",
-    "semantic_hash": ""
+    "semantic_hash": "eebbf0b7b4389757f19f3fb0b3428c70"
   },
   "docs/design/components.md": {
-    "mtime": 1781687177.3756042,
-    "ast_hash": "661f3413d917e586d1f0343b27ca9ce0",
+    "mtime": 1781885970.284848,
+    "ast_hash": "44098bfad5b59e5c3759dcc4ce4ad998",
     "semantic_hash": ""
   },
   "docs/design/design-language.md": {
     "mtime": 1781595047.4747891,
     "ast_hash": "d5b45cb8d3332bb9690601bbf4310552",
-    "semantic_hash": ""
+    "semantic_hash": "d5b45cb8d3332bb9690601bbf4310552"
   },
   "docs/mvp-user-stories.md": {
-    "mtime": 1781596821.7337403,
-    "ast_hash": "e1bfac89095bb456a64b509c1060faf4",
+    "mtime": 1781885907.5316901,
+    "ast_hash": "8d9637122fed569c635e6847ffc2349e",
     "semantic_hash": ""
   },
   "docs/pre-alpha-development-plan.md": {
     "mtime": 1781536768.4261293,
     "ast_hash": "c3f61a74a8378b1e8f754521f4bd5609",
-    "semantic_hash": ""
+    "semantic_hash": "c3f61a74a8378b1e8f754521f4bd5609"
   },
   "apps/web/app/api/v1/availability/route.ts": {
-    "mtime": 1781535860.9196582,
-    "ast_hash": "9b17dfbf6783f288cad2ec35841f02c8",
-    "semantic_hash": ""
+    "mtime": 1781777999.1443293,
+    "ast_hash": "fb55543911aec327a19f8bdcaac8b703",
+    "semantic_hash": "fb55543911aec327a19f8bdcaac8b703"
   },
   "apps/web/app/api/v1/reminders/route.ts": {
-    "mtime": 1781535887.7194588,
-    "ast_hash": "76b2d7c1495718f048bb912d217c2272",
+    "mtime": 1781870503.6777408,
+    "ast_hash": "7e36a5eceed5e6b1c8c858c4610568c1",
     "semantic_hash": ""
   },
   "apps/web/components/forms/availability-editor.tsx": {
-    "mtime": 1781596042.7200456,
-    "ast_hash": "af385fd660b80ca82e57a20cbf6cef0b",
+    "mtime": 1781873651.56484,
+    "ast_hash": "20030c810d685086b16f856c76c33448",
     "semantic_hash": ""
   },
   "apps/web/components/tend/reminder-banner.tsx": {
     "mtime": 1781686837.4592557,
     "ast_hash": "07b402c942a2fa3eb3699856013f99ca",
-    "semantic_hash": ""
+    "semantic_hash": "07b402c942a2fa3eb3699856013f99ca"
   },
   "apps/web/lib/availability/serialize.ts": {
     "mtime": 1781535860.9194682,
     "ast_hash": "c31fe9f08ebfc77d2e108610c7c0448e",
-    "semantic_hash": ""
+    "semantic_hash": "c31fe9f08ebfc77d2e108610c7c0448e"
   },
   "apps/web/lib/availability/validation.ts": {
     "mtime": 1781535669.907801,
     "ast_hash": "92283f66bb3a3ccf55cd5e7f35a097f7",
-    "semantic_hash": ""
+    "semantic_hash": "92283f66bb3a3ccf55cd5e7f35a097f7"
   },
   "apps/web/lib/reminders/reminder-copy.ts": {
     "mtime": 1781596811.3875782,
     "ast_hash": "2f5f8c94d913f131dc27e147f8dab85f",
-    "semantic_hash": ""
+    "semantic_hash": "2f5f8c94d913f131dc27e147f8dab85f"
   },
   "apps/web/lib/reminders/serialize.ts": {
-    "mtime": 1781535887.8306637,
-    "ast_hash": "8547749da988fa5f07535753f11ae652",
+    "mtime": 1781886084.3729012,
+    "ast_hash": "50f7a9897fa9e8d53772f935e6926233",
     "semantic_hash": ""
   },
   "packages/db/src/availability.ts": {
     "mtime": 1781535668.8575437,
     "ast_hash": "fecff62c1d09bbbf402c54f3371ba7df",
-    "semantic_hash": ""
+    "semantic_hash": "fecff62c1d09bbbf402c54f3371ba7df"
   },
   "docs/api/availability.md": {
-    "mtime": 1781535845.1046586,
-    "ast_hash": "667f8fcc63eb0758d8a0d76ebe940816",
-    "semantic_hash": ""
+    "mtime": 1781779902.0762568,
+    "ast_hash": "ae4bb515d2683cfb4a0ea4303d77b2f7",
+    "semantic_hash": "ae4bb515d2683cfb4a0ea4303d77b2f7"
   },
   "docs/api/reminders.md": {
-    "mtime": 1781535848.9971912,
-    "ast_hash": "9056f9841fca85cfabe944ecdb43def5",
-    "semantic_hash": ""
+    "mtime": 1781779898.645959,
+    "ast_hash": "8031e84b4aabc1cd89f7fb69eb9fd844",
+    "semantic_hash": "8031e84b4aabc1cd89f7fb69eb9fd844"
   },
   "apps/web/app/api/v1/activity/route.ts": {
-    "mtime": 1781536710.976544,
-    "ast_hash": "4295b2ae4583da351a43c5e8f6799991",
-    "semantic_hash": ""
+    "mtime": 1781777999.1437163,
+    "ast_hash": "a3cc3a6884512925c610b7e480fd9141",
+    "semantic_hash": "a3cc3a6884512925c610b7e480fd9141"
   },
   "apps/web/components/tend/activity-list-item.tsx": {
-    "mtime": 1781595902.1877005,
-    "ast_hash": "5503ebbbfc3fb6917bd6f12fa3b516da",
+    "mtime": 1781873748.288087,
+    "ast_hash": "43ccca4060ceb399fe68b46cbbf1dcb9",
     "semantic_hash": ""
   },
   "apps/web/components/tend/activity-view.tsx": {
-    "mtime": 1781688013.6154313,
-    "ast_hash": "4659895302253a59c83beb07582fad95",
-    "semantic_hash": ""
+    "mtime": 1781862368.5359542,
+    "ast_hash": "4076c77edc28c1d55019a51fc4cf09bb",
+    "semantic_hash": "4076c77edc28c1d55019a51fc4cf09bb"
   },
   "apps/web/lib/activity/serialize.ts": {
     "mtime": 1781536708.7912934,
     "ast_hash": "e7c26b29b17aec8c3079ee9390f6410c",
-    "semantic_hash": ""
+    "semantic_hash": "e7c26b29b17aec8c3079ee9390f6410c"
   },
   "apps/web/lib/forms/client-validation.ts": {
     "mtime": 1781559530.6962087,
     "ast_hash": "c0f2650e81d6b7692d2e85cd97ced03d",
-    "semantic_hash": ""
+    "semantic_hash": "c0f2650e81d6b7692d2e85cd97ced03d"
   },
   "apps/web/lib/forms/item-form-validation.ts": {
-    "mtime": 1781595450.8290732,
-    "ast_hash": "b7267d9bce8d406b9ac0d2b2833c6ac9",
+    "mtime": 1781886084.3716493,
+    "ast_hash": "c2b8bc38ab68e3cdd5b9166bfef16d50",
     "semantic_hash": ""
   },
   "docs/manual-test-script.md": {
     "mtime": 1781536762.6790354,
     "ast_hash": "f6aef97dbe129b8dbec909ce9fea6f2e",
-    "semantic_hash": ""
+    "semantic_hash": "f6aef97dbe129b8dbec909ce9fea6f2e"
   },
   ".husky/_/applypatch-msg": {
-    "mtime": 1781560084.5868769,
+    "mtime": 1781864780.9468853,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/commit-msg": {
-    "mtime": 1781560084.5867696,
+    "mtime": 1781864780.9467678,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/h": {
-    "mtime": 1781560084.5865028,
+    "mtime": 1781864780.9464223,
     "ast_hash": "15239a01c5554e56ff745570fb583a91",
-    "semantic_hash": ""
+    "semantic_hash": "15239a01c5554e56ff745570fb583a91"
   },
   ".husky/_/husky.sh": {
-    "mtime": 1781560084.5878232,
+    "mtime": 1781864780.9480019,
     "ast_hash": "13871d2ab13e8423790ecb2c01c78c18",
-    "semantic_hash": ""
+    "semantic_hash": "13871d2ab13e8423790ecb2c01c78c18"
   },
   ".husky/_/post-applypatch": {
-    "mtime": 1781560084.5869899,
+    "mtime": 1781864780.9470131,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/post-checkout": {
-    "mtime": 1781560084.5873468,
+    "mtime": 1781864780.9477584,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/post-commit": {
-    "mtime": 1781560084.5868235,
+    "mtime": 1781864780.9468257,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/post-merge": {
-    "mtime": 1781560084.5875335,
+    "mtime": 1781864780.9478161,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/post-rewrite": {
-    "mtime": 1781560084.5872884,
+    "mtime": 1781864780.9476845,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/pre-applypatch": {
-    "mtime": 1781560084.5869257,
+    "mtime": 1781864780.9469483,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/pre-auto-gc": {
-    "mtime": 1781560084.5877197,
+    "mtime": 1781864780.947917,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/pre-commit": {
-    "mtime": 1781560084.5866005,
+    "mtime": 1781864780.94657,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/pre-merge-commit": {
-    "mtime": 1781560084.586656,
+    "mtime": 1781864780.9466393,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/pre-push": {
-    "mtime": 1781560084.5876663,
+    "mtime": 1781864780.9478636,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/pre-rebase": {
-    "mtime": 1781560084.5871744,
+    "mtime": 1781864780.9474978,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/_/prepare-commit-msg": {
-    "mtime": 1781560084.5867188,
+    "mtime": 1781864780.9467077,
     "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": ""
+    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
   },
   ".husky/pre-commit": {
     "mtime": 1781538023.2943726,
     "ast_hash": "6dee3a241ab82be5f97b50b3448af465",
-    "semantic_hash": ""
+    "semantic_hash": "6dee3a241ab82be5f97b50b3448af465"
   },
   "apps/web/components/tend/preset-suggestions.tsx": {
-    "mtime": 1781563346.6140132,
-    "ast_hash": "332e816d41d2e94001d3ea53434618c9",
+    "mtime": 1781873947.5770214,
+    "ast_hash": "a54e097b71c8508c47e3a064d3d1e7b7",
     "semantic_hash": ""
   },
   "apps/web/lib/auth/allowed-emails.ts": {
     "mtime": 1781542467.130732,
     "ast_hash": "fadfe52fe1b8c7ebbc9ad7e64c054d7f",
-    "semantic_hash": ""
+    "semantic_hash": "fadfe52fe1b8c7ebbc9ad7e64c054d7f"
   },
   "apps/web/lib/canonical-host.ts": {
     "mtime": 1781684263.9552517,
     "ast_hash": "c696df839d24659529842d74a92fddaa",
-    "semantic_hash": ""
+    "semantic_hash": "c696df839d24659529842d74a92fddaa"
   },
   "apps/web/tests/integration/activity.integration.test.ts": {
     "mtime": 1781542496.8698032,
     "ast_hash": "9bcf8437a8a0560f55296a2a219bf5d6",
-    "semantic_hash": ""
+    "semantic_hash": "9bcf8437a8a0560f55296a2a219bf5d6"
   },
   "apps/web/tests/integration/auth.integration.test.ts": {
     "mtime": 1781542496.6543925,
     "ast_hash": "2e46886b259f665b226161478f407ff2",
-    "semantic_hash": ""
+    "semantic_hash": "2e46886b259f665b226161478f407ff2"
   },
   "apps/web/tests/integration/availability.integration.test.ts": {
-    "mtime": 1781542497.9447162,
-    "ast_hash": "310ab28834246a5753a82a4e84b079be",
-    "semantic_hash": ""
+    "mtime": 1781779890.952535,
+    "ast_hash": "f61b1e29a08496351d2539bd2349d66c",
+    "semantic_hash": "f61b1e29a08496351d2539bd2349d66c"
   },
   "apps/web/tests/integration/item-detail.integration.test.ts": {
     "mtime": 1781542497.94473,
     "ast_hash": "1227407a9f55da212ec1184f57f130cd",
-    "semantic_hash": ""
+    "semantic_hash": "1227407a9f55da212ec1184f57f130cd"
   },
   "apps/web/tests/integration/items.integration.test.ts": {
-    "mtime": 1781542497.9824998,
-    "ast_hash": "6e473b1439f0532a8045b641872320be",
+    "mtime": 1781886025.6591992,
+    "ast_hash": "0c22253f48f470002ff317ddea5246d4",
     "semantic_hash": ""
   },
   "apps/web/tests/integration/onboarding.integration.test.ts": {
     "mtime": 1781527787.7198167,
     "ast_hash": "1241c8d3082e764c3a7090c9eb40c2a9",
-    "semantic_hash": ""
+    "semantic_hash": "1241c8d3082e764c3a7090c9eb40c2a9"
   },
   "apps/web/tests/unit/activity/validation.test.ts": {
     "mtime": 1781557471.6196458,
     "ast_hash": "83428276a8f0f299c51ddd15b95d2226",
-    "semantic_hash": ""
+    "semantic_hash": "83428276a8f0f299c51ddd15b95d2226"
   },
   "apps/web/tests/unit/api-client.test.ts": {
     "mtime": 1781557473.8119485,
     "ast_hash": "744f248680b6be0e307010eaa4405794",
-    "semantic_hash": ""
+    "semantic_hash": "744f248680b6be0e307010eaa4405794"
   },
   "apps/web/tests/unit/auth/allowed-emails.test.ts": {
     "mtime": 1781557471.1971488,
     "ast_hash": "f96fb3ce9a5090df9a91cc60bbd84880",
-    "semantic_hash": ""
+    "semantic_hash": "f96fb3ce9a5090df9a91cc60bbd84880"
   },
   "apps/web/tests/unit/auth/validation.test.ts": {
     "mtime": 1781559530.7421417,
     "ast_hash": "9c751b5c1ee4ca4099cd55d34698aa1d",
-    "semantic_hash": ""
+    "semantic_hash": "9c751b5c1ee4ca4099cd55d34698aa1d"
   },
   "apps/web/tests/unit/availability/validation.test.ts": {
     "mtime": 1781557471.8235066,
     "ast_hash": "21e6e5d07a69c54eaa722858d28e2e31",
-    "semantic_hash": ""
+    "semantic_hash": "21e6e5d07a69c54eaa722858d28e2e31"
   },
   "apps/web/tests/unit/canonical-host.test.ts": {
     "mtime": 1781684263.9550438,
     "ast_hash": "d20d64656e9f5f56e18441f178244a4b",
-    "semantic_hash": ""
+    "semantic_hash": "d20d64656e9f5f56e18441f178244a4b"
   },
   "apps/web/tests/unit/design/home-groups.test.ts": {
     "mtime": 1781687667.8733215,
     "ast_hash": "9197bfaa47051d65b6896b78489bec41",
-    "semantic_hash": ""
+    "semantic_hash": "9197bfaa47051d65b6896b78489bec41"
   },
   "apps/web/tests/unit/design/relative-time.test.ts": {
     "mtime": 1781603871.9443028,
     "ast_hash": "2370e473ebafd94aa7fbfd0fb8df2f2e",
-    "semantic_hash": ""
+    "semantic_hash": "2370e473ebafd94aa7fbfd0fb8df2f2e"
   },
   "apps/web/tests/unit/forms/client-validation.test.ts": {
     "mtime": 1781559530.754519,
     "ast_hash": "6887aca70ec69afdfa57122e60f67303",
-    "semantic_hash": ""
+    "semantic_hash": "6887aca70ec69afdfa57122e60f67303"
   },
   "apps/web/tests/unit/forms/item-form-validation.test.ts": {
-    "mtime": 1781595465.1457636,
-    "ast_hash": "bf15e99bb0764dd70ad503067b75b1ac",
+    "mtime": 1781886204.0096512,
+    "ast_hash": "f780d024c9b63d61a669c2eaefd08c76",
     "semantic_hash": ""
   },
   "apps/web/tests/unit/health.test.ts": {
     "mtime": 1781684407.8434813,
     "ast_hash": "8be46ac33596360e39900be1df990848",
-    "semantic_hash": ""
+    "semantic_hash": "8be46ac33596360e39900be1df990848"
   },
   "apps/web/tests/unit/items/validation.test.ts": {
-    "mtime": 1781557471.9700654,
-    "ast_hash": "d08bf6847045c4ecb0175566831639ea",
+    "mtime": 1781886007.9904592,
+    "ast_hash": "433e8427ead047c0292477963a5d9426",
     "semantic_hash": ""
   },
   "apps/web/tests/unit/reminders/reminder-copy.test.ts": {
     "mtime": 1781596833.0885956,
     "ast_hash": "4b07512d0345e9f1e941a243b36517aa",
-    "semantic_hash": ""
+    "semantic_hash": "4b07512d0345e9f1e941a243b36517aa"
   },
   "apps/web/vercel.json": {
-    "mtime": 1781540274.056389,
-    "ast_hash": "2f5fa888647be167505beb93e3364cc6",
+    "mtime": 1781870545.84872,
+    "ast_hash": "27dbea328b9ea7ee574eb9fc5df58826",
     "semantic_hash": ""
   },
   "packages/db/tests/ping.test.ts": {
     "mtime": 1781557478.2330015,
     "ast_hash": "4da1062d119cd7a1f224d1409778a45d",
-    "semantic_hash": ""
+    "semantic_hash": "4da1062d119cd7a1f224d1409778a45d"
   },
   "packages/db/tests/schema.test.ts": {
-    "mtime": 1781562650.7124941,
-    "ast_hash": "920d8c66e6979a3e67cabb6a5166b00f",
+    "mtime": 1781885388.8824024,
+    "ast_hash": "46311842689967c41cad161e1e9d727d",
     "semantic_hash": ""
   },
   "packages/db/tests/settings.test.ts": {
     "mtime": 1781557477.779543,
     "ast_hash": "5f4062bc065bb635630a8846408f02d2",
-    "semantic_hash": ""
+    "semantic_hash": "5f4062bc065bb635630a8846408f02d2"
   },
   "packages/db/tests/wait-for-database.test.ts": {
     "mtime": 1781557478.796137,
     "ast_hash": "c88c2545484c2d0454c6565a64d8e5df",
-    "semantic_hash": ""
+    "semantic_hash": "c88c2545484c2d0454c6565a64d8e5df"
   },
   "packages/domain/tests/attention.test.ts": {
     "mtime": 1781595032.2068665,
     "ast_hash": "9b3a61eb9de91d8b73aa52b29cf1e5ae",
-    "semantic_hash": ""
+    "semantic_hash": "9b3a61eb9de91d8b73aa52b29cf1e5ae"
   },
   "packages/domain/tests/availability.test.ts": {
     "mtime": 1781557487.4049082,
     "ast_hash": "bd6d39238b2c7515b8c01cca89aa1050",
-    "semantic_hash": ""
+    "semantic_hash": "bd6d39238b2c7515b8c01cca89aa1050"
   },
   "packages/domain/tests/presets.test.ts": {
     "mtime": 1781562656.401775,
     "ast_hash": "9fdd9bd8a35ae4216dab91aed018ee04",
-    "semantic_hash": ""
+    "semantic_hash": "9fdd9bd8a35ae4216dab91aed018ee04"
   },
   "packages/domain/tests/reminders.test.ts": {
-    "mtime": 1781557477.29495,
-    "ast_hash": "37d1af1a1f631d0847f49ba9faa6c244",
-    "semantic_hash": ""
+    "mtime": 1781779872.0189087,
+    "ast_hash": "de904c09c4cf6dd41389838f9054c784",
+    "semantic_hash": "de904c09c4cf6dd41389838f9054c784"
   },
   "packages/domain/tests/status.test.ts": {
     "mtime": 1781603864.7825236,
     "ast_hash": "07e28e7cffb46d77ab59bb9a9e9325d1",
-    "semantic_hash": ""
+    "semantic_hash": "07e28e7cffb46d77ab59bb9a9e9325d1"
   },
   "PRODUCT.md": {
     "mtime": 1781559710.6842644,
     "ast_hash": "7184bc975f955ff436c091c9f291582c",
-    "semantic_hash": ""
+    "semantic_hash": "7184bc975f955ff436c091c9f291582c"
   },
   "docs/alpha-development-plan.md": {
     "mtime": 1781557953.0217912,
     "ast_hash": "a463fbb4c6226dcdefe9493c5589909a",
-    "semantic_hash": ""
+    "semantic_hash": "a463fbb4c6226dcdefe9493c5589909a"
   },
   "docs/alpha-roadmap.md": {
     "mtime": 1781557958.9077752,
     "ast_hash": "2f0d3df1f2476fddec220eb35bb8ad21",
-    "semantic_hash": ""
+    "semantic_hash": "2f0d3df1f2476fddec220eb35bb8ad21"
   },
   "docs/deployment.md": {
-    "mtime": 1781684263.9552846,
-    "ast_hash": "3bbb40eebc801aca16761541b85d9953",
+    "mtime": 1781870790.2876956,
+    "ast_hash": "bc473330f56a99a513883393c478d09e",
     "semantic_hash": ""
   },
   "docs/marketing/promo-compositions.html": {
     "mtime": 1781557447.1191707,
     "ast_hash": "51c63dab72d18c433ed2e5ab7e2b4f15",
-    "semantic_hash": ""
+    "semantic_hash": "51c63dab72d18c433ed2e5ab7e2b4f15"
   },
   "apps/web/app/icon.svg": {
-    "mtime": 1781542060.5670722,
-    "ast_hash": "451126c5cfd5ca37b7a12d58b7d5ef91",
-    "semantic_hash": ""
+    "mtime": 1781777999.1493196,
+    "ast_hash": "d165c1cc53fa9a2feec74dac812bc1fb",
+    "semantic_hash": "d165c1cc53fa9a2feec74dac812bc1fb"
   },
   "apps/web/app/privacy/page.tsx": {
     "mtime": 1781560686.2531643,
     "ast_hash": "39056cd6763dd3b72d27be6626bc86c1",
-    "semantic_hash": ""
+    "semantic_hash": "39056cd6763dd3b72d27be6626bc86c1"
   },
   "apps/web/app/terms/page.tsx": {
     "mtime": 1781560686.2775862,
     "ast_hash": "97a0510622c46e36355d9e16c08f45c0",
-    "semantic_hash": ""
+    "semantic_hash": "97a0510622c46e36355d9e16c08f45c0"
   },
   "apps/web/components/layout/site-footer.tsx": {
-    "mtime": 1781684451.922211,
-    "ast_hash": "f198cf8f89c5b997b3912b50a50586fe",
+    "mtime": 1781873561.2825267,
+    "ast_hash": "cf09fce51f0311b05e857a639560d155",
     "semantic_hash": ""
   },
   "apps/web/components/layout/tend-logo-link.tsx": {
     "mtime": 1781559530.7801461,
     "ast_hash": "37dbd05b0bee49612d413a9fd891cdc2",
-    "semantic_hash": ""
+    "semantic_hash": "37dbd05b0bee49612d413a9fd891cdc2"
   },
   "apps/web/components/layout/user-menu.tsx": {
-    "mtime": 1781559530.7993765,
-    "ast_hash": "c3e1b3f31eb8c638a1d863509943fce7",
+    "mtime": 1781871483.8152142,
+    "ast_hash": "e17a7a5a546ef332dbfdc38141cb8b30",
     "semantic_hash": ""
   },
   "apps/web/components/marketing/landing-page.tsx": {
-    "mtime": 1781561564.733226,
-    "ast_hash": "82a30b51ba1a34a0f84eec355bb34934",
+    "mtime": 1781893999.9336774,
+    "ast_hash": "bac2b423625b012273dae33e52bd50f5",
     "semantic_hash": ""
   },
   "apps/web/components/marketing/legal-page.tsx": {
     "mtime": 1781560686.2814603,
     "ast_hash": "f6d769b19073e2ed6aafe1e52c1d6de3",
-    "semantic_hash": ""
+    "semantic_hash": "f6d769b19073e2ed6aafe1e52c1d6de3"
   },
   "apps/web/components/ui/dropdown-menu.tsx": {
-    "mtime": 1781559530.7882,
-    "ast_hash": "c0639d326d13f91a4b4c137cc235d1af",
+    "mtime": 1781871454.830818,
+    "ast_hash": "0137e6de2ac886c0d7485b3f8282bf5e",
     "semantic_hash": ""
   },
   "apps/web/lib/auth/public-access.ts": {
-    "mtime": 1781561528.4219995,
-    "ast_hash": "0c4375852df2aadcaa4a5394c986716f",
+    "mtime": 1781870545.7199752,
+    "ast_hash": "8c7b2cb06c9c8ab49e4c49678b645bb8",
     "semantic_hash": ""
   },
   "apps/web/lib/legal/load-legal-document.ts": {
     "mtime": 1781560686.2718284,
     "ast_hash": "a5b7c8d9a05cccb5ff95d311b8c492d9",
-    "semantic_hash": ""
+    "semantic_hash": "a5b7c8d9a05cccb5ff95d311b8c492d9"
   },
   "apps/web/lib/legal/markdown-content.tsx": {
     "mtime": 1781560686.265066,
     "ast_hash": "38dbc9df1ade54e1970e3461c2102f74",
-    "semantic_hash": ""
+    "semantic_hash": "38dbc9df1ade54e1970e3461c2102f74"
   },
   "apps/web/tests/integration/public-shell.integration.test.ts": {
     "mtime": 1781561574.6720107,
     "ast_hash": "08bbe9230b24476bbc96e00952f07f9f",
-    "semantic_hash": ""
+    "semantic_hash": "08bbe9230b24476bbc96e00952f07f9f"
   },
   "apps/web/tests/unit/legal/load-legal-document.test.ts": {
     "mtime": 1781561528.8301713,
     "ast_hash": "37aec19850230b0aaac9dc1963074c2c",
-    "semantic_hash": ""
+    "semantic_hash": "37aec19850230b0aaac9dc1963074c2c"
   },
   "apps/web/tests/unit/middleware.test.ts": {
     "mtime": 1781561528.7362707,
     "ast_hash": "4292c36b2bb9c1ed9f19a84137f634e4",
-    "semantic_hash": ""
+    "semantic_hash": "4292c36b2bb9c1ed9f19a84137f634e4"
   },
   "apps/web/content/legal/privacy.md": {
     "mtime": 1781561528.7598004,
     "ast_hash": "c15ca6ef1fa90d6ff276670852011cdb",
-    "semantic_hash": ""
+    "semantic_hash": "c15ca6ef1fa90d6ff276670852011cdb"
   },
   "apps/web/content/legal/terms.md": {
     "mtime": 1781561528.798143,
     "ast_hash": "854ae0568b5c4b42e74c8aee434f331d",
-    "semantic_hash": ""
+    "semantic_hash": "854ae0568b5c4b42e74c8aee434f331d"
   },
   "apps/web/public/promo/tend-logo.png": {
     "mtime": 1781558433.822331,
     "ast_hash": "df6f34b5b878ad16018ede0fe6c194c0",
-    "semantic_hash": ""
+    "semantic_hash": "df6f34b5b878ad16018ede0fe6c194c0"
   },
   "apps/web/public/promo/tend-logo.svg": {
     "mtime": 1781558424.9078841,
     "ast_hash": "7d541d81bdbb1ea20167ca604f36e729",
-    "semantic_hash": ""
+    "semantic_hash": "7d541d81bdbb1ea20167ca604f36e729"
   },
   "apps/web/components/onboarding/promo-carousel.tsx": {
-    "mtime": 1781606008.5405931,
-    "ast_hash": "3dcc2005ab3cd514b5eb428a4e6b00e1",
+    "mtime": 1781873704.5146537,
+    "ast_hash": "8f9bc1dfca627b21560570ac405ebf20",
     "semantic_hash": ""
   },
   "apps/web/lib/onboarding/promo-slides.ts": {
-    "mtime": 1781560686.2884052,
-    "ast_hash": "f34cecb956a10c894b767b3a3de7611c",
+    "mtime": 1781893977.7862852,
+    "ast_hash": "a78493f19cda8cedc77a493753d60d1f",
     "semantic_hash": ""
   },
   "apps/web/tests/unit/onboarding/promo-slides.test.ts": {
-    "mtime": 1781560686.285945,
-    "ast_hash": "3b667b6eaa7b2564a0ea18acfab323bd",
+    "mtime": 1781893977.9099553,
+    "ast_hash": "00a5d8e6b2e1c4f46a36fb6bfe5cb2f4",
     "semantic_hash": ""
   },
   "apps/web/public/promo/tend-activity.jpg": {
     "mtime": 1781557503.95998,
     "ast_hash": "99146ab8ca1b065a4aa1089ee74b1a20",
-    "semantic_hash": ""
+    "semantic_hash": "99146ab8ca1b065a4aa1089ee74b1a20"
   },
   "apps/web/public/promo/tend-care.jpg": {
     "mtime": 1781557503.9278114,
     "ast_hash": "e3145ff9b18e9b94ca5a6deae4b0b8bd",
-    "semantic_hash": ""
+    "semantic_hash": "e3145ff9b18e9b94ca5a6deae4b0b8bd"
   },
   "apps/web/public/promo/tend-remember.jpg": {
     "mtime": 1781557503.930225,
     "ast_hash": "40140d4f45870f2e86b915b479917520",
-    "semantic_hash": ""
+    "semantic_hash": "40140d4f45870f2e86b915b479917520"
   },
   "apps/web/public/promo/tend-reminder.jpg": {
     "mtime": 1781557503.9269636,
     "ast_hash": "3fcf0e78b5e7778823387694104f4b9e",
-    "semantic_hash": ""
+    "semantic_hash": "3fcf0e78b5e7778823387694104f4b9e"
   },
   "apps/web/components/marketing/landing-promo-preview.tsx": {
     "mtime": 1781607924.2995412,
     "ast_hash": "ee0ecbcfda76d65ab4f9fe6f409da272",
-    "semantic_hash": ""
+    "semantic_hash": "ee0ecbcfda76d65ab4f9fe6f409da272"
   },
   "apps/web/lib/forms/rhythm.ts": {
     "mtime": 1781563045.9646833,
     "ast_hash": "29a506b1f635f33a3270bc8d39184605",
-    "semantic_hash": ""
+    "semantic_hash": "29a506b1f635f33a3270bc8d39184605"
   },
   "apps/web/tests/unit/forms/rhythm.test.ts": {
     "mtime": 1781563050.0696194,
     "ast_hash": "4ad0214efb1997a529c98c15e9102f27",
-    "semantic_hash": ""
+    "semantic_hash": "4ad0214efb1997a529c98c15e9102f27"
   },
   "packages/db/drizzle/0001_expand_life_areas.sql": {
     "mtime": 1781562530.932254,
     "ast_hash": "63e5d8d48eb532bd7cb132eb3a2c6c51",
-    "semantic_hash": ""
+    "semantic_hash": "63e5d8d48eb532bd7cb132eb3a2c6c51"
   },
   "packages/db/drizzle/0002_rename_admin_life_area.sql": {
     "mtime": 1781562650.9102018,
     "ast_hash": "41085919ae0ed9c6b70b564f8cf209a9",
-    "semantic_hash": ""
+    "semantic_hash": "41085919ae0ed9c6b70b564f8cf209a9"
   },
   "packages/db/drizzle/0003_amusing_slipstream.sql": {
     "mtime": 1781563523.4362392,
     "ast_hash": "bad97f8e5616f797d00db0d740af830a",
-    "semantic_hash": ""
+    "semantic_hash": "bad97f8e5616f797d00db0d740af830a"
   },
   "packages/db/drizzle/meta/0003_snapshot.json": {
     "mtime": 1781563523.436034,
     "ast_hash": "91b7ef0bc551baee9e82acd5128a7bf4",
-    "semantic_hash": ""
+    "semantic_hash": "91b7ef0bc551baee9e82acd5128a7bf4"
   },
   "apps/web/components/layout/onboarding-layout.tsx": {
     "mtime": 1781608068.981088,
     "ast_hash": "1465486b29e71221ac9636fec5141efc",
-    "semantic_hash": ""
+    "semantic_hash": "1465486b29e71221ac9636fec5141efc"
   },
   "apps/web/lib/availability/compare-windows.ts": {
     "mtime": 1781596038.144066,
     "ast_hash": "a377c5821e96d6835ba0bcf5d86a110c",
-    "semantic_hash": ""
+    "semantic_hash": "a377c5821e96d6835ba0bcf5d86a110c"
   },
   "apps/web/lib/carousel/auto-advance.ts": {
     "mtime": 1781605915.3804214,
     "ast_hash": "f5a48f1cef401d41ebf01fd120a365a0",
-    "semantic_hash": ""
+    "semantic_hash": "f5a48f1cef401d41ebf01fd120a365a0"
   },
   "apps/web/lib/carousel/promo-caption-layout.ts": {
     "mtime": 1781607913.56769,
     "ast_hash": "444510d59594c449f9ff5ed571a7b58a",
-    "semantic_hash": ""
+    "semantic_hash": "444510d59594c449f9ff5ed571a7b58a"
   },
   "apps/web/lib/carousel/promo-carousel-config.ts": {
     "mtime": 1781607577.0519514,
     "ast_hash": "e4b0ab2a1b1343cb8f7908ea078da0ee",
-    "semantic_hash": ""
+    "semantic_hash": "e4b0ab2a1b1343cb8f7908ea078da0ee"
   },
   "apps/web/lib/items/constants.ts": {
     "mtime": 1781595450.1590037,
     "ast_hash": "743769daf5c2956557fc424607534051",
-    "semantic_hash": ""
+    "semantic_hash": "743769daf5c2956557fc424607534051"
   },
   "apps/web/lib/onboarding/steps.ts": {
     "mtime": 1781608271.9031188,
     "ast_hash": "3e7319b4f6001610366a294269afe274",
-    "semantic_hash": ""
+    "semantic_hash": "3e7319b4f6001610366a294269afe274"
   },
   "apps/web/lib/reminders/surface-reminders.ts": {
     "mtime": 1781684556.9133165,
     "ast_hash": "acf8777d8688b191f99f42fac5025e6d",
-    "semantic_hash": ""
+    "semantic_hash": "acf8777d8688b191f99f42fac5025e6d"
   },
   "apps/web/lib/version.ts": {
     "mtime": 1781684386.3849423,
     "ast_hash": "f665023a6e7dfe46e3bea2ae617a01cb",
-    "semantic_hash": ""
+    "semantic_hash": "f665023a6e7dfe46e3bea2ae617a01cb"
   },
   "apps/web/tests/unit/availability/compare-windows.test.ts": {
     "mtime": 1781596056.843511,
     "ast_hash": "b6f501a1b3731fb654208882815a469b",
-    "semantic_hash": ""
+    "semantic_hash": "b6f501a1b3731fb654208882815a469b"
   },
   "apps/web/tests/unit/carousel/auto-advance.test.ts": {
     "mtime": 1781605921.5571434,
     "ast_hash": "dbc48c3fb5d5dda539f372c963095025",
-    "semantic_hash": ""
+    "semantic_hash": "dbc48c3fb5d5dda539f372c963095025"
   },
   "apps/web/tests/unit/carousel/promo-caption-layout.test.ts": {
     "mtime": 1781607919.1419775,
     "ast_hash": "c0c42f2f5314ece947bcd0e1e65a0e45",
-    "semantic_hash": ""
+    "semantic_hash": "c0c42f2f5314ece947bcd0e1e65a0e45"
   },
   "apps/web/tests/unit/carousel/promo-carousel-config.test.ts": {
     "mtime": 1781607579.4444268,
     "ast_hash": "d90fe2ec36b3194f5a1db262e48dd4b7",
-    "semantic_hash": ""
+    "semantic_hash": "d90fe2ec36b3194f5a1db262e48dd4b7"
   },
   "apps/web/tests/unit/design/life-area-filter.test.ts": {
     "mtime": 1781595287.2568743,
     "ast_hash": "5aa647b716e5e6350503dec089de5e7b",
-    "semantic_hash": ""
+    "semantic_hash": "5aa647b716e5e6350503dec089de5e7b"
   },
   "apps/web/tests/unit/onboarding/date-utils.test.ts": {
     "mtime": 1781603883.6588106,
     "ast_hash": "9bb018c6e9ffdd0cf1737832a2f5c876",
-    "semantic_hash": ""
+    "semantic_hash": "9bb018c6e9ffdd0cf1737832a2f5c876"
   },
   "apps/web/tests/unit/onboarding/steps.test.ts": {
     "mtime": 1781608288.7751265,
     "ast_hash": "36fbdfe3f0b4935c857475f82065f813",
-    "semantic_hash": ""
+    "semantic_hash": "36fbdfe3f0b4935c857475f82065f813"
   },
   "apps/web/tests/unit/reminders/surface-reminders.test.ts": {
     "mtime": 1781684584.3326104,
     "ast_hash": "f5b3e2f7c9c06ccd147625b481b0110d",
-    "semantic_hash": ""
+    "semantic_hash": "f5b3e2f7c9c06ccd147625b481b0110d"
   },
   "apps/web/tests/unit/version.test.ts": {
     "mtime": 1781684427.5692558,
     "ast_hash": "065bd95562b44beff38c21ef1609d70d",
-    "semantic_hash": ""
-  },
-  "packages/domain/tests/time.test.ts": {
-    "mtime": 1781603863.965472,
-    "ast_hash": "338b36a445eea4c1100f8bf6f07ef60a",
-    "semantic_hash": ""
-  },
-  "version.json": {
-    "mtime": 1781684386.3846688,
-    "ast_hash": "bf9a844a26307bf50233af4450b57de5",
-    "semantic_hash": ""
-  },
-  "apps/web/tests/unit/tend/mark-tended-button.test.ts": {
-    "mtime": 1781687170.4005353,
-    "ast_hash": "2b1532e47f1872bc203d6ac385fca758",
-    "semantic_hash": ""
-  },
-  "apps/web/lib/activity/week-groups.ts": {
-    "mtime": 1781688005.3068156,
-    "ast_hash": "a023d2edb17475321755f7eedb4304e0",
-    "semantic_hash": ""
-  },
-  "apps/web/tests/unit/activity/week-groups.test.ts": {
-    "mtime": 1781688049.9070547,
-    "ast_hash": "87a55336718070da9f8bbc3bb0d8d735",
-    "semantic_hash": ""
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/applypatch-msg": {
-    "mtime": 1781772575.885781,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/commit-msg": {
-    "mtime": 1781772575.8856604,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/h": {
-    "mtime": 1781772575.8852632,
-    "ast_hash": "15239a01c5554e56ff745570fb583a91",
-    "semantic_hash": "15239a01c5554e56ff745570fb583a91"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/husky.sh": {
-    "mtime": 1781772575.8887026,
-    "ast_hash": "13871d2ab13e8423790ecb2c01c78c18",
-    "semantic_hash": "13871d2ab13e8423790ecb2c01c78c18"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/post-applypatch": {
-    "mtime": 1781772575.886128,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/post-checkout": {
-    "mtime": 1781772575.8875856,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/post-commit": {
-    "mtime": 1781772575.885722,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/post-merge": {
-    "mtime": 1781772575.887824,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/post-rewrite": {
-    "mtime": 1781772575.8874679,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/pre-applypatch": {
-    "mtime": 1781772575.8858352,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/pre-auto-gc": {
-    "mtime": 1781772575.8882024,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/pre-commit": {
-    "mtime": 1781772575.8854637,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/pre-merge-commit": {
-    "mtime": 1781772575.8855312,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/pre-push": {
-    "mtime": 1781772575.888025,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/pre-rebase": {
-    "mtime": 1781772575.8869083,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/_/prepare-commit-msg": {
-    "mtime": 1781772575.8855972,
-    "ast_hash": "0b71c2e7d39daa010985d529f1320b37",
-    "semantic_hash": "0b71c2e7d39daa010985d529f1320b37"
-  },
-  "/Users/saki/Documents/Mine/tend/.husky/pre-commit": {
-    "mtime": 1781538023.2943726,
-    "ast_hash": "6dee3a241ab82be5f97b50b3448af465",
-    "semantic_hash": "6dee3a241ab82be5f97b50b3448af465"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/App.tsx": {
-    "mtime": 1781862368.5347772,
-    "ast_hash": "a593175a9ae1b0989f87121ce3feccb0",
-    "semantic_hash": "a593175a9ae1b0989f87121ce3feccb0"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/app.json": {
-    "mtime": 1781786422.9439247,
-    "ast_hash": "7165e3a67d93ad5f394ea9f302b62735",
-    "semantic_hash": "7165e3a67d93ad5f394ea9f302b62735"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/babel.config.js": {
-    "mtime": 1781777999.1365426,
-    "ast_hash": "036536269ecba81eec5a3990b26db2fc",
-    "semantic_hash": "036536269ecba81eec5a3990b26db2fc"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/eas.json": {
-    "mtime": 1781777999.136602,
-    "ast_hash": "858c5e8827f1bae86ff7304a767795cf",
-    "semantic_hash": "858c5e8827f1bae86ff7304a767795cf"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/google-services.json": {
-    "mtime": 1781777999.1366627,
-    "ast_hash": "ca5794b450966d3da9d245788e4a6749",
-    "semantic_hash": "ca5794b450966d3da9d245788e4a6749"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/index.js": {
-    "mtime": 1781777999.1368306,
-    "ast_hash": "abba34ee03076e881f01c31c57d8f27a",
-    "semantic_hash": "abba34ee03076e881f01c31c57d8f27a"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/metro.config.js": {
-    "mtime": 1781777999.1369612,
-    "ast_hash": "a11490bae882d23aecc44c4abcaa2370",
-    "semantic_hash": "a11490bae882d23aecc44c4abcaa2370"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/metro.config.test.js": {
-    "mtime": 1781777999.13706,
-    "ast_hash": "3441e6b07b93eaec98651e48dbfe1ac5",
-    "semantic_hash": "3441e6b07b93eaec98651e48dbfe1ac5"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/package.json": {
-    "mtime": 1781784870.4244578,
-    "ast_hash": "3d73ab6416f23ce4c0d4a4f48441a5b5",
-    "semantic_hash": "3d73ab6416f23ce4c0d4a4f48441a5b5"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/scripts/verify-deps.mjs": {
-    "mtime": 1781777999.1372843,
-    "ast_hash": "e37ca6e35cc1fea3e397efed77f89d4c",
-    "semantic_hash": "e37ca6e35cc1fea3e397efed77f89d4c"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/components/date-picker-field.tsx": {
-    "mtime": 1781784871.5352232,
-    "ast_hash": "eb6ea895084e0c8e919f9b2e26a0c925",
-    "semantic_hash": "eb6ea895084e0c8e919f9b2e26a0c925"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/components/form-field.tsx": {
-    "mtime": 1781784552.7322936,
-    "ast_hash": "952903c229935568f7e7d0efde50a5fe",
-    "semantic_hash": "952903c229935568f7e7d0efde50a5fe"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/components/item-form.tsx": {
-    "mtime": 1781784600.6502295,
-    "ast_hash": "ce5285811ffca7d3a07a93d02cec2ff9",
-    "semantic_hash": "ce5285811ffca7d3a07a93d02cec2ff9"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/components/life-area-picker.tsx": {
-    "mtime": 1781862368.534852,
-    "ast_hash": "bcc41099070ca797c61745bdfcf64af3",
-    "semantic_hash": "bcc41099070ca797c61745bdfcf64af3"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/components/preset-suggestions.tsx": {
-    "mtime": 1781862368.5349185,
-    "ast_hash": "cfd98a1232b2fef20068cdd2952789f0",
-    "semantic_hash": "cfd98a1232b2fef20068cdd2952789f0"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/components/primary-button.tsx": {
-    "mtime": 1781784526.2069993,
-    "ast_hash": "48695d42b5942ce68c586e54cc25dea0",
-    "semantic_hash": "48695d42b5942ce68c586e54cc25dea0"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/components/rhythm-picker.tsx": {
-    "mtime": 1781784551.9332216,
-    "ast_hash": "f0eae819914b165b87eb029cd9f3e1d2",
-    "semantic_hash": "f0eae819914b165b87eb029cd9f3e1d2"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/components/skeleton.tsx": {
-    "mtime": 1781786536.8624601,
-    "ast_hash": "48f3f424a0a2e21117a804387a417385",
-    "semantic_hash": "48f3f424a0a2e21117a804387a417385"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/components/time-select.tsx": {
-    "mtime": 1781785968.701496,
-    "ast_hash": "93b2fc95203c4cc4516dff16bbc2d107",
-    "semantic_hash": "93b2fc95203c4cc4516dff16bbc2d107"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/components/type-selector.tsx": {
-    "mtime": 1781777999.1376824,
-    "ast_hash": "41fb781d37d101eb25d6f45e1fd2ecd6",
-    "semantic_hash": "41fb781d37d101eb25d6f45e1fd2ecd6"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/constants.ts": {
-    "mtime": 1781777999.137749,
-    "ast_hash": "b3ff5430540a4984d73f8b2c7a3c79e1",
-    "semantic_hash": "b3ff5430540a4984d73f8b2c7a3c79e1"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/fonts.ts": {
-    "mtime": 1781777999.137827,
-    "ast_hash": "bc443292c26f83f61f5351588a896827",
-    "semantic_hash": "bc443292c26f83f61f5351588a896827"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/hooks/useActivityEvents.ts": {
-    "mtime": 1781777999.1379428,
-    "ast_hash": "91be567650122bae00b7ed7b2c959303",
-    "semantic_hash": "91be567650122bae00b7ed7b2c959303"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/hooks/useAvailabilityWindows.ts": {
-    "mtime": 1781785874.5596478,
-    "ast_hash": "a47ee6155c0dd88d0e49ac4b5746f877",
-    "semantic_hash": "a47ee6155c0dd88d0e49ac4b5746f877"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/hooks/useHomeItems.ts": {
-    "mtime": 1781777999.1382017,
-    "ast_hash": "34eb730a72ff280eed9652845c0b5d76",
-    "semantic_hash": "34eb730a72ff280eed9652845c0b5d76"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/hooks/usePushNotifications.ts": {
-    "mtime": 1781778095.1625955,
-    "ast_hash": "04459563512df8416f02af38a2b3ca5f",
-    "semantic_hash": "04459563512df8416f02af38a2b3ca5f"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/i18n/en.ts": {
-    "mtime": 1781862368.5350704,
-    "ast_hash": "f96d3636e47ea63a507a30019429d724",
-    "semantic_hash": "f96d3636e47ea63a507a30019429d724"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/i18n/index.ts": {
-    "mtime": 1781862368.5351357,
-    "ast_hash": "a053934ae057a0368f20e40e411fcdfd",
-    "semantic_hash": "a053934ae057a0368f20e40e411fcdfd"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/i18n/sr.ts": {
-    "mtime": 1781862368.5352855,
-    "ast_hash": "a1a661c7a69f1ef18261186bc74379cc",
-    "semantic_hash": "a1a661c7a69f1ef18261186bc74379cc"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/services/apiError.ts": {
-    "mtime": 1781777999.1389942,
-    "ast_hash": "22e0ca32251c509139a31cc2ce02ea99",
-    "semantic_hash": "22e0ca32251c509139a31cc2ce02ea99"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/services/pushNotifications.ts": {
-    "mtime": 1781862368.5353854,
-    "ast_hash": "b000653f6d756b42c412992f2024322d",
-    "semantic_hash": "b000653f6d756b42c412992f2024322d"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/services/tendApi.ts": {
-    "mtime": 1781784200.0404189,
-    "ast_hash": "9c3e92a75146139b61cc5a61464cac8a",
-    "semantic_hash": "9c3e92a75146139b61cc5a61464cac8a"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/theme.ts": {
-    "mtime": 1781786424.9311392,
-    "ast_hash": "1c5ad0c9d426f32a9ce81e063f07819a",
-    "semantic_hash": "1c5ad0c9d426f32a9ce81e063f07819a"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/types/api.ts": {
-    "mtime": 1781777999.1393814,
-    "ast_hash": "628977f2e9f4f8fc1ff76ad28fd9f476",
-    "semantic_hash": "628977f2e9f4f8fc1ff76ad28fd9f476"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/types/index.ts": {
-    "mtime": 1781777999.1394622,
-    "ast_hash": "fe80fb73a575b5767d98e25718df89ce",
-    "semantic_hash": "fe80fb73a575b5767d98e25718df89ce"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/apiBaseUrl.ts": {
-    "mtime": 1781777999.1395948,
-    "ast_hash": "ddced490b54b607dc305b939db54b14b",
-    "semantic_hash": "ddced490b54b607dc305b939db54b14b"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/devMode.ts": {
-    "mtime": 1781777999.1397057,
-    "ast_hash": "c2702bf8afe711800994c4b9e812c94e",
-    "semantic_hash": "c2702bf8afe711800994c4b9e812c94e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/homeGroups.ts": {
-    "mtime": 1781777999.139795,
-    "ast_hash": "a33e5a6189a16dc81efedb420bf58273",
-    "semantic_hash": "a33e5a6189a16dc81efedb420bf58273"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/homeRefresh.ts": {
-    "mtime": 1781786851.0910296,
-    "ast_hash": "3d9d2854a8345d37244189d9fecca968",
-    "semantic_hash": "3d9d2854a8345d37244189d9fecca968"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/itemFormValidation.ts": {
-    "mtime": 1781784871.5559418,
-    "ast_hash": "17238fe6973e63c3b55443c7cce11088",
-    "semantic_hash": "17238fe6973e63c3b55443c7cce11088"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/itemFormValues.ts": {
-    "mtime": 1781784198.575751,
-    "ast_hash": "c2542a59633988b5bd86f7511296461e",
-    "semantic_hash": "c2542a59633988b5bd86f7511296461e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/networkError.ts": {
-    "mtime": 1781777999.139944,
-    "ast_hash": "cce8c373e5143455eb5b0101636db8b1",
-    "semantic_hash": "cce8c373e5143455eb5b0101636db8b1"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/pushNotificationsSupport.ts": {
-    "mtime": 1781777999.1400163,
-    "ast_hash": "6380c68ed544300e3bb58c549d755a90",
-    "semantic_hash": "6380c68ed544300e3bb58c549d755a90"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/relativeTime.ts": {
-    "mtime": 1781777999.140083,
-    "ast_hash": "d2dc4f39b29bc368fca496255e222805",
-    "semantic_hash": "d2dc4f39b29bc368fca496255e222805"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/rhythm.ts": {
-    "mtime": 1781784546.6398635,
-    "ast_hash": "09861da93d1cbc4a2d819b0b9328ea0e",
-    "semantic_hash": "09861da93d1cbc4a2d819b0b9328ea0e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/sessionRestore.ts": {
-    "mtime": 1781777999.1402335,
-    "ast_hash": "e823ec1b8a82c01891832bd4f719b118",
-    "semantic_hash": "e823ec1b8a82c01891832bd4f719b118"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/skeletonColors.ts": {
-    "mtime": 1781786536.5252476,
-    "ast_hash": "82c5bef8aa7b545fabd30fa74a7792b2",
-    "semantic_hash": "82c5bef8aa7b545fabd30fa74a7792b2"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/storage/index.ts": {
-    "mtime": 1781777999.140342,
-    "ast_hash": "3610b3f2de63bba7a93fb9b76c20665f",
-    "semantic_hash": "3610b3f2de63bba7a93fb9b76c20665f"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/storage/storage.ts": {
-    "mtime": 1781777999.1404467,
-    "ast_hash": "288c5064dd43e3a304a133e94171668a",
-    "semantic_hash": "288c5064dd43e3a304a133e94171668a"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/tabTransition.ts": {
-    "mtime": 1781777999.1405506,
-    "ast_hash": "3f2d47f28c30ea114947d3826a6785a8",
-    "semantic_hash": "3f2d47f28c30ea114947d3826a6785a8"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/src/utils/timeOptions.ts": {
-    "mtime": 1781785867.571647,
-    "ast_hash": "2761f0acdb5064dec780157e3ef892af",
-    "semantic_hash": "2761f0acdb5064dec780157e3ef892af"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/helpers/nativeModuleMocks.ts": {
-    "mtime": 1781777999.1412163,
-    "ast_hash": "d9db28e5e53078dd1fc04007ee9b1ed8",
-    "semantic_hash": "d9db28e5e53078dd1fc04007ee9b1ed8"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/apiBaseUrl.test.ts": {
-    "mtime": 1781777999.141698,
-    "ast_hash": "560178060f0f46492914ab56c1a1f29d",
-    "semantic_hash": "560178060f0f46492914ab56c1a1f29d"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/devMode.test.ts": {
-    "mtime": 1781777999.1420038,
-    "ast_hash": "069be0c958ed02810c6cbe068c03eac5",
-    "semantic_hash": "069be0c958ed02810c6cbe068c03eac5"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/homeGroups.test.ts": {
-    "mtime": 1781777999.1421793,
-    "ast_hash": "aedc9eb0e2951c3dba29d29a3addf738",
-    "semantic_hash": "aedc9eb0e2951c3dba29d29a3addf738"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/homeRefresh.test.ts": {
-    "mtime": 1781786851.923795,
-    "ast_hash": "fa8623e425c5bdb0055a74a7248423fc",
-    "semantic_hash": "fa8623e425c5bdb0055a74a7248423fc"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/i18n.test.ts": {
-    "mtime": 1781862368.5354474,
-    "ast_hash": "eb144341cae2620cebd771ba8887dca7",
-    "semantic_hash": "eb144341cae2620cebd771ba8887dca7"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/itemForm.test.ts": {
-    "mtime": 1781784600.178715,
-    "ast_hash": "18dbeb914dcef13b704ccaaf9d18d8b2",
-    "semantic_hash": "18dbeb914dcef13b704ccaaf9d18d8b2"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/itemFormFields.test.ts": {
-    "mtime": 1781784600.2157815,
-    "ast_hash": "934af9d83309063a0ea05a8061f76a0a",
-    "semantic_hash": "934af9d83309063a0ea05a8061f76a0a"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/itemFormValues.test.ts": {
-    "mtime": 1781784199.6050513,
-    "ast_hash": "5b84da161ae68e2b44bf53e28d61b201",
-    "semantic_hash": "5b84da161ae68e2b44bf53e28d61b201"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/networkError.test.ts": {
-    "mtime": 1781777999.142689,
-    "ast_hash": "2c369b806891335d8183db67ca69fe45",
-    "semantic_hash": "2c369b806891335d8183db67ca69fe45"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/pushNotifications.test.ts": {
-    "mtime": 1781862368.5356107,
-    "ast_hash": "011d1e957acdda425f7deff751b83696",
-    "semantic_hash": "011d1e957acdda425f7deff751b83696"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/pushNotificationsLoadOrder.test.ts": {
-    "mtime": 1781777999.1428344,
-    "ast_hash": "35699b95e4c3b1597bff5431c74b40c6",
-    "semantic_hash": "35699b95e4c3b1597bff5431c74b40c6"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/pushNotificationsSupport.test.ts": {
-    "mtime": 1781777999.1429052,
-    "ast_hash": "0b6bea11955a6a78bfaf6c577528753b",
-    "semantic_hash": "0b6bea11955a6a78bfaf6c577528753b"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/relativeTime.test.ts": {
-    "mtime": 1781777999.142977,
-    "ast_hash": "9b07e631d9ae7dfd9f8a2493b3f222fa",
-    "semantic_hash": "9b07e631d9ae7dfd9f8a2493b3f222fa"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/rhythm.test.ts": {
-    "mtime": 1781784596.8628504,
-    "ast_hash": "444241e83f95fc71ed684806a8407181",
-    "semantic_hash": "444241e83f95fc71ed684806a8407181"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/sessionRestore.test.ts": {
-    "mtime": 1781777999.143114,
-    "ast_hash": "3e28e092be8596116bc4922eb92adeb8",
-    "semantic_hash": "3e28e092be8596116bc4922eb92adeb8"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/skeleton.test.ts": {
-    "mtime": 1781786536.8069673,
-    "ast_hash": "6a6b51d6b5f78572420492583b988203",
-    "semantic_hash": "6a6b51d6b5f78572420492583b988203"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/tabTransition.test.ts": {
-    "mtime": 1781777999.1431797,
-    "ast_hash": "da20a4122af7f9b6880cad79bd5c52c0",
-    "semantic_hash": "da20a4122af7f9b6880cad79bd5c52c0"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/theme.test.ts": {
-    "mtime": 1781786424.6969314,
-    "ast_hash": "9a09f98546151debc9a5ae978a58d320",
-    "semantic_hash": "9a09f98546151debc9a5ae978a58d320"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tests/unit/timeOptions.test.ts": {
-    "mtime": 1781785871.4908452,
-    "ast_hash": "2616658e8f4c02d5c22b632cd5eedd06",
-    "semantic_hash": "2616658e8f4c02d5c22b632cd5eedd06"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/tsconfig.json": {
-    "mtime": 1781777999.1432583,
-    "ast_hash": "8d90ed7dd02f3beda181097db7233adb",
-    "semantic_hash": "8d90ed7dd02f3beda181097db7233adb"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/activity/page.tsx": {
-    "mtime": 1781777999.1434338,
-    "ast_hash": "232f491d9fbfd830f8362561c88c9041",
-    "semantic_hash": "232f491d9fbfd830f8362561c88c9041"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/activity/[eventId]/route.ts": {
-    "mtime": 1781777999.1435783,
-    "ast_hash": "829cc70d3c1c802551e8b3fcea16f639",
-    "semantic_hash": "829cc70d3c1c802551e8b3fcea16f639"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/activity/route.ts": {
-    "mtime": 1781777999.1437163,
-    "ast_hash": "a3cc3a6884512925c610b7e480fd9141",
-    "semantic_hash": "a3cc3a6884512925c610b7e480fd9141"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/auth/login/route.ts": {
-    "mtime": 1781777999.1438894,
-    "ast_hash": "98cac67388b67435f5ae219ee5890a4d",
-    "semantic_hash": "98cac67388b67435f5ae219ee5890a4d"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/auth/logout/route.ts": {
-    "mtime": 1781777999.1440668,
-    "ast_hash": "c0d1057a5e3dbedcadf8593a215521da",
-    "semantic_hash": "c0d1057a5e3dbedcadf8593a215521da"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/auth/register/route.ts": {
-    "mtime": 1781777999.1441958,
-    "ast_hash": "8152433b45a7d5024b5443e6447758d9",
-    "semantic_hash": "8152433b45a7d5024b5443e6447758d9"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/availability/route.ts": {
-    "mtime": 1781777999.1443293,
-    "ast_hash": "fb55543911aec327a19f8bdcaac8b703",
-    "semantic_hash": "fb55543911aec327a19f8bdcaac8b703"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/health/route.ts": {
-    "mtime": 1781777999.1448004,
-    "ast_hash": "67d671e3bfcb833b9b3d892b80f54db5",
-    "semantic_hash": "67d671e3bfcb833b9b3d892b80f54db5"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/items/[id]/route.ts": {
-    "mtime": 1781777999.1450353,
-    "ast_hash": "ec5c9022237ab0c404346c2630e1c738",
-    "semantic_hash": "ec5c9022237ab0c404346c2630e1c738"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/items/[id]/tend/route.ts": {
-    "mtime": 1781777999.1451497,
-    "ast_hash": "7da7a997ceffe71dd4c9de3ce4ecd876",
-    "semantic_hash": "7da7a997ceffe71dd4c9de3ce4ecd876"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/items/presets/route.ts": {
-    "mtime": 1781777999.145258,
-    "ast_hash": "3fa5a5f21cdccbf098abc1c209c73f2c",
-    "semantic_hash": "3fa5a5f21cdccbf098abc1c209c73f2c"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/items/route.ts": {
-    "mtime": 1781777999.1453505,
-    "ast_hash": "c96aa1b803cf8a524f1a06dcf2b1e910",
-    "semantic_hash": "c96aa1b803cf8a524f1a06dcf2b1e910"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/me/route.ts": {
-    "mtime": 1781777999.145447,
-    "ast_hash": "26cde95bdaa29ab74b03579b5904beb5",
-    "semantic_hash": "26cde95bdaa29ab74b03579b5904beb5"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/onboarding/route.ts": {
-    "mtime": 1781777999.1455705,
-    "ast_hash": "351e102aed5a23df056be0e00d2b74b1",
-    "semantic_hash": "351e102aed5a23df056be0e00d2b74b1"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/reminders/route.ts": {
-    "mtime": 1781777999.1456861,
-    "ast_hash": "fc1d64d9c2983629bba0a5f18cdf1fed",
-    "semantic_hash": "fc1d64d9c2983629bba0a5f18cdf1fed"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/api/v1/settings/route.ts": {
-    "mtime": 1781777999.145806,
-    "ast_hash": "2f2b5aef4b637a6d661d707cc6d4812f",
-    "semantic_hash": "2f2b5aef4b637a6d661d707cc6d4812f"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/error.tsx": {
-    "mtime": 1781777999.1491828,
-    "ast_hash": "7885e4b4ed0aec939e28e522d94f0259",
-    "semantic_hash": "7885e4b4ed0aec939e28e522d94f0259"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/items/[id]/page.tsx": {
-    "mtime": 1781777999.1501386,
-    "ast_hash": "31b557775bcb43726a6e616c3458602f",
-    "semantic_hash": "31b557775bcb43726a6e616c3458602f"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/items/new/page.tsx": {
-    "mtime": 1781777999.1502926,
-    "ast_hash": "8212720ef783f32b48134f117a4cf24a",
-    "semantic_hash": "8212720ef783f32b48134f117a4cf24a"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/layout.tsx": {
-    "mtime": 1781862368.5356667,
-    "ast_hash": "d233ebaafd500ca9dc292dc0b4531c52",
-    "semantic_hash": "d233ebaafd500ca9dc292dc0b4531c52"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/loading.tsx": {
-    "mtime": 1781777999.150378,
-    "ast_hash": "eba83bd7a80589c38fb793ed7e2db907",
-    "semantic_hash": "eba83bd7a80589c38fb793ed7e2db907"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/login/page.tsx": {
-    "mtime": 1781777999.150517,
-    "ast_hash": "6e19300ba95b1dc57ce370cb4dd1dec5",
-    "semantic_hash": "6e19300ba95b1dc57ce370cb4dd1dec5"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/not-found.tsx": {
-    "mtime": 1781777999.1505888,
-    "ast_hash": "d08dc43dcb83da1ee2e6435939232775",
-    "semantic_hash": "d08dc43dcb83da1ee2e6435939232775"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/onboarding/page.tsx": {
-    "mtime": 1781777999.150703,
-    "ast_hash": "74e6f7ef27d3823a6fb78ec6d2ea013e",
-    "semantic_hash": "74e6f7ef27d3823a6fb78ec6d2ea013e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/page.tsx": {
-    "mtime": 1781777999.1508384,
-    "ast_hash": "66fa4eb198d061dd6a1690af24575827",
-    "semantic_hash": "66fa4eb198d061dd6a1690af24575827"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/privacy/page.tsx": {
-    "mtime": 1781560686.2531643,
-    "ast_hash": "39056cd6763dd3b72d27be6626bc86c1",
-    "semantic_hash": "39056cd6763dd3b72d27be6626bc86c1"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/register/page.tsx": {
-    "mtime": 1781777999.1509683,
-    "ast_hash": "b97f98aa0474511ff2773989b2d9194c",
-    "semantic_hash": "b97f98aa0474511ff2773989b2d9194c"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/settings/availability/page.tsx": {
-    "mtime": 1781779624.7834773,
-    "ast_hash": "4ff9b1b27faf82c7c8342f285d527de3",
-    "semantic_hash": "4ff9b1b27faf82c7c8342f285d527de3"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/terms/page.tsx": {
-    "mtime": 1781560686.2775862,
-    "ast_hash": "97a0510622c46e36355d9e16c08f45c0",
-    "semantic_hash": "97a0510622c46e36355d9e16c08f45c0"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/forms/add-item-form.tsx": {
-    "mtime": 1781603831.937232,
-    "ast_hash": "1a7e4566a94829394850ba0f38ba4b54",
-    "semantic_hash": "1a7e4566a94829394850ba0f38ba4b54"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/forms/auth-form.tsx": {
-    "mtime": 1781559530.7228224,
-    "ast_hash": "79a86d7e67657f3c64e3b592095b1f19",
-    "semantic_hash": "79a86d7e67657f3c64e3b592095b1f19"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/forms/availability-editor.tsx": {
-    "mtime": 1781794425.1500838,
-    "ast_hash": "af385fd660b80ca82e57a20cbf6cef0b",
-    "semantic_hash": "af385fd660b80ca82e57a20cbf6cef0b"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/forms/form-field.tsx": {
-    "mtime": 1781595479.1145487,
-    "ast_hash": "f81a759e746d3d6bc25d78f3bd070838",
-    "semantic_hash": "f81a759e746d3d6bc25d78f3bd070838"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/forms/item-form.tsx": {
-    "mtime": 1781603830.3206575,
-    "ast_hash": "ca8f2e7291a0d821b752b859c30529d2",
-    "semantic_hash": "ca8f2e7291a0d821b752b859c30529d2"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/forms/login-form.tsx": {
-    "mtime": 1781533380.8683293,
-    "ast_hash": "58cee0257b790014ddd704a8895602a7",
-    "semantic_hash": "58cee0257b790014ddd704a8895602a7"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/forms/register-form.tsx": {
-    "mtime": 1781533381.5004854,
-    "ast_hash": "567c0182cc9127f16937d4b6c322e27e",
-    "semantic_hash": "567c0182cc9127f16937d4b6c322e27e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/forms/rhythm-select.tsx": {
-    "mtime": 1781563067.1715503,
-    "ast_hash": "6ad4fddc462c6ef4f6c1557ee08dba86",
-    "semantic_hash": "6ad4fddc462c6ef4f6c1557ee08dba86"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/forms/type-selector.tsx": {
-    "mtime": 1781528754.0311067,
-    "ast_hash": "3897627e18effd9b7f3788d768d6e984",
-    "semantic_hash": "3897627e18effd9b7f3788d768d6e984"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/layout/app-shell.tsx": {
-    "mtime": 1781862368.5357308,
-    "ast_hash": "d1660b9b473d1369b31ceb9eeae9e3f9",
-    "semantic_hash": "d1660b9b473d1369b31ceb9eeae9e3f9"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/layout/auth-layout.tsx": {
-    "mtime": 1781561528.6242645,
-    "ast_hash": "9fcee747c935e5d4503bc26f9fd73bfa",
-    "semantic_hash": "9fcee747c935e5d4503bc26f9fd73bfa"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/layout/onboarding-layout.tsx": {
-    "mtime": 1781608068.981088,
-    "ast_hash": "1465486b29e71221ac9636fec5141efc",
-    "semantic_hash": "1465486b29e71221ac9636fec5141efc"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/layout/onboarding-step.tsx": {
-    "mtime": 1781608083.5348325,
-    "ast_hash": "7de700b1dfb07b3d8185209af403c1a9",
-    "semantic_hash": "7de700b1dfb07b3d8185209af403c1a9"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/layout/page-header.tsx": {
-    "mtime": 1781606192.8838859,
-    "ast_hash": "b43a0ff7360eb7691e8f90abeb47ff5e",
-    "semantic_hash": "b43a0ff7360eb7691e8f90abeb47ff5e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/layout/site-footer.tsx": {
-    "mtime": 1781862368.5357864,
-    "ast_hash": "a330c1422d899a55783ab0c60067df03",
-    "semantic_hash": "a330c1422d899a55783ab0c60067df03"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/layout/tend-logo-link.tsx": {
-    "mtime": 1781559530.7801461,
-    "ast_hash": "37dbd05b0bee49612d413a9fd891cdc2",
-    "semantic_hash": "37dbd05b0bee49612d413a9fd891cdc2"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/layout/user-menu.tsx": {
-    "mtime": 1781862368.5358398,
-    "ast_hash": "16b24e22e42e068d085d573075be513c",
-    "semantic_hash": "16b24e22e42e068d085d573075be513c"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/marketing/landing-page.tsx": {
-    "mtime": 1781862368.535897,
-    "ast_hash": "454b303413d9a197be687e34f5ecefee",
-    "semantic_hash": "454b303413d9a197be687e34f5ecefee"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/marketing/landing-promo-preview.tsx": {
-    "mtime": 1781607924.2995412,
-    "ast_hash": "ee0ecbcfda76d65ab4f9fe6f409da272",
-    "semantic_hash": "ee0ecbcfda76d65ab4f9fe6f409da272"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/marketing/legal-page.tsx": {
-    "mtime": 1781560686.2814603,
-    "ast_hash": "f6d769b19073e2ed6aafe1e52c1d6de3",
-    "semantic_hash": "f6d769b19073e2ed6aafe1e52c1d6de3"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/onboarding-flow.tsx": {
-    "mtime": 1781608673.9904091,
-    "ast_hash": "4658d48b0e0be769da96cdaff3e7ca85",
-    "semantic_hash": "4658d48b0e0be769da96cdaff3e7ca85"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/onboarding/promo-carousel.tsx": {
-    "mtime": 1781606008.5405931,
-    "ast_hash": "3dcc2005ab3cd514b5eb428a4e6b00e1",
-    "semantic_hash": "3dcc2005ab3cd514b5eb428a4e6b00e1"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/activity-list-item.tsx": {
-    "mtime": 1781595902.1877005,
-    "ast_hash": "5503ebbbfc3fb6917bd6f12fa3b516da",
-    "semantic_hash": "5503ebbbfc3fb6917bd6f12fa3b516da"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/activity-view.tsx": {
-    "mtime": 1781862368.5359542,
-    "ast_hash": "4076c77edc28c1d55019a51fc4cf09bb",
-    "semantic_hash": "4076c77edc28c1d55019a51fc4cf09bb"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/attention-section.tsx": {
-    "mtime": 1781533237.8970337,
-    "ast_hash": "fd0e5a2ae90fc61f145f105e042dd184",
-    "semantic_hash": "fd0e5a2ae90fc61f145f105e042dd184"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/empty-state.tsx": {
-    "mtime": 1781862368.536008,
-    "ast_hash": "43e425e0d038d6486c43807e9dcd726d",
-    "semantic_hash": "43e425e0d038d6486c43807e9dcd726d"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/home-view.tsx": {
-    "mtime": 1781862368.5361025,
-    "ast_hash": "76cdc1afca672b9e9485131e31a5f1a3",
-    "semantic_hash": "76cdc1afca672b9e9485131e31a5f1a3"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/item-detail-view.tsx": {
-    "mtime": 1781603883.6594005,
-    "ast_hash": "99e88ea61825fb682ddd010730d5e4f4",
-    "semantic_hash": "99e88ea61825fb682ddd010730d5e4f4"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/life-area-chip.tsx": {
-    "mtime": 1781528754.0333166,
-    "ast_hash": "b03ac0daf57e1a8cd47e66f8e48a4170",
-    "semantic_hash": "b03ac0daf57e1a8cd47e66f8e48a4170"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/life-area-filter.tsx": {
-    "mtime": 1781595291.8791792,
-    "ast_hash": "0cc7ce01102f38efbc05984bee64c2b7",
-    "semantic_hash": "0cc7ce01102f38efbc05984bee64c2b7"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/mark-tended-button.tsx": {
-    "mtime": 1781687164.2923548,
-    "ast_hash": "1c47ce9c23d0d8b0cf4b9c731ff6eb19",
-    "semantic_hash": "1c47ce9c23d0d8b0cf4b9c731ff6eb19"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/preset-card.tsx": {
-    "mtime": 1781606192.8473282,
-    "ast_hash": "a9392899a037d3429ffa83b7a689dc09",
-    "semantic_hash": "a9392899a037d3429ffa83b7a689dc09"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/preset-suggestions.tsx": {
-    "mtime": 1781563346.6140132,
-    "ast_hash": "332e816d41d2e94001d3ea53434618c9",
-    "semantic_hash": "332e816d41d2e94001d3ea53434618c9"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/relative-time.tsx": {
-    "mtime": 1781603821.6236932,
-    "ast_hash": "a86578a784351100e68dc98a94c67b21",
-    "semantic_hash": "a86578a784351100e68dc98a94c67b21"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/reminder-banner.tsx": {
-    "mtime": 1781686837.4592557,
-    "ast_hash": "07b402c942a2fa3eb3699856013f99ca",
-    "semantic_hash": "07b402c942a2fa3eb3699856013f99ca"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/status-badge.tsx": {
-    "mtime": 1781528754.034418,
-    "ast_hash": "0c4032276c33881ffd71a4c130dce560",
-    "semantic_hash": "0c4032276c33881ffd71a4c130dce560"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/tend-event-row.tsx": {
-    "mtime": 1781533838.36279,
-    "ast_hash": "c7d320babe50505fc901ad26ca914956",
-    "semantic_hash": "c7d320babe50505fc901ad26ca914956"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/tend-item-card.tsx": {
-    "mtime": 1781686610.7562323,
-    "ast_hash": "6d7b86635cf1000e772d4a48ecb9bb6e",
-    "semantic_hash": "6d7b86635cf1000e772d4a48ecb9bb6e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/tend/type-badge.tsx": {
-    "mtime": 1781528754.035037,
-    "ast_hash": "74cce5e1f98fe8d7c7f2e3f60582c0da",
-    "semantic_hash": "74cce5e1f98fe8d7c7f2e3f60582c0da"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/ui/alert.tsx": {
-    "mtime": 1781528754.0490787,
-    "ast_hash": "fc66eac61307c97e8e4d81d8509491b3",
-    "semantic_hash": "fc66eac61307c97e8e4d81d8509491b3"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/ui/badge.tsx": {
-    "mtime": 1781528754.0365617,
-    "ast_hash": "53ac946a34aab0180775a2af6b20400a",
-    "semantic_hash": "53ac946a34aab0180775a2af6b20400a"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/ui/button.tsx": {
-    "mtime": 1781528754.03576,
-    "ast_hash": "f06a329c03f108938fedaa4c759ee96e",
-    "semantic_hash": "f06a329c03f108938fedaa4c759ee96e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/ui/card.tsx": {
-    "mtime": 1781528754.0381901,
-    "ast_hash": "165db4c0a0c7e8db222bd63a95e32db3",
-    "semantic_hash": "165db4c0a0c7e8db222bd63a95e32db3"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/ui/dropdown-menu.tsx": {
-    "mtime": 1781559530.7882,
-    "ast_hash": "c0639d326d13f91a4b4c137cc235d1af",
-    "semantic_hash": "c0639d326d13f91a4b4c137cc235d1af"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/ui/input.tsx": {
-    "mtime": 1781528754.0364256,
-    "ast_hash": "9428b926c5eca1b535cc94b4021961f3",
-    "semantic_hash": "9428b926c5eca1b535cc94b4021961f3"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/ui/label.tsx": {
-    "mtime": 1781528754.0368922,
-    "ast_hash": "cb84ac49995750c67f9119f8e0a539bc",
-    "semantic_hash": "cb84ac49995750c67f9119f8e0a539bc"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/components/ui/select.tsx": {
-    "mtime": 1781537306.265278,
-    "ast_hash": "445d4178ed57e8333d91517cb0440d24",
-    "semantic_hash": "445d4178ed57e8333d91517cb0440d24"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/activity/serialize.ts": {
-    "mtime": 1781536708.7912934,
-    "ast_hash": "e7c26b29b17aec8c3079ee9390f6410c",
-    "semantic_hash": "e7c26b29b17aec8c3079ee9390f6410c"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/activity/validation.ts": {
-    "mtime": 1781536709.8872955,
-    "ast_hash": "b51fe726219ade9145cac2b93c3308ed",
-    "semantic_hash": "b51fe726219ade9145cac2b93c3308ed"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/activity/week-groups.ts": {
-    "mtime": 1781688005.3068156,
-    "ast_hash": "a023d2edb17475321755f7eedb4304e0",
-    "semantic_hash": "a023d2edb17475321755f7eedb4304e0"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/api-client.ts": {
-    "mtime": 1781528164.298684,
-    "ast_hash": "f78236fb0b1dbf28369c41ad14a01097",
-    "semantic_hash": "f78236fb0b1dbf28369c41ad14a01097"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/api.ts": {
-    "mtime": 1781526391.7594173,
-    "ast_hash": "dace557f2c63d5d3e244ab4be675e6ca",
-    "semantic_hash": "dace557f2c63d5d3e244ab4be675e6ca"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/auth/allowed-emails.ts": {
-    "mtime": 1781542467.130732,
-    "ast_hash": "fadfe52fe1b8c7ebbc9ad7e64c054d7f",
-    "semantic_hash": "fadfe52fe1b8c7ebbc9ad7e64c054d7f"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/auth/constants.ts": {
-    "mtime": 1781526435.5342782,
-    "ast_hash": "0ffd5487b9a50a01e05f40d7528e721e",
-    "semantic_hash": "0ffd5487b9a50a01e05f40d7528e721e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/auth/lucia.ts": {
-    "mtime": 1781526621.754141,
-    "ast_hash": "80b870a46fa36dd153f477be6615056e",
-    "semantic_hash": "80b870a46fa36dd153f477be6615056e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/auth/public-access.ts": {
-    "mtime": 1781561528.4219995,
-    "ast_hash": "0c4375852df2aadcaa4a5394c986716f",
-    "semantic_hash": "0c4375852df2aadcaa4a5394c986716f"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/auth/require-user.ts": {
-    "mtime": 1781527293.3036375,
-    "ast_hash": "82da9101b02e3d37bd7538f5e60eff17",
-    "semantic_hash": "82da9101b02e3d37bd7538f5e60eff17"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/auth/session.ts": {
-    "mtime": 1781527283.8935866,
-    "ast_hash": "c4da800f819dee4a5081a85cf48a9c2b",
-    "semantic_hash": "c4da800f819dee4a5081a85cf48a9c2b"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/auth/users.ts": {
-    "mtime": 1781526483.2700832,
-    "ast_hash": "854f565dd3e4c5fee6dea89921f5321d",
-    "semantic_hash": "854f565dd3e4c5fee6dea89921f5321d"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/auth/validation.ts": {
-    "mtime": 1781559530.6573582,
-    "ast_hash": "65611ddfd5852d13a51cfd5e74b4dea2",
-    "semantic_hash": "65611ddfd5852d13a51cfd5e74b4dea2"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/availability/compare-windows.ts": {
-    "mtime": 1781596038.144066,
-    "ast_hash": "a377c5821e96d6835ba0bcf5d86a110c",
-    "semantic_hash": "a377c5821e96d6835ba0bcf5d86a110c"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/availability/serialize.ts": {
-    "mtime": 1781535860.9194682,
-    "ast_hash": "c31fe9f08ebfc77d2e108610c7c0448e",
-    "semantic_hash": "c31fe9f08ebfc77d2e108610c7c0448e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/availability/validation.ts": {
-    "mtime": 1781535669.907801,
-    "ast_hash": "92283f66bb3a3ccf55cd5e7f35a097f7",
-    "semantic_hash": "92283f66bb3a3ccf55cd5e7f35a097f7"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/canonical-host.ts": {
-    "mtime": 1781684263.9552517,
-    "ast_hash": "c696df839d24659529842d74a92fddaa",
-    "semantic_hash": "c696df839d24659529842d74a92fddaa"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/carousel/auto-advance.ts": {
-    "mtime": 1781605915.3804214,
-    "ast_hash": "f5a48f1cef401d41ebf01fd120a365a0",
-    "semantic_hash": "f5a48f1cef401d41ebf01fd120a365a0"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/carousel/promo-caption-layout.ts": {
-    "mtime": 1781607913.56769,
-    "ast_hash": "444510d59594c449f9ff5ed571a7b58a",
-    "semantic_hash": "444510d59594c449f9ff5ed571a7b58a"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/carousel/promo-carousel-config.ts": {
-    "mtime": 1781607577.0519514,
-    "ast_hash": "e4b0ab2a1b1343cb8f7908ea078da0ee",
-    "semantic_hash": "e4b0ab2a1b1343cb8f7908ea078da0ee"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/db.ts": {
-    "mtime": 1781526442.5521207,
-    "ast_hash": "194d0a111a2400451f461f6b0c4a2f33",
-    "semantic_hash": "194d0a111a2400451f461f6b0c4a2f33"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/design/home-groups.ts": {
-    "mtime": 1781687731.9527042,
-    "ast_hash": "a892d5e65217d2695c0cddf9ddfe54c6",
-    "semantic_hash": "a892d5e65217d2695c0cddf9ddfe54c6"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/design/relative-time.ts": {
-    "mtime": 1781595053.1294706,
-    "ast_hash": "9a93e30ab04f824ddffccee56139d89e",
-    "semantic_hash": "9a93e30ab04f824ddffccee56139d89e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/design/status-labels.ts": {
-    "mtime": 1781562648.7424707,
-    "ast_hash": "26b04ddc2b32ba5101083a16d850e297",
-    "semantic_hash": "26b04ddc2b32ba5101083a16d850e297"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/env.ts": {
-    "mtime": 1781777999.151151,
-    "ast_hash": "6ed0611a51c181c9213bfb3e5cc6832f",
-    "semantic_hash": "6ed0611a51c181c9213bfb3e5cc6832f"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/forms/client-validation.ts": {
-    "mtime": 1781559530.6962087,
-    "ast_hash": "c0f2650e81d6b7692d2e85cd97ced03d",
-    "semantic_hash": "c0f2650e81d6b7692d2e85cd97ced03d"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/forms/item-form-validation.ts": {
-    "mtime": 1781595450.8290732,
-    "ast_hash": "b7267d9bce8d406b9ac0d2b2833c6ac9",
-    "semantic_hash": "b7267d9bce8d406b9ac0d2b2833c6ac9"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/forms/rhythm.ts": {
-    "mtime": 1781563045.9646833,
-    "ast_hash": "29a506b1f635f33a3270bc8d39184605",
-    "semantic_hash": "29a506b1f635f33a3270bc8d39184605"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/health.ts": {
-    "mtime": 1781684434.9807725,
-    "ast_hash": "14237aee10442cc80ce26f568d3614dc",
-    "semantic_hash": "14237aee10442cc80ce26f568d3614dc"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/i18n/client.tsx": {
-    "mtime": 1781862368.5362136,
-    "ast_hash": "022201b0207cdf61f4e672ebec944685",
-    "semantic_hash": "022201b0207cdf61f4e672ebec944685"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/i18n/dictionaries.ts": {
-    "mtime": 1781862368.5363767,
-    "ast_hash": "8f24a544382e1ecd7234328fd93ee9f8",
-    "semantic_hash": "8f24a544382e1ecd7234328fd93ee9f8"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/items/constants.ts": {
-    "mtime": 1781595450.1590037,
-    "ast_hash": "743769daf5c2956557fc424607534051",
-    "semantic_hash": "743769daf5c2956557fc424607534051"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/items/serialize.ts": {
-    "mtime": 1781527293.3071887,
-    "ast_hash": "46ac251e47677aad6089f01f08903cdc",
-    "semantic_hash": "46ac251e47677aad6089f01f08903cdc"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/items/validation.ts": {
-    "mtime": 1781595452.441108,
-    "ast_hash": "d6189e21099935529ad967960e1ee059",
-    "semantic_hash": "d6189e21099935529ad967960e1ee059"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/legal/load-legal-document.ts": {
-    "mtime": 1781560686.2718284,
-    "ast_hash": "a5b7c8d9a05cccb5ff95d311b8c492d9",
-    "semantic_hash": "a5b7c8d9a05cccb5ff95d311b8c492d9"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/legal/markdown-content.tsx": {
-    "mtime": 1781560686.265066,
-    "ast_hash": "38dbc9df1ade54e1970e3461c2102f74",
-    "semantic_hash": "38dbc9df1ade54e1970e3461c2102f74"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/onboarding/constants.ts": {
-    "mtime": 1781603819.7378483,
-    "ast_hash": "77804f7cb70f26340975e235fb7b4f12",
-    "semantic_hash": "77804f7cb70f26340975e235fb7b4f12"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/onboarding/promo-slides.ts": {
-    "mtime": 1781560686.2884052,
-    "ast_hash": "f34cecb956a10c894b767b3a3de7611c",
-    "semantic_hash": "f34cecb956a10c894b767b3a3de7611c"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/onboarding/steps.ts": {
-    "mtime": 1781608271.9031188,
-    "ast_hash": "3e7319b4f6001610366a294269afe274",
-    "semantic_hash": "3e7319b4f6001610366a294269afe274"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/onboarding/validation.ts": {
-    "mtime": 1781527787.7197554,
-    "ast_hash": "5cd70eceb5357d57e6f54b3cc64facc2",
-    "semantic_hash": "5cd70eceb5357d57e6f54b3cc64facc2"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/reminders/reminder-copy.ts": {
-    "mtime": 1781596811.3875782,
-    "ast_hash": "2f5f8c94d913f131dc27e147f8dab85f",
-    "semantic_hash": "2f5f8c94d913f131dc27e147f8dab85f"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/reminders/serialize.ts": {
-    "mtime": 1781777999.1512685,
-    "ast_hash": "af9b17c1e35c449c85c5369e5f143d09",
-    "semantic_hash": "af9b17c1e35c449c85c5369e5f143d09"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/reminders/surface-reminders.ts": {
-    "mtime": 1781684556.9133165,
-    "ast_hash": "acf8777d8688b191f99f42fac5025e6d",
-    "semantic_hash": "acf8777d8688b191f99f42fac5025e6d"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/settings/serialize.ts": {
-    "mtime": 1781777999.1513817,
-    "ast_hash": "1e3bc644581159a54170d2ab65133849",
-    "semantic_hash": "1e3bc644581159a54170d2ab65133849"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/settings/validation.ts": {
-    "mtime": 1781777999.1514604,
-    "ast_hash": "871a86a4a13159a70eedf7f1710c4be9",
-    "semantic_hash": "871a86a4a13159a70eedf7f1710c4be9"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/utils.ts": {
-    "mtime": 1781528619.3694932,
-    "ast_hash": "618d00bf4537ce84f9ba62c5b215fb30",
-    "semantic_hash": "618d00bf4537ce84f9ba62c5b215fb30"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/lib/version.ts": {
-    "mtime": 1781684386.3849423,
-    "ast_hash": "f665023a6e7dfe46e3bea2ae617a01cb",
-    "semantic_hash": "f665023a6e7dfe46e3bea2ae617a01cb"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/middleware.ts": {
-    "mtime": 1781684263.9603195,
-    "ast_hash": "dff1bbbbc71e9ae46e9040385b361061",
-    "semantic_hash": "dff1bbbbc71e9ae46e9040385b361061"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/next-env.d.ts": {
-    "mtime": 1781526596.3598948,
-    "ast_hash": "ba64ff7d54714a8f64db89b1003207d8",
-    "semantic_hash": "ba64ff7d54714a8f64db89b1003207d8"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/next.config.ts": {
-    "mtime": 1781524426.8607755,
-    "ast_hash": "70a9ba2829b1a57594f2fa7233805ce7",
-    "semantic_hash": "70a9ba2829b1a57594f2fa7233805ce7"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/package.json": {
-    "mtime": 1781777999.1515782,
-    "ast_hash": "77f77f38f5a3e1e773d45f1ff76699a8",
-    "semantic_hash": "77f77f38f5a3e1e773d45f1ff76699a8"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/postcss.config.mjs": {
-    "mtime": 1781528617.5583768,
-    "ast_hash": "239f3ebf717465dc636818a1a619398d",
-    "semantic_hash": "239f3ebf717465dc636818a1a619398d"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/integration/activity.integration.test.ts": {
-    "mtime": 1781542496.8698032,
-    "ast_hash": "9bcf8437a8a0560f55296a2a219bf5d6",
-    "semantic_hash": "9bcf8437a8a0560f55296a2a219bf5d6"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/integration/auth.integration.test.ts": {
-    "mtime": 1781542496.6543925,
-    "ast_hash": "2e46886b259f665b226161478f407ff2",
-    "semantic_hash": "2e46886b259f665b226161478f407ff2"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/integration/availability.integration.test.ts": {
-    "mtime": 1781779890.952535,
-    "ast_hash": "f61b1e29a08496351d2539bd2349d66c",
-    "semantic_hash": "f61b1e29a08496351d2539bd2349d66c"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/integration/item-detail.integration.test.ts": {
-    "mtime": 1781542497.94473,
-    "ast_hash": "1227407a9f55da212ec1184f57f130cd",
-    "semantic_hash": "1227407a9f55da212ec1184f57f130cd"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/integration/items.integration.test.ts": {
-    "mtime": 1781542497.9824998,
-    "ast_hash": "6e473b1439f0532a8045b641872320be",
-    "semantic_hash": "6e473b1439f0532a8045b641872320be"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/integration/onboarding.integration.test.ts": {
-    "mtime": 1781527787.7198167,
-    "ast_hash": "1241c8d3082e764c3a7090c9eb40c2a9",
-    "semantic_hash": "1241c8d3082e764c3a7090c9eb40c2a9"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/integration/public-shell.integration.test.ts": {
-    "mtime": 1781561574.6720107,
-    "ast_hash": "08bbe9230b24476bbc96e00952f07f9f",
-    "semantic_hash": "08bbe9230b24476bbc96e00952f07f9f"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/integration/settings.integration.test.ts": {
-    "mtime": 1781777999.1516607,
-    "ast_hash": "b38e3f23ac87ffa9620112d73cd701f8",
-    "semantic_hash": "b38e3f23ac87ffa9620112d73cd701f8"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/activity/validation.test.ts": {
-    "mtime": 1781557471.6196458,
-    "ast_hash": "83428276a8f0f299c51ddd15b95d2226",
-    "semantic_hash": "83428276a8f0f299c51ddd15b95d2226"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/activity/week-groups.test.ts": {
-    "mtime": 1781688049.9070547,
-    "ast_hash": "87a55336718070da9f8bbc3bb0d8d735",
-    "semantic_hash": "87a55336718070da9f8bbc3bb0d8d735"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/api-client.test.ts": {
-    "mtime": 1781557473.8119485,
-    "ast_hash": "744f248680b6be0e307010eaa4405794",
-    "semantic_hash": "744f248680b6be0e307010eaa4405794"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/auth/allowed-emails.test.ts": {
-    "mtime": 1781557471.1971488,
-    "ast_hash": "f96fb3ce9a5090df9a91cc60bbd84880",
-    "semantic_hash": "f96fb3ce9a5090df9a91cc60bbd84880"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/auth/validation.test.ts": {
-    "mtime": 1781559530.7421417,
-    "ast_hash": "9c751b5c1ee4ca4099cd55d34698aa1d",
-    "semantic_hash": "9c751b5c1ee4ca4099cd55d34698aa1d"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/availability/compare-windows.test.ts": {
-    "mtime": 1781596056.843511,
-    "ast_hash": "b6f501a1b3731fb654208882815a469b",
-    "semantic_hash": "b6f501a1b3731fb654208882815a469b"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/availability/validation.test.ts": {
-    "mtime": 1781557471.8235066,
-    "ast_hash": "21e6e5d07a69c54eaa722858d28e2e31",
-    "semantic_hash": "21e6e5d07a69c54eaa722858d28e2e31"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/canonical-host.test.ts": {
-    "mtime": 1781684263.9550438,
-    "ast_hash": "d20d64656e9f5f56e18441f178244a4b",
-    "semantic_hash": "d20d64656e9f5f56e18441f178244a4b"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/carousel/auto-advance.test.ts": {
-    "mtime": 1781605921.5571434,
-    "ast_hash": "dbc48c3fb5d5dda539f372c963095025",
-    "semantic_hash": "dbc48c3fb5d5dda539f372c963095025"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/carousel/promo-caption-layout.test.ts": {
-    "mtime": 1781607919.1419775,
-    "ast_hash": "c0c42f2f5314ece947bcd0e1e65a0e45",
-    "semantic_hash": "c0c42f2f5314ece947bcd0e1e65a0e45"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/carousel/promo-carousel-config.test.ts": {
-    "mtime": 1781607579.4444268,
-    "ast_hash": "d90fe2ec36b3194f5a1db262e48dd4b7",
-    "semantic_hash": "d90fe2ec36b3194f5a1db262e48dd4b7"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/design/home-groups.test.ts": {
-    "mtime": 1781687667.8733215,
-    "ast_hash": "9197bfaa47051d65b6896b78489bec41",
-    "semantic_hash": "9197bfaa47051d65b6896b78489bec41"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/design/life-area-filter.test.ts": {
-    "mtime": 1781595287.2568743,
-    "ast_hash": "5aa647b716e5e6350503dec089de5e7b",
-    "semantic_hash": "5aa647b716e5e6350503dec089de5e7b"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/design/relative-time.test.ts": {
-    "mtime": 1781603871.9443028,
-    "ast_hash": "2370e473ebafd94aa7fbfd0fb8df2f2e",
-    "semantic_hash": "2370e473ebafd94aa7fbfd0fb8df2f2e"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/forms/client-validation.test.ts": {
-    "mtime": 1781559530.754519,
-    "ast_hash": "6887aca70ec69afdfa57122e60f67303",
-    "semantic_hash": "6887aca70ec69afdfa57122e60f67303"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/forms/item-form-validation.test.ts": {
-    "mtime": 1781595465.1457636,
-    "ast_hash": "bf15e99bb0764dd70ad503067b75b1ac",
-    "semantic_hash": "bf15e99bb0764dd70ad503067b75b1ac"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/forms/rhythm.test.ts": {
-    "mtime": 1781563050.0696194,
-    "ast_hash": "4ad0214efb1997a529c98c15e9102f27",
-    "semantic_hash": "4ad0214efb1997a529c98c15e9102f27"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/health.test.ts": {
-    "mtime": 1781684407.8434813,
-    "ast_hash": "8be46ac33596360e39900be1df990848",
-    "semantic_hash": "8be46ac33596360e39900be1df990848"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/i18n/dictionaries.test.ts": {
-    "mtime": 1781862368.5364783,
-    "ast_hash": "1ad8e761f63f892e3e4b23b229ad4177",
-    "semantic_hash": "1ad8e761f63f892e3e4b23b229ad4177"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/items/validation.test.ts": {
-    "mtime": 1781557471.9700654,
-    "ast_hash": "d08bf6847045c4ecb0175566831639ea",
-    "semantic_hash": "d08bf6847045c4ecb0175566831639ea"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/legal/load-legal-document.test.ts": {
-    "mtime": 1781561528.8301713,
-    "ast_hash": "37aec19850230b0aaac9dc1963074c2c",
-    "semantic_hash": "37aec19850230b0aaac9dc1963074c2c"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/middleware.test.ts": {
-    "mtime": 1781561528.7362707,
-    "ast_hash": "4292c36b2bb9c1ed9f19a84137f634e4",
-    "semantic_hash": "4292c36b2bb9c1ed9f19a84137f634e4"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/onboarding/date-utils.test.ts": {
-    "mtime": 1781603883.6588106,
-    "ast_hash": "9bb018c6e9ffdd0cf1737832a2f5c876",
-    "semantic_hash": "9bb018c6e9ffdd0cf1737832a2f5c876"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/onboarding/promo-slides.test.ts": {
-    "mtime": 1781560686.285945,
-    "ast_hash": "3b667b6eaa7b2564a0ea18acfab323bd",
-    "semantic_hash": "3b667b6eaa7b2564a0ea18acfab323bd"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/onboarding/steps.test.ts": {
-    "mtime": 1781608288.7751265,
-    "ast_hash": "36fbdfe3f0b4935c857475f82065f813",
-    "semantic_hash": "36fbdfe3f0b4935c857475f82065f813"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/reminders/reminder-copy.test.ts": {
-    "mtime": 1781596833.0885956,
-    "ast_hash": "4b07512d0345e9f1e941a243b36517aa",
-    "semantic_hash": "4b07512d0345e9f1e941a243b36517aa"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/reminders/surface-reminders.test.ts": {
-    "mtime": 1781684584.3326104,
-    "ast_hash": "f5b3e2f7c9c06ccd147625b481b0110d",
-    "semantic_hash": "f5b3e2f7c9c06ccd147625b481b0110d"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/tend/mark-tended-button.test.ts": {
-    "mtime": 1781687170.4005353,
-    "ast_hash": "2b1532e47f1872bc203d6ac385fca758",
-    "semantic_hash": "2b1532e47f1872bc203d6ac385fca758"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/tests/unit/version.test.ts": {
-    "mtime": 1781684427.5692558,
-    "ast_hash": "065bd95562b44beff38c21ef1609d70d",
     "semantic_hash": "065bd95562b44beff38c21ef1609d70d"
   },
-  "/Users/saki/Documents/Mine/tend/apps/web/tsconfig.json": {
-    "mtime": 1781526592.564447,
-    "ast_hash": "bccfe2378a1bcbd59013a225c655c777",
-    "semantic_hash": "bccfe2378a1bcbd59013a225c655c777"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/vercel.json": {
-    "mtime": 1781540274.056389,
-    "ast_hash": "2f5fa888647be167505beb93e3364cc6",
-    "semantic_hash": "2f5fa888647be167505beb93e3364cc6"
-  },
-  "/Users/saki/Documents/Mine/tend/biome.json": {
-    "mtime": 1781524515.7458704,
-    "ast_hash": "4a5e0d09a619b2baa7a0def289e6eabe",
-    "semantic_hash": "4a5e0d09a619b2baa7a0def289e6eabe"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/design/component-types.ts": {
-    "mtime": 1781595465.6959112,
-    "ast_hash": "a8d5a8cb368b56e4c4bec5c378fef44b",
-    "semantic_hash": "a8d5a8cb368b56e4c4bec5c378fef44b"
-  },
-  "/Users/saki/Documents/Mine/tend/package.json": {
-    "mtime": 1781777999.160438,
-    "ast_hash": "d99946e77a2441c68a3b00c04e27eb59",
-    "semantic_hash": "d99946e77a2441c68a3b00c04e27eb59"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/drizzle.config.ts": {
-    "mtime": 1781524487.0751188,
-    "ast_hash": "fccdab6046ac48ae2fd28b370a24ab74",
-    "semantic_hash": "fccdab6046ac48ae2fd28b370a24ab74"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/drizzle/0000_nifty_oracle.sql": {
-    "mtime": 1781524488.169823,
-    "ast_hash": "82b20ea78e7d88b60362412f08c3f2a5",
-    "semantic_hash": "82b20ea78e7d88b60362412f08c3f2a5"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/drizzle/0001_expand_life_areas.sql": {
-    "mtime": 1781562530.932254,
-    "ast_hash": "63e5d8d48eb532bd7cb132eb3a2c6c51",
-    "semantic_hash": "63e5d8d48eb532bd7cb132eb3a2c6c51"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/drizzle/0002_rename_admin_life_area.sql": {
-    "mtime": 1781562650.9102018,
-    "ast_hash": "41085919ae0ed9c6b70b564f8cf209a9",
-    "semantic_hash": "41085919ae0ed9c6b70b564f8cf209a9"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/drizzle/0003_amusing_slipstream.sql": {
-    "mtime": 1781563523.4362392,
-    "ast_hash": "bad97f8e5616f797d00db0d740af830a",
-    "semantic_hash": "bad97f8e5616f797d00db0d740af830a"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/drizzle/meta/0000_snapshot.json": {
-    "mtime": 1781524488.1696486,
-    "ast_hash": "dc43e6b7732777ed14fe170fab799c3b",
-    "semantic_hash": "dc43e6b7732777ed14fe170fab799c3b"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/drizzle/meta/0003_snapshot.json": {
-    "mtime": 1781563523.436034,
-    "ast_hash": "91b7ef0bc551baee9e82acd5128a7bf4",
-    "semantic_hash": "91b7ef0bc551baee9e82acd5128a7bf4"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/drizzle/meta/_journal.json": {
-    "mtime": 1781563523.4361544,
-    "ast_hash": "97cac080ca1c1728d997db6ec53b8704",
-    "semantic_hash": "97cac080ca1c1728d997db6ec53b8704"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/package.json": {
-    "mtime": 1781557479.244583,
-    "ast_hash": "03f678559bc24874bff5892ba5c29ef4",
-    "semantic_hash": "03f678559bc24874bff5892ba5c29ef4"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/src/availability.ts": {
-    "mtime": 1781535668.8575437,
-    "ast_hash": "fecff62c1d09bbbf402c54f3371ba7df",
-    "semantic_hash": "fecff62c1d09bbbf402c54f3371ba7df"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/src/client.ts": {
-    "mtime": 1781540274.39019,
-    "ast_hash": "734dbe1f26adeabc9bf67727267f17da",
-    "semantic_hash": "734dbe1f26adeabc9bf67727267f17da"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/src/index.ts": {
-    "mtime": 1781777999.1606064,
-    "ast_hash": "073b5378a1059ef3753e6bebe1a943d5",
-    "semantic_hash": "073b5378a1059ef3753e6bebe1a943d5"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/src/items.ts": {
-    "mtime": 1781537807.9987004,
-    "ast_hash": "6cffb12eaa55dcf5686badc1e84407b6",
-    "semantic_hash": "6cffb12eaa55dcf5686badc1e84407b6"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/src/migrate.ts": {
-    "mtime": 1781540275.070946,
-    "ast_hash": "59d4824f0d02f70115af098d43a851bf",
-    "semantic_hash": "59d4824f0d02f70115af098d43a851bf"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/src/ping.ts": {
-    "mtime": 1781524524.158036,
-    "ast_hash": "da7cf58b36e8a98b986c3cf8f8b74e2c",
-    "semantic_hash": "da7cf58b36e8a98b986c3cf8f8b74e2c"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/src/schema.ts": {
-    "mtime": 1781562647.8187346,
-    "ast_hash": "d9ccb15f5dce9cc447d373930cc29063",
-    "semantic_hash": "d9ccb15f5dce9cc447d373930cc29063"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/src/settings.ts": {
-    "mtime": 1781777999.1607184,
-    "ast_hash": "848ab20791920bc24f382a9cdb47aadb",
-    "semantic_hash": "848ab20791920bc24f382a9cdb47aadb"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/src/test-helpers.ts": {
-    "mtime": 1781526483.2731051,
-    "ast_hash": "c4268b423f8e177f40da48c049ad2b29",
-    "semantic_hash": "c4268b423f8e177f40da48c049ad2b29"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/src/users.ts": {
-    "mtime": 1781526474.0124924,
-    "ast_hash": "bcc5120bdd6ae0409ee93b911911c4ae",
-    "semantic_hash": "bcc5120bdd6ae0409ee93b911911c4ae"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/src/wait-for-database.ts": {
-    "mtime": 1781528050.429782,
-    "ast_hash": "0bc2112a1c92b68fbcb05b408b8145a8",
-    "semantic_hash": "0bc2112a1c92b68fbcb05b408b8145a8"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/tests/ping.test.ts": {
-    "mtime": 1781557478.2330015,
-    "ast_hash": "4da1062d119cd7a1f224d1409778a45d",
-    "semantic_hash": "4da1062d119cd7a1f224d1409778a45d"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/tests/schema.test.ts": {
-    "mtime": 1781562650.7124941,
-    "ast_hash": "920d8c66e6979a3e67cabb6a5166b00f",
-    "semantic_hash": "920d8c66e6979a3e67cabb6a5166b00f"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/tests/settings.test.ts": {
-    "mtime": 1781557477.779543,
-    "ast_hash": "5f4062bc065bb635630a8846408f02d2",
-    "semantic_hash": "5f4062bc065bb635630a8846408f02d2"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/tests/wait-for-database.test.ts": {
-    "mtime": 1781557478.796137,
-    "ast_hash": "c88c2545484c2d0454c6565a64d8e5df",
-    "semantic_hash": "c88c2545484c2d0454c6565a64d8e5df"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/db/tsconfig.json": {
-    "mtime": 1781557479.8468711,
-    "ast_hash": "b42c04640ed97435901f4a86d6a2f76a",
-    "semantic_hash": "b42c04640ed97435901f4a86d6a2f76a"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/package.json": {
-    "mtime": 1781557479.016206,
-    "ast_hash": "db8bdf2ea73ade3329640bb7f26ba199",
-    "semantic_hash": "db8bdf2ea73ade3329640bb7f26ba199"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/src/attention.ts": {
-    "mtime": 1781595027.8410249,
-    "ast_hash": "2a486a0e834adf97e1187b3329478f2b",
-    "semantic_hash": "2a486a0e834adf97e1187b3329478f2b"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/src/availability.ts": {
-    "mtime": 1781525799.0474217,
-    "ast_hash": "b3df6356b8bf25a4670903cdaa3a9519",
-    "semantic_hash": "b3df6356b8bf25a4670903cdaa3a9519"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/src/index.ts": {
-    "mtime": 1781525776.0093706,
-    "ast_hash": "fd9be23619723fa45da971932c34f669",
-    "semantic_hash": "fd9be23619723fa45da971932c34f669"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/src/presets.ts": {
-    "mtime": 1781562650.7125797,
-    "ast_hash": "b142c5862eb1aaaa55748f3d6153771c",
-    "semantic_hash": "b142c5862eb1aaaa55748f3d6153771c"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/src/reminders.ts": {
-    "mtime": 1781779852.5436928,
-    "ast_hash": "f6002eafa78f4baec4c8035268fc6149",
-    "semantic_hash": "f6002eafa78f4baec4c8035268fc6149"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/src/status.ts": {
-    "mtime": 1781603821.3669813,
-    "ast_hash": "a2ba871162de47c7a912b52d61307cd8",
-    "semantic_hash": "a2ba871162de47c7a912b52d61307cd8"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/src/time.ts": {
-    "mtime": 1781777999.1608448,
-    "ast_hash": "1e435ed6f47afe93510183682d518b8a",
-    "semantic_hash": "1e435ed6f47afe93510183682d518b8a"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/src/types.ts": {
-    "mtime": 1781562647.6464126,
-    "ast_hash": "75322b10f96f35b220380b7399441313",
-    "semantic_hash": "75322b10f96f35b220380b7399441313"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/tests/attention.test.ts": {
-    "mtime": 1781595032.2068665,
-    "ast_hash": "9b3a61eb9de91d8b73aa52b29cf1e5ae",
-    "semantic_hash": "9b3a61eb9de91d8b73aa52b29cf1e5ae"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/tests/availability.test.ts": {
-    "mtime": 1781557487.4049082,
-    "ast_hash": "bd6d39238b2c7515b8c01cca89aa1050",
-    "semantic_hash": "bd6d39238b2c7515b8c01cca89aa1050"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/tests/presets.test.ts": {
-    "mtime": 1781562656.401775,
-    "ast_hash": "9fdd9bd8a35ae4216dab91aed018ee04",
-    "semantic_hash": "9fdd9bd8a35ae4216dab91aed018ee04"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/tests/reminders.test.ts": {
-    "mtime": 1781779872.0189087,
-    "ast_hash": "de904c09c4cf6dd41389838f9054c784",
-    "semantic_hash": "de904c09c4cf6dd41389838f9054c784"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/tests/status.test.ts": {
-    "mtime": 1781603864.7825236,
-    "ast_hash": "07e28e7cffb46d77ab59bb9a9e9325d1",
-    "semantic_hash": "07e28e7cffb46d77ab59bb9a9e9325d1"
-  },
-  "/Users/saki/Documents/Mine/tend/packages/domain/tests/time.test.ts": {
+  "packages/domain/tests/time.test.ts": {
     "mtime": 1781777999.1609976,
     "ast_hash": "15ef8bb164a3fccc6b6aff1c101a5832",
     "semantic_hash": "15ef8bb164a3fccc6b6aff1c101a5832"
   },
-  "/Users/saki/Documents/Mine/tend/packages/domain/tsconfig.json": {
-    "mtime": 1781557479.3802133,
-    "ast_hash": "835eb450f28bb2346a15bed2579e1ed8",
-    "semantic_hash": "835eb450f28bb2346a15bed2579e1ed8"
-  },
-  "/Users/saki/Documents/Mine/tend/tsconfig.json": {
-    "mtime": 1781524240.9605587,
-    "ast_hash": "7562158403a868d3caa812f155f54838",
-    "semantic_hash": "7562158403a868d3caa812f155f54838"
-  },
-  "/Users/saki/Documents/Mine/tend/turbo.json": {
-    "mtime": 1781543192.1905096,
-    "ast_hash": "554831612328eb848ae1145b0c55a007",
-    "semantic_hash": "554831612328eb848ae1145b0c55a007"
-  },
-  "/Users/saki/Documents/Mine/tend/version.json": {
+  "version.json": {
     "mtime": 1781684386.3846688,
     "ast_hash": "bf9a844a26307bf50233af4450b57de5",
     "semantic_hash": "bf9a844a26307bf50233af4450b57de5"
   },
-  "/Users/saki/Documents/Mine/tend/.codex/skills/tend-change-instructions/SKILL.md": {
+  "apps/web/tests/unit/tend/mark-tended-button.test.ts": {
+    "mtime": 1781687170.4005353,
+    "ast_hash": "2b1532e47f1872bc203d6ac385fca758",
+    "semantic_hash": "2b1532e47f1872bc203d6ac385fca758"
+  },
+  "apps/web/lib/activity/week-groups.ts": {
+    "mtime": 1781688005.3068156,
+    "ast_hash": "a023d2edb17475321755f7eedb4304e0",
+    "semantic_hash": "a023d2edb17475321755f7eedb4304e0"
+  },
+  "apps/web/tests/unit/activity/week-groups.test.ts": {
+    "mtime": 1781688049.9070547,
+    "ast_hash": "87a55336718070da9f8bbc3bb0d8d735",
+    "semantic_hash": "87a55336718070da9f8bbc3bb0d8d735"
+  },
+  "apps/mobile/App.tsx": {
+    "mtime": 1781893978.0368884,
+    "ast_hash": "fe400a518f693a514c06db65ec483ea2",
+    "semantic_hash": ""
+  },
+  "apps/mobile/app.json": {
+    "mtime": 1781786422.9439247,
+    "ast_hash": "7165e3a67d93ad5f394ea9f302b62735",
+    "semantic_hash": "7165e3a67d93ad5f394ea9f302b62735"
+  },
+  "apps/mobile/babel.config.js": {
+    "mtime": 1781777999.1365426,
+    "ast_hash": "036536269ecba81eec5a3990b26db2fc",
+    "semantic_hash": "036536269ecba81eec5a3990b26db2fc"
+  },
+  "apps/mobile/eas.json": {
+    "mtime": 1781777999.136602,
+    "ast_hash": "858c5e8827f1bae86ff7304a767795cf",
+    "semantic_hash": "858c5e8827f1bae86ff7304a767795cf"
+  },
+  "apps/mobile/google-services.json": {
+    "mtime": 1781777999.1366627,
+    "ast_hash": "ca5794b450966d3da9d245788e4a6749",
+    "semantic_hash": "ca5794b450966d3da9d245788e4a6749"
+  },
+  "apps/mobile/index.js": {
+    "mtime": 1781864787.2612252,
+    "ast_hash": "eec372d2586ad568ec4a7bac1c88f2db",
+    "semantic_hash": ""
+  },
+  "apps/mobile/metro.config.js": {
+    "mtime": 1781864773.2902799,
+    "ast_hash": "f5b20f70fd39df39ec4a7529fbfc4cf2",
+    "semantic_hash": ""
+  },
+  "apps/mobile/metro.config.test.js": {
+    "mtime": 1781777999.13706,
+    "ast_hash": "3441e6b07b93eaec98651e48dbfe1ac5",
+    "semantic_hash": "3441e6b07b93eaec98651e48dbfe1ac5"
+  },
+  "apps/mobile/package.json": {
+    "mtime": 1781864774.9421778,
+    "ast_hash": "6f96dcc2e08132d03209b2e212104a0b",
+    "semantic_hash": ""
+  },
+  "apps/mobile/scripts/verify-deps.mjs": {
+    "mtime": 1781777999.1372843,
+    "ast_hash": "e37ca6e35cc1fea3e397efed77f89d4c",
+    "semantic_hash": "e37ca6e35cc1fea3e397efed77f89d4c"
+  },
+  "apps/mobile/src/components/date-picker-field.tsx": {
+    "mtime": 1781873840.5873106,
+    "ast_hash": "f461d81202142e7645725eda7c22a708",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/components/form-field.tsx": {
+    "mtime": 1781784552.7322936,
+    "ast_hash": "952903c229935568f7e7d0efde50a5fe",
+    "semantic_hash": "952903c229935568f7e7d0efde50a5fe"
+  },
+  "apps/mobile/src/components/item-form.tsx": {
+    "mtime": 1781885673.7033544,
+    "ast_hash": "19f87c7c26c20414c2d832fdd5186947",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/components/life-area-picker.tsx": {
+    "mtime": 1781862368.534852,
+    "ast_hash": "bcc41099070ca797c61745bdfcf64af3",
+    "semantic_hash": "bcc41099070ca797c61745bdfcf64af3"
+  },
+  "apps/mobile/src/components/preset-suggestions.tsx": {
+    "mtime": 1781862368.5349185,
+    "ast_hash": "cfd98a1232b2fef20068cdd2952789f0",
+    "semantic_hash": "cfd98a1232b2fef20068cdd2952789f0"
+  },
+  "apps/mobile/src/components/primary-button.tsx": {
+    "mtime": 1781784526.2069993,
+    "ast_hash": "48695d42b5942ce68c586e54cc25dea0",
+    "semantic_hash": "48695d42b5942ce68c586e54cc25dea0"
+  },
+  "apps/mobile/src/components/rhythm-picker.tsx": {
+    "mtime": 1781873844.7855425,
+    "ast_hash": "fb1f732b8f48954553fe5996d10a9c0c",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/components/skeleton.tsx": {
+    "mtime": 1781786536.8624601,
+    "ast_hash": "48f3f424a0a2e21117a804387a417385",
+    "semantic_hash": "48f3f424a0a2e21117a804387a417385"
+  },
+  "apps/mobile/src/components/time-select.tsx": {
+    "mtime": 1781785968.701496,
+    "ast_hash": "93b2fc95203c4cc4516dff16bbc2d107",
+    "semantic_hash": "93b2fc95203c4cc4516dff16bbc2d107"
+  },
+  "apps/mobile/src/components/type-selector.tsx": {
+    "mtime": 1781777999.1376824,
+    "ast_hash": "41fb781d37d101eb25d6f45e1fd2ecd6",
+    "semantic_hash": "41fb781d37d101eb25d6f45e1fd2ecd6"
+  },
+  "apps/mobile/src/constants.ts": {
+    "mtime": 1781777999.137749,
+    "ast_hash": "b3ff5430540a4984d73f8b2c7a3c79e1",
+    "semantic_hash": "b3ff5430540a4984d73f8b2c7a3c79e1"
+  },
+  "apps/mobile/src/fonts.ts": {
+    "mtime": 1781777999.137827,
+    "ast_hash": "bc443292c26f83f61f5351588a896827",
+    "semantic_hash": "bc443292c26f83f61f5351588a896827"
+  },
+  "apps/mobile/src/hooks/useActivityEvents.ts": {
+    "mtime": 1781873815.7661006,
+    "ast_hash": "96fa2f4083ca1b45235aa7c3d1638926",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/hooks/useAvailabilityWindows.ts": {
+    "mtime": 1781785874.5596478,
+    "ast_hash": "a47ee6155c0dd88d0e49ac4b5746f877",
+    "semantic_hash": "a47ee6155c0dd88d0e49ac4b5746f877"
+  },
+  "apps/mobile/src/hooks/useHomeItems.ts": {
+    "mtime": 1781777999.1382017,
+    "ast_hash": "34eb730a72ff280eed9652845c0b5d76",
+    "semantic_hash": "34eb730a72ff280eed9652845c0b5d76"
+  },
+  "apps/mobile/src/hooks/usePushNotifications.ts": {
+    "mtime": 1781871084.2225466,
+    "ast_hash": "53ea8f06c4a0da7b6c2ead87bcabb335",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/i18n/en.ts": {
+    "mtime": 1781885871.2619843,
+    "ast_hash": "5a45de39f1808cec9fc71140041f7f73",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/i18n/index.ts": {
+    "mtime": 1781862368.5351357,
+    "ast_hash": "a053934ae057a0368f20e40e411fcdfd",
+    "semantic_hash": "a053934ae057a0368f20e40e411fcdfd"
+  },
+  "apps/mobile/src/i18n/sr.ts": {
+    "mtime": 1781885871.3806732,
+    "ast_hash": "e2043f1afd561533a26719324e219140",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/services/apiError.ts": {
+    "mtime": 1781777999.1389942,
+    "ast_hash": "22e0ca32251c509139a31cc2ce02ea99",
+    "semantic_hash": "22e0ca32251c509139a31cc2ce02ea99"
+  },
+  "apps/mobile/src/services/pushNotifications.ts": {
+    "mtime": 1781870614.7635777,
+    "ast_hash": "d528e605c0b8426c08d6e680d10dc5c1",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/services/tendApi.ts": {
+    "mtime": 1781870614.9814813,
+    "ast_hash": "a32aef3a1a164c75c3c9b549ef903dbf",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/theme.ts": {
+    "mtime": 1781786424.9311392,
+    "ast_hash": "1c5ad0c9d426f32a9ce81e063f07819a",
+    "semantic_hash": "1c5ad0c9d426f32a9ce81e063f07819a"
+  },
+  "apps/mobile/src/types/api.ts": {
+    "mtime": 1781885673.3777068,
+    "ast_hash": "aa6cd90aeb5314d9ae8a610a1db5df47",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/types/index.ts": {
+    "mtime": 1781870906.63431,
+    "ast_hash": "08c3023930bc617677dca8c5d1dc1b8e",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/utils/apiBaseUrl.ts": {
+    "mtime": 1781777999.1395948,
+    "ast_hash": "ddced490b54b607dc305b939db54b14b",
+    "semantic_hash": "ddced490b54b607dc305b939db54b14b"
+  },
+  "apps/mobile/src/utils/devMode.ts": {
+    "mtime": 1781777999.1397057,
+    "ast_hash": "c2702bf8afe711800994c4b9e812c94e",
+    "semantic_hash": "c2702bf8afe711800994c4b9e812c94e"
+  },
+  "apps/mobile/src/utils/homeGroups.ts": {
+    "mtime": 1781777999.139795,
+    "ast_hash": "a33e5a6189a16dc81efedb420bf58273",
+    "semantic_hash": "a33e5a6189a16dc81efedb420bf58273"
+  },
+  "apps/mobile/src/utils/homeRefresh.ts": {
+    "mtime": 1781786851.0910296,
+    "ast_hash": "3d9d2854a8345d37244189d9fecca968",
+    "semantic_hash": "3d9d2854a8345d37244189d9fecca968"
+  },
+  "apps/mobile/src/utils/itemFormValidation.ts": {
+    "mtime": 1781885673.486624,
+    "ast_hash": "41b7554c17a6c95c0a1169de4337f62d",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/utils/itemFormValues.ts": {
+    "mtime": 1781885673.5940228,
+    "ast_hash": "9333ec7c3a1e3e46161c44137f78e03a",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/utils/networkError.ts": {
+    "mtime": 1781777999.139944,
+    "ast_hash": "cce8c373e5143455eb5b0101636db8b1",
+    "semantic_hash": "cce8c373e5143455eb5b0101636db8b1"
+  },
+  "apps/mobile/src/utils/pushNotificationsSupport.ts": {
+    "mtime": 1781777999.1400163,
+    "ast_hash": "6380c68ed544300e3bb58c549d755a90",
+    "semantic_hash": "6380c68ed544300e3bb58c549d755a90"
+  },
+  "apps/mobile/src/utils/relativeTime.ts": {
+    "mtime": 1781873821.7778153,
+    "ast_hash": "2732a94a88e0e857baf6e192856cd945",
+    "semantic_hash": ""
+  },
+  "apps/mobile/src/utils/rhythm.ts": {
+    "mtime": 1781784546.6398635,
+    "ast_hash": "09861da93d1cbc4a2d819b0b9328ea0e",
+    "semantic_hash": "09861da93d1cbc4a2d819b0b9328ea0e"
+  },
+  "apps/mobile/src/utils/sessionRestore.ts": {
+    "mtime": 1781777999.1402335,
+    "ast_hash": "e823ec1b8a82c01891832bd4f719b118",
+    "semantic_hash": "e823ec1b8a82c01891832bd4f719b118"
+  },
+  "apps/mobile/src/utils/skeletonColors.ts": {
+    "mtime": 1781786536.5252476,
+    "ast_hash": "82c5bef8aa7b545fabd30fa74a7792b2",
+    "semantic_hash": "82c5bef8aa7b545fabd30fa74a7792b2"
+  },
+  "apps/mobile/src/utils/storage/index.ts": {
+    "mtime": 1781777999.140342,
+    "ast_hash": "3610b3f2de63bba7a93fb9b76c20665f",
+    "semantic_hash": "3610b3f2de63bba7a93fb9b76c20665f"
+  },
+  "apps/mobile/src/utils/storage/storage.ts": {
+    "mtime": 1781777999.1404467,
+    "ast_hash": "288c5064dd43e3a304a133e94171668a",
+    "semantic_hash": "288c5064dd43e3a304a133e94171668a"
+  },
+  "apps/mobile/src/utils/tabTransition.ts": {
+    "mtime": 1781777999.1405506,
+    "ast_hash": "3f2d47f28c30ea114947d3826a6785a8",
+    "semantic_hash": "3f2d47f28c30ea114947d3826a6785a8"
+  },
+  "apps/mobile/src/utils/timeOptions.ts": {
+    "mtime": 1781785867.571647,
+    "ast_hash": "2761f0acdb5064dec780157e3ef892af",
+    "semantic_hash": "2761f0acdb5064dec780157e3ef892af"
+  },
+  "apps/mobile/tests/helpers/nativeModuleMocks.ts": {
+    "mtime": 1781870888.5370762,
+    "ast_hash": "aca440936037f1d6296d50b99037153e",
+    "semantic_hash": ""
+  },
+  "apps/mobile/tests/unit/apiBaseUrl.test.ts": {
+    "mtime": 1781777999.141698,
+    "ast_hash": "560178060f0f46492914ab56c1a1f29d",
+    "semantic_hash": "560178060f0f46492914ab56c1a1f29d"
+  },
+  "apps/mobile/tests/unit/devMode.test.ts": {
+    "mtime": 1781777999.1420038,
+    "ast_hash": "069be0c958ed02810c6cbe068c03eac5",
+    "semantic_hash": "069be0c958ed02810c6cbe068c03eac5"
+  },
+  "apps/mobile/tests/unit/homeGroups.test.ts": {
+    "mtime": 1781777999.1421793,
+    "ast_hash": "aedc9eb0e2951c3dba29d29a3addf738",
+    "semantic_hash": "aedc9eb0e2951c3dba29d29a3addf738"
+  },
+  "apps/mobile/tests/unit/homeRefresh.test.ts": {
+    "mtime": 1781786851.923795,
+    "ast_hash": "fa8623e425c5bdb0055a74a7248423fc",
+    "semantic_hash": "fa8623e425c5bdb0055a74a7248423fc"
+  },
+  "apps/mobile/tests/unit/i18n.test.ts": {
+    "mtime": 1781862368.5354474,
+    "ast_hash": "eb144341cae2620cebd771ba8887dca7",
+    "semantic_hash": "eb144341cae2620cebd771ba8887dca7"
+  },
+  "apps/mobile/tests/unit/itemForm.test.ts": {
+    "mtime": 1781886008.2057786,
+    "ast_hash": "3dcab9253809c1b76e13fc6f9a30d5e8",
+    "semantic_hash": ""
+  },
+  "apps/mobile/tests/unit/itemFormFields.test.ts": {
+    "mtime": 1781886008.4089634,
+    "ast_hash": "e2929aacfba92e52c776b1851527d411",
+    "semantic_hash": ""
+  },
+  "apps/mobile/tests/unit/itemFormValues.test.ts": {
+    "mtime": 1781886008.5250738,
+    "ast_hash": "bf5043f4157da9a38b92051595cbe19f",
+    "semantic_hash": ""
+  },
+  "apps/mobile/tests/unit/networkError.test.ts": {
+    "mtime": 1781777999.142689,
+    "ast_hash": "2c369b806891335d8183db67ca69fe45",
+    "semantic_hash": "2c369b806891335d8183db67ca69fe45"
+  },
+  "apps/mobile/tests/unit/pushNotifications.test.ts": {
+    "mtime": 1781870873.1022356,
+    "ast_hash": "f7aa128b0333478a91a8f1785b3b3d64",
+    "semantic_hash": ""
+  },
+  "apps/mobile/tests/unit/pushNotificationsLoadOrder.test.ts": {
+    "mtime": 1781870872.9842544,
+    "ast_hash": "e6718e366f6edaada41bb84a6e97f161",
+    "semantic_hash": ""
+  },
+  "apps/mobile/tests/unit/pushNotificationsSupport.test.ts": {
+    "mtime": 1781777999.1429052,
+    "ast_hash": "0b6bea11955a6a78bfaf6c577528753b",
+    "semantic_hash": "0b6bea11955a6a78bfaf6c577528753b"
+  },
+  "apps/mobile/tests/unit/relativeTime.test.ts": {
+    "mtime": 1781777999.142977,
+    "ast_hash": "9b07e631d9ae7dfd9f8a2493b3f222fa",
+    "semantic_hash": "9b07e631d9ae7dfd9f8a2493b3f222fa"
+  },
+  "apps/mobile/tests/unit/rhythm.test.ts": {
+    "mtime": 1781784596.8628504,
+    "ast_hash": "444241e83f95fc71ed684806a8407181",
+    "semantic_hash": "444241e83f95fc71ed684806a8407181"
+  },
+  "apps/mobile/tests/unit/sessionRestore.test.ts": {
+    "mtime": 1781777999.143114,
+    "ast_hash": "3e28e092be8596116bc4922eb92adeb8",
+    "semantic_hash": "3e28e092be8596116bc4922eb92adeb8"
+  },
+  "apps/mobile/tests/unit/skeleton.test.ts": {
+    "mtime": 1781786536.8069673,
+    "ast_hash": "6a6b51d6b5f78572420492583b988203",
+    "semantic_hash": "6a6b51d6b5f78572420492583b988203"
+  },
+  "apps/mobile/tests/unit/tabTransition.test.ts": {
+    "mtime": 1781777999.1431797,
+    "ast_hash": "da20a4122af7f9b6880cad79bd5c52c0",
+    "semantic_hash": "da20a4122af7f9b6880cad79bd5c52c0"
+  },
+  "apps/mobile/tests/unit/theme.test.ts": {
+    "mtime": 1781786424.6969314,
+    "ast_hash": "9a09f98546151debc9a5ae978a58d320",
+    "semantic_hash": "9a09f98546151debc9a5ae978a58d320"
+  },
+  "apps/mobile/tests/unit/timeOptions.test.ts": {
+    "mtime": 1781785871.4908452,
+    "ast_hash": "2616658e8f4c02d5c22b632cd5eedd06",
+    "semantic_hash": "2616658e8f4c02d5c22b632cd5eedd06"
+  },
+  "apps/mobile/tsconfig.json": {
+    "mtime": 1781777999.1432583,
+    "ast_hash": "8d90ed7dd02f3beda181097db7233adb",
+    "semantic_hash": "8d90ed7dd02f3beda181097db7233adb"
+  },
+  "apps/web/app/api/v1/settings/route.ts": {
+    "mtime": 1781777999.145806,
+    "ast_hash": "2f2b5aef4b637a6d661d707cc6d4812f",
+    "semantic_hash": "2f2b5aef4b637a6d661d707cc6d4812f"
+  },
+  "apps/web/app/error.tsx": {
+    "mtime": 1781873947.5681448,
+    "ast_hash": "1eff283b68be9458a1ebb70a8661746f",
+    "semantic_hash": ""
+  },
+  "apps/web/app/loading.tsx": {
+    "mtime": 1781777999.150378,
+    "ast_hash": "eba83bd7a80589c38fb793ed7e2db907",
+    "semantic_hash": "eba83bd7a80589c38fb793ed7e2db907"
+  },
+  "apps/web/app/not-found.tsx": {
+    "mtime": 1781873763.8339226,
+    "ast_hash": "83664fb93853be58569b3684ab6825b2",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/env.ts": {
+    "mtime": 1781777999.151151,
+    "ast_hash": "6ed0611a51c181c9213bfb3e5cc6832f",
+    "semantic_hash": "6ed0611a51c181c9213bfb3e5cc6832f"
+  },
+  "apps/web/lib/i18n/client.tsx": {
+    "mtime": 1781862368.5362136,
+    "ast_hash": "022201b0207cdf61f4e672ebec944685",
+    "semantic_hash": "022201b0207cdf61f4e672ebec944685"
+  },
+  "apps/web/lib/i18n/dictionaries.ts": {
+    "mtime": 1781894006.360568,
+    "ast_hash": "b00483e1703d9db3f223767fbdd9c607",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/settings/serialize.ts": {
+    "mtime": 1781777999.1513817,
+    "ast_hash": "1e3bc644581159a54170d2ab65133849",
+    "semantic_hash": "1e3bc644581159a54170d2ab65133849"
+  },
+  "apps/web/lib/settings/validation.ts": {
+    "mtime": 1781777999.1514604,
+    "ast_hash": "871a86a4a13159a70eedf7f1710c4be9",
+    "semantic_hash": "871a86a4a13159a70eedf7f1710c4be9"
+  },
+  "apps/web/tests/integration/settings.integration.test.ts": {
+    "mtime": 1781777999.1516607,
+    "ast_hash": "b38e3f23ac87ffa9620112d73cd701f8",
+    "semantic_hash": "b38e3f23ac87ffa9620112d73cd701f8"
+  },
+  "apps/web/tests/unit/i18n/dictionaries.test.ts": {
+    "mtime": 1781873912.8984258,
+    "ast_hash": "5d9940749a8e9abb2fe931809e5483c3",
+    "semantic_hash": ""
+  },
+  ".codex/skills/tend-change-instructions/SKILL.md": {
     "mtime": 1781793985.8316624,
     "ast_hash": "bf95975adfac83bb2cb7e77231c685c1",
     "semantic_hash": "bf95975adfac83bb2cb7e77231c685c1"
   },
-  "/Users/saki/Documents/Mine/tend/.codex/skills/tend-change-instructions/agents/openai.yaml": {
+  ".codex/skills/tend-change-instructions/agents/openai.yaml": {
     "mtime": 1781793991.446256,
     "ast_hash": "8ecf9cf40a2c588cf9e3a8120080c779",
     "semantic_hash": "8ecf9cf40a2c588cf9e3a8120080c779"
   },
-  "/Users/saki/Documents/Mine/tend/.github/workflows/ci.yml": {
-    "mtime": 1781538021.1403668,
-    "ast_hash": "2e9c33f8836e87b7ffa129dbf312e920",
-    "semantic_hash": "2e9c33f8836e87b7ffa129dbf312e920"
-  },
-  "/Users/saki/Documents/Mine/tend/PRODUCT.md": {
-    "mtime": 1781559710.6842644,
-    "ast_hash": "7184bc975f955ff436c091c9f291582c",
-    "semantic_hash": "7184bc975f955ff436c091c9f291582c"
-  },
-  "/Users/saki/Documents/Mine/tend/README.md": {
-    "mtime": 1781862368.534692,
-    "ast_hash": "8c0bd6d7733ac839afb233d1a11354f2",
-    "semantic_hash": "8c0bd6d7733ac839afb233d1a11354f2"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/content/legal/privacy.md": {
-    "mtime": 1781561528.7598004,
-    "ast_hash": "c15ca6ef1fa90d6ff276670852011cdb",
-    "semantic_hash": "c15ca6ef1fa90d6ff276670852011cdb"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/web/content/legal/terms.md": {
-    "mtime": 1781561528.798143,
-    "ast_hash": "854ae0568b5c4b42e74c8aee434f331d",
-    "semantic_hash": "854ae0568b5c4b42e74c8aee434f331d"
-  },
-  "/Users/saki/Documents/Mine/tend/docker-compose.yml": {
-    "mtime": 1781524236.9134858,
-    "ast_hash": "d2414565882451b135c4a24ca3592264",
-    "semantic_hash": "d2414565882451b135c4a24ca3592264"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/alpha-development-plan.md": {
-    "mtime": 1781557953.0217912,
-    "ast_hash": "a463fbb4c6226dcdefe9493c5589909a",
-    "semantic_hash": "a463fbb4c6226dcdefe9493c5589909a"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/alpha-roadmap.md": {
-    "mtime": 1781557958.9077752,
-    "ast_hash": "2f0d3df1f2476fddec220eb35bb8ad21",
-    "semantic_hash": "2f0d3df1f2476fddec220eb35bb8ad21"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/api/README.md": {
-    "mtime": 1781777999.1597455,
-    "ast_hash": "dba7e282bbf52d5b44a12eb2c524d932",
-    "semantic_hash": "dba7e282bbf52d5b44a12eb2c524d932"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/api/activity.md": {
-    "mtime": 1781536751.8281906,
-    "ast_hash": "1fef224544e1ce0a606ccfad4f6a137b",
-    "semantic_hash": "1fef224544e1ce0a606ccfad4f6a137b"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/api/auth.md": {
-    "mtime": 1781542476.9571497,
-    "ast_hash": "04033ffb00a37a45a3b90e84f91df2b0",
-    "semantic_hash": "04033ffb00a37a45a3b90e84f91df2b0"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/api/availability.md": {
-    "mtime": 1781779902.0762568,
-    "ast_hash": "ae4bb515d2683cfb4a0ea4303d77b2f7",
-    "semantic_hash": "ae4bb515d2683cfb4a0ea4303d77b2f7"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/api/health.md": {
-    "mtime": 1781684421.781737,
-    "ast_hash": "d5824cae19732b0311fa0367e5cd186e",
-    "semantic_hash": "d5824cae19732b0311fa0367e5cd186e"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/api/items.md": {
-    "mtime": 1781527274.1651,
-    "ast_hash": "76e50116e8e7b839c60385031ad37b68",
-    "semantic_hash": "76e50116e8e7b839c60385031ad37b68"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/api/onboarding.md": {
-    "mtime": 1781527787.7197862,
-    "ast_hash": "107499ac09f37103b8a25780c7d507dd",
-    "semantic_hash": "107499ac09f37103b8a25780c7d507dd"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/api/reminders.md": {
-    "mtime": 1781779898.645959,
-    "ast_hash": "8031e84b4aabc1cd89f7fb69eb9fd844",
-    "semantic_hash": "8031e84b4aabc1cd89f7fb69eb9fd844"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/api/settings.md": {
+  "docs/api/settings.md": {
     "mtime": 1781777999.1600125,
     "ast_hash": "ec5af1b668cd5c86a563cfa1163da458",
     "semantic_hash": "ec5af1b668cd5c86a563cfa1163da458"
   },
-  "/Users/saki/Documents/Mine/tend/docs/deployment.md": {
-    "mtime": 1781684263.9552846,
-    "ast_hash": "3bbb40eebc801aca16761541b85d9953",
-    "semantic_hash": "3bbb40eebc801aca16761541b85d9953"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/design/README.md": {
-    "mtime": 1781562925.859598,
-    "ast_hash": "eebbf0b7b4389757f19f3fb0b3428c70",
-    "semantic_hash": "eebbf0b7b4389757f19f3fb0b3428c70"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/design/components.md": {
-    "mtime": 1781794425.1570342,
-    "ast_hash": "661f3413d917e586d1f0343b27ca9ce0",
-    "semantic_hash": "661f3413d917e586d1f0343b27ca9ce0"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/design/design-language.md": {
-    "mtime": 1781595047.4747891,
-    "ast_hash": "d5b45cb8d3332bb9690601bbf4310552",
-    "semantic_hash": "d5b45cb8d3332bb9690601bbf4310552"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/manual-test-script.md": {
-    "mtime": 1781536762.6790354,
-    "ast_hash": "f6aef97dbe129b8dbec909ce9fea6f2e",
-    "semantic_hash": "f6aef97dbe129b8dbec909ce9fea6f2e"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/marketing/promo-compositions.html": {
-    "mtime": 1781557447.1191707,
-    "ast_hash": "51c63dab72d18c433ed2e5ab7e2b4f15",
-    "semantic_hash": "51c63dab72d18c433ed2e5ab7e2b4f15"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/mvp-user-stories.md": {
-    "mtime": 1781596821.7337403,
-    "ast_hash": "e1bfac89095bb456a64b509c1060faf4",
-    "semantic_hash": "e1bfac89095bb456a64b509c1060faf4"
-  },
-  "/Users/saki/Documents/Mine/tend/docs/pre-alpha-development-plan.md": {
-    "mtime": 1781536768.4261293,
-    "ast_hash": "c3f61a74a8378b1e8f754521f4bd5609",
-    "semantic_hash": "c3f61a74a8378b1e8f754521f4bd5609"
-  },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/assets/app-icon.png": {
+  "apps/mobile/assets/app-icon.png": {
     "mtime": 1781777999.1334426,
     "ast_hash": "5e90fba7ac73b20b7472f8c3fcb5fe3a",
     "semantic_hash": "5e90fba7ac73b20b7472f8c3fcb5fe3a"
   },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/assets/app-icon.svg": {
+  "apps/mobile/assets/app-icon.svg": {
     "mtime": 1781777999.1335614,
     "ast_hash": "ca7890fd9eef209368a28e5f830aff6f",
     "semantic_hash": "ca7890fd9eef209368a28e5f830aff6f"
   },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/assets/promo/tend-activity.jpg": {
+  "apps/mobile/assets/promo/tend-activity.jpg": {
     "mtime": 1781777999.13549,
     "ast_hash": "99146ab8ca1b065a4aa1089ee74b1a20",
     "semantic_hash": "99146ab8ca1b065a4aa1089ee74b1a20"
   },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/assets/promo/tend-care.jpg": {
+  "apps/mobile/assets/promo/tend-care.jpg": {
     "mtime": 1781777999.1357462,
     "ast_hash": "e3145ff9b18e9b94ca5a6deae4b0b8bd",
     "semantic_hash": "e3145ff9b18e9b94ca5a6deae4b0b8bd"
   },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/assets/promo/tend-remember.jpg": {
+  "apps/mobile/assets/promo/tend-remember.jpg": {
     "mtime": 1781777999.136025,
     "ast_hash": "40140d4f45870f2e86b915b479917520",
     "semantic_hash": "40140d4f45870f2e86b915b479917520"
   },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/assets/promo/tend-reminder.jpg": {
+  "apps/mobile/assets/promo/tend-reminder.jpg": {
     "mtime": 1781777999.1362796,
     "ast_hash": "3fcf0e78b5e7778823387694104f4b9e",
     "semantic_hash": "3fcf0e78b5e7778823387694104f4b9e"
   },
-  "/Users/saki/Documents/Mine/tend/apps/mobile/assets/tend-logo.png": {
+  "apps/mobile/assets/tend-logo.png": {
     "mtime": 1781777999.1364803,
     "ast_hash": "df6f34b5b878ad16018ede0fe6c194c0",
     "semantic_hash": "df6f34b5b878ad16018ede0fe6c194c0"
   },
-  "/Users/saki/Documents/Mine/tend/apps/web/app/icon.svg": {
-    "mtime": 1781777999.1493196,
-    "ast_hash": "d165c1cc53fa9a2feec74dac812bc1fb",
-    "semantic_hash": "d165c1cc53fa9a2feec74dac812bc1fb"
+  "apps/mobile/app.config.js": {
+    "mtime": 1781864787.2611358,
+    "ast_hash": "f00b89cae754675934d1ab60cc2b3ae8",
+    "semantic_hash": ""
   },
-  "/Users/saki/Documents/Mine/tend/apps/web/public/promo/tend-activity.jpg": {
-    "mtime": 1781557503.95998,
-    "ast_hash": "99146ab8ca1b065a4aa1089ee74b1a20",
-    "semantic_hash": "99146ab8ca1b065a4aa1089ee74b1a20"
+  "apps/mobile/src/monitoring/initSentry.ts": {
+    "mtime": 1781864787.260943,
+    "ast_hash": "6006d8e3eacd71baa5a6a18d6d86a34a",
+    "semantic_hash": ""
   },
-  "/Users/saki/Documents/Mine/tend/apps/web/public/promo/tend-care.jpg": {
-    "mtime": 1781557503.9278114,
-    "ast_hash": "e3145ff9b18e9b94ca5a6deae4b0b8bd",
-    "semantic_hash": "e3145ff9b18e9b94ca5a6deae4b0b8bd"
+  "apps/mobile/src/monitoring/sentryOptions.ts": {
+    "mtime": 1781864770.9703493,
+    "ast_hash": "661628454a3db8213ef596119de7139a",
+    "semantic_hash": ""
   },
-  "/Users/saki/Documents/Mine/tend/apps/web/public/promo/tend-logo.png": {
-    "mtime": 1781558433.822331,
-    "ast_hash": "df6f34b5b878ad16018ede0fe6c194c0",
-    "semantic_hash": "df6f34b5b878ad16018ede0fe6c194c0"
+  "apps/mobile/tests/unit/sentryOptions.test.ts": {
+    "mtime": 1781864774.6161668,
+    "ast_hash": "025f0bed10bff197ab126257411ad57c",
+    "semantic_hash": ""
   },
-  "/Users/saki/Documents/Mine/tend/apps/web/public/promo/tend-logo.svg": {
-    "mtime": 1781558424.9078841,
-    "ast_hash": "7d541d81bdbb1ea20167ca604f36e729",
-    "semantic_hash": "7d541d81bdbb1ea20167ca604f36e729"
+  "apps/mobile/tests/unit/usePushNotifications.test.ts": {
+    "mtime": 1781871109.1973069,
+    "ast_hash": "edbdc7f351d9c871a16d74159d136ce5",
+    "semantic_hash": ""
   },
-  "/Users/saki/Documents/Mine/tend/apps/web/public/promo/tend-remember.jpg": {
-    "mtime": 1781557503.930225,
-    "ast_hash": "40140d4f45870f2e86b915b479917520",
-    "semantic_hash": "40140d4f45870f2e86b915b479917520"
+  "apps/web/app/api/v1/jobs/notifications/route.ts": {
+    "mtime": 1781870961.34242,
+    "ast_hash": "ff401446218d127b9a8078d84268482c",
+    "semantic_hash": ""
   },
-  "/Users/saki/Documents/Mine/tend/apps/web/public/promo/tend-reminder.jpg": {
-    "mtime": 1781557503.9269636,
-    "ast_hash": "3fcf0e78b5e7778823387694104f4b9e",
-    "semantic_hash": "3fcf0e78b5e7778823387694104f4b9e"
+  "apps/web/app/api/v1/push-subscriptions/route.ts": {
+    "mtime": 1781870545.3998187,
+    "ast_hash": "a89e847f3acb4c54fdd814b0a8290c4f",
+    "semantic_hash": ""
+  },
+  "apps/web/app/global-error.tsx": {
+    "mtime": 1781864764.3964205,
+    "ast_hash": "f94c1dbedb3c6f4302bb9b792b6eeb66",
+    "semantic_hash": ""
+  },
+  "apps/web/components/forms/availability-page-header.tsx": {
+    "mtime": 1781873661.9830005,
+    "ast_hash": "66320212f6fa9fd1147a8d5258e8f2c3",
+    "semantic_hash": ""
+  },
+  "apps/web/components/layout/invite-only-notice.tsx": {
+    "mtime": 1781871625.8526807,
+    "ast_hash": "13458bbda19b47ff1adade3f727a61f1",
+    "semantic_hash": ""
+  },
+  "apps/web/components/layout/language-select.tsx": {
+    "mtime": 1781871464.9284656,
+    "ast_hash": "696324ceccfcc7cc1b0cff706578cb2a",
+    "semantic_hash": ""
+  },
+  "apps/web/components/tend/shared-with-badge.tsx": {
+    "mtime": 1781885775.8472552,
+    "ast_hash": "5a8423cc0bf8c67bd42693a06536fddf",
+    "semantic_hash": ""
+  },
+  "apps/web/instrumentation-client.ts": {
+    "mtime": 1782114073.634919,
+    "ast_hash": "a077fbd7771bc795fa860c72aeda59bd",
+    "semantic_hash": ""
+  },
+  "apps/web/instrumentation.ts": {
+    "mtime": 1781864761.759441,
+    "ast_hash": "5b2bf247c6f094110b8b8d4f865b4027",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/i18n/labels.ts": {
+    "mtime": 1781871606.9981532,
+    "ast_hash": "0d66debc167d79ca79e12532e90a7bc0",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/items/sharing.ts": {
+    "mtime": 1781885429.270268,
+    "ast_hash": "4d637135f61b18d89320b1250514d826",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/notifications/expo-push.ts": {
+    "mtime": 1781870933.9999197,
+    "ast_hash": "974923a5dc8f49725824bf0cea13a8f5",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/notifications/job.ts": {
+    "mtime": 1781870503.5527203,
+    "ast_hash": "8c50fb2e16dffe1b883f8159228257ea",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/notifications/reminder-notification.ts": {
+    "mtime": 1781870503.2757962,
+    "ast_hash": "33a5dbc09898a8777236805cad198109",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/notifications/serialize.ts": {
+    "mtime": 1781870545.1923878,
+    "ast_hash": "4883ce0801729f479e99b7a44c3f8685",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/notifications/validation.ts": {
+    "mtime": 1781870545.078061,
+    "ast_hash": "55efd0609ffc6916971d3f161e4a4aeb",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/reminders/user-reminders.ts": {
+    "mtime": 1781885510.6498506,
+    "ast_hash": "039afa73f8d789b1f2889f6e09a83c76",
+    "semantic_hash": ""
+  },
+  "apps/web/lib/sentry/options.ts": {
+    "mtime": 1782114055.241331,
+    "ast_hash": "adf019cb4c924392b379e1f4dd546cdb",
+    "semantic_hash": ""
+  },
+  "apps/web/sentry.edge.config.ts": {
+    "mtime": 1781864787.2616081,
+    "ast_hash": "fccc8e1c0facaf9d055214f660588bf6",
+    "semantic_hash": ""
+  },
+  "apps/web/sentry.server.config.ts": {
+    "mtime": 1781864787.2609446,
+    "ast_hash": "fccc8e1c0facaf9d055214f660588bf6",
+    "semantic_hash": ""
+  },
+  "apps/web/tests/integration/push-subscriptions.integration.test.ts": {
+    "mtime": 1781870724.8317647,
+    "ast_hash": "b9e12a76f091d1cbd6bdca5e545c1711",
+    "semantic_hash": ""
+  },
+  "apps/web/tests/unit/notifications/expo-push.test.ts": {
+    "mtime": 1781870702.4438095,
+    "ast_hash": "2a94d115775be2a3b36fc234e6637564",
+    "semantic_hash": ""
+  },
+  "apps/web/tests/unit/notifications/job-route.test.ts": {
+    "mtime": 1781870702.647653,
+    "ast_hash": "19c4556a916c6e881d318c91dd803015",
+    "semantic_hash": ""
+  },
+  "apps/web/tests/unit/notifications/reminder-notification.test.ts": {
+    "mtime": 1781870805.0902925,
+    "ast_hash": "56e0c23d85f564b069d172af3021087e",
+    "semantic_hash": ""
+  },
+  "apps/web/tests/unit/sentry/options.test.ts": {
+    "mtime": 1782114055.8981469,
+    "ast_hash": "2b5ee0049732f2d5e96197e5ca4a604c",
+    "semantic_hash": ""
+  },
+  "packages/db/drizzle/0004_sad_lionheart.sql": {
+    "mtime": 1781870750.8953583,
+    "ast_hash": "ce52f0652e44ca47babd0342dda6a5b0",
+    "semantic_hash": ""
+  },
+  "packages/db/drizzle/0006_condemned_pepper_potts.sql": {
+    "mtime": 1781886048.061232,
+    "ast_hash": "a8577413bcdebc188b930d130ed23265",
+    "semantic_hash": ""
+  },
+  "packages/db/drizzle/meta/0004_snapshot.json": {
+    "mtime": 1781870750.8943934,
+    "ast_hash": "938ceca2f10b90a017bae8d2eceb662a",
+    "semantic_hash": ""
+  },
+  "packages/db/drizzle/meta/0006_snapshot.json": {
+    "mtime": 1781886048.060925,
+    "ast_hash": "464cd490dd99e3a40c22815764f504e5",
+    "semantic_hash": ""
+  },
+  "packages/db/src/push-subscriptions.ts": {
+    "mtime": 1781870804.97048,
+    "ast_hash": "edabd20445b47ad9161a7d88baaf9dc4",
+    "semantic_hash": ""
+  },
+  "docs/api/notifications.md": {
+    "mtime": 1781870744.3801694,
+    "ast_hash": "b292c1bd1da34e59a2986d7fc3a50eaa",
+    "semantic_hash": ""
+  },
+  "docs/tend-with-a-friend-mvp.md": {
+    "mtime": 1782115494.2866745,
+    "ast_hash": "a7a9e9f650078243f497ad9c61a74192",
+    "semantic_hash": ""
+  },
+  "apps/mobile/assets/promo/tend-friend-promo.png": {
+    "mtime": 1781893908.896387,
+    "ast_hash": "3a5744999eac5ada0c2d292ca30aa933",
+    "semantic_hash": ""
+  },
+  "apps/mobile/assets/promo/tend-friend.png": {
+    "mtime": 1781885346.9963465,
+    "ast_hash": "547601d26de9a0681c20da6e9fc72262",
+    "semantic_hash": ""
+  },
+  "apps/web/public/promo/tend-friend-promo.png": {
+    "mtime": 1781893895.8192995,
+    "ast_hash": "3a5744999eac5ada0c2d292ca30aa933",
+    "semantic_hash": ""
+  },
+  "apps/web/public/promo/tend-friend.png": {
+    "mtime": 1781885341.7644565,
+    "ast_hash": "547601d26de9a0681c20da6e9fc72262",
+    "semantic_hash": ""
   }
 }

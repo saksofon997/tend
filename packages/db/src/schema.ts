@@ -61,6 +61,9 @@ export const tendItems = pgTable("tend_items", {
   userId: uuid("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  sharedWithUserId: uuid("shared_with_user_id").references(() => users.id, {
+    onDelete: "set null",
+  }),
   name: text("name").notNull(),
   type: tendItemTypeEnum("type").notNull(),
   rhythmDays: integer("rhythm_days").notNull(),

@@ -134,4 +134,70 @@ describe("items integration", () => {
       await deleteUserByEmail(getDb(), email);
     }
   });
+
+  it("shares an item with a friend and lets either user tend it", async () => {
+    if (!(await isDatabaseAvailable())) {
+      console.warn("Skipping: database not available");
+      return;
+    }
+
+    const owner = await registerTestUser();
+    const friend = await registerTestUser();
+
+    try {
+      const createResponse = await createItem(
+        authedRequest("http://localhost/api/v1/items", owner.sessionId, {
+          method: "POST",
+          body: JSON.stringify({
+            name: "Dinner together",
+            type: "want",
+            rhythmDays: 14,
+            lifeArea: "relationships",
+            sharedWithEmail: friend.email,
+          }),
+        }),
+      );
+
+      expect(createResponse.status).toBe(201);
+      const created = (await createResponse.json()) as {
+        item: { id: string; sharedWith: { email: string; displayName: string } | null };
+      };
+      expect(created.item.sharedWith?.email).toBe(friend.email);
+
+      const friendListResponse = await getItems(
+        authedRequest("http://localhost/api/v1/items", friend.sessionId),
+      );
+      expect(friendListResponse.status).toBe(200);
+      const friendList = (await friendListResponse.json()) as {
+        items: Array<{ id: string; sharedWith: { email: string } | null }>;
+      };
+      const sharedForFriend = friendList.items.find((item) => item.id === created.item.id);
+      expect(sharedForFriend?.sharedWith?.email).toBe(owner.email);
+
+      const tendedAt = "2026-06-18T10:00:00.000Z";
+      const friendTendResponse = await tendItem(
+        authedRequest(`http://localhost/api/v1/items/${created.item.id}/tend`, friend.sessionId, {
+          method: "POST",
+          body: JSON.stringify({ tendedAt }),
+        }),
+        { params: Promise.resolve({ id: created.item.id }) },
+      );
+      expect(friendTendResponse.status).toBe(200);
+
+      const ownerListResponse = await getItems(
+        authedRequest("http://localhost/api/v1/items", owner.sessionId),
+      );
+      const ownerList = (await ownerListResponse.json()) as {
+        items: Array<{ id: string; lastTendedAt: string | null }>;
+      };
+      expect(ownerList.items.find((item) => item.id === created.item.id)?.lastTendedAt).toBe(
+        tendedAt,
+      );
+    } finally {
+      await deleteItemsForUser(getDb(), owner.userId);
+      await deleteItemsForUser(getDb(), friend.userId);
+      await deleteUserByEmail(getDb(), owner.email);
+      await deleteUserByEmail(getDb(), friend.email);
+    }
+  });
 });

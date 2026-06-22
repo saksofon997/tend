@@ -1,4 +1,4 @@
-import { and, desc, eq, isNull } from "drizzle-orm";
+import { and, desc, eq, isNull, or } from "drizzle-orm";
 import type { Database, DbClient } from "./client";
 import { tendEvents, tendItems } from "./schema";
 
@@ -17,6 +17,7 @@ export interface CreateItemInput {
   lifeArea?: TendItemRow["lifeArea"] | null;
   lastTendedAt: Date;
   status: TendItemRow["status"];
+  sharedWithUserId?: string | null;
 }
 
 export interface UpdateItemInput {
@@ -27,10 +28,23 @@ export interface UpdateItemInput {
   lastTendedAt?: Date | null;
   status?: TendItemRow["status"];
   archivedAt?: Date | null;
+  sharedWithUserId?: string | null;
 }
 
-function ownershipFilter(userId: string, itemId: string) {
+function itemAccessFilter(userId: string, itemId: string) {
+  return and(eq(tendItems.id, itemId), userItemsFilter(userId));
+}
+
+function itemOwnerFilter(userId: string, itemId: string) {
   return and(eq(tendItems.id, itemId), eq(tendItems.userId, userId));
+}
+
+function userItemsFilter(userId: string) {
+  const filter = or(eq(tendItems.userId, userId), eq(tendItems.sharedWithUserId, userId));
+  if (!filter) {
+    throw new Error("Failed to build item access filter");
+  }
+  return filter;
 }
 
 export async function listItemsForUser(
@@ -38,7 +52,7 @@ export async function listItemsForUser(
   userId: string,
   options: ListItemsOptions = {},
 ): Promise<TendItemRow[]> {
-  const filters = [eq(tendItems.userId, userId)];
+  const filters = [userItemsFilter(userId)];
 
   if (!options.includeArchived) {
     filters.push(isNull(tendItems.archivedAt));
@@ -63,7 +77,7 @@ export async function getItemForUser(
   const [item] = await database
     .select()
     .from(tendItems)
-    .where(ownershipFilter(userId, itemId))
+    .where(itemAccessFilter(userId, itemId))
     .limit(1);
 
   return item ?? null;
@@ -85,6 +99,7 @@ export async function createItemForUser(
         lifeArea: input.lifeArea ?? null,
         lastTendedAt: input.lastTendedAt,
         status: input.status,
+        sharedWithUserId: input.sharedWithUserId ?? null,
       })
       .returning();
 
@@ -113,7 +128,7 @@ export async function updateItemForUser(
       ...input,
       updatedAt: new Date(),
     })
-    .where(ownershipFilter(userId, itemId))
+    .where(itemAccessFilter(userId, itemId))
     .returning();
 
   return item ?? null;
@@ -126,7 +141,7 @@ export async function deleteItemForUser(
 ): Promise<boolean> {
   const deleted = await database
     .delete(tendItems)
-    .where(ownershipFilter(userId, itemId))
+    .where(itemOwnerFilter(userId, itemId))
     .returning({ id: tendItems.id });
 
   return deleted.length > 0;
@@ -147,7 +162,7 @@ export async function tendItemForUser(
         status,
         updatedAt: new Date(),
       })
-      .where(ownershipFilter(userId, itemId))
+      .where(itemAccessFilter(userId, itemId))
       .returning();
 
     if (!item) {
@@ -187,7 +202,7 @@ export async function listRecentEventsForUser(
     })
     .from(tendEvents)
     .innerJoin(tendItems, eq(tendEvents.itemId, tendItems.id))
-    .where(eq(tendItems.userId, userId))
+    .where(userItemsFilter(userId))
     .orderBy(desc(tendEvents.tendedAt))
     .limit(limit);
 }
@@ -223,7 +238,7 @@ export async function getEventForUser(
     })
     .from(tendEvents)
     .innerJoin(tendItems, eq(tendEvents.itemId, tendItems.id))
-    .where(and(eq(tendEvents.id, eventId), eq(tendItems.userId, userId)))
+    .where(and(eq(tendEvents.id, eventId), userItemsFilter(userId)))
     .limit(1);
 
   if (!row) {
@@ -253,7 +268,7 @@ async function syncItemLastTendedFromEvents(
       lastTendedAt,
       updatedAt: new Date(),
     })
-    .where(ownershipFilter(userId, itemId))
+    .where(itemAccessFilter(userId, itemId))
     .returning();
 
   return item ?? null;

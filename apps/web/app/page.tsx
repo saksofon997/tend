@@ -3,6 +3,7 @@ import { HomeView } from "@/components/tend/home-view";
 import { validateSession } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { serializeItem } from "@/lib/items/serialize";
+import { getSharedUserMapForItems, sharedUserForItem } from "@/lib/items/sharing";
 import { getUserSettings, isOnboardingComplete, listItemsForUser } from "@tend/db";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -20,18 +21,22 @@ export default async function HomePage() {
     return <LandingPage />;
   }
 
-  const settings = await getUserSettings(getDb(), user.id);
+  const database = getDb();
+  const settings = await getUserSettings(database, user.id);
   if (!isOnboardingComplete(settings)) {
     redirect("/onboarding");
   }
 
   const now = new Date();
-  const items = await listItemsForUser(getDb(), user.id, {});
+  const items = await listItemsForUser(database, user.id, {});
+  const sharedUserMap = await getSharedUserMapForItems(database, user.id, items);
 
   return (
     <HomeView
       user={{ displayName: user.displayName }}
-      initialItems={items.map((item) => serializeItem(item, now))}
+      initialItems={items.map((item) =>
+        serializeItem(item, now, sharedUserForItem(item, user.id, sharedUserMap)),
+      )}
     />
   );
 }

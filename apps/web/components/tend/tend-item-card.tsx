@@ -2,6 +2,7 @@
 
 import { MarkTendedButton } from "@/components/tend/mark-tended-button";
 import { RelativeTime } from "@/components/tend/relative-time";
+import { SharedWithBadge } from "@/components/tend/shared-with-badge";
 import { StatusBadge } from "@/components/tend/status-badge";
 import { TypeBadge } from "@/components/tend/type-badge";
 import { Card } from "@/components/ui/card";
@@ -18,6 +19,7 @@ export interface TendItemCardData {
   daysSinceLastTended?: number | null;
   rhythmDays: number;
   lifeArea?: LifeArea | null;
+  sharedWith?: { displayName: string } | null;
 }
 
 interface TendItemCardProps extends TendItemCardData {
@@ -32,6 +34,7 @@ export function TendItemCard({
   status,
   lastTendedAt,
   daysSinceLastTended,
+  sharedWith,
   onTend,
   subdued = false,
 }: TendItemCardProps) {
@@ -54,6 +57,7 @@ export function TendItemCard({
           <p className="text-pretty break-words text-lg font-medium text-foreground">{name}</p>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <TypeBadge type={type} />
+            {sharedWith ? <SharedWithBadge displayName={sharedWith.displayName} /> : null}
             <RelativeTime date={lastTendedAt} daysSince={daysSinceLastTended} />
           </div>
         </Link>

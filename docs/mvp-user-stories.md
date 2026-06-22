@@ -114,6 +114,8 @@ Reviewed against Mike Cohn + Gherkin format and INVEST criteria. Original storie
 
 ## MVP User Stories
 
+See also [`tend-with-a-friend-mvp.md`](./tend-with-a-friend-mvp.md) for the validated Tend with a Friend MVP specification and web/mobile user stories.
+
 ### User Story 1
 
 - **Summary:** Create a local profile so Tend feels personal from the first visit

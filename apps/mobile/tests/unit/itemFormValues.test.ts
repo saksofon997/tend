@@ -8,6 +8,7 @@ const baseItem: ItemResponse = {
   type: "want",
   rhythmDays: 7,
   lifeArea: "home",
+  sharedWith: null,
   lastTendedAt: "2026-06-10T12:00:00.000Z",
   status: "fresh",
   daysSinceLastTended: 8,
@@ -24,7 +25,17 @@ describe("itemFormValuesFromItem", () => {
       rhythmDays: 7,
       lifeArea: "home",
       lastTendedDate: "2026-06-10",
+      sharedWithEmail: "",
     });
+  });
+
+  it("maps shared user email into edit form values", () => {
+    const item = {
+      ...baseItem,
+      sharedWith: { id: "user-2", displayName: "Mira", email: "mira@example.com" },
+    };
+
+    expect(itemFormValuesFromItem(item).sharedWithEmail).toBe("mira@example.com");
   });
 
   it("uses today when lastTendedAt is missing", () => {

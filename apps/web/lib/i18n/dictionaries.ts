@@ -99,6 +99,20 @@ export const en = {
   "landing.howItWorks": "How Tend works",
   "landing.createAccount": "Create an account",
   "landing.eyebrow": "Life maintenance, remembered softly",
+  "landing.feature.friend.body":
+    "Add a friend's email to dinner, hangouts, or check-ins. The Tend appears for both of you.",
+  "landing.feature.friend.title": "Tend with a friend",
+  "landing.feature.rhythm.body":
+    "Keep the same quiet rhythm and status language, whether a Tend belongs to you or is shared.",
+  "landing.feature.rhythm.title": "Shared without pressure",
+  "landing.feature.tended.body":
+    "Either person can mark a shared Tend as tended, so care counts when it happens.",
+  "landing.feature.tended.title": "One tended moment is enough",
+  "landing.features.subtitle":
+    "For the recurring care that naturally involves someone else, Tend can now keep both people gently aware.",
+  "landing.features.imageAlt":
+    "Two people setting a dinner table for a shared recurring care moment",
+  "landing.features.title": "Care can belong to two people",
   "landing.point.awareness.body":
     "Tend surfaces what could use attention with calm language. No red overdue badges, streaks, or guilt loops.",
   "landing.point.awareness.title": "Awareness, not pressure",
@@ -110,8 +124,8 @@ export const en = {
   "landing.point.scan.title": "Fast to scan",
   "landing.signIn": "Sign in",
   "landing.subtitle":
-    "Tend helps you notice what could use a little care: bed sheets, check-ins, bills, vet visits, oil changes. Gentle reminders and honest status, not overdue punishment.",
-  "landing.title": "The recurring parts of life, without the productivity theater",
+    "Track the recurring care that keeps life steady: bed sheets, bills, check-ins, dinner plans, vet visits, oil changes. Tend keeps it calm, and shared Tends can appear for both people.",
+  "landing.title": "The recurring parts of life, tended alone or together",
   "notFound.backHome": "Go back home",
   "notFound.title": "Page not found",
   "pageError.retry": "Try again",
@@ -142,6 +156,9 @@ export const en = {
   "items.add.rhythm.monthly": "Monthly",
   "items.add.rhythm.weekly": "Weekly",
   "items.add.save": "Save item",
+  "items.add.sharedWith.helper": "Optional. The friend needs a Tend account already.",
+  "items.add.sharedWith.label": "Tend with a friend",
+  "items.add.sharedWith.placeholder": "friend@example.com",
   "items.add.subtitle": "Something you want to keep up with over time.",
   "items.add.suggestions.button": "Need ideas?",
   "items.add.suggestions.hint": "Tap one to pre-fill the form below.",
@@ -159,6 +176,7 @@ export const en = {
   "items.detail.subtitle": "Rhythm, status, and recent tending history.",
   "items.edit.save": "Save changes",
   "items.edit.title": "Edit item",
+  "items.sharedWith": "With {{name}}",
   "nav.activity": "Activity",
   "nav.availability": "Availability",
   "nav.home": "Home",
@@ -290,6 +308,19 @@ export const sr = {
   "landing.howItWorks": "Kako Tend radi",
   "landing.createAccount": "Napravi nalog",
   "landing.eyebrow": "Životno održavanje, zapamćeno nežno",
+  "landing.feature.friend.body":
+    "Dodaj email prijatelja za večere, viđanja ili javljanja. Tend se pojavljuje kod oboje.",
+  "landing.feature.friend.title": "Tenduj sa prijateljem",
+  "landing.feature.rhythm.body":
+    "Zadrži isti miran ritam i status, bilo da je Tend samo tvoj ili deljen.",
+  "landing.feature.rhythm.title": "Deljeno bez pritiska",
+  "landing.feature.tended.body":
+    "Bilo ko od vas može da označi deljeni Tend kao tendovan, pa se briga računa kada se desi.",
+  "landing.feature.tended.title": "Jedan trenutak brige je dovoljan",
+  "landing.features.subtitle":
+    "Za ponavljajuću brigu koja prirodno uključuje još nekoga, Tend sada može nežno da obavesti obe osobe.",
+  "landing.features.imageAlt": "Dve osobe postavljaju sto za deljeni ponavljajući trenutak brige",
+  "landing.features.title": "Briga može pripadati dvema osobama",
   "landing.point.awareness.body":
     "Tend prikazuje šta traži pažnju mirnim jezikom. Bez crvenih oznaka kašnjenja, nizova ili krivice.",
   "landing.point.awareness.title": "Svest, ne pritisak",
@@ -301,8 +332,8 @@ export const sr = {
   "landing.point.scan.title": "Brzo za pregled",
   "landing.signIn": "Prijavi se",
   "landing.subtitle":
-    "Tend ti pomaže da primetiš šta traži malo brige: posteljina, javljanja, računi, veterinar, zamena ulja. Blagi podsetnici i iskren status, ne kazna za kašnjenje.",
-  "landing.title": "Ponavljajući delovi života, bez pritiska produktivnosti",
+    "Prati ponavljajuću brigu koja održava život mirnim: posteljina, računi, javljanja, večere, veterinar, zamena ulja. Tend ostaje miran, a deljeni Tendovi mogu da se pojave kod obe osobe.",
+  "landing.title": "Ponavljajući delovi života, tendovani sami ili zajedno",
   "notFound.backHome": "Nazad na početnu",
   "notFound.title": "Stranica nije pronađena",
   "pageError.retry": "Pokušaj ponovo",
@@ -333,6 +364,9 @@ export const sr = {
   "items.add.rhythm.monthly": "Mesečno",
   "items.add.rhythm.weekly": "Nedeljno",
   "items.add.save": "Sačuvaj stavku",
+  "items.add.sharedWith.helper": "Opcionalno. Prijatelj već treba da ima Tend nalog.",
+  "items.add.sharedWith.label": "Tenduj sa prijateljem",
+  "items.add.sharedWith.placeholder": "prijatelj@example.com",
   "items.add.subtitle": "Nešto što želiš da održavaš tokom vremena.",
   "items.add.suggestions.button": "Treba ti ideja?",
   "items.add.suggestions.hint": "Dodirni jednu da popuni formu ispod.",
@@ -350,6 +384,7 @@ export const sr = {
   "items.detail.subtitle": "Ritam, status i nedavna istorija tendovanja.",
   "items.edit.save": "Sačuvaj izmene",
   "items.edit.title": "Izmeni stavku",
+  "items.sharedWith": "Sa {{name}}",
   "nav.activity": "Aktivnost",
   "nav.availability": "Dostupnost",
   "nav.home": "Početna",

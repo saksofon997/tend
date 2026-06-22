@@ -50,6 +50,7 @@ export function AddItemForm({ user }: AddItemFormProps) {
         rhythmDays: values.rhythmDays,
         lifeArea: values.lifeArea,
         lastTendedAt: dateInputToIso(values.lastTendedDate),
+        sharedWithEmail: values.sharedWithEmail.trim() || null,
       }),
     });
 
@@ -71,6 +72,7 @@ export function AddItemForm({ user }: AddItemFormProps) {
       rhythmDays: preset.rhythmDays,
       lifeArea: preset.lifeArea,
       lastTendedDate: todayDate,
+      sharedWithEmail: "",
     });
     setSelectedPresetName(preset.name);
     setFormKey((key) => key + 1);

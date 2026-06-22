@@ -29,6 +29,5 @@ export function getSharedSentryOptions() {
     enabled: dsn !== undefined,
     environment,
     tracesSampleRate: getTracesSampleRate(),
-    debug: environment === "development" && dsn !== undefined,
   };
 }

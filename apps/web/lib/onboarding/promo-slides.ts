@@ -28,6 +28,13 @@ export const ONBOARDING_PROMO_SLIDES: readonly OnboardingPromoSlide[] = [
       "Tend surfaces what matters with context: name, rhythm, and the last time you cared for it.",
   },
   {
+    src: "/promo/tend-friend-promo.png",
+    alt: "Tend promo mockup showing a dinner Tend shared with a friend",
+    title: "Some care is easier to share.",
+    description:
+      "Add a friend's email to a Tend so dinner, check-ins, or shared routines can appear for both of you.",
+  },
+  {
     src: "/promo/tend-activity.jpg",
     alt: "Tend activity feed showing recent tending events without scores or streaks",
     title: "Care leaves a quiet trail.",

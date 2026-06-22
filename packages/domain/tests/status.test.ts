@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { computeStatus, daysSinceLastTended } from "../src/status";
+import { computeStatus, daysSinceLastTended, stalenessWindowDays } from "../src/status";
 
 const now = new Date("2026-06-15T12:00:00");
 
@@ -28,31 +28,41 @@ describe("computeStatus", () => {
     ).toBe("needs_attention");
   });
 
-  it("returns fresh when tended within half the rhythm", () => {
-    expect(
-      computeStatus({
-        lastTendedAt: daysAgo(3),
-        rhythmDays: 7,
-        now,
-      }),
-    ).toBe("fresh");
-  });
-
-  it("returns fresh at exactly half the rhythm", () => {
-    expect(
-      computeStatus({
-        lastTendedAt: daysAgo(3),
-        rhythmDays: 6,
-        now,
-      }),
-    ).toBe("fresh");
-  });
-
-  it("returns getting_stale after half the rhythm", () => {
+  it("returns fresh before the staleness window", () => {
     expect(
       computeStatus({
         lastTendedAt: daysAgo(4),
         rhythmDays: 7,
+        now,
+      }),
+    ).toBe("fresh");
+  });
+
+  it("returns fresh before the capped staleness window on longer rhythms", () => {
+    expect(
+      computeStatus({
+        lastTendedAt: daysAgo(22),
+        rhythmDays: 30,
+        now,
+      }),
+    ).toBe("fresh");
+  });
+
+  it("returns getting_stale in the final two days of a weekly rhythm", () => {
+    expect(
+      computeStatus({
+        lastTendedAt: daysAgo(5),
+        rhythmDays: 7,
+        now,
+      }),
+    ).toBe("getting_stale");
+  });
+
+  it("caps the staleness window for monthly rhythms", () => {
+    expect(
+      computeStatus({
+        lastTendedAt: daysAgo(23),
+        rhythmDays: 30,
         now,
       }),
     ).toBe("getting_stale");
@@ -86,6 +96,18 @@ describe("computeStatus", () => {
         now,
       }),
     ).toBe("fresh");
+  });
+});
+
+describe("stalenessWindowDays", () => {
+  it("uses about the final quarter of the rhythm", () => {
+    expect(stalenessWindowDays(7)).toBe(2);
+    expect(stalenessWindowDays(14)).toBe(4);
+  });
+
+  it("caps longer rhythms at one week", () => {
+    expect(stalenessWindowDays(30)).toBe(7);
+    expect(stalenessWindowDays(365)).toBe(7);
   });
 });
 

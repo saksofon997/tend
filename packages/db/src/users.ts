@@ -1,6 +1,12 @@
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import type { Database } from "./client";
 import { userSettings, users } from "./schema";
+
+export interface UserSummary {
+  id: string;
+  displayName: string;
+  email: string;
+}
 
 export async function findUserByEmail(database: Database, email: string) {
   const [user] = await database
@@ -15,6 +21,25 @@ export async function findUserByEmail(database: Database, email: string) {
     .limit(1);
 
   return user ?? null;
+}
+
+export async function listUserSummariesByIds(
+  database: Database,
+  userIds: string[],
+): Promise<UserSummary[]> {
+  const uniqueIds = [...new Set(userIds)].filter(Boolean);
+  if (uniqueIds.length === 0) {
+    return [];
+  }
+
+  return database
+    .select({
+      id: users.id,
+      displayName: users.displayName,
+      email: users.email,
+    })
+    .from(users)
+    .where(inArray(users.id, uniqueIds));
 }
 
 export async function createUserRecord(

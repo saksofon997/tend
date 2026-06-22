@@ -18,7 +18,7 @@ import {
 import { useI18n } from "@/lib/i18n/client";
 import type { ItemResponse } from "@/lib/items/serialize";
 import type { ReminderResponse, RemindersApiResponse } from "@/lib/reminders/serialize";
-import { pickReminderBannerItems, reminderItemIdsKey } from "@/lib/reminders/surface-reminders";
+import { reminderItemIdsKey, selectReminderBannerItems } from "@/lib/reminders/surface-reminders";
 import type { LifeArea } from "@tend/domain";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -42,14 +42,15 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
   const [tendError, setTendError] = useState<string | null>(null);
 
   const updateBannerReminders = useCallback((surfaceNow: ReminderResponse[]) => {
-    const nextKey = reminderItemIdsKey(surfaceNow);
+    const selectedReminders = selectReminderBannerItems(surfaceNow);
+    const nextKey = reminderItemIdsKey(selectedReminders);
 
     if (nextKey === bannerReminderSetKeyRef.current) {
       return;
     }
 
     bannerReminderSetKeyRef.current = nextKey;
-    setBannerReminders(pickReminderBannerItems(surfaceNow));
+    setBannerReminders(selectedReminders);
   }, []);
 
   const fetchReminders = useCallback(async () => {
@@ -116,6 +117,7 @@ export function HomeView({ user, initialItems }: HomeViewProps) {
         daysSinceLastTended={item.daysSinceLastTended}
         rhythmDays={item.rhythmDays}
         lifeArea={item.lifeArea}
+        sharedWith={item.sharedWith}
         onTend={handleTend}
         subdued={item.status === "fresh"}
       />

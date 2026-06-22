@@ -5,6 +5,7 @@ import type { ItemResponse, ReminderResponse, UserResponse } from "@/types";
 import { getAttentionSectionDefaults } from "@/utils/homeGroups";
 import { refreshHomeData } from "@/utils/homeRefresh";
 import { formatRelativeFromDays } from "@/utils/relativeTime";
+import { reminderItemIdsKey, selectReminderBannerItems } from "@/utils/reminderBanner";
 import { type TabKey, getTabSwitchDirection } from "@/utils/tabTransition";
 import { TendApi } from "@api/tendApi";
 import { ItemForm } from "@components/item-form";
@@ -55,6 +56,7 @@ import {
   Settings,
   SlidersHorizontal,
   Trash2,
+  Users,
 } from "lucide-react-native";
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -107,6 +109,12 @@ function authPromoSlides() {
       description: t("auth.splash.reminder.description"),
     },
     {
+      key: "friend",
+      image: require("./assets/promo/tend-friend-promo.png"),
+      title: t("auth.splash.friend.title"),
+      description: t("auth.splash.friend.description"),
+    },
+    {
       key: "activity",
       image: require("./assets/promo/tend-activity.jpg"),
       title: t("auth.splash.activity.title"),
@@ -116,7 +124,6 @@ function authPromoSlides() {
 }
 
 const REMINDER_POLL_MS = 60_000;
-const REMINDER_BANNER_MAX_ITEMS = 3;
 const TIMEZONE_OPTIONS = [
   "UTC",
   "Europe/Belgrade",
@@ -142,27 +149,6 @@ const TIMEZONE_OPTIONS = [
 
 function deviceTimeZone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone ?? "UTC";
-}
-
-function reminderItemIdsKey(reminders: Array<{ itemId: string }>) {
-  return reminders
-    .map((reminder) => reminder.itemId)
-    .sort()
-    .join("\0");
-}
-
-function pickReminderBannerItems(reminders: ReminderResponse[]) {
-  if (reminders.length <= REMINDER_BANNER_MAX_ITEMS) {
-    return reminders;
-  }
-
-  const picked = [...reminders];
-  for (let i = 0; i < REMINDER_BANNER_MAX_ITEMS; i++) {
-    const j = i + Math.floor(Math.random() * (picked.length - i));
-    [picked[i], picked[j]] = [picked[j], picked[i]];
-  }
-
-  return picked.slice(0, REMINDER_BANNER_MAX_ITEMS);
 }
 
 function freeTimePhrase(now: Date) {
@@ -931,6 +917,7 @@ interface ItemDraft {
   rhythmDays: number;
   lifeArea: LifeArea | null;
   lastTendedDate: string;
+  sharedWithEmail: string;
 }
 
 const ONBOARDING_TOTAL_STEPS = 4;
@@ -948,6 +935,7 @@ function createDefaultDraft(todayDate: string): ItemDraft {
     rhythmDays: 7,
     lifeArea: null,
     lastTendedDate: todayDate,
+    sharedWithEmail: "",
   };
 }
 
@@ -989,6 +977,7 @@ function OnboardingFlow({ api, onComplete }: { api: TendApi; onComplete: () => v
       rhythmDays: preset.rhythmDays,
       lifeArea: preset.lifeArea,
       lastTendedDate: todayDate,
+      sharedWithEmail: "",
     });
     setItemFormOrigin("preset");
     setError(null);
@@ -1006,6 +995,7 @@ function OnboardingFlow({ api, onComplete }: { api: TendApi; onComplete: () => v
         rhythmDays: values.rhythmDays,
         lifeArea: values.lifeArea,
         lastTendedAt: dateInputToIso(values.lastTendedDate),
+        sharedWithEmail: values.sharedWithEmail.trim() || null,
       });
       await api.completeOnboarding();
       onComplete();
@@ -1312,14 +1302,15 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
   );
 
   const updateBannerReminders = useCallback((surfaceNow: ReminderResponse[]) => {
-    const nextKey = reminderItemIdsKey(surfaceNow);
+    const selectedReminders = selectReminderBannerItems(surfaceNow);
+    const nextKey = reminderItemIdsKey(selectedReminders);
 
     if (nextKey === bannerReminderSetKeyRef.current) {
       return;
     }
 
     bannerReminderSetKeyRef.current = nextKey;
-    setBannerReminders(pickReminderBannerItems(surfaceNow));
+    setBannerReminders(selectedReminders);
   }, []);
 
   const fetchReminders = useCallback(
@@ -1532,6 +1523,9 @@ function ReminderBanner({
             </View>
             <View style={styles.reminderActions}>
               <TypeBadge type={reminder.type} />
+              {reminder.sharedWith ? (
+                <SharedWithBadge displayName={reminder.sharedWith.displayName} />
+              ) : null}
               <TouchableOpacity
                 style={styles.markButtonCompact}
                 onPress={() => onTend(reminder.itemId)}
@@ -1555,6 +1549,7 @@ function AddItemScreen({ api, onSaved }: { api: TendApi; onSaved: () => void }) 
     rhythmDays: 7,
     lifeArea: null as LifeArea | null,
     lastTendedDate: todayDate,
+    sharedWithEmail: "",
   });
   const [formKey, setFormKey] = useState(0);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -1569,6 +1564,7 @@ function AddItemScreen({ api, onSaved }: { api: TendApi; onSaved: () => void }) 
       rhythmDays: preset.rhythmDays,
       lifeArea: preset.lifeArea,
       lastTendedDate: todayDate,
+      sharedWithEmail: "",
     });
     setSelectedPresetName(preset.name);
     setError(null);
@@ -1586,6 +1582,7 @@ function AddItemScreen({ api, onSaved }: { api: TendApi; onSaved: () => void }) 
         rhythmDays: formValues.rhythmDays,
         lifeArea: formValues.lifeArea,
         lastTendedAt: dateInputToIso(formValues.lastTendedDate),
+        sharedWithEmail: formValues.sharedWithEmail.trim() || null,
       });
       setValues({
         name: "",
@@ -1593,6 +1590,7 @@ function AddItemScreen({ api, onSaved }: { api: TendApi; onSaved: () => void }) 
         rhythmDays: 7,
         lifeArea: null,
         lastTendedDate: todayDate,
+        sharedWithEmail: "",
       });
       setSelectedPresetName(undefined);
       setShowSuggestions(false);
@@ -1669,6 +1667,7 @@ function EditItemScreen({
         rhythmDays: formValues.rhythmDays,
         lifeArea: formValues.lifeArea,
         lastTendedAt: dateInputToIso(formValues.lastTendedDate),
+        sharedWithEmail: formValues.sharedWithEmail.trim() || null,
       });
       await onSaved();
     } catch (saveError) {
@@ -2075,6 +2074,7 @@ function ItemCard({
       <Text style={styles.itemTitle}>{item.name}</Text>
       <View style={styles.itemMetaRow}>
         <TypeBadge type={item.type} />
+        {item.sharedWith ? <SharedWithBadge displayName={item.sharedWith.displayName} /> : null}
         <Text style={styles.relativeTimeText}>{relativeTendedLabel(item)}</Text>
       </View>
       <View style={styles.itemFooter}>
@@ -2290,6 +2290,19 @@ function TypeBadge({ type }: { type: TendItemType }) {
     <Text style={[styles.badge, type === "must" ? styles.typeMust : styles.typeWant]}>
       {type === "must" ? t("type.must") : t("type.want")}
     </Text>
+  );
+}
+
+function SharedWithBadge({ displayName }: { displayName: string }) {
+  const label = t("items.sharedWith", { name: displayName });
+
+  return (
+    <View accessibilityLabel={label} style={styles.sharedWithBadge}>
+      <Users size={12} color={colors.shared} />
+      <Text numberOfLines={1} style={styles.sharedWithBadgeText}>
+        {label}
+      </Text>
+    </View>
   );
 }
 
@@ -2587,6 +2600,7 @@ const styles = StyleSheet.create({
   reminderActions: {
     alignItems: "center",
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: spacing.sm,
     justifyContent: "flex-start",
   },
@@ -2612,6 +2626,7 @@ const styles = StyleSheet.create({
   itemMetaRow: {
     alignItems: "center",
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: spacing.sm,
     marginTop: spacing.sm,
   },
@@ -2655,6 +2670,27 @@ const styles = StyleSheet.create({
   typeWant: {
     backgroundColor: colors.wantBg,
     color: colors.want,
+  },
+  sharedWithBadge: {
+    alignItems: "center",
+    alignSelf: "flex-start",
+    backgroundColor: colors.sharedBg,
+    borderColor: colors.sharedBorder,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    maxWidth: "100%",
+    overflow: "hidden",
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  sharedWithBadgeText: {
+    color: colors.shared,
+    flexShrink: 1,
+    fontFamily: fonts.bodyMedium,
+    fontSize: 12,
+    lineHeight: 16,
   },
   itemFooter: {
     alignItems: "center",

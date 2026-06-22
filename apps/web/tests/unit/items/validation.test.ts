@@ -8,6 +8,7 @@ describe("createItemSchema", () => {
       type: "want",
       rhythmDays: 3,
       lifeArea: "household",
+      sharedWithEmail: "friend@example.com",
     });
 
     expect(result.success).toBe(true);
@@ -22,11 +23,27 @@ describe("createItemSchema", () => {
 
     expect(result.success).toBe(false);
   });
+
+  it("rejects invalid friend emails", () => {
+    const result = createItemSchema.safeParse({
+      name: "Dinner",
+      type: "want",
+      rhythmDays: 14,
+      sharedWithEmail: "not-an-email",
+    });
+
+    expect(result.success).toBe(false);
+  });
 });
 
 describe("updateItemSchema", () => {
   it("accepts archive toggles", () => {
     const result = updateItemSchema.safeParse({ archived: true });
+    expect(result.success).toBe(true);
+  });
+
+  it("accepts clearing friend sharing", () => {
+    const result = updateItemSchema.safeParse({ sharedWithEmail: null });
     expect(result.success).toBe(true);
   });
 

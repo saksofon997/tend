@@ -97,6 +97,28 @@ export function ItemForm({
         />
       </FormField>
 
+      <FormField
+        label={t("items.add.sharedWith.label")}
+        helper={t("items.add.sharedWith.helper")}
+        error={fieldErrors.sharedWithEmail}
+      >
+        <TextInput
+          autoCapitalize="none"
+          autoComplete="email"
+          autoCorrect={false}
+          inputMode="email"
+          value={values.sharedWithEmail}
+          onChangeText={(sharedWithEmail) => updateField("sharedWithEmail", sharedWithEmail)}
+          style={[
+            formInputStyles.input,
+            fieldErrors.sharedWithEmail ? formInputStyles.inputInvalid : null,
+          ]}
+          placeholder={t("items.add.sharedWith.placeholder")}
+          placeholderTextColor={colors.textSubtle}
+          accessibilityLabel={t("items.add.sharedWith.label")}
+        />
+      </FormField>
+
       <FormField label={t("items.add.lastTended.label")} error={fieldErrors.lastTendedDate}>
         <DatePickerField
           value={values.lastTendedDate}

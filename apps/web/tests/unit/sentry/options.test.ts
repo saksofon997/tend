@@ -52,7 +52,6 @@ describe("sentry options", () => {
       enabled: true,
       environment: "production",
       tracesSampleRate: 0.1,
-      debug: false,
     });
   });
 });

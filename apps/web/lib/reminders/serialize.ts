@@ -1,3 +1,4 @@
+import type { SharedTendUserResponse } from "@/lib/items/serialize";
 import type { TendItemRow } from "@tend/db";
 import type { EligibleReminder, ReminderResult } from "@tend/domain";
 import type { TendItemType, TendStatus } from "@tend/domain";
@@ -9,6 +10,7 @@ export interface ReminderResponse {
   type: TendItemType;
   status: TendStatus;
   daysSinceLastTended: number | null;
+  sharedWith: SharedTendUserResponse | null;
   emphasis: EligibleReminder["emphasis"];
   visibility: EligibleReminder["visibility"];
   copy: string;
@@ -33,13 +35,17 @@ export function toTendItemInput(item: TendItemRow) {
   };
 }
 
-export function serializeReminder(reminder: EligibleReminder): ReminderResponse {
+export function serializeReminder(
+  reminder: EligibleReminder,
+  sharedWith: SharedTendUserResponse | null = null,
+): ReminderResponse {
   return {
     itemId: reminder.item.id,
     name: reminder.item.name,
     type: reminder.item.type,
     status: reminder.status,
     daysSinceLastTended: reminder.daysSinceLastTended,
+    sharedWith,
     emphasis: reminder.emphasis,
     visibility: reminder.visibility,
     copy: buildReminderCopy({
@@ -55,8 +61,11 @@ export function serializeReminder(reminder: EligibleReminder): ReminderResponse 
 export function serializeReminderResult(
   result: ReminderResult,
   toInstant: (date: Date) => Date = (date) => date,
+  sharedUsersByItemId: Map<string, SharedTendUserResponse | null> = new Map(),
 ): RemindersApiResponse {
-  const reminders = result.reminders.map((reminder) => serializeReminder(reminder));
+  const reminders = result.reminders.map((reminder) =>
+    serializeReminder(reminder, sharedUsersByItemId.get(reminder.item.id) ?? null),
+  );
   const surfaceNow = reminders.filter((reminder) => reminder.visibility === "now");
 
   return {

@@ -31,6 +31,11 @@ const optionalIsoDateSchema = z
   .transform((value) => new Date(value))
   .optional();
 
+const sharedWithEmailSchema = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? null : value),
+  z.string().trim().email("Enter a valid friend email address").nullable().optional(),
+);
+
 export const createItemSchema = z.object({
   name: z
     .string()
@@ -41,6 +46,7 @@ export const createItemSchema = z.object({
   rhythmDays: rhythmDaysSchema,
   lifeArea: lifeAreaSchema.nullable().optional(),
   lastTendedAt: optionalIsoDateSchema,
+  sharedWithEmail: sharedWithEmailSchema,
 });
 
 export const updateItemSchema = z
@@ -56,6 +62,7 @@ export const updateItemSchema = z
       .nullable()
       .optional(),
     archived: z.boolean().optional(),
+    sharedWithEmail: sharedWithEmailSchema,
   })
   .refine((value) => Object.keys(value).length > 0, {
     message: "At least one field is required",

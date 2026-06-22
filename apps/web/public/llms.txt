@@ -1,0 +1,21 @@
+# Tend
+
+> Tend is a calm life-maintenance app for remembering recurring care without a task-manager workflow.
+
+## Public Pages
+
+- https://tend.qzz.io/
+- https://tend.qzz.io/privacy
+- https://tend.qzz.io/terms
+
+## App
+
+- https://app.tend.qzz.io/ is the authenticated Tend web app.
+- The app is invite-only during pre-alpha.
+- Authenticated app routes and `/api/` endpoints are not public documentation surfaces.
+
+## Product Notes
+
+- Tend tracks recurring household care, health upkeep, relationships, pets, vehicles, life admin, routines, and similar real-life maintenance.
+- Tend uses gentle status language: Fresh, Getting stale, and Needs attention.
+- Tend avoids guilt-driven language such as overdue, late, streaks, points, and alarm-style productivity mechanics.

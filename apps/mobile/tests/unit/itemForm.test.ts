@@ -15,6 +15,7 @@ describe("validateItemForm", () => {
           rhythmDays: 7,
           lifeArea: null,
           lastTendedDate: todayDate,
+          sharedWithEmail: "",
         },
         todayDate,
       ),
@@ -30,6 +31,7 @@ describe("validateItemForm", () => {
           rhythmDays: 7,
           lifeArea: null,
           lastTendedDate: todayDate,
+          sharedWithEmail: "",
         },
         todayDate,
       ),
@@ -45,6 +47,7 @@ describe("validateItemForm", () => {
           rhythmDays: 7,
           lifeArea: null,
           lastTendedDate: todayDate,
+          sharedWithEmail: "",
         },
         todayDate,
       ),
@@ -62,6 +65,7 @@ describe("validateItemForm", () => {
           rhythmDays: 7,
           lifeArea: null,
           lastTendedDate: "2099-01-01",
+          sharedWithEmail: "",
         },
         todayDate,
       ),
@@ -77,9 +81,26 @@ describe("validateItemForm", () => {
           rhythmDays: 0,
           lifeArea: null,
           lastTendedDate: todayDate,
+          sharedWithEmail: "",
         },
         todayDate,
       ),
     ).toEqual({ rhythmDays: t("errors.item.rhythmMin") });
+  });
+
+  it("rejects invalid friend emails", () => {
+    expect(
+      validateItemForm(
+        {
+          name: "Dinner",
+          type: "want",
+          rhythmDays: 14,
+          lifeArea: "relationships",
+          lastTendedDate: todayDate,
+          sharedWithEmail: "not-an-email",
+        },
+        todayDate,
+      ),
+    ).toEqual({ sharedWithEmail: t("errors.item.friendEmailInvalid") });
   });
 });

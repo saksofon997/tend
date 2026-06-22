@@ -2,6 +2,11 @@ import { jsonData, jsonError } from "@/lib/api";
 import { isErrorResponse, requireUser } from "@/lib/auth/require-user";
 import { getDb } from "@/lib/db";
 import { serializeItem, serializeTendEvent, statusForItem } from "@/lib/items/serialize";
+import {
+  getSharedUserMapForItems,
+  resolveSharedWithUserId,
+  sharedUserForItem,
+} from "@/lib/items/sharing";
 import { formatZodError, updateItemSchema } from "@/lib/items/validation";
 import {
   deleteItemForUser,
@@ -24,16 +29,20 @@ export async function GET(_request: Request, context: RouteContext) {
 
   const { id } = await context.params;
   const now = new Date();
-  const item = await getItemForUser(getDb(), userOrError.id, id);
+  const database = getDb();
+  const item = await getItemForUser(database, userOrError.id, id);
 
   if (!item) {
     return jsonError("Item not found", 404);
   }
 
-  const recentEvents = await getRecentEventsForItem(getDb(), userOrError.id, id);
+  const [recentEvents, sharedUserMap] = await Promise.all([
+    getRecentEventsForItem(database, userOrError.id, id),
+    getSharedUserMapForItems(database, userOrError.id, [item]),
+  ]);
 
   return jsonData({
-    item: serializeItem(item, now),
+    item: serializeItem(item, now, sharedUserForItem(item, userOrError.id, sharedUserMap)),
     recentEvents: recentEvents.map(serializeTendEvent),
   });
 }
@@ -58,7 +67,8 @@ export async function PATCH(request: Request, context: RouteContext) {
     return jsonError(formatZodError(parsed.error), 400);
   }
 
-  const existing = await getItemForUser(getDb(), userOrError.id, id);
+  const database = getDb();
+  const existing = await getItemForUser(database, userOrError.id, id);
   if (!existing) {
     return jsonError("Item not found", 404);
   }
@@ -76,6 +86,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     lastTendedAt?: Date | null;
     status?: typeof existing.status;
     archivedAt?: Date | null;
+    sharedWithUserId?: string | null;
   } = {};
 
   if (parsed.data.name !== undefined) {
@@ -100,17 +111,32 @@ export async function PATCH(request: Request, context: RouteContext) {
     updatePayload.archivedAt = null;
   }
 
+  if (parsed.data.sharedWithEmail !== undefined) {
+    try {
+      updatePayload.sharedWithUserId = await resolveSharedWithUserId(
+        database,
+        userOrError,
+        parsed.data.sharedWithEmail,
+      );
+    } catch (error) {
+      return jsonError(error instanceof Error ? error.message : "Unable to share this item", 400);
+    }
+  }
+
   updatePayload.status = statusForItem(
     { lastTendedAt: nextLastTendedAt, rhythmDays: nextRhythmDays },
     now,
   );
 
-  const item = await updateItemForUser(getDb(), userOrError.id, id, updatePayload);
+  const item = await updateItemForUser(database, userOrError.id, id, updatePayload);
   if (!item) {
     return jsonError("Item not found", 404);
   }
+  const sharedUserMap = await getSharedUserMapForItems(database, userOrError.id, [item]);
 
-  return jsonData({ item: serializeItem(item, now) });
+  return jsonData({
+    item: serializeItem(item, now, sharedUserForItem(item, userOrError.id, sharedUserMap)),
+  });
 }
 
 export async function DELETE(request: Request, context: RouteContext) {

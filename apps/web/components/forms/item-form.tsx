@@ -21,6 +21,7 @@ export interface ItemFormValues {
   rhythmDays: number;
   lifeArea: LifeArea | null;
   lastTendedDate: string;
+  sharedWithEmail: string;
 }
 
 interface ItemFormProps {
@@ -49,12 +50,13 @@ export function ItemForm({
   const [rhythmDays, setRhythmDays] = React.useState(initial?.rhythmDays ?? 7);
   const [lifeArea, setLifeArea] = React.useState<LifeArea | null>(initial?.lifeArea ?? null);
   const [lastTendedDate, setLastTendedDate] = React.useState(initial?.lastTendedDate ?? todayDate);
+  const [sharedWithEmail, setSharedWithEmail] = React.useState(initial?.sharedWithEmail ?? "");
   const [fieldErrors, setFieldErrors] = React.useState<Record<string, string>>({});
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const values = { name, type, rhythmDays, lifeArea, lastTendedDate };
+    const values = { name, type, rhythmDays, lifeArea, lastTendedDate, sharedWithEmail };
     const validationErrors = validateItemForm(values, todayDate);
 
     if (validationErrors) {
@@ -119,6 +121,22 @@ export function ItemForm({
             </option>
           ))}
         </Select>
+      </FormField>
+
+      <FormField
+        id="item-shared-with"
+        label={t("items.add.sharedWith.label")}
+        helper={t("items.add.sharedWith.helper")}
+        error={fieldErrors.sharedWithEmail}
+      >
+        <Input
+          id="item-shared-with"
+          type="email"
+          value={sharedWithEmail}
+          onChange={(event) => setSharedWithEmail(event.target.value)}
+          placeholder={t("items.add.sharedWith.placeholder")}
+          aria-invalid={Boolean(fieldErrors.sharedWithEmail)}
+        />
       </FormField>
 
       <FormField

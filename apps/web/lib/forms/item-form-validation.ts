@@ -13,6 +13,7 @@ export const itemFormClientSchema = z.object({
   rhythmDays: z.number(),
   lifeArea: z.string().nullable(),
   lastTendedDate: z.string().min(1, "Last tended date is required"),
+  sharedWithEmail: z.string().trim().email("Enter a valid friend email address").or(z.literal("")),
 });
 
 export function validateItemForm(

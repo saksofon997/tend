@@ -37,6 +37,9 @@ export const sr = {
   "auth.splash.care.description":
     "Uvod je blag podsetnik. Izaberi jednu ponavljajuću stvar i nastavi.",
   "auth.splash.care.title": "Počni od jednog malog čina brige.",
+  "auth.splash.friend.description":
+    "Dodaj email prijatelja da se večere, javljanja ili zajednički ritmovi pojave kod oboje.",
+  "auth.splash.friend.title": "Neku brigu je lakše deliti.",
   "auth.splash.remember.description":
     "Kuća, zdravlje, odnosi i životna administracija, skupljeni bez oznaka kašnjenja.",
   "auth.splash.remember.title": "Stvari koje odlutaju, zapamćene nežno.",
@@ -70,6 +73,7 @@ export const sr = {
   "errors.availability.load": "Nije moguće učitati dostupnost",
   "errors.availability.save": "Nije moguće sačuvati dostupnost.",
   "errors.item.create": "Nije moguće napraviti stavku",
+  "errors.item.friendEmailInvalid": "Unesi važeću email adresu prijatelja",
   "errors.item.update": "Nije moguće sačuvati izmene",
   "errors.item.load": "Nije moguće učitati stavke",
   "errors.item.mark": "Nije moguće označiti tu stavku kao tendovanu. Pokušaj ponovo.",
@@ -122,6 +126,9 @@ export const sr = {
   "items.add.rhythm.label": "Ritam",
   "items.add.save": "Sačuvaj stavku",
   "items.add.saving": "Čuvanje…",
+  "items.add.sharedWith.helper": "Opcionalno. Prijatelj već treba da ima Tend nalog.",
+  "items.add.sharedWith.label": "Tenduj sa prijateljem",
+  "items.add.sharedWith.placeholder": "prijatelj@example.com",
   "items.add.subtitle": "Nešto što želiš da održavaš tokom vremena.",
   "items.add.suggestions.button": "Treba ti ideja?",
   "items.add.suggestions.hint": "Dodirni jednu da popuni formu ispod.",
@@ -136,6 +143,7 @@ export const sr = {
   "items.add.type.must.hint": "Koristi must štedljivo za stvari koje stvarno ne mogu da odlutaju.",
   "items.add.type.want.description": "Fleksibilno, bez krivice ako odlutaju",
   "items.markTended": "Tendovano",
+  "items.sharedWith": "Sa {{name}}",
   "nav.activity": "Aktivnost",
   "nav.add": "Dodaj",
   "nav.availability": "Dostupnost",

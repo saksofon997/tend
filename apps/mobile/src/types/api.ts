@@ -17,12 +17,19 @@ export interface ItemResponse {
   type: TendItemType;
   rhythmDays: number;
   lifeArea: LifeArea | null;
+  sharedWith: SharedTendUserResponse | null;
   lastTendedAt: string | null;
   status: TendStatus;
   daysSinceLastTended: number | null;
   archivedAt: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface SharedTendUserResponse {
+  id: string;
+  displayName: string;
+  email: string;
 }
 
 export interface ActivityEntryResponse {
@@ -54,6 +61,7 @@ export interface ReminderResponse {
   type: TendItemType;
   status: Exclude<TendStatus, "fresh">;
   daysSinceLastTended: number | null;
+  sharedWith: SharedTendUserResponse | null;
   emphasis: "strong" | "normal";
   visibility: "now" | "next_window";
   copy: string;

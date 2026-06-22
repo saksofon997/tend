@@ -7,6 +7,14 @@ export interface StatusInput {
   now: Date;
 }
 
+export function stalenessWindowDays(rhythmDays: number): number {
+  if (rhythmDays <= 0) {
+    return 0;
+  }
+
+  return Math.min(7, Math.max(1, Math.ceil(rhythmDays * 0.25)));
+}
+
 export function computeStatus({ lastTendedAt, rhythmDays, now }: StatusInput): TendStatus {
   if (rhythmDays <= 0) {
     return "needs_attention";
@@ -21,7 +29,9 @@ export function computeStatus({ lastTendedAt, rhythmDays, now }: StatusInput): T
     return "fresh";
   }
 
-  if (daysSince <= rhythmDays * 0.5) {
+  const staleStartDay = Math.max(1, rhythmDays - stalenessWindowDays(rhythmDays));
+
+  if (daysSince < staleStartDay) {
     return "fresh";
   }
 

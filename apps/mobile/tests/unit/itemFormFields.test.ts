@@ -14,6 +14,7 @@ describe("item form field validation coverage", () => {
           rhythmDays: 400,
           lifeArea: null,
           lastTendedDate: "2099-01-01",
+          sharedWithEmail: "bad-email",
         },
         todayDate,
       ),
@@ -21,6 +22,7 @@ describe("item form field validation coverage", () => {
       name: "Give your item a name",
       lastTendedDate: "Last tended cannot be in the future",
       rhythmDays: "Rhythm must be 365 days or fewer",
+      sharedWithEmail: "Enter a valid friend email address",
     });
   });
 
@@ -33,6 +35,7 @@ describe("item form field validation coverage", () => {
           rhythmDays: 7,
           lifeArea: null,
           lastTendedDate: "",
+          sharedWithEmail: "",
         },
         todayDate,
       ),

@@ -84,6 +84,15 @@ describe("sortForAttention", () => {
 
     expect(sorted.map((entry) => entry.id)).toEqual(["2", "1"]);
   });
+
+  it("keeps items before the later staleness window fresh", () => {
+    const sorted = sortForAttention(
+      [item({ id: "1", name: "Vacuum", lastTendedAt: new Date("2026-06-11T12:00:00") })],
+      now,
+    );
+
+    expect(sorted[0]?.status).toBe("fresh");
+  });
 });
 
 describe("groupForAttention", () => {
@@ -100,7 +109,7 @@ describe("groupForAttention", () => {
         item({
           id: "3",
           name: "Dinner with partner",
-          lastTendedAt: new Date("2026-06-10T12:00:00"),
+          lastTendedAt: new Date("2026-06-09T12:00:00"),
         }),
       ],
       now,

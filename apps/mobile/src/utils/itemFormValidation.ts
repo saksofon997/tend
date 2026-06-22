@@ -9,6 +9,7 @@ export interface ItemFormValues {
   rhythmDays: number;
   lifeArea: LifeArea | null;
   lastTendedDate: string;
+  sharedWithEmail: string;
 }
 
 export function validateItemForm(
@@ -33,6 +34,11 @@ export function validateItemForm(
   const rhythmError = rhythmDaysFieldError(values.rhythmDays);
   if (rhythmError) {
     errors.rhythmDays = rhythmError;
+  }
+
+  const sharedWithEmail = values.sharedWithEmail.trim();
+  if (sharedWithEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sharedWithEmail)) {
+    errors.sharedWithEmail = t("errors.item.friendEmailInvalid");
   }
 
   return Object.keys(errors).length > 0 ? errors : null;

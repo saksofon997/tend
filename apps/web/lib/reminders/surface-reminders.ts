@@ -1,19 +1,32 @@
 export const REMINDER_BANNER_MAX_ITEMS = 3;
 
-/** Fisher–Yates partial shuffle; picks up to `max` items without mutating the input. */
-export function pickReminderBannerItems<T>(reminders: T[], max = REMINDER_BANNER_MAX_ITEMS): T[] {
-  if (reminders.length <= max) {
-    return reminders;
-  }
+interface ReminderBannerCandidate {
+  itemId: string;
+  name: string;
+  type: "must" | "want";
+  status: "fresh" | "getting_stale" | "needs_attention";
+  daysSinceLastTended: number | null;
+}
 
-  const picked = [...reminders];
+function urgencyDays(reminder: ReminderBannerCandidate): number {
+  return reminder.daysSinceLastTended ?? Number.MAX_SAFE_INTEGER;
+}
 
-  for (let i = 0; i < max; i++) {
-    const j = i + Math.floor(Math.random() * (picked.length - i));
-    [picked[i], picked[j]] = [picked[j], picked[i]];
-  }
+export function selectReminderBannerItems<T extends ReminderBannerCandidate>(
+  reminders: T[],
+  max = REMINDER_BANNER_MAX_ITEMS,
+): T[] {
+  return reminders
+    .filter((reminder) => reminder.type === "must" && reminder.status === "needs_attention")
+    .sort((left, right) => {
+      const daysDiff = urgencyDays(right) - urgencyDays(left);
+      if (daysDiff !== 0) {
+        return daysDiff;
+      }
 
-  return picked.slice(0, max);
+      return left.name.localeCompare(right.name);
+    })
+    .slice(0, max);
 }
 
 export function reminderItemIdsKey(reminders: Array<{ itemId: string }>): string {

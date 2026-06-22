@@ -1,7 +1,12 @@
 export { createDb, type Database } from "./client";
 export { pingDatabase } from "./ping";
 export { isDatabaseAvailable, deleteUserByEmail } from "./test-helpers";
-export { findUserByEmail, createUserRecord } from "./users";
+export {
+  createUserRecord,
+  findUserByEmail,
+  listUserSummariesByIds,
+  type UserSummary,
+} from "./users";
 export {
   completeOnboarding,
   getUserSettings,

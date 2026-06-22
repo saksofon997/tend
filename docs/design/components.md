@@ -28,6 +28,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [Alert](#alert) | `ui/alert.tsx` | 1, 11 |
 | [StatusBadge](#statusbadge) | `tend/status-badge.tsx` | 5, 6, 11 |
 | [TypeBadge](#typebadge) | `tend/type-badge.tsx` | 5, 6, 12 |
+| [SharedWithBadge](#sharedwithbadge) | `tend/shared-with-badge.tsx` | Tend with a Friend |
 | [RelativeTime](#relativetime) | `tend/relative-time.tsx` | 5, 6, 11, 14 |
 | [TendItemCard](#tenditemcard) | `tend/tend-item-card.tsx` | 5, 7, 11 |
 | [AttentionSection](#attentionsection) | `tend/attention-section.tsx` | 5 |
@@ -424,6 +425,19 @@ Optional `CircleDot` icon (12px) before label for must.
 
 ---
 
+### SharedWithBadge
+
+**File:** `components/tend/shared-with-badge.tsx`
+
+Compact secondary badge for shared Tends. Displays `With {{name}}` next to `TypeBadge` on item cards, detail metadata, and reminder-adjacent item metadata. Use only when an item response includes `sharedWith`.
+
+**Styles:**
+- Uses the shared-care tokens, `--tend-shared` on `--tend-shared-bg` with `--tend-shared-border`, so shared context is distinguishable from status and type without feeling urgent.
+- Includes a small `Users` icon plus the `With {{name}}` label. Never show a color-only shared indicator.
+- Text truncates inside narrow rows so long display names do not push actions out of view.
+
+---
+
 ### RelativeTime
 
 **File:** `components/tend/relative-time.tsx`
@@ -465,6 +479,7 @@ interface TendItemCardProps {
   lastTendedAt: Date | string | null;
   rhythmDays: number;
   lifeArea?: LifeArea | null;
+  sharedWith?: { displayName: string } | null;
   onTend?: (id: string) => void;
   onClick?: (id: string) => void;
   loading?: boolean;
@@ -475,7 +490,7 @@ interface TendItemCardProps {
 ```
 ┌─────────────────────────────────────────────────┐
 │ [Name text-lg medium]                           │
-│ [TypeBadge]  [RelativeTime]                     │
+│ [TypeBadge]  [SharedWithBadge]  [RelativeTime]  │
 │ [StatusBadge]                     [Mark tended] │
 └─────────────────────────────────────────────────┘
 ```
@@ -776,10 +791,11 @@ interface ItemFormValues {
   rhythmDays: number;
   lifeArea: LifeArea | null;
   lastTendedDate: string; // YYYY-MM-DD input value
+  sharedWithEmail: string;
 }
 ```
 
-Composes: name `Input`, `TypeSelector`, `RhythmSelect`, life area `Select`, last tended date `Input type="date"`.
+Composes: name `Input`, `TypeSelector`, `RhythmSelect`, life area `Select`, optional friend email `Input type="email"`, last tended date `Input type="date"`.
 
 Extract from current `onboarding-flow.tsx` `itemForm()` — that function is the behavioral reference.
 

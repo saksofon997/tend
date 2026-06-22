@@ -7,6 +7,7 @@ import { LandingPromoPreview } from "@/components/marketing/landing-promo-previe
 import { Button } from "@/components/ui/button";
 import { appUrl } from "@/lib/canonical-host";
 import { useI18n } from "@/lib/i18n/client";
+import Image from "next/image";
 import Link from "next/link";
 
 const VALUE_POINTS = [
@@ -21,6 +22,21 @@ const VALUE_POINTS = [
   {
     titleKey: "landing.point.scan.title",
     bodyKey: "landing.point.scan.body",
+  },
+] as const;
+
+const FEATURE_POINTS = [
+  {
+    titleKey: "landing.feature.friend.title",
+    bodyKey: "landing.feature.friend.body",
+  },
+  {
+    titleKey: "landing.feature.rhythm.title",
+    bodyKey: "landing.feature.rhythm.body",
+  },
+  {
+    titleKey: "landing.feature.tended.title",
+    bodyKey: "landing.feature.tended.body",
   },
 ] as const;
 
@@ -76,6 +92,47 @@ export function LandingPage() {
               </p>
             </article>
           ))}
+        </section>
+
+        <section
+          aria-labelledby="landing-features-title"
+          className="mt-16 border-t border-border pt-10"
+        >
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,26rem)] lg:items-center">
+            <div className="max-w-2xl">
+              <h2
+                id="landing-features-title"
+                className="font-display text-2xl font-medium text-foreground"
+              >
+                {t("landing.features.title")}
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                {t("landing.features.subtitle")}
+              </p>
+            </div>
+            <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+              <Image
+                src="/promo/tend-friend.png"
+                alt={t("landing.features.imageAlt")}
+                width={1448}
+                height={1086}
+                sizes="(max-width: 1024px) 100vw, 26rem"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </div>
+          <div className="mt-6 grid gap-6 sm:grid-cols-3">
+            {FEATURE_POINTS.map((point) => (
+              <article key={point.titleKey}>
+                <h3 className="font-display text-lg font-medium text-foreground">
+                  {t(point.titleKey)}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {t(point.bodyKey)}
+                </p>
+              </article>
+            ))}
+          </div>
         </section>
       </main>
 

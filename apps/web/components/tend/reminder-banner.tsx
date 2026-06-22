@@ -1,6 +1,7 @@
 "use client";
 
 import { MarkTendedButton } from "@/components/tend/mark-tended-button";
+import { SharedWithBadge } from "@/components/tend/shared-with-badge";
 import { TypeBadge } from "@/components/tend/type-badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { buildAggregatedReminderCopy } from "@/lib/reminders/reminder-copy";
@@ -53,6 +54,9 @@ export function ReminderBanner({ reminders, onTend }: ReminderBannerProps) {
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 {reminder.type === "must" ? <TypeBadge type="must" size="sm" /> : null}
+                {reminder.sharedWith ? (
+                  <SharedWithBadge displayName={reminder.sharedWith.displayName} />
+                ) : null}
                 <MarkTendedButton
                   itemId={reminder.itemId}
                   onTend={onTend}

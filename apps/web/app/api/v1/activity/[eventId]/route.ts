@@ -3,6 +3,7 @@ import { jsonData, jsonError } from "@/lib/api";
 import { isErrorResponse, requireUser } from "@/lib/auth/require-user";
 import { getDb } from "@/lib/db";
 import { serializeItem, serializeTendEvent } from "@/lib/items/serialize";
+import { getSharedUserMapForItems, sharedUserForItem } from "@/lib/items/sharing";
 import { deleteEventForUser, getEventForUser, updateEventForUser } from "@tend/db";
 
 type RouteContext = {
@@ -31,21 +32,27 @@ export async function PATCH(request: Request, context: RouteContext) {
     return jsonError(formatZodError(parsed.error), 400);
   }
 
-  const existing = await getEventForUser(getDb(), userOrError.id, eventId);
+  const database = getDb();
+  const existing = await getEventForUser(database, userOrError.id, eventId);
   if (!existing) {
     return jsonError("Event not found", 404);
   }
 
-  const result = await updateEventForUser(getDb(), userOrError.id, eventId, parsed.data.tendedAt);
+  const result = await updateEventForUser(database, userOrError.id, eventId, parsed.data.tendedAt);
 
   if (!result) {
     return jsonError("Event not found", 404);
   }
 
   const now = new Date();
+  const sharedUserMap = await getSharedUserMapForItems(database, userOrError.id, [result.item]);
 
   return jsonData({
-    item: serializeItem(result.item, now),
+    item: serializeItem(
+      result.item,
+      now,
+      sharedUserForItem(result.item, userOrError.id, sharedUserMap),
+    ),
     event: serializeTendEvent(result.event),
   });
 }
@@ -58,19 +65,25 @@ export async function DELETE(_request: Request, context: RouteContext) {
 
   const { eventId } = await context.params;
 
-  const existing = await getEventForUser(getDb(), userOrError.id, eventId);
+  const database = getDb();
+  const existing = await getEventForUser(database, userOrError.id, eventId);
   if (!existing) {
     return jsonError("Event not found", 404);
   }
 
-  const result = await deleteEventForUser(getDb(), userOrError.id, eventId);
+  const result = await deleteEventForUser(database, userOrError.id, eventId);
   if (!result) {
     return jsonError("Event not found", 404);
   }
 
   const now = new Date();
+  const sharedUserMap = await getSharedUserMapForItems(database, userOrError.id, [result.item]);
 
   return jsonData({
-    item: serializeItem(result.item, now),
+    item: serializeItem(
+      result.item,
+      now,
+      sharedUserForItem(result.item, userOrError.id, sharedUserMap),
+    ),
   });
 }

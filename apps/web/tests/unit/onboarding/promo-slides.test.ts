@@ -6,11 +6,12 @@ describe("ONBOARDING_PROMO_SLIDES", () => {
     expect(ONBOARDING_PROMO_SLIDES[0]?.src).toBe("/promo/tend-remember.jpg");
   });
 
-  it("includes all four promo screenshots in product order", () => {
+  it("includes all promo screenshots in product order", () => {
     expect(ONBOARDING_PROMO_SLIDES.map((slide) => slide.src)).toEqual([
       "/promo/tend-remember.jpg",
       "/promo/tend-care.jpg",
       "/promo/tend-reminder.jpg",
+      "/promo/tend-friend-promo.png",
       "/promo/tend-activity.jpg",
     ]);
   });

@@ -17,4 +17,16 @@ describe("markTendedButtonLabel", () => {
     expect(markTendedButtonLabel({ loading: false, confirmed: true })).toBe("Tended");
     expect(MARK_TENDED_CONFIRMATION_MS).toBeLessThan(1000);
   });
+
+  it("uses translated labels when provided", () => {
+    expect(
+      markTendedButtonLabel({
+        loading: false,
+        confirmed: false,
+        idleLabel: "Tendovano",
+        loadingLabel: "Čuvanje…",
+        confirmedLabel: "Tendovano",
+      }),
+    ).toBe("Tendovano");
+  });
 });

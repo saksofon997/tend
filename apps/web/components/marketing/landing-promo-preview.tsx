@@ -3,11 +3,13 @@
 import { PromoCarousel } from "@/components/onboarding/promo-carousel";
 import { PROMO_CAPTION_DESCRIPTION_CLASS } from "@/lib/carousel/promo-caption-layout";
 import { SHARED_PROMO_CAROUSEL_OPTS } from "@/lib/carousel/promo-carousel-config";
+import { useI18n } from "@/lib/i18n/client";
 import { ONBOARDING_PROMO_SLIDES } from "@/lib/onboarding/promo-slides";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 export function LandingPromoPreview() {
+  const { t } = useI18n();
   const [activeIndex, setActiveIndex] = useState(0);
   const slide = ONBOARDING_PROMO_SLIDES[activeIndex];
 
@@ -28,7 +30,7 @@ export function LandingPromoPreview() {
         className="tend-carousel-caption shrink-0 text-center lg:text-left"
       >
         <p className="h-[2.75rem] font-display text-base font-medium leading-snug text-foreground">
-          {slide.title}
+          {t(slide.titleKey)}
         </p>
         <p
           className={cn(
@@ -36,7 +38,7 @@ export function LandingPromoPreview() {
             PROMO_CAPTION_DESCRIPTION_CLASS,
           )}
         >
-          {slide.description}
+          {t(slide.descriptionKey)}
         </p>
       </div>
     </div>

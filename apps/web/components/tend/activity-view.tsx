@@ -18,10 +18,10 @@ interface ActivityViewProps {
 
 export function ActivityView({ user, initialEvents }: ActivityViewProps) {
   const router = useRouter();
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const [events, setEvents] = useState(initialEvents);
   const [error, setError] = useState<string | null>(null);
-  const weekGroups = groupActivityEntriesByWeek(events);
+  const weekGroups = groupActivityEntriesByWeek(events, new Date(), locale);
 
   async function handleEventUpdate(eventId: string, tendedAt: string) {
     setError(null);

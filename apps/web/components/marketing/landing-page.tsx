@@ -98,7 +98,17 @@ export function LandingPage() {
           aria-labelledby="landing-features-title"
           className="mt-16 border-t border-border pt-10"
         >
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,26rem)] lg:items-center">
+          <div className="mx-auto flex max-w-2xl flex-col items-center gap-8 text-center">
+            <div className="w-full max-w-[26rem] overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+              <Image
+                src="/promo/tend-friend.png"
+                alt={t("landing.features.imageAlt")}
+                width={1448}
+                height={1086}
+                sizes="(max-width: 640px) 100vw, 26rem"
+                className="h-full w-full object-cover"
+              />
+            </div>
             <div className="max-w-2xl">
               <h2
                 id="landing-features-title"
@@ -109,16 +119,6 @@ export function LandingPage() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 {t("landing.features.subtitle")}
               </p>
-            </div>
-            <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
-              <Image
-                src="/promo/tend-friend.png"
-                alt={t("landing.features.imageAlt")}
-                width={1448}
-                height={1086}
-                sizes="(max-width: 1024px) 100vw, 26rem"
-                className="h-full w-full object-cover"
-              />
             </div>
           </div>
           <div className="mt-6 grid gap-6 sm:grid-cols-3">

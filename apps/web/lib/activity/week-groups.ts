@@ -1,6 +1,12 @@
 import type { ActivityEntryResponse } from "@/lib/activity/serialize";
+import type { Locale } from "@/lib/i18n/dictionaries";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+const DATE_LOCALES: Record<Locale, string> = {
+  en: "en-US",
+  sr: "sr-RS",
+};
 
 export interface ActivityWeekGroup {
   key: string;
@@ -30,32 +36,39 @@ function sameCalendarDay(a: Date, b: Date): boolean {
   return toDateKey(a) === toDateKey(b);
 }
 
-function formatWeekStart(date: Date): string {
-  return date.toLocaleDateString("en-US", {
+function formatWeekStart(date: Date, locale: Locale): string {
+  return date.toLocaleDateString(DATE_LOCALES[locale], {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
 }
 
-export function formatActivityWeekLabel(weekStart: Date, now = new Date()): string {
+export function formatActivityWeekLabel(
+  weekStart: Date,
+  now = new Date(),
+  locale: Locale = "en",
+): string {
   const currentWeekStart = startOfWeek(now);
   const previousWeekStart = new Date(currentWeekStart.getTime() - 7 * MS_PER_DAY);
 
   if (sameCalendarDay(weekStart, currentWeekStart)) {
-    return "This week";
+    return locale === "sr" ? "Ove nedelje" : "This week";
   }
 
   if (sameCalendarDay(weekStart, previousWeekStart)) {
-    return "Last week";
+    return locale === "sr" ? "Prošle nedelje" : "Last week";
   }
 
-  return `Week of ${formatWeekStart(weekStart)}`;
+  return locale === "sr"
+    ? `Nedelja od ${formatWeekStart(weekStart, locale)}`
+    : `Week of ${formatWeekStart(weekStart, locale)}`;
 }
 
 export function groupActivityEntriesByWeek(
   entries: ActivityEntryResponse[],
   now = new Date(),
+  locale: Locale = "en",
 ): ActivityWeekGroup[] {
   const groups = new Map<string, ActivityWeekGroup>();
   const sortedEntries = [...entries].sort(
@@ -74,7 +87,7 @@ export function groupActivityEntriesByWeek(
 
     groups.set(key, {
       key,
-      label: formatActivityWeekLabel(weekStart, now),
+      label: formatActivityWeekLabel(weekStart, now, locale),
       entries: [entry],
     });
   }

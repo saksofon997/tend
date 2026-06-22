@@ -4,6 +4,7 @@ import { MarkTendedButton } from "@/components/tend/mark-tended-button";
 import { SharedWithBadge } from "@/components/tend/shared-with-badge";
 import { TypeBadge } from "@/components/tend/type-badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useI18n } from "@/lib/i18n/client";
 import { buildAggregatedReminderCopy } from "@/lib/reminders/reminder-copy";
 import type { ReminderResponse } from "@/lib/reminders/serialize";
 import { cn } from "@/lib/utils";
@@ -14,6 +15,8 @@ interface ReminderBannerProps {
 }
 
 export function ReminderBanner({ reminders, onTend }: ReminderBannerProps) {
+  const { locale } = useI18n();
+
   if (reminders.length === 0) {
     return null;
   }
@@ -27,6 +30,7 @@ export function ReminderBanner({ reminders, onTend }: ReminderBannerProps) {
       emphasis: reminder.emphasis,
     })),
     new Date(),
+    locale,
   );
 
   const hasMust = reminders.some((reminder) => reminder.type === "must");

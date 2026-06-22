@@ -1,5 +1,11 @@
 import type { TranslationKey } from "@/lib/i18n/dictionaries";
-import type { LifeArea } from "@tend/domain";
+import type { LifeArea, TendStatus } from "@tend/domain";
+
+export const STATUS_TRANSLATION_KEYS: Record<TendStatus, TranslationKey> = {
+  fresh: "status.fresh",
+  getting_stale: "status.gettingStale",
+  needs_attention: "status.needsAttention",
+};
 
 export const LIFE_AREA_TRANSLATION_KEYS: Record<LifeArea, TranslationKey> = {
   finance: "lifeArea.finance",

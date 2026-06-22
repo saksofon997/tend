@@ -1,5 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import {
+  formatEventDate,
   formatRelativeFromDays,
   formatRelativeTended,
   formatRhythm,
@@ -20,6 +21,12 @@ describe("formatRelativeFromDays", () => {
 
   it("returns day count for older values", () => {
     expect(formatRelativeFromDays(11)).toBe("Last tended 11 days ago");
+  });
+
+  it("formats Serbian card activity copy with a prefix", () => {
+    expect(formatRelativeFromDays(11, { locale: "sr", prefix: "Poslednja aktivnost" })).toBe(
+      "Poslednja aktivnost pre 11 dana",
+    );
   });
 });
 
@@ -61,5 +68,12 @@ describe("formatRhythm", () => {
 
   it("formats custom day counts", () => {
     expect(formatRhythm(3)).toBe("Every 3 days");
+  });
+});
+
+describe("formatEventDate", () => {
+  it("formats dates with the Serbian locale", () => {
+    expect(formatEventDate("2026-05-31T12:00:00.000Z", "sr")).toContain("2026");
+    expect(formatEventDate("2026-05-31T12:00:00.000Z", "sr")).not.toBe("May 31, 2026");
   });
 });

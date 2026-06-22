@@ -23,6 +23,7 @@ When changing layout, styling, microcopy, labels, empty states, or any user-faci
 
 - **Product direction** — Read [`PRODUCT.md`](../../PRODUCT.md) first. Tend is calm life-maintenance, not a task manager. Match brand personality (warm, honest, useful), design principles (awareness not pressure, sparse musts), and anti-references (no guilt UX, streaks, alarm dashboards, productivity-suite patterns).
 - **Design language** — Apply [`docs/design/design-language.md`](../../docs/design/design-language.md) for visual tone, typography, color, motion, and copy voice. Do not invent ad-hoc styling or phrasing that conflicts with the spec.
+- **Internationalization** — Add every new or changed user-facing string to the app's i18n dictionaries and provide translations in every supported locale. Do not hard-code user-facing copy in components, route handlers, utilities, notifications, or validation messages.
 - **Consistency** — Reuse existing components and copy helpers (`lib/design/status-labels.ts`, `RelativeTime`, etc.) before writing new strings or markup.
 
 If a requested change would violate `PRODUCT.md` or the design language, push back or propose an alternative that fits Tend's constraints.

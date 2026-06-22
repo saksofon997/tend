@@ -1,43 +1,41 @@
+import type { TranslationKey } from "@/lib/i18n/dictionaries";
+
 export interface OnboardingPromoSlide {
   src: `/promo/${string}`;
-  alt: string;
-  title: string;
-  description: string;
+  altKey: TranslationKey;
+  titleKey: TranslationKey;
+  descriptionKey: TranslationKey;
 }
 
 export const ONBOARDING_PROMO_SLIDES: readonly OnboardingPromoSlide[] = [
   {
     src: "/promo/tend-remember.jpg",
-    alt: "Tend home screen showing gentle attention for recurring life care, without overdue badges",
-    title: "The stuff that drifts, remembered softly.",
-    description:
-      "Household care, health, relationships, and life admin, gathered without overdue badges.",
+    altKey: "promo.remember.alt",
+    titleKey: "promo.remember.title",
+    descriptionKey: "promo.remember.description",
   },
   {
     src: "/promo/tend-care.jpg",
-    alt: "Tend onboarding screen for picking a first item to tend",
-    title: "Begin with one small act of care.",
-    description:
-      "Onboarding is a soft prompt, not a setup project. Pick one recurring thing and move on.",
+    altKey: "promo.care.alt",
+    titleKey: "promo.care.title",
+    descriptionKey: "promo.care.description",
   },
   {
     src: "/promo/tend-reminder.jpg",
-    alt: "Tend reminder banner surfacing items that could use attention with calm context",
-    title: "A reminder can be gentle and still useful.",
-    description:
-      "Tend surfaces what matters with context: name, rhythm, and the last time you cared for it.",
+    altKey: "promo.reminder.alt",
+    titleKey: "promo.reminder.title",
+    descriptionKey: "promo.reminder.description",
   },
   {
     src: "/promo/tend-friend-promo.png",
-    alt: "Tend promo mockup showing a dinner Tend shared with a friend",
-    title: "Some care is easier to share.",
-    description:
-      "Add a friend's email to a Tend so dinner, check-ins, or shared routines can appear for both of you.",
+    altKey: "promo.friend.alt",
+    titleKey: "promo.friend.title",
+    descriptionKey: "promo.friend.description",
   },
   {
     src: "/promo/tend-activity.jpg",
-    alt: "Tend activity feed showing recent tending events without scores or streaks",
-    title: "Care leaves a quiet trail.",
-    description: "Recent activity makes maintenance visible without turning it into a score.",
+    altKey: "promo.activity.alt",
+    titleKey: "promo.activity.title",
+    descriptionKey: "promo.activity.description",
   },
 ] as const;

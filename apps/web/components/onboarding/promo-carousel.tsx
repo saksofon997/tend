@@ -54,7 +54,7 @@ export function PromoCarousel({
             <Image
               key={entry.src}
               src={entry.src}
-              alt={index === activeIndex ? entry.alt : ""}
+              alt={index === activeIndex ? t(entry.altKey) : ""}
               fill
               priority={index === 0}
               sizes={imageSizes}
@@ -114,7 +114,7 @@ export function PromoCarousel({
               aria-label={t("carousel.slideLabel", {
                 index: index + 1,
                 count: slideCount,
-                title: entry.title,
+                title: t(entry.titleKey),
               })}
               onClick={() => onActiveIndexChange(index)}
               className={cn(

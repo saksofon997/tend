@@ -18,9 +18,9 @@ describe("ONBOARDING_PROMO_SLIDES", () => {
 
   it("provides title and description for each slide", () => {
     for (const slide of ONBOARDING_PROMO_SLIDES) {
-      expect(slide.title.length).toBeGreaterThan(0);
-      expect(slide.description.length).toBeGreaterThan(0);
-      expect(slide.alt.length).toBeGreaterThan(0);
+      expect(slide.titleKey.length).toBeGreaterThan(0);
+      expect(slide.descriptionKey.length).toBeGreaterThan(0);
+      expect(slide.altKey.length).toBeGreaterThan(0);
     }
   });
 });

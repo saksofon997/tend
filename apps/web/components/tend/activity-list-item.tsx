@@ -19,7 +19,7 @@ interface ActivityListItemProps {
 }
 
 export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItemProps) {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const [editing, setEditing] = useState(false);
   const [dateValue, setDateValue] = useState(isoToDateInputValue(entry.tendedAt));
   const [saving, setSaving] = useState(false);
@@ -112,7 +112,7 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
               {entry.itemName}
             </Link>
             <time className="mt-0.5 block text-sm text-muted-foreground" dateTime={entry.tendedAt}>
-              {formatEventDate(entry.tendedAt)}
+              {formatEventDate(entry.tendedAt, locale)}
             </time>
           </div>
 

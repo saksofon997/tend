@@ -136,8 +136,8 @@ export function OnboardingFlow() {
           step={STEP_MAP[step]}
           totalSteps={ONBOARDING_TOTAL_STEPS}
           stableCaption
-          title={carouselIndex === 0 ? t("onboarding.welcome.title") : promoSlide.title}
-          description={promoSlide.description}
+          title={carouselIndex === 0 ? t("onboarding.welcome.title") : t(promoSlide.titleKey)}
+          description={t(promoSlide.descriptionKey)}
           footer={
             <>
               <Button type="button" onClick={() => setStep("choose")}>

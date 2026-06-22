@@ -6,6 +6,7 @@ import { SharedWithBadge } from "@/components/tend/shared-with-badge";
 import { StatusBadge } from "@/components/tend/status-badge";
 import { TypeBadge } from "@/components/tend/type-badge";
 import { Card } from "@/components/ui/card";
+import { useI18n } from "@/lib/i18n/client";
 import { cn } from "@/lib/utils";
 import type { LifeArea, TendItemType, TendStatus } from "@tend/domain";
 import Link from "next/link";
@@ -38,6 +39,7 @@ export function TendItemCard({
   onTend,
   subdued = false,
 }: TendItemCardProps) {
+  const { t } = useI18n();
   const isMustAttention = type === "must" && status === "needs_attention";
 
   return (
@@ -58,7 +60,11 @@ export function TendItemCard({
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <TypeBadge type={type} />
             {sharedWith ? <SharedWithBadge displayName={sharedWith.displayName} /> : null}
-            <RelativeTime date={lastTendedAt} daysSince={daysSinceLastTended} />
+            <RelativeTime
+              date={lastTendedAt}
+              daysSince={daysSinceLastTended}
+              prefix={t("items.lastActivityPrefix")}
+            />
           </div>
         </Link>
 

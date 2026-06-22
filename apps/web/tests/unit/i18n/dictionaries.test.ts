@@ -10,4 +10,21 @@ describe("web i18n dictionaries", () => {
     expect(dictionaries.sr["nav.home"]).toBe("Početna");
     expect(dictionaries.sr["footer.appReleaseSoon"]).toBe("Izdanje aplikacije uskoro...");
   });
+
+  it("includes Serbian promo and item action copy", () => {
+    expect(dictionaries.sr["promo.remember.title"]).toBe(
+      "Stvari koje se zapostave, zapamćene nežno.",
+    );
+    expect(dictionaries.sr["items.markTended"]).toBe("Označi kao pobrinuto");
+    expect(dictionaries.sr["items.lastActivityPrefix"]).toBe("Poslednja aktivnost");
+  });
+
+  it("translates status labels", () => {
+    expect(dictionaries.en["status.fresh"]).toBe("Fresh");
+    expect(dictionaries.en["status.gettingStale"]).toBe("Getting stale");
+    expect(dictionaries.en["status.needsAttention"]).toBe("Needs attention");
+    expect(dictionaries.sr["status.fresh"]).toBe("Sveže");
+    expect(dictionaries.sr["status.gettingStale"]).toBe("Zapostavljeno");
+    expect(dictionaries.sr["status.needsAttention"]).toBe("Traži pažnju");
+  });
 });

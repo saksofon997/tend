@@ -29,6 +29,12 @@ describe("mobile i18n", () => {
     expect(t("items.add.rhythm.custom")).toBe("Custom interval");
   });
 
+  it("uses product-facing notification setting success copy", () => {
+    setLocale("en");
+    expect(t("settings.notifications.enabled")).toBe("Tend can send reminders to this phone.");
+    expect(t("settings.notifications.disabled")).toBe("Reminders are off on this phone.");
+  });
+
   it("uses web-aligned onboarding copy", () => {
     setLocale("en");
     expect(t("onboarding.welcome.title")).toBe("Welcome to Tend");
@@ -46,6 +52,14 @@ describe("mobile i18n", () => {
     expect(getLocale()).toBe("sr");
     expect(t("settings.language.title")).toBe("Jezik");
     expect(lifeAreaFilterToggleLabel("health")).toBe("Filtriranje po oblasti · Zdravlje");
+
+    setLocale("en");
+  });
+
+  it("translates availability day labels", () => {
+    setLocale("sr");
+    expect(t("availability.day.monday")).toBe("Ponedeljak");
+    expect(t("availability.day.sunday")).toBe("Nedelja");
 
     setLocale("en");
   });

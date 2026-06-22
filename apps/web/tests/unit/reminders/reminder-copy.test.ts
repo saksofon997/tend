@@ -39,6 +39,21 @@ describe("buildReminderCopy", () => {
 
     expect(copy).toBe("Bed sheets was last tended 11 days ago.");
   });
+
+  it("formats Serbian reminder copy", () => {
+    const copy = buildReminderCopy(
+      {
+        name: "Posteljina",
+        type: "want",
+        status: "getting_stale",
+        daysSinceLastTended: 11,
+        emphasis: "normal",
+      },
+      "sr",
+    );
+
+    expect(copy).toBe("Posteljina je poslednji put tendovano pre 11 dana.");
+  });
 });
 
 describe("buildFreeTimeReminderHeadline", () => {
@@ -107,5 +122,9 @@ describe("buildAggregatedReminderCopy", () => {
 describe("freeTimePhrase", () => {
   it("returns evening after 5pm", () => {
     expect(freeTimePhrase(new Date("2026-06-15T19:00:00"))).toBe("this evening");
+  });
+
+  it("returns Serbian time phrases", () => {
+    expect(freeTimePhrase(new Date("2026-06-15T19:00:00"), "sr")).toBe("ove večeri");
   });
 });

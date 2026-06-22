@@ -1,4 +1,10 @@
-import { LIFE_AREA_ORDER, WEEKDAYS, dateInputToIso, todayDateInputValue } from "@/constants";
+import {
+  LIFE_AREA_ORDER,
+  REMINDER_POLL_MS,
+  WEEKDAYS,
+  dateInputToIso,
+  todayDateInputValue,
+} from "@/constants";
 import { tendFonts } from "@/fonts";
 import { colors, fonts, radius, spacing } from "@/theme";
 import type { ItemResponse, ReminderResponse, UserResponse } from "@/types";
@@ -6,7 +12,7 @@ import { getAttentionSectionDefaults } from "@/utils/homeGroups";
 import { refreshHomeData } from "@/utils/homeRefresh";
 import { formatRelativeFromDays } from "@/utils/relativeTime";
 import { reminderItemIdsKey, selectReminderBannerItems } from "@/utils/reminderBanner";
-import { type TabKey, getTabSwitchDirection } from "@/utils/tabTransition";
+import { type TabKey, getTabTransition, resolveHardwareBackAction } from "@/utils/tabTransition";
 import { TendApi } from "@api/tendApi";
 import { ItemForm } from "@components/item-form";
 import { Chip } from "@components/life-area-picker";
@@ -63,6 +69,7 @@ import {
   ActivityIndicator,
   Alert,
   Animated,
+  BackHandler,
   Image,
   Modal,
   Pressable,
@@ -123,7 +130,6 @@ function authPromoSlides() {
   ] as const;
 }
 
-const REMINDER_POLL_MS = 60_000;
 const TIMEZONE_OPTIONS = [
   "UTC",
   "Europe/Belgrade",
@@ -467,6 +473,20 @@ function AuthedApp({
 }) {
   const [activeTab, setActiveTab] = useState<TabKey>("home");
 
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
+      const action = resolveHardwareBackAction(activeTab);
+
+      if (action.nextTab) {
+        setActiveTab(action.nextTab);
+      }
+
+      return action.consume;
+    });
+
+    return () => subscription.remove();
+  }, [activeTab]);
+
   return (
     <SafeAreaView style={styles.app} edges={["top"]}>
       <AnimatedTabScreen activeTab={activeTab}>
@@ -513,13 +533,17 @@ function AnimatedTabScreen({
   const [renderedTab, setRenderedTab] = useState(activeTab);
   const opacity = useRef(new Animated.Value(1)).current;
   const translateX = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (activeTab === renderedTab) {
       return;
     }
 
-    const direction = getTabSwitchDirection(renderedTab, activeTab);
+    const transition = getTabTransition(renderedTab, activeTab);
+    const translate = transition.axis === "x" ? translateX : translateY;
+    const idleTranslate = transition.axis === "x" ? translateY : translateX;
+    idleTranslate.setValue(0);
 
     Animated.parallel([
       Animated.timing(opacity, {
@@ -527,28 +551,28 @@ function AnimatedTabScreen({
         toValue: 0,
         useNativeDriver: true,
       }),
-      Animated.timing(translateX, {
+      Animated.timing(translate, {
         duration: 140,
-        toValue: direction * -18,
+        toValue: transition.exitOffset,
         useNativeDriver: true,
       }),
     ]).start(() => {
       setRenderedTab(activeTab);
-      translateX.setValue(direction * 18);
+      translate.setValue(transition.enterOffset);
       Animated.parallel([
         Animated.timing(opacity, {
           duration: 200,
           toValue: 1,
           useNativeDriver: true,
         }),
-        Animated.timing(translateX, {
+        Animated.timing(translate, {
           duration: 200,
           toValue: 0,
           useNativeDriver: true,
         }),
       ]).start();
     });
-  }, [activeTab, opacity, renderedTab, translateX]);
+  }, [activeTab, opacity, renderedTab, translateX, translateY]);
 
   return (
     <Animated.View
@@ -556,7 +580,7 @@ function AnimatedTabScreen({
         styles.screenFrame,
         {
           opacity,
-          transform: [{ translateX }],
+          transform: [{ translateX }, { translateY }],
         },
       ]}
     >
@@ -1735,11 +1759,12 @@ function AvailabilityScreen({ api }: { api: TendApi }) {
       {loading ? <AvailabilitySkeleton label={t("common.loadingAvailability")} /> : null}
 
       {!loading
-        ? WEEKDAYS.map((label, dayOfWeek) => {
+        ? WEEKDAYS.map((labelKey, dayOfWeek) => {
+            const label = t(labelKey);
             const dayWindows = byDay.get(dayOfWeek) ?? [];
 
             return (
-              <View key={label} style={styles.dayCard}>
+              <View key={labelKey} style={styles.dayCard}>
                 <View style={styles.dayHeader}>
                   <Text style={styles.cardTitle}>{label}</Text>
                   <TouchableOpacity

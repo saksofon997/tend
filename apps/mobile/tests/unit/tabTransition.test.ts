@@ -1,5 +1,9 @@
 import { describe, expect, it } from "bun:test";
-import { getTabSwitchDirection } from "@utils/tabTransition";
+import {
+  getTabSwitchDirection,
+  getTabTransition,
+  resolveHardwareBackAction,
+} from "@utils/tabTransition";
 
 describe("getTabSwitchDirection", () => {
   it("returns 0 when switching to the same tab", () => {
@@ -14,5 +18,42 @@ describe("getTabSwitchDirection", () => {
   it("returns -1 when moving to an earlier tab", () => {
     expect(getTabSwitchDirection("settings", "home")).toBe(-1);
     expect(getTabSwitchDirection("availability", "add")).toBe(-1);
+  });
+});
+
+describe("getTabTransition", () => {
+  it("keeps ordinary tab switches horizontal", () => {
+    expect(getTabTransition("home", "activity")).toEqual({
+      axis: "x",
+      enterOffset: 18,
+      exitOffset: -18,
+    });
+  });
+
+  it("slides the add screen up from the bottom", () => {
+    expect(getTabTransition("home", "add")).toEqual({
+      axis: "y",
+      enterOffset: 36,
+      exitOffset: -12,
+    });
+  });
+
+  it("slides the add screen down when leaving it", () => {
+    expect(getTabTransition("add", "home")).toEqual({
+      axis: "y",
+      enterOffset: 12,
+      exitOffset: 36,
+    });
+  });
+});
+
+describe("resolveHardwareBackAction", () => {
+  it("keeps the app open on the home tab", () => {
+    expect(resolveHardwareBackAction("home")).toEqual({ consume: true });
+  });
+
+  it("returns to home from secondary tabs instead of letting Android quit the app", () => {
+    expect(resolveHardwareBackAction("add")).toEqual({ consume: true, nextTab: "home" });
+    expect(resolveHardwareBackAction("settings")).toEqual({ consume: true, nextTab: "home" });
   });
 });

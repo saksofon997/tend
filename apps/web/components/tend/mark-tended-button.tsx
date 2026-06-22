@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n/client";
 import { cn } from "@/lib/utils";
 import { Check, Loader2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -17,15 +18,21 @@ export const MARK_TENDED_CONFIRMATION_MS = 900;
 export function markTendedButtonLabel({
   loading,
   confirmed,
+  idleLabel = "Mark tended",
+  loadingLabel = "Updating…",
+  confirmedLabel = "Tended",
 }: {
   loading: boolean;
   confirmed: boolean;
+  idleLabel?: string;
+  loadingLabel?: string;
+  confirmedLabel?: string;
 }) {
   if (loading) {
-    return "Updating…";
+    return loadingLabel;
   }
 
-  return confirmed ? "Tended" : "Mark tended";
+  return confirmed ? confirmedLabel : idleLabel;
 }
 
 export function MarkTendedButton({
@@ -34,6 +41,7 @@ export function MarkTendedButton({
   size = "default",
   className,
 }: MarkTendedButtonProps) {
+  const { t } = useI18n();
   const [loading, setLoading] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const confirmationTimeout = useRef<number | null>(null);
@@ -86,7 +94,13 @@ export function MarkTendedButton({
           aria-hidden
         />
       )}
-      {markTendedButtonLabel({ loading, confirmed })}
+      {markTendedButtonLabel({
+        loading,
+        confirmed,
+        idleLabel: t("items.markTended"),
+        loadingLabel: t("items.markTendedUpdating"),
+        confirmedLabel: t("items.markTendedConfirmed"),
+      })}
     </Button>
   );
 }

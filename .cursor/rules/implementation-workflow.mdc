@@ -13,7 +13,7 @@ Before marking any implementation task complete, agents MUST complete every item
 2. **Test** — New or changed behavior has unit tests; integration tests added where endpoints or multi-module flows are involved (see `testing` rule).
 3. **Lint** — Run the project's linter on every changed file and fix all reported issues (see `linting` rule).
 4. **API docs** — Any new or changed HTTP endpoint is documented in `docs/api/` (see `api-documentation` rule).
-5. **UI & design** — Any `apps/web/` UI change follows `docs/design/`, reuses components from `apps/web/components/`, and is finished with the **impeccable** skill (`adapt` + `polish`) as a final touch-up pass (see `ui-design` rule).
+5. **UI & design** — Any `apps/web/` UI change follows `docs/design/`, reuses components from `apps/web/components/`, puts user-facing copy in i18n dictionaries with translations, and is finished with the **impeccable** skill (`adapt` + `polish`) as a final touch-up pass (see `ui-design` rule).
 6. **Mobile runnable** — Any `apps/mobile/` change runs `bun run verify` from `apps/mobile/` and leaves Expo able to bundle (see `mobile-development` rule).
 
 ## Order of Operations
@@ -32,7 +32,7 @@ Before editing pages or JSX:
 4. Use tokens from `docs/design/tokens.css` — no ad-hoc colors or fonts
 5. **Before marking the task complete:** load the **impeccable** skill and run **`adapt`** then **`polish`** on the changed UI — hierarchy, spacing, copy, states, and accessibility within Tend's design constraints (no guilt-driven UX)
 
-User-facing copy changes outside `apps/web/` (e.g. status labels, onboarding strings, empty states) still require [`PRODUCT.md`](../../PRODUCT.md) and `docs/design/design-language.md` — see the `ui-design` rule.
+User-facing copy changes outside `apps/web/` (e.g. status labels, onboarding strings, empty states) still require [`PRODUCT.md`](../../PRODUCT.md), `docs/design/design-language.md`, and i18n dictionary entries with translations — see the `ui-design` rule.
 
 Do not skip steps because a change "seems small." If a step truly does not apply (e.g. no HTTP surface changed), state that explicitly in the completion summary.
 

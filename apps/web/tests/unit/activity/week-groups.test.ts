@@ -28,6 +28,18 @@ describe("formatActivityWeekLabel", () => {
       "Week of May 31, 2026",
     );
   });
+
+  it("formats Serbian week labels", () => {
+    expect(formatActivityWeekLabel(new Date("2026-06-14T12:00:00.000Z"), now, "sr")).toBe(
+      "Ove nedelje",
+    );
+    expect(formatActivityWeekLabel(new Date("2026-06-07T12:00:00.000Z"), now, "sr")).toBe(
+      "Prošle nedelje",
+    );
+    expect(formatActivityWeekLabel(new Date("2026-05-31T12:00:00.000Z"), now, "sr")).toContain(
+      "Nedelja od",
+    );
+  });
 });
 
 describe("groupActivityEntriesByWeek", () => {

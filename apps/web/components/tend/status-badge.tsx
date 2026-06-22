@@ -1,4 +1,8 @@
-import { STATUS_LABELS, statusStyles } from "@/lib/design/status-labels";
+"use client";
+
+import { statusStyles } from "@/lib/design/status-labels";
+import { useI18n } from "@/lib/i18n/client";
+import { STATUS_TRANSLATION_KEYS } from "@/lib/i18n/labels";
 import { cn } from "@/lib/utils";
 import type { TendStatus } from "@tend/domain";
 
@@ -9,6 +13,7 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ status, size = "sm", className }: StatusBadgeProps) {
+  const { t } = useI18n();
   const styles = statusStyles(status);
 
   return (
@@ -21,7 +26,7 @@ export function StatusBadge({ status, size = "sm", className }: StatusBadgeProps
         className,
       )}
     >
-      {STATUS_LABELS[status]}
+      {t(STATUS_TRANSLATION_KEYS[status])}
     </span>
   );
 }

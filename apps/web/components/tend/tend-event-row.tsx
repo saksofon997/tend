@@ -18,7 +18,7 @@ interface TendEventRowProps {
 }
 
 export function TendEventRow({ event, onUpdate, onDelete }: TendEventRowProps) {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const [editing, setEditing] = useState(false);
   const [dateValue, setDateValue] = useState(isoToDateInputValue(event.tendedAt));
   const [saving, setSaving] = useState(false);
@@ -102,7 +102,7 @@ export function TendEventRow({ event, onUpdate, onDelete }: TendEventRowProps) {
       ) : (
         <div className="flex items-center justify-between gap-3">
           <time className="text-sm text-foreground" dateTime={event.tendedAt}>
-            {formatEventDate(event.tendedAt)}
+            {formatEventDate(event.tendedAt, locale)}
           </time>
 
           <div className="flex items-center gap-1">

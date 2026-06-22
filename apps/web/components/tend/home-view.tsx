@@ -17,14 +17,13 @@ import {
 } from "@/lib/design/home-groups";
 import { useI18n } from "@/lib/i18n/client";
 import type { ItemResponse } from "@/lib/items/serialize";
+import { REMINDER_POLL_MS } from "@/lib/reminders/polling";
 import type { ReminderResponse, RemindersApiResponse } from "@/lib/reminders/serialize";
 import { reminderItemIdsKey, selectReminderBannerItems } from "@/lib/reminders/surface-reminders";
 import type { LifeArea } from "@tend/domain";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-
-const REMINDER_POLL_MS = 60_000;
 
 interface HomeViewProps {
   user: { displayName: string };

@@ -3,6 +3,7 @@ import type { LifeArea } from "@tend/domain";
 export const ITEM_NAME_MAX_LENGTH = 200;
 export const RHYTHM_MIN_DAYS = 1;
 export const RHYTHM_MAX_DAYS = 365;
+export const REMINDER_POLL_MS = 5 * 60 * 1000;
 
 export const LIFE_AREA_ORDER: Array<Exclude<LifeArea, "personal">> = [
   "household",
@@ -52,14 +53,14 @@ export function isPresetRhythm(
 }
 
 export const WEEKDAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
+  "availability.day.sunday",
+  "availability.day.monday",
+  "availability.day.tuesday",
+  "availability.day.wednesday",
+  "availability.day.thursday",
+  "availability.day.friday",
+  "availability.day.saturday",
+] as const;
 
 export function todayDateInputValue(from = new Date()) {
   const year = from.getFullYear();

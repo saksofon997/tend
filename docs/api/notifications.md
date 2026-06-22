@@ -51,9 +51,9 @@ Remove a saved Expo push token for the signed-in user.
 
 ### `GET /api/v1/jobs/notifications`
 
-Run the server-side reminder notification job. The job is scheduled every 30 minutes in Vercel and sends at most one relevant push per device when a notification is due.
+Run the server-side reminder notification job manually. Production scheduling is handled by the standalone Node worker (`bun run notifications:worker`), which runs the same job every 30 minutes by default and sends at most one relevant push per device when a notification is due.
 
-**Auth:** `Authorization: Bearer <CRON_SECRET>` or `Authorization: Bearer <NOTIFICATIONS_JOB_SECRET>` (required)
+**Auth:** `Authorization: Bearer <NOTIFICATIONS_JOB_SECRET>` or `Authorization: Bearer <CRON_SECRET>` (required)
 
 **Responses**
 

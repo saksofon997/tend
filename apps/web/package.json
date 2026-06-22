@@ -7,6 +7,7 @@
     "dev:clean": "rm -rf .next && next dev --hostname 0.0.0.0 --port 3000",
     "build": "next build",
     "start": "next start --port 3000",
+    "notifications:worker": "bun jobs/notification-worker.ts",
     "test": "bun --env-file=../../.env test tests"
   },
   "dependencies": {
@@ -25,6 +26,7 @@
     "lucia": "^3.2.2",
     "lucide-react": "^1.18.0",
     "next": "^15.3.4",
+    "node-cron": "^4.5.0",
     "postcss": "^8.5.15",
     "react": "19.1.0",
     "react-dom": "19.1.0",

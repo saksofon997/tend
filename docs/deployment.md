@@ -78,7 +78,7 @@ In **Project → Settings → Environment Variables**, add:
 | `DATABASE_URL` | Neon **pooled** connection string | Production, Preview, Development |
 | `DATABASE_URL_UNPOOLED` | Neon **direct** connection string | Production, Preview, Development |
 | `SESSION_SECRET` | Random 32+ char secret (`openssl rand -base64 32`) | Production, Preview, Development |
-| `CRON_SECRET` | Random token for the 30-minute notification job | Production, Preview |
+| `NOTIFICATIONS_JOB_SECRET` | Random token for manually triggering the notification job endpoint | Production, Preview |
 | `NODE_ENV` | `production` | Production only |
 
 **Optional:** install the [Neon Vercel integration](https://vercel.com/integrations/neon) — it can inject `DATABASE_URL` and `DATABASE_URL_UNPOOLED` automatically.
@@ -94,6 +94,25 @@ https://<your-project>.vercel.app/api/v1/health
 ```
 
 Expect `"database": "ok"` when `DATABASE_URL` is set correctly.
+
+### Server-side notification worker
+
+Vercel's free tier does not include Cron Jobs. Reminder push notifications now run from a standalone Node worker using `node-cron`; deploy it anywhere that can keep a Bun/Node process running with the same `DATABASE_URL` as the web app.
+
+Run from the repo root:
+
+```bash
+bun run notifications:worker
+```
+
+Optional worker env vars:
+
+| Name | Default | Description |
+|------|---------|-------------|
+| `NOTIFICATIONS_JOB_CRON` | `*/30 * * * *` | Cron expression for the notification job |
+| `NOTIFICATIONS_JOB_RUN_ON_START` | `false` | Set to `true` to run once when the worker boots |
+
+The worker calls the notification job directly through the database; it does not need to hit `/api/v1/jobs/notifications`. Keep `NOTIFICATIONS_JOB_SECRET` configured only if you want the HTTP endpoint available as a protected manual/admin trigger.
 
 ### Custom domains (before Cloudflare)
 

@@ -45,6 +45,21 @@ export function useActivityEvents(api: TendApi) {
     [api],
   );
 
+  const updateActivity = useCallback(
+    async (eventId: string, tendedAt: string) => {
+      const body = await api.updateActivity(eventId, tendedAt);
+      const updatedEvent: ActivityEntryResponse = {
+        id: body.event.id,
+        itemId: body.event.itemId,
+        itemName: body.item.name,
+        tendedAt: body.event.tendedAt,
+        createdAt: body.event.createdAt,
+      };
+      setEvents((current) => replaceActivityEvent(current, updatedEvent));
+    },
+    [api],
+  );
+
   const groups = useMemo(() => groupEventsByWeek(events), [events]);
 
   return {
@@ -54,7 +69,17 @@ export function useActivityEvents(api: TendApi) {
     groups,
     loadActivity,
     loading,
+    updateActivity,
   };
+}
+
+export function replaceActivityEvent(
+  events: ActivityEntryResponse[],
+  updatedEvent: ActivityEntryResponse,
+) {
+  return events
+    .map((event) => (event.id === updatedEvent.id ? updatedEvent : event))
+    .sort((a, b) => new Date(b.tendedAt).getTime() - new Date(a.tendedAt).getTime());
 }
 
 function groupEventsByWeek(events: ActivityEntryResponse[]) {

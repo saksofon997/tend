@@ -6,6 +6,7 @@ export type {
   PushSubscriptionResponse,
   ReminderResponse,
   RemindersResponse,
+  TendEventResponse,
   UserSettingsResponse,
   UserResponse,
 } from "@/types/api";

@@ -40,6 +40,13 @@ export interface ActivityEntryResponse {
   createdAt: string;
 }
 
+export interface TendEventResponse {
+  id: string;
+  itemId: string;
+  tendedAt: string;
+  createdAt: string;
+}
+
 export interface AvailabilityWindowResponse {
   id: string;
   userId: string;

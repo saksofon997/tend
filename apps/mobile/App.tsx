@@ -3,11 +3,12 @@ import {
   REMINDER_POLL_MS,
   WEEKDAYS,
   dateInputToIso,
+  isoToDateInputValue,
   todayDateInputValue,
 } from "@/constants";
 import { tendFonts } from "@/fonts";
 import { colors, fonts, radius, spacing } from "@/theme";
-import type { ItemResponse, ReminderResponse, UserResponse } from "@/types";
+import type { ActivityEntryResponse, ItemResponse, ReminderResponse, UserResponse } from "@/types";
 import { getAttentionSectionDefaults } from "@/utils/homeGroups";
 import { refreshHomeData } from "@/utils/homeRefresh";
 import { keyboardAvoidingBehavior } from "@/utils/keyboardAvoidance";
@@ -15,6 +16,7 @@ import { formatRelativeFromDays } from "@/utils/relativeTime";
 import { reminderItemIdsKey, selectReminderBannerItems } from "@/utils/reminderBanner";
 import { type TabKey, getTabTransition, resolveHardwareBackAction } from "@/utils/tabTransition";
 import { TendApi } from "@api/tendApi";
+import { DatePickerField } from "@components/date-picker-field";
 import { ItemForm } from "@components/item-form";
 import { Chip } from "@components/life-area-picker";
 import { PresetSuggestions } from "@components/preset-suggestions";
@@ -59,6 +61,7 @@ import {
   ChevronDown,
   Home,
   LogOut,
+  Pencil,
   Plus,
   Settings,
   SlidersHorizontal,
@@ -1469,7 +1472,7 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
 }
 
 function ActivityScreen({ api }: { api: TendApi }) {
-  const { deleteActivity, error, events, groups, loading } = useActivityEvents(api);
+  const { deleteActivity, error, events, groups, loading, updateActivity } = useActivityEvents(api);
 
   function confirmDelete(eventId: string) {
     Alert.alert(t("activity.deleteConfirm.title"), t("activity.deleteConfirm.message"), [
@@ -1513,24 +1516,111 @@ function ActivityScreen({ api }: { api: TendApi }) {
               </View>
               <View style={styles.listStack}>
                 {group.events.map((event) => (
-                  <View key={event.id} style={styles.activityRow}>
-                    <View style={styles.activityText}>
-                      <Text style={styles.cardTitle}>{event.itemName}</Text>
-                      <Text style={styles.metaText}>{formatEventDate(event.tendedAt)}</Text>
-                    </View>
-                    <IconButton
-                      label={t("activity.removeEvent")}
-                      onPress={() => confirmDelete(event.id)}
-                    >
-                      <Trash2 size={18} color={colors.textMuted} />
-                    </IconButton>
-                  </View>
+                  <ActivityEventRow
+                    key={event.id}
+                    event={event}
+                    onDelete={() => confirmDelete(event.id)}
+                    onUpdate={updateActivity}
+                  />
                 ))}
               </View>
             </View>
           ))
         : null}
     </ScreenScroll>
+  );
+}
+
+function ActivityEventRow({
+  event,
+  onDelete,
+  onUpdate,
+}: {
+  event: ActivityEntryResponse;
+  onDelete: () => void;
+  onUpdate: (eventId: string, tendedAt: string) => Promise<void>;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [dateValue, setDateValue] = useState(isoToDateInputValue(event.tendedAt));
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (!editing) {
+      setDateValue(isoToDateInputValue(event.tendedAt));
+    }
+  }, [editing, event.tendedAt]);
+
+  async function handleSave() {
+    setSaving(true);
+
+    try {
+      await onUpdate(event.id, dateInputToIso(dateValue));
+      setEditing(false);
+    } catch (updateError) {
+      Alert.alert(t("errors.activity.update"), getErrorMessage(updateError, t("errors.retry")));
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function handleCancel() {
+    setDateValue(isoToDateInputValue(event.tendedAt));
+    setEditing(false);
+  }
+
+  if (editing) {
+    return (
+      <View style={[styles.activityRow, styles.activityEditRow]}>
+        <View style={styles.activityEditHeader}>
+          <Text style={styles.cardTitle}>{event.itemName}</Text>
+          <Text style={styles.metaText}>{formatEventDate(event.tendedAt)}</Text>
+        </View>
+        <Field label={t("activity.tendedOn")}>
+          <DatePickerField
+            value={dateValue}
+            onChange={setDateValue}
+            maxDate={todayDateInputValue()}
+            accessibilityLabel={t("activity.tendedOn")}
+          />
+        </Field>
+        <View style={styles.activityEditActions}>
+          <TouchableOpacity
+            disabled={saving}
+            style={[styles.secondaryButtonSmall, saving ? styles.buttonDisabled : null]}
+            onPress={handleCancel}
+          >
+            <Text style={styles.secondaryButtonText}>{t("common.cancel")}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            disabled={saving}
+            style={[styles.activitySaveButton, saving ? styles.buttonDisabled : null]}
+            onPress={handleSave}
+          >
+            {saving ? <ActivityIndicator size="small" color={colors.inverse} /> : null}
+            <Text style={styles.activitySaveButtonText}>
+              {saving ? t("common.saving") : t("activity.saveDate")}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.activityRow}>
+      <View style={styles.activityText}>
+        <Text style={styles.cardTitle}>{event.itemName}</Text>
+        <Text style={styles.metaText}>{formatEventDate(event.tendedAt)}</Text>
+      </View>
+      <View style={styles.activityActions}>
+        <IconButton label={t("activity.editEvent")} onPress={() => setEditing(true)}>
+          <Pencil size={18} color={colors.textMuted} />
+        </IconButton>
+        <IconButton label={t("activity.removeEvent")} onPress={onDelete}>
+          <Trash2 size={18} color={colors.textMuted} />
+        </IconButton>
+      </View>
+    </View>
   );
 }
 
@@ -3042,6 +3132,38 @@ const styles = StyleSheet.create({
   },
   activityText: {
     flex: 1,
+  },
+  activityActions: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  activityEditRow: {
+    alignItems: "stretch",
+    flexDirection: "column",
+  },
+  activityEditHeader: {
+    marginBottom: spacing.sm,
+  },
+  activityEditActions: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+    justifyContent: "flex-end",
+  },
+  activitySaveButton: {
+    alignItems: "center",
+    backgroundColor: colors.primary,
+    borderRadius: radius.md,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 36,
+    paddingHorizontal: spacing.md,
+  },
+  activitySaveButtonText: {
+    color: colors.inverse,
+    fontFamily: fonts.bodySemibold,
+    fontSize: 13,
   },
   metaText: {
     color: colors.textMuted,

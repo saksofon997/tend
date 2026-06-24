@@ -5,6 +5,7 @@ import type {
   OnboardingStatusResponse,
   PushSubscriptionResponse,
   RemindersResponse,
+  TendEventResponse,
   UserResponse,
   UserSettingsResponse,
 } from "@/types";
@@ -159,6 +160,16 @@ export class TendApi {
 
   async listActivity() {
     return this.request<{ events: ActivityEntryResponse[] }>("/api/v1/activity");
+  }
+
+  async updateActivity(eventId: string, tendedAt: string) {
+    return this.request<{ item: ItemResponse; event: TendEventResponse }>(
+      `/api/v1/activity/${eventId}`,
+      {
+        method: "PATCH",
+        body: { tendedAt },
+      },
+    );
   }
 
   async deleteActivity(eventId: string) {

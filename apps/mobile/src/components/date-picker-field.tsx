@@ -11,6 +11,7 @@ interface DatePickerFieldProps {
   onChange: (value: string) => void;
   maxDate?: string;
   invalid?: boolean;
+  accessibilityLabel?: string;
 }
 
 function parseDateInput(value: string) {
@@ -38,6 +39,7 @@ export function DatePickerField({
   onChange,
   maxDate,
   invalid = false,
+  accessibilityLabel = t("items.add.lastTended.label"),
 }: DatePickerFieldProps) {
   const [showPicker, setShowPicker] = useState(false);
   const maximumDate = useMemo(
@@ -62,7 +64,7 @@ export function DatePickerField({
     <View>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={t("items.add.lastTended.label")}
+        accessibilityLabel={accessibilityLabel}
         style={[styles.trigger, invalid ? styles.triggerInvalid : null]}
         onPress={() => setShowPicker((open) => !open)}
       >

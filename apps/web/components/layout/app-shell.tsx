@@ -19,16 +19,24 @@ const NAV_ITEMS = [
   { href: "/settings/availability", labelKey: "nav.availability" },
 ] as const;
 
+export const APP_SHELL_HEADER_ROW_CLASS =
+  "tend-content-column flex min-h-14 flex-wrap items-center gap-x-3 gap-y-2 py-2 md:flex-nowrap md:gap-4";
+
+export const APP_SHELL_NAV_CLASS =
+  "order-3 flex w-full flex-1 items-center justify-center gap-3 md:order-none md:w-auto md:gap-4";
+
+export const APP_SHELL_USER_MENU_SLOT_CLASS = "ml-auto flex shrink-0 items-center gap-2";
+
 export function AppShell({ children, user, activePath }: AppShellProps) {
   const { t } = useI18n();
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-10 border-b border-border bg-card">
-        <div className="tend-content-column flex min-h-14 flex-wrap items-center gap-x-3 gap-y-2 py-2 sm:flex-nowrap sm:gap-4">
+        <div className={APP_SHELL_HEADER_ROW_CLASS}>
           <TendLogoLink />
 
-          <nav className="order-3 flex w-full flex-1 items-center justify-center gap-3 sm:order-none sm:w-auto sm:gap-4">
+          <nav className={APP_SHELL_NAV_CLASS}>
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.href}
@@ -45,9 +53,7 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
             ))}
           </nav>
 
-          <div className="ml-auto flex shrink-0 items-center gap-2">
-            {user ? <UserMenu /> : null}
-          </div>
+          <div className={APP_SHELL_USER_MENU_SLOT_CLASS}>{user ? <UserMenu /> : null}</div>
         </div>
       </header>
 

@@ -1,5 +1,6 @@
 const sentryOrg = process.env.SENTRY_ORG;
 const sentryProject = process.env.SENTRY_PROJECT;
+const { version } = require("./package.json");
 const hasSentryBuildConfig = Boolean(sentryOrg && sentryProject && process.env.SENTRY_AUTH_TOKEN);
 
 const plugins = [
@@ -27,7 +28,7 @@ module.exports = {
   expo: {
     name: "Tend",
     slug: "tend",
-    version: "0.1.0",
+    version,
     orientation: "portrait",
     icon: "./assets/app-icon.png",
     userInterfaceStyle: "light",

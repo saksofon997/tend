@@ -22,8 +22,10 @@ function isAuthorized(request: Request): boolean {
 
 export async function GET(request: Request) {
   if (!isAuthorized(request)) {
+    console.warn("Notification job HTTP trigger rejected: unauthorized");
     return jsonError("Unauthorized", 401);
   }
 
+  console.info("Notification job triggered via HTTP");
   return jsonData(await runNotificationJob(getDb()));
 }

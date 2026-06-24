@@ -63,8 +63,9 @@ describe("notification worker", () => {
       env: { NOTIFICATIONS_JOB_CRON: "*/15 * * * *" },
       logger,
       scheduler,
-      runJob: async () => {
+      runJob: async (_database, options) => {
         runs += 1;
+        expect(options?.logger).toBe(logger);
         return { checked: 1, sent: 1, skipped: 0, failed: 0, invalidated: 0 };
       },
     });
@@ -80,9 +81,6 @@ describe("notification worker", () => {
     await worker.runOnce();
 
     expect(runs).toBe(1);
-    expect(messages).toContain(
-      "info:Notification job finished: checked=1 sent=1 skipped=0 failed=0 invalidated=0",
-    );
   });
 
   it("skips overlapping executions", async () => {

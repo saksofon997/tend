@@ -2,15 +2,9 @@ import { getDb } from "@/lib/db";
 import type { Database } from "@tend/db";
 import cron from "node-cron";
 import { runNotificationJob } from "./job";
-import type { NotificationJobResult } from "./job";
+import type { NotificationJobLogger, NotificationJobResult } from "./job";
 
 export const DEFAULT_NOTIFICATION_JOB_CRON = "*/30 * * * *";
-
-interface NotificationWorkerLogger {
-  info(message: string): void;
-  warn(message: string): void;
-  error(message: string, error?: unknown): void;
-}
 
 interface ScheduledTaskHandle {
   start(): void | Promise<void>;
@@ -26,7 +20,10 @@ interface CronScheduler {
   ): ScheduledTaskHandle;
 }
 
-type RunNotificationJob = (database: Database) => Promise<NotificationJobResult>;
+type RunNotificationJob = (
+  database: Database,
+  options?: { logger?: NotificationJobLogger },
+) => Promise<NotificationJobResult>;
 
 interface NotificationWorkerEnv {
   NODE_ENV?: string;
@@ -37,7 +34,7 @@ interface NotificationWorkerEnv {
 interface NotificationWorkerOptions {
   database?: Database;
   env?: NotificationWorkerEnv;
-  logger?: NotificationWorkerLogger;
+  logger?: NotificationJobLogger;
   runJob?: RunNotificationJob;
   scheduler?: CronScheduler;
 }
@@ -80,11 +77,7 @@ export function startNotificationWorker(
 
     isRunning = true;
     try {
-      const result = await runJob(database);
-      logger.info(
-        `Notification job finished: checked=${result.checked} sent=${result.sent} skipped=${result.skipped} failed=${result.failed} invalidated=${result.invalidated}`,
-      );
-      return result;
+      return await runJob(database, { logger });
     } catch (error) {
       logger.error("Notification job failed.", error);
       return null;

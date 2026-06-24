@@ -10,6 +10,7 @@ import { colors, fonts, radius, spacing } from "@/theme";
 import type { ItemResponse, ReminderResponse, UserResponse } from "@/types";
 import { getAttentionSectionDefaults } from "@/utils/homeGroups";
 import { refreshHomeData } from "@/utils/homeRefresh";
+import { keyboardAvoidingBehavior } from "@/utils/keyboardAvoidance";
 import { formatRelativeFromDays } from "@/utils/relativeTime";
 import { reminderItemIdsKey, selectReminderBannerItems } from "@/utils/reminderBanner";
 import { type TabKey, getTabTransition, resolveHardwareBackAction } from "@/utils/tabTransition";
@@ -71,7 +72,9 @@ import {
   Animated,
   BackHandler,
   Image,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -663,26 +666,29 @@ function AuthFormShell({
 }) {
   return (
     <SafeAreaView style={styles.authScreen}>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={styles.onboardingContent}
-        style={styles.screen}
-      >
-        <View style={styles.onboardingLogoWrap}>
-          <Image
-            accessibilityLabel={t("app.logo")}
-            resizeMode="contain"
-            source={require("./assets/tend-logo.png")}
-            style={styles.splashLogo}
-          />
-        </View>
-        <View style={styles.onboardingCard}>
-          <Text style={styles.pageTitle}>{title}</Text>
-          {description ? <Text style={styles.pageSubtitle}>{description}</Text> : null}
-          <View style={styles.onboardingBody}>{children}</View>
-          <View style={styles.onboardingFooter}>{footer}</View>
-        </View>
-      </ScrollView>
+      <KeyboardAwareScreen>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          contentContainerStyle={[styles.onboardingContent, styles.keyboardAwareScrollContent]}
+          style={styles.screen}
+        >
+          <View style={styles.onboardingLogoWrap}>
+            <Image
+              accessibilityLabel={t("app.logo")}
+              resizeMode="contain"
+              source={require("./assets/tend-logo.png")}
+              style={styles.splashLogo}
+            />
+          </View>
+          <View style={styles.onboardingCard}>
+            <Text style={styles.pageTitle}>{title}</Text>
+            {description ? <Text style={styles.pageSubtitle}>{description}</Text> : null}
+            <View style={styles.onboardingBody}>{children}</View>
+            <View style={styles.onboardingFooter}>{footer}</View>
+          </View>
+        </ScrollView>
+      </KeyboardAwareScreen>
     </SafeAreaView>
   );
 }
@@ -1197,47 +1203,52 @@ function OnboardingShell({
 }) {
   return (
     <SafeAreaView style={styles.authScreen}>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={styles.onboardingContent}
-        style={styles.screen}
-      >
-        <View style={styles.onboardingLogoWrap}>
-          <Image
-            accessibilityLabel={t("app.logo")}
-            resizeMode="contain"
-            source={require("./assets/tend-logo.png")}
-            style={styles.splashLogo}
-          />
-        </View>
-        <View style={styles.onboardingCard}>
-          <View style={styles.onboardingStepHeader}>
-            <Text style={styles.onboardingStepLabel}>
-              {t("onboarding.step", {
-                step: ONBOARDING_STEP_NUMBERS[step],
-                total: ONBOARDING_TOTAL_STEPS,
-              })}
-            </Text>
-            <View style={styles.onboardingStepDots}>
-              {Array.from({ length: ONBOARDING_TOTAL_STEPS }, (_, i) => i + 1).map((stepNumber) => (
-                <View
-                  key={stepNumber}
-                  style={[
-                    styles.onboardingStepDot,
-                    stepNumber <= ONBOARDING_STEP_NUMBERS[step]
-                      ? styles.onboardingStepDotActive
-                      : null,
-                  ]}
-                />
-              ))}
-            </View>
+      <KeyboardAwareScreen>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          contentContainerStyle={[styles.onboardingContent, styles.keyboardAwareScrollContent]}
+          style={styles.screen}
+        >
+          <View style={styles.onboardingLogoWrap}>
+            <Image
+              accessibilityLabel={t("app.logo")}
+              resizeMode="contain"
+              source={require("./assets/tend-logo.png")}
+              style={styles.splashLogo}
+            />
           </View>
-          <Text style={styles.onboardingTitle}>{title}</Text>
-          <Text style={styles.onboardingDescription}>{description}</Text>
-          <View style={styles.onboardingBody}>{children}</View>
-          <View style={styles.onboardingFooter}>{footer}</View>
-        </View>
-      </ScrollView>
+          <View style={styles.onboardingCard}>
+            <View style={styles.onboardingStepHeader}>
+              <Text style={styles.onboardingStepLabel}>
+                {t("onboarding.step", {
+                  step: ONBOARDING_STEP_NUMBERS[step],
+                  total: ONBOARDING_TOTAL_STEPS,
+                })}
+              </Text>
+              <View style={styles.onboardingStepDots}>
+                {Array.from({ length: ONBOARDING_TOTAL_STEPS }, (_, i) => i + 1).map(
+                  (stepNumber) => (
+                    <View
+                      key={stepNumber}
+                      style={[
+                        styles.onboardingStepDot,
+                        stepNumber <= ONBOARDING_STEP_NUMBERS[step]
+                          ? styles.onboardingStepDotActive
+                          : null,
+                      ]}
+                    />
+                  ),
+                )}
+              </View>
+            </View>
+            <Text style={styles.onboardingTitle}>{title}</Text>
+            <Text style={styles.onboardingDescription}>{description}</Text>
+            <View style={styles.onboardingBody}>{children}</View>
+            <View style={styles.onboardingFooter}>{footer}</View>
+          </View>
+        </ScrollView>
+      </KeyboardAwareScreen>
     </SafeAreaView>
   );
 }
@@ -2365,23 +2376,37 @@ function ScreenScroll({
   refreshing?: boolean;
 }) {
   return (
-    <ScrollView
-      style={styles.screen}
-      contentContainerStyle={styles.screenContent}
-      keyboardShouldPersistTaps={keyboardShouldPersistTaps}
-      refreshControl={
-        onRefresh ? (
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={colors.primary}
-            colors={[colors.primary]}
-          />
-        ) : undefined
-      }
+    <KeyboardAwareScreen>
+      <ScrollView
+        style={styles.screen}
+        contentContainerStyle={[styles.screenContent, styles.keyboardAwareScrollContent]}
+        keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+        keyboardDismissMode="on-drag"
+        refreshControl={
+          onRefresh ? (
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={colors.primary}
+              colors={[colors.primary]}
+            />
+          ) : undefined
+        }
+      >
+        {children}
+      </ScrollView>
+    </KeyboardAwareScreen>
+  );
+}
+
+function KeyboardAwareScreen({ children }: { children: ReactNode }) {
+  return (
+    <KeyboardAvoidingView
+      behavior={keyboardAvoidingBehavior(Platform.OS)}
+      style={styles.keyboardAwareScreen}
     >
       {children}
-    </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -2433,6 +2458,12 @@ const styles = StyleSheet.create({
   screen: {
     backgroundColor: colors.bg,
     flex: 1,
+  },
+  keyboardAwareScreen: {
+    flex: 1,
+  },
+  keyboardAwareScrollContent: {
+    paddingBottom: spacing.xxxl * 2,
   },
   screenContent: {
     padding: spacing.lg,

@@ -1,0 +1,189 @@
+import { beforeEach, describe, expect, it, mock } from "bun:test";
+import type { RemindersApiResponse } from "@/lib/reminders/serialize";
+import type { PushSubscriptionRow } from "@tend/db";
+import * as actualDb from "@tend/db";
+
+const listPushSubscriptions = mock(() => Promise.resolve([] as PushSubscriptionRow[]));
+const markPushSubscriptionNotified = mock(() => Promise.resolve(null));
+const deletePushSubscriptionByToken = mock(() => Promise.resolve());
+const getReminderResponseForUser = mock(() =>
+  Promise.resolve({
+    reminders: [],
+    surfaceNow: [],
+    nextWindowAt: null,
+    inAvailabilityWindow: false,
+  } satisfies RemindersApiResponse),
+);
+
+mock.module("@tend/db", () => ({
+  ...actualDb,
+  listPushSubscriptions,
+  markPushSubscriptionNotified,
+  deletePushSubscriptionByToken,
+}));
+
+mock.module("@/lib/reminders/user-reminders", () => ({
+  getReminderResponseForUser,
+}));
+
+const { formatNotificationJobResult, runNotificationJob } = await import("@/lib/notifications/job");
+
+function createLogger() {
+  const messages: string[] = [];
+  return {
+    messages,
+    logger: {
+      info: (message: string) => messages.push(`info:${message}`),
+      warn: (message: string) => messages.push(`warn:${message}`),
+      error: (message: string) => messages.push(`error:${message}`),
+    },
+  };
+}
+
+function subscription(overrides: Partial<PushSubscriptionRow> = {}): PushSubscriptionRow {
+  return {
+    id: "sub-1",
+    userId: "user-1",
+    token: "ExponentPushToken[test]",
+    platform: "ios",
+    lastNotifiedItemId: null,
+    lastNotifiedAt: null,
+    createdAt: new Date("2026-06-01T12:00:00.000Z"),
+    updatedAt: new Date("2026-06-01T12:00:00.000Z"),
+    ...overrides,
+  };
+}
+
+describe("notification job", () => {
+  beforeEach(() => {
+    listPushSubscriptions.mockReset();
+    markPushSubscriptionNotified.mockReset();
+    deletePushSubscriptionByToken.mockReset();
+    getReminderResponseForUser.mockReset();
+    listPushSubscriptions.mockImplementation(() => Promise.resolve([]));
+    getReminderResponseForUser.mockImplementation(() =>
+      Promise.resolve({
+        reminders: [],
+        surfaceNow: [],
+        nextWindowAt: null,
+        inAvailabilityWindow: false,
+      }),
+    );
+  });
+
+  it("formats job result counters", () => {
+    expect(
+      formatNotificationJobResult({
+        checked: 3,
+        sent: 1,
+        skipped: 1,
+        failed: 1,
+        invalidated: 0,
+      }),
+    ).toBe("checked=3 sent=1 skipped=1 failed=1 invalidated=0");
+  });
+
+  it("logs job start and finish when there are no subscriptions", async () => {
+    const { logger, messages } = createLogger();
+    const now = new Date("2026-06-24T12:00:00.000Z");
+
+    const result = await runNotificationJob({} as never, { now, logger });
+
+    expect(result).toEqual({
+      checked: 0,
+      sent: 0,
+      skipped: 0,
+      failed: 0,
+      invalidated: 0,
+    });
+    expect(messages).toEqual([
+      "info:Notification job started: subscriptions=0 at=2026-06-24T12:00:00.000Z",
+      "info:Notification job finished: checked=0 sent=0 skipped=0 failed=0 invalidated=0",
+    ]);
+  });
+
+  it("logs skipped, sent, failed, and invalidated subscription status", async () => {
+    const { logger, messages } = createLogger();
+    const now = new Date("2026-06-24T12:00:00.000Z");
+    listPushSubscriptions.mockImplementation(() =>
+      Promise.resolve([
+        subscription({ id: "sub-skip", userId: "user-skip" }),
+        subscription({
+          id: "sub-send",
+          userId: "user-send",
+          lastNotifiedItemId: null,
+          lastNotifiedAt: null,
+        }),
+        subscription({ id: "sub-fail", userId: "user-fail" }),
+        subscription({ id: "sub-invalid", userId: "user-invalid" }),
+      ]),
+    );
+
+    getReminderResponseForUser.mockImplementation((_database, userId) => {
+      if (userId === "user-skip") {
+        return Promise.resolve({
+          reminders: [],
+          surfaceNow: [],
+          nextWindowAt: null,
+          inAvailabilityWindow: false,
+        });
+      }
+
+      return Promise.resolve({
+        reminders: [],
+        surfaceNow: [
+          {
+            itemId: `${userId}-item`,
+            name: "Plants",
+            type: "want",
+            status: "getting_stale",
+            daysSinceLastTended: 4,
+            sharedWith: null,
+            emphasis: "normal",
+            visibility: "now",
+            copy: "Plants are starting to drift from their rhythm.",
+          },
+        ],
+        nextWindowAt: null,
+        inAvailabilityWindow: true,
+      });
+    });
+
+    const result = await runNotificationJob({} as never, {
+      now,
+      logger,
+      sendPush: async (_subscription, request) => {
+        if (request.itemId === "user-send-item") {
+          return { ok: true, invalidToken: false, error: null };
+        }
+        if (request.itemId === "user-invalid-item") {
+          return { ok: false, invalidToken: true, error: "DeviceNotRegistered" };
+        }
+        return { ok: false, invalidToken: false, error: "Upstream error" };
+      },
+    });
+
+    expect(result).toEqual({
+      checked: 4,
+      sent: 1,
+      skipped: 1,
+      failed: 2,
+      invalidated: 1,
+    });
+    expect(messages).toContain(
+      "info:Notification skipped: subscriptionId=sub-skip userId=user-skip reason=no_reminder",
+    );
+    expect(messages).toContain(
+      "info:Notification sent: subscriptionId=sub-send userId=user-send itemId=user-send-item",
+    );
+    expect(messages).toContain(
+      "warn:Notification send failed: subscriptionId=sub-fail userId=user-fail itemId=user-fail-item error=Upstream error",
+    );
+    expect(messages).toContain(
+      "warn:Notification subscription invalidated: subscriptionId=sub-invalid userId=user-invalid",
+    );
+    expect(messages.at(-1)).toBe(
+      "info:Notification job finished: checked=4 sent=1 skipped=1 failed=2 invalidated=1",
+    );
+  });
+});

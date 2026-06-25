@@ -55,6 +55,7 @@ export async function POST(request: Request, context: RouteContext) {
       result.item,
       now,
       sharedUserForItem(result.item, userOrError.id, sharedUserMap),
+      userOrError.id,
     ),
     event: serializeTendEvent(result.event),
   });

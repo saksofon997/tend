@@ -18,6 +18,7 @@ export interface ItemResponse {
   rhythmDays: number;
   lifeArea: LifeArea | null;
   sharedWith: SharedTendUserResponse | null;
+  canDelete: boolean;
   lastTendedAt: string | null;
   status: TendStatus;
   daysSinceLastTended: number | null;

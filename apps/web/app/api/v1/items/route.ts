@@ -35,7 +35,12 @@ export async function GET(request: Request) {
 
   return jsonData({
     items: items.map((item) =>
-      serializeItem(item, now, sharedUserForItem(item, userOrError.id, sharedUserMap)),
+      serializeItem(
+        item,
+        now,
+        sharedUserForItem(item, userOrError.id, sharedUserMap),
+        userOrError.id,
+      ),
     ),
   });
 }
@@ -86,7 +91,14 @@ export async function POST(request: Request) {
   const sharedUserMap = await getSharedUserMapForItems(database, userOrError.id, [item]);
 
   return jsonData(
-    { item: serializeItem(item, now, sharedUserForItem(item, userOrError.id, sharedUserMap)) },
+    {
+      item: serializeItem(
+        item,
+        now,
+        sharedUserForItem(item, userOrError.id, sharedUserMap),
+        userOrError.id,
+      ),
+    },
     201,
   );
 }

@@ -9,6 +9,7 @@ const baseItem: ItemResponse = {
   rhythmDays: 7,
   lifeArea: "home",
   sharedWith: null,
+  canDelete: true,
   lastTendedAt: "2026-06-10T12:00:00.000Z",
   status: "fresh",
   daysSinceLastTended: 8,

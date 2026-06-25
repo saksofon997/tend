@@ -12,6 +12,7 @@ import { TypeBadge } from "@/components/tend/type-badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ConfirmDialog } from "@/components/ui/dialog";
 import { formatRhythm } from "@/lib/design/relative-time";
 import { useI18n } from "@/lib/i18n/client";
 import { LIFE_AREA_TRANSLATION_KEYS } from "@/lib/i18n/labels";
@@ -41,6 +42,8 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const isMustAttention = item.type === "must" && item.status === "needs_attention";
 
@@ -108,6 +111,34 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
       setEvents(detail.recentEvents);
     }
 
+    router.refresh();
+  }
+
+  async function handleDelete() {
+    setDeleting(true);
+    setError(null);
+
+    let response: Response;
+    try {
+      response = await fetch(`/api/v1/items/${item.id}?confirm=true`, {
+        method: "DELETE",
+      });
+    } catch {
+      setError(t("errors.item.delete"));
+      setDeleteConfirmOpen(false);
+      setDeleting(false);
+      return;
+    }
+
+    if (!response.ok) {
+      setError(t("errors.item.delete"));
+      setDeleteConfirmOpen(false);
+      setDeleting(false);
+      return;
+    }
+
+    setDeleteConfirmOpen(false);
+    router.push("/");
     router.refresh();
   }
 
@@ -188,6 +219,21 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
               submitLabel={t("items.edit.save")}
               submitting={submitting}
             />
+            {item.canDelete ? (
+              <div className="mt-6 border-t border-border pt-5">
+                <p className="mb-3 text-sm text-muted-foreground">
+                  {t("items.delete.description")}
+                </p>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => setDeleteConfirmOpen(true)}
+                  disabled={submitting || deleting}
+                >
+                  {deleting ? t("items.delete.deleting") : t("items.delete.action")}
+                </Button>
+              </div>
+            ) : null}
           </CardContent>
         </Card>
       ) : (
@@ -257,6 +303,22 @@ export function ItemDetailView({ user, initialItem, initialEvents }: ItemDetailV
           </ul>
         )}
       </section>
+
+      <ConfirmDialog
+        open={deleteConfirmOpen}
+        title={t("items.delete.confirmTitle")}
+        description={t("items.delete.description")}
+        confirmLabel={t("items.delete.confirm")}
+        cancelLabel={t("common.cancel")}
+        variant="destructive"
+        confirming={deleting}
+        onConfirm={handleDelete}
+        onCancel={() => {
+          if (!deleting) {
+            setDeleteConfirmOpen(false);
+          }
+        }}
+      />
     </AppShell>
   );
 }

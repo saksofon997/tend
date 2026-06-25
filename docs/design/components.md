@@ -878,7 +878,9 @@ interface ConfirmDialogProps {
   title: string;
   description: string;
   confirmLabel: string;
+  cancelLabel: string;
   variant?: "default" | "destructive";
+  confirming?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 }

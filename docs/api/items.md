@@ -1,6 +1,7 @@
 ### `GET /api/v1/items`
 
-List the signed-in user's tend items with computed status.
+List the signed-in user's tend items with computed status. Returned items include
+`canDelete`, which is `true` only when the signed-in user owns the item.
 
 **Auth:** Session cookie (required)
 
@@ -22,7 +23,7 @@ List the signed-in user's tend items with computed status.
 
 ### `POST /api/v1/items`
 
-Create a tend item. If `lastTendedAt` is omitted, it defaults to now and an initial tend event is recorded.
+Create a tend item. If `lastTendedAt` is omitted, it defaults to now and an initial tend event is recorded. The returned item includes `canDelete: true` for the owner.
 
 **Auth:** Session cookie (required)
 
@@ -49,7 +50,8 @@ Create a tend item. If `lastTendedAt` is omitted, it defaults to now and an init
 
 ### `GET /api/v1/items/:id`
 
-Fetch one item and its recent tend events.
+Fetch one item and its recent tend events. The returned item includes `canDelete`,
+which is `true` only when the signed-in user owns the item.
 
 **Auth:** Session cookie (required)
 
@@ -66,6 +68,7 @@ Fetch one item and its recent tend events.
 ### `PATCH /api/v1/items/:id`
 
 Update an item. Recomputes stored and returned status from rhythm and last tended date.
+The returned item includes `canDelete`, which is `true` only when the signed-in user owns the item.
 
 **Auth:** Session cookie (required)
 

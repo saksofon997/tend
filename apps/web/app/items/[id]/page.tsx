@@ -54,7 +54,12 @@ export default async function ItemDetailPage({ params }: ItemDetailPageProps) {
   return (
     <ItemDetailView
       user={{ displayName: user.displayName }}
-      initialItem={serializeItem(item, now, sharedUserForItem(item, user.id, sharedUserMap))}
+      initialItem={serializeItem(
+        item,
+        now,
+        sharedUserForItem(item, user.id, sharedUserMap),
+        user.id,
+      )}
       initialEvents={recentEvents.map(serializeTendEvent)}
     />
   );

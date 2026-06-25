@@ -35,7 +35,7 @@ export default async function HomePage() {
     <HomeView
       user={{ displayName: user.displayName }}
       initialItems={items.map((item) =>
-        serializeItem(item, now, sharedUserForItem(item, user.id, sharedUserMap)),
+        serializeItem(item, now, sharedUserForItem(item, user.id, sharedUserMap), user.id),
       )}
     />
   );

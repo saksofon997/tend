@@ -42,7 +42,12 @@ export async function GET(_request: Request, context: RouteContext) {
   ]);
 
   return jsonData({
-    item: serializeItem(item, now, sharedUserForItem(item, userOrError.id, sharedUserMap)),
+    item: serializeItem(
+      item,
+      now,
+      sharedUserForItem(item, userOrError.id, sharedUserMap),
+      userOrError.id,
+    ),
     recentEvents: recentEvents.map(serializeTendEvent),
   });
 }
@@ -135,7 +140,12 @@ export async function PATCH(request: Request, context: RouteContext) {
   const sharedUserMap = await getSharedUserMapForItems(database, userOrError.id, [item]);
 
   return jsonData({
-    item: serializeItem(item, now, sharedUserForItem(item, userOrError.id, sharedUserMap)),
+    item: serializeItem(
+      item,
+      now,
+      sharedUserForItem(item, userOrError.id, sharedUserMap),
+      userOrError.id,
+    ),
   });
 }
 

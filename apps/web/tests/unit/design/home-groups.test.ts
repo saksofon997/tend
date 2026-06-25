@@ -13,6 +13,7 @@ function item(overrides: Partial<ItemResponse> & Pick<ItemResponse, "id" | "name
     rhythmDays: 7,
     lifeArea: null,
     sharedWith: null,
+    canDelete: true,
     lastTendedAt: "2026-06-10T12:00:00.000Z",
     status: "getting_stale",
     daysSinceLastTended: 5,

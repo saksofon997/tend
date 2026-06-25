@@ -151,6 +151,12 @@ export class TendApi {
     });
   }
 
+  async deleteItem(itemId: string) {
+    return this.request<{ ok: true }>(`/api/v1/items/${itemId}?confirm=true`, {
+      method: "DELETE",
+    });
+  }
+
   async tendItem(itemId: string) {
     return this.request<{ item: ItemResponse }>(`/api/v1/items/${itemId}/tend`, {
       method: "POST",

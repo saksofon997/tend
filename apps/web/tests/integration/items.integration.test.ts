@@ -91,17 +91,20 @@ describe("items integration", () => {
 
       expect(createResponse.status).toBe(201);
       const created = (await createResponse.json()) as {
-        item: { id: string; status: string; name: string };
+        item: { id: string; status: string; name: string; canDelete: boolean };
       };
       expect(created.item.name).toBe("Bed sheets");
       expect(created.item.status).toBe("fresh");
+      expect(created.item.canDelete).toBe(true);
 
       const listResponse = await getItems(
         authedRequest("http://localhost/api/v1/items", sessionId),
       );
       expect(listResponse.status).toBe(200);
-      const listed = (await listResponse.json()) as { items: Array<{ id: string }> };
-      expect(listed.items.some((item) => item.id === created.item.id)).toBe(true);
+      const listed = (await listResponse.json()) as {
+        items: Array<{ id: string; canDelete: boolean }>;
+      };
+      expect(listed.items.find((item) => item.id === created.item.id)?.canDelete).toBe(true);
 
       const tendResponse = await tendItem(
         authedRequest(`http://localhost/api/v1/items/${created.item.id}/tend`, sessionId, {
@@ -160,19 +163,37 @@ describe("items integration", () => {
 
       expect(createResponse.status).toBe(201);
       const created = (await createResponse.json()) as {
-        item: { id: string; sharedWith: { email: string; displayName: string } | null };
+        item: {
+          id: string;
+          canDelete: boolean;
+          sharedWith: { email: string; displayName: string } | null;
+        };
       };
       expect(created.item.sharedWith?.email).toBe(friend.email);
+      expect(created.item.canDelete).toBe(true);
 
       const friendListResponse = await getItems(
         authedRequest("http://localhost/api/v1/items", friend.sessionId),
       );
       expect(friendListResponse.status).toBe(200);
       const friendList = (await friendListResponse.json()) as {
-        items: Array<{ id: string; sharedWith: { email: string } | null }>;
+        items: Array<{ id: string; canDelete: boolean; sharedWith: { email: string } | null }>;
       };
       const sharedForFriend = friendList.items.find((item) => item.id === created.item.id);
       expect(sharedForFriend?.sharedWith?.email).toBe(owner.email);
+      expect(sharedForFriend?.canDelete).toBe(false);
+
+      const friendDeleteResponse = await deleteItem(
+        authedRequest(
+          `http://localhost/api/v1/items/${created.item.id}?confirm=true`,
+          friend.sessionId,
+          {
+            method: "DELETE",
+          },
+        ),
+        { params: Promise.resolve({ id: created.item.id }) },
+      );
+      expect(friendDeleteResponse.status).toBe(404);
 
       const tendedAt = "2026-06-18T10:00:00.000Z";
       const friendTendResponse = await tendItem(

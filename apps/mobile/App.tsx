@@ -1464,6 +1464,11 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
               await loadItems();
               await fetchReminders();
             }}
+            onDeleted={async () => {
+              setEditingItem(null);
+              await loadItems();
+              await fetchReminders();
+            }}
           />
         ) : null}
       </Modal>
@@ -1769,16 +1774,19 @@ function EditItemScreen({
   api,
   item,
   onClose,
+  onDeleted,
   onSaved,
 }: {
   api: TendApi;
   item: ItemResponse;
   onClose: () => void;
+  onDeleted: () => void | Promise<void>;
   onSaved: () => void | Promise<void>;
 }) {
   const initialValues = useMemo(() => itemFormValuesFromItem(item), [item]);
   const [values, setValues] = useState(initialValues);
   const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function saveItem(formValues: typeof values) {
@@ -1800,6 +1808,28 @@ function EditItemScreen({
     } finally {
       setSubmitting(false);
     }
+  }
+
+  function confirmDelete() {
+    Alert.alert(t("items.delete.confirmTitle"), t("items.delete.description"), [
+      { text: t("common.cancel"), style: "cancel" },
+      {
+        text: t("items.delete.confirm"),
+        style: "destructive",
+        onPress: async () => {
+          setDeleting(true);
+          setError(null);
+
+          try {
+            await api.deleteItem(item.id);
+            await onDeleted();
+          } catch (deleteError) {
+            setError(getErrorMessage(deleteError, t("errors.item.delete")));
+            setDeleting(false);
+          }
+        },
+      },
+    ]);
   }
 
   return (
@@ -1831,6 +1861,25 @@ function EditItemScreen({
           submitting={submitting}
           formError={error}
         />
+        {item.canDelete ? (
+          <View style={styles.deleteItemSection}>
+            <Text style={styles.deleteItemHelp}>{t("items.delete.description")}</Text>
+            <TouchableOpacity
+              accessibilityRole="button"
+              disabled={submitting || deleting}
+              style={[
+                styles.deleteItemButton,
+                submitting || deleting ? styles.buttonDisabled : null,
+              ]}
+              onPress={confirmDelete}
+            >
+              {deleting ? <ActivityIndicator size="small" color={colors.error} /> : null}
+              <Text style={styles.deleteItemButtonText}>
+                {deleting ? t("items.delete.deleting") : t("items.delete.action")}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
       </ScreenScroll>
     </SafeAreaView>
   );
@@ -3065,6 +3114,36 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: {
     opacity: 0.55,
+  },
+  deleteItemSection: {
+    borderColor: colors.border,
+    borderTopWidth: 1,
+    marginTop: spacing.xl,
+    paddingTop: spacing.lg,
+  },
+  deleteItemHelp: {
+    color: colors.textMuted,
+    fontFamily: fonts.body,
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: spacing.sm,
+  },
+  deleteItemButton: {
+    alignItems: "center",
+    alignSelf: "flex-start",
+    backgroundColor: colors.errorBg,
+    borderColor: colors.error,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.xs,
+    minHeight: 42,
+    paddingHorizontal: spacing.md,
+  },
+  deleteItemButtonText: {
+    color: colors.error,
+    fontFamily: fonts.bodySemibold,
+    fontSize: 14,
   },
   iconButton: {
     alignItems: "center",

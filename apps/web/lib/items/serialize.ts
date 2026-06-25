@@ -9,6 +9,7 @@ export interface ItemResponse {
   rhythmDays: number;
   lifeArea: LifeArea | null;
   sharedWith: SharedTendUserResponse | null;
+  canDelete: boolean;
   lastTendedAt: string | null;
   status: TendStatus;
   daysSinceLastTended: number | null;
@@ -38,6 +39,7 @@ export function serializeItem(
   item: TendItemRow,
   now = new Date(),
   sharedWith: SharedTendUserResponse | null = null,
+  currentUserId?: string,
 ): ItemResponse {
   const status = computeStatus({
     lastTendedAt: item.lastTendedAt,
@@ -52,6 +54,7 @@ export function serializeItem(
     rhythmDays: item.rhythmDays,
     lifeArea: item.lifeArea,
     sharedWith,
+    canDelete: currentUserId ? item.userId === currentUserId : false,
     lastTendedAt: toIso(item.lastTendedAt),
     status,
     daysSinceLastTended: daysSinceLastTended(item.lastTendedAt, now),

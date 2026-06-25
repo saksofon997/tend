@@ -10,10 +10,19 @@ import { t } from "@i18n";
 import { useCallback, useEffect, useState } from "react";
 import { Platform } from "react-native";
 
-const EXPO_PUSH_TOKEN_PATTERN = /^(ExponentPushToken|ExpoPushToken)\[[\w-]+\]$/;
+const LEGACY_EXPO_PUSH_TOKEN_PATTERN = /^(ExponentPushToken|ExpoPushToken)\[[\w-]+\]$/;
 
-export function isExpoPushToken(token: string): boolean {
-  return EXPO_PUSH_TOKEN_PATTERN.test(token);
+export function isLegacyExpoPushToken(token: string): boolean {
+  return LEGACY_EXPO_PUSH_TOKEN_PATTERN.test(token);
+}
+
+export function isNativePushToken(token: string): boolean {
+  return (
+    token.length >= 10 &&
+    token.length <= 4096 &&
+    !/\s/u.test(token) &&
+    !isLegacyExpoPushToken(token)
+  );
 }
 
 function currentPushPlatform(): "ios" | "android" {
@@ -31,7 +40,7 @@ export async function saveRegisteredPushToken(
   previousToken: string | null,
   platform: "ios" | "android" = currentPushPlatform(),
 ) {
-  if (previousToken && previousToken !== token && isExpoPushToken(previousToken)) {
+  if (previousToken && previousToken !== token) {
     await api.deletePushSubscription(previousToken).catch(() => null);
   }
 
@@ -44,7 +53,7 @@ export async function deleteRegisteredPushToken(
   storedToken: string | null,
 ) {
   const tokenToDelete = pushToken ?? storedToken;
-  if (tokenToDelete && isExpoPushToken(tokenToDelete)) {
+  if (tokenToDelete) {
     await api.deletePushSubscription(tokenToDelete);
   }
 }
@@ -60,7 +69,8 @@ export function usePushNotifications(api: TendApi) {
     async function loadPushState() {
       await configurePushNotifications();
       const storedToken = await getStoredPushToken();
-      if (storedToken && !isExpoPushToken(storedToken)) {
+      if (storedToken && !isNativePushToken(storedToken)) {
+        await api.deletePushSubscription(storedToken).catch(() => null);
         await disablePushNotifications().catch(() => null);
         if (mounted) {
           setPushToken(null);

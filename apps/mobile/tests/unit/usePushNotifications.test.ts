@@ -2,7 +2,8 @@ import { describe, expect, it } from "bun:test";
 import "../helpers/nativeModuleMocks";
 import {
   deleteRegisteredPushToken,
-  isExpoPushToken,
+  isLegacyExpoPushToken,
+  isNativePushToken,
   saveRegisteredPushToken,
 } from "@hooks/usePushNotifications";
 
@@ -24,49 +25,45 @@ function pushApi() {
 }
 
 describe("push notification subscription sync", () => {
-  it("recognizes Expo push tokens", () => {
-    expect(isExpoPushToken("ExpoPushToken[abc-123]")).toBe(true);
-    expect(isExpoPushToken("ExponentPushToken[abc-123]")).toBe(true);
-    expect(isExpoPushToken("native-device-token")).toBe(false);
+  it("recognizes native tokens and legacy Expo tokens", () => {
+    expect(isLegacyExpoPushToken("ExpoPushToken[abc-123]")).toBe(true);
+    expect(isLegacyExpoPushToken("ExponentPushToken[abc-123]")).toBe(true);
+    expect(isNativePushToken("native-device-token")).toBe(true);
+    expect(isNativePushToken("ExpoPushToken[abc-123]")).toBe(false);
   });
 
   it("saves the enabled device token to the API", async () => {
     const { api, calls } = pushApi();
 
-    await saveRegisteredPushToken(api, "ExpoPushToken[new-token]", null, "ios");
+    await saveRegisteredPushToken(api, "native-fcm-token-new", null, "ios");
 
-    expect(calls).toEqual([{ method: "save", platform: "ios", token: "ExpoPushToken[new-token]" }]);
+    expect(calls).toEqual([{ method: "save", platform: "ios", token: "native-fcm-token-new" }]);
   });
 
   it("removes a previous server token when enabling refreshes the token", async () => {
     const { api, calls } = pushApi();
 
-    await saveRegisteredPushToken(
-      api,
-      "ExpoPushToken[new-token]",
-      "ExpoPushToken[old-token]",
-      "android",
-    );
+    await saveRegisteredPushToken(api, "native-fcm-token-new", "native-fcm-token-old", "android");
 
     expect(calls).toEqual([
-      { method: "delete", token: "ExpoPushToken[old-token]" },
-      { method: "save", platform: "android", token: "ExpoPushToken[new-token]" },
+      { method: "delete", token: "native-fcm-token-old" },
+      { method: "save", platform: "android", token: "native-fcm-token-new" },
     ]);
   });
 
   it("uses the stored token fallback when disabling before state is populated", async () => {
     const { api, calls } = pushApi();
 
+    await deleteRegisteredPushToken(api, null, "native-fcm-token-stored");
+
+    expect(calls).toEqual([{ method: "delete", token: "native-fcm-token-stored" }]);
+  });
+
+  it("deletes legacy Expo tokens from the server when disabling", async () => {
+    const { api, calls } = pushApi();
+
     await deleteRegisteredPushToken(api, null, "ExpoPushToken[stored-token]");
 
     expect(calls).toEqual([{ method: "delete", token: "ExpoPushToken[stored-token]" }]);
-  });
-
-  it("does not delete legacy native tokens from the server", async () => {
-    const { api, calls } = pushApi();
-
-    await deleteRegisteredPushToken(api, null, "native-device-token");
-
-    expect(calls).toEqual([]);
   });
 });

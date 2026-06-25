@@ -44,7 +44,7 @@ function subscription(overrides: Partial<PushSubscriptionRow> = {}): PushSubscri
   return {
     id: "sub-1",
     userId: "user-1",
-    token: "ExponentPushToken[test]",
+    token: "native-fcm-token-test",
     platform: "ios",
     lastNotifiedItemId: null,
     lastNotifiedAt: null,

@@ -1,6 +1,6 @@
 ### `POST /api/v1/push-subscriptions`
 
-Save or refresh the signed-in user's Expo push token for server-side reminder notifications.
+Save or refresh the signed-in user's native FCM device token for server-side reminder notifications.
 
 **Auth:** Session cookie (required)
 
@@ -8,7 +8,7 @@ Save or refresh the signed-in user's Expo push token for server-side reminder no
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| token | string | yes | Expo push token, for example `ExpoPushToken[...]` |
+| token | string | yes | Native FCM device token returned by the mobile app |
 | platform | `"ios"` \| `"android"` | yes | Device platform |
 
 **Responses**
@@ -22,14 +22,14 @@ Save or refresh the signed-in user's Expo push token for server-side reminder no
 **Example**
 
 ```json
-{ "token": "ExpoPushToken[example]", "platform": "ios" }
+{ "token": "fcm-device-token-example", "platform": "android" }
 ```
 
 ---
 
 ### `DELETE /api/v1/push-subscriptions`
 
-Remove a saved Expo push token for the signed-in user.
+Remove a saved push token for the signed-in user.
 
 **Auth:** Session cookie (required)
 
@@ -37,7 +37,7 @@ Remove a saved Expo push token for the signed-in user.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| token | string | yes | Expo push token to remove |
+| token | string | yes | Push token to remove. Legacy Expo tokens are accepted here for cleanup. |
 
 **Responses**
 
@@ -51,9 +51,9 @@ Remove a saved Expo push token for the signed-in user.
 
 ### `GET /api/v1/jobs/notifications`
 
-Run the server-side reminder notification job manually. Production scheduling is handled by the standalone Node worker (`bun run notifications:worker`), which runs the same job every 30 minutes by default and sends at most one relevant push per device when a notification is due.
+Run the server-side reminder notification job. Production scheduling is handled by cron-job.org calling this endpoint every 30 minutes, which sends at most one relevant push per device when a notification is due.
 
-**Auth:** `Authorization: Bearer <NOTIFICATIONS_JOB_SECRET>` or `Authorization: Bearer <CRON_SECRET>` (required)
+**Auth:** `Authorization: Bearer <NOTIFICATIONS_JOB_SECRET>` (required)
 
 **Responses**
 
@@ -67,10 +67,10 @@ Run the server-side reminder notification job manually. Production scheduling is
 | Field | Type | Description |
 |-------|------|-------------|
 | checked | number | Saved subscriptions considered |
-| sent | number | Push notifications accepted by Expo |
+| sent | number | Push notifications accepted by FCM |
 | skipped | number | Subscriptions with no due notification |
 | failed | number | Push attempts that failed |
-| invalidated | number | Invalid tokens removed after Expo rejected them |
+| invalidated | number | Invalid tokens removed after FCM rejected them |
 
 **Notes**
 

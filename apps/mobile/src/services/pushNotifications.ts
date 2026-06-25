@@ -1,6 +1,5 @@
 import { isPushNotificationsSupported } from "@utils/pushNotificationsSupport";
 import { storage } from "@utils/storage";
-import Constants from "expo-constants";
 import * as Device from "expo-device";
 import { Platform } from "react-native";
 
@@ -71,10 +70,6 @@ export async function configurePushNotifications() {
   }
 }
 
-function getExpoProjectId(): string | undefined {
-  return Constants.easConfig?.projectId ?? Constants.expoConfig?.extra?.eas?.projectId;
-}
-
 export async function registerForPushNotifications(): Promise<PushRegistrationResult> {
   if (!isPushNotificationsSupported()) {
     return {
@@ -117,10 +112,7 @@ export async function registerForPushNotifications(): Promise<PushRegistrationRe
   }
 
   try {
-    const projectId = getExpoProjectId();
-    const tokenResponse = projectId
-      ? await Notifications.getExpoPushTokenAsync({ projectId })
-      : await Notifications.getExpoPushTokenAsync();
+    const tokenResponse = await Notifications.getDevicePushTokenAsync();
     const token = tokenResponse.data;
     await storage.setString(PUSH_TOKEN_STORAGE_KEY, token);
 

@@ -1,9 +1,8 @@
 import { beforeEach, describe, expect, it, mock } from "bun:test";
-import { constantsState, storageCalls } from "../helpers/nativeModuleMocks";
+import { storageCalls } from "../helpers/nativeModuleMocks";
 import "../helpers/nativeModuleMocks";
 
 let permissionStatus = "granted";
-let expoTokenOptions: unknown = null;
 let cancelScheduledCalls = 0;
 
 mock.module("expo-notifications", () => ({
@@ -11,9 +10,8 @@ mock.module("expo-notifications", () => ({
   cancelAllScheduledNotificationsAsync: async () => {
     cancelScheduledCalls += 1;
   },
-  getExpoPushTokenAsync: async (options?: unknown) => {
-    expoTokenOptions = options ?? null;
-    return { data: "ExpoPushToken[test-token]" };
+  getDevicePushTokenAsync: async () => {
+    return { data: "native-fcm-token-test" };
   },
   getPermissionsAsync: async () => ({ status: permissionStatus }),
   requestPermissionsAsync: async () => ({ status: permissionStatus }),
@@ -28,25 +26,18 @@ describe("push notifications", () => {
   beforeEach(() => {
     storageCalls.length = 0;
     permissionStatus = "granted";
-    expoTokenOptions = null;
     cancelScheduledCalls = 0;
-    Object.assign(constantsState, {
-      appOwnership: "standalone",
-      easConfig: { projectId: "project-from-eas" },
-      expoConfig: { extra: { eas: { projectId: "project-from-config" } } },
-    });
   });
 
-  it("registers an Expo push token with the configured project id", async () => {
+  it("registers a native device push token for server-side FCM sends", async () => {
     const result = await registerForPushNotifications();
 
     expect(result).toEqual({
       status: "registered",
-      token: "ExpoPushToken[test-token]",
+      token: "native-fcm-token-test",
     });
-    expect(expoTokenOptions).toEqual({ projectId: "project-from-eas" });
     expect(storageCalls).toEqual([
-      { action: "set", key: "tend.pushToken", value: "ExpoPushToken[test-token]" },
+      { action: "set", key: "tend.pushToken", value: "native-fcm-token-test" },
     ]);
   });
 

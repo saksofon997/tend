@@ -9,7 +9,6 @@
     "build": "turbo run build",
     "test": "bun run test:scripts && turbo run test",
     "test:scripts": "bun test ./scripts/tests",
-    "notifications:worker": "bun --cwd apps/web run notifications:worker",
     "ci:check": "bun run lint && bun run db:generate && bun run db:migrate && bun run test && bun run build",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",

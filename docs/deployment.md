@@ -79,6 +79,9 @@ In **Project → Settings → Environment Variables**, add:
 | `DATABASE_URL_UNPOOLED` | Neon **direct** connection string | Production, Preview, Development |
 | `SESSION_SECRET` | Random 32+ char secret (`openssl rand -base64 32`) | Production, Preview, Development |
 | `NOTIFICATIONS_JOB_SECRET` | Random token for manually triggering the notification job endpoint | Production, Preview |
+| `FIREBASE_PROJECT_ID` | Firebase project ID | Production, Preview |
+| `FIREBASE_CLIENT_EMAIL` | Firebase service-account client email | Production, Preview |
+| `FIREBASE_PRIVATE_KEY` | Firebase service-account private key with newlines escaped as `\n` | Production, Preview |
 | `NODE_ENV` | `production` | Production only |
 
 **Optional:** install the [Neon Vercel integration](https://vercel.com/integrations/neon) — it can inject `DATABASE_URL` and `DATABASE_URL_UNPOOLED` automatically.
@@ -95,24 +98,24 @@ https://<your-project>.vercel.app/api/v1/health
 
 Expect `"database": "ok"` when `DATABASE_URL` is set correctly.
 
-### Server-side notification worker
+### Notification scheduling with cron-job.org
 
-Vercel's free tier does not include Cron Jobs. Reminder push notifications now run from a standalone Node worker using `node-cron`; deploy it anywhere that can keep a Bun/Node process running with the same `DATABASE_URL` as the web app.
+Reminder push notifications run through the protected HTTP job endpoint and can be scheduled for free with [cron-job.org](https://cron-job.org/). Use the canonical app host, not the `*.vercel.app` deployment URL, so Vercel preview-domain redirects are not involved.
 
-Run from the repo root:
+Create a cron-job.org job with:
 
-```bash
-bun run notifications:worker
-```
+| Setting | Value |
+|---------|-------|
+| Title | `Tend notification job` |
+| URL | `https://app.tend.qzz.io/api/v1/jobs/notifications` |
+| Schedule | Every 30 minutes |
+| Request method | `GET` |
+| Request header | `Authorization: Bearer <NOTIFICATIONS_JOB_SECRET>` |
+| Success condition | HTTP 2xx response |
 
-Optional worker env vars:
+The endpoint is listed as a public path in middleware so it can be reached without a session cookie, but the route still rejects requests unless the bearer token matches `NOTIFICATIONS_JOB_SECRET`. A successful response returns counters: `checked`, `sent`, `skipped`, `failed`, and `invalidated`.
 
-| Name | Default | Description |
-|------|---------|-------------|
-| `NOTIFICATIONS_JOB_CRON` | `*/30 * * * *` | Cron expression for the notification job |
-| `NOTIFICATIONS_JOB_RUN_ON_START` | `false` | Set to `true` to run once when the worker boots |
-
-The worker calls the notification job directly through the database; it does not need to hit `/api/v1/jobs/notifications`. Keep `NOTIFICATIONS_JOB_SECRET` configured only if you want the HTTP endpoint available as a protected manual/admin trigger.
+The Firebase Web Push certificate key pair is not used for native mobile sends. For Android, the app must be built with the Firebase Android app config (`apps/mobile/google-services.json`). For iOS FCM delivery, configure an iOS Firebase app and APNs credentials in Firebase before expecting iOS device tokens to receive FCM messages.
 
 ### Custom domains (before Cloudflare)
 

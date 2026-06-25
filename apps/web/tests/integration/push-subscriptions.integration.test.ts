@@ -67,20 +67,20 @@ function authedRequest(url: string, sessionId: string, init?: RequestInit) {
 }
 
 describe("push subscriptions integration", () => {
-  it("saves and deletes the signed-in user's Expo push token", async () => {
+  it("saves and deletes the signed-in user's native FCM push token", async () => {
     if (!(await isDatabaseAvailable())) {
       console.warn("Skipping: database not available");
       return;
     }
 
     const { email, sessionId } = await registerTestUser();
-    const token = `ExpoPushToken[${crypto.randomUUID()}]`;
+    const token = `native-fcm-token-${crypto.randomUUID()}`;
 
     try {
       const invalidResponse = await savePushSubscription(
         authedRequest("http://localhost/api/v1/push-subscriptions", sessionId, {
           method: "POST",
-          body: JSON.stringify({ token: "native-token", platform: "ios" }),
+          body: JSON.stringify({ token: "ExpoPushToken[legacy-token]", platform: "ios" }),
         }),
       );
       expect(invalidResponse.status).toBe(400);

@@ -193,6 +193,15 @@ Before sharing with testers, walk through [`docs/manual-test-script.md`](docs/ma
 
 Production hosting uses **Vercel** (app), **Neon** (Postgres), and **Cloudflare** (DNS). Step-by-step setup: [`docs/deployment.md`](docs/deployment.md).
 
+Reminder push notifications are triggered by an external scheduler. The free setup uses [cron-job.org](https://cron-job.org/) to call the protected notification job endpoint every 30 minutes:
+
+```text
+GET https://app.tend.qzz.io/api/v1/jobs/notifications
+Authorization: Bearer <NOTIFICATIONS_JOB_SECRET>
+```
+
+The Vercel project must have `DATABASE_URL`, `SESSION_SECRET`, `NOTIFICATIONS_JOB_SECRET`, and Firebase Cloud Messaging service-account env vars configured. See [`docs/deployment.md`](docs/deployment.md#notification-scheduling-with-cron-joborg) for the full checklist.
+
 ### API documentation
 
 HTTP endpoints are documented under [`docs/api/`](docs/api/README.md) as they are implemented. Base path: `/api/v1`.

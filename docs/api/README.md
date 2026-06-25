@@ -29,7 +29,8 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 
 | Date | Change |
 |------|--------|
-| 2026-06-22 | Switched server-side notifications from Vercel Cron to the standalone Node notification worker |
+| 2026-06-25 | Switched server-side notification sends from Expo Push to FCM native device tokens |
+| 2026-06-25 | Removed the standalone notification worker; scheduling is handled by cron-job.org hitting the HTTP job endpoint |
 | 2026-06-19 | Added push subscription endpoints and 30-minute server-side notification job |
 | 2026-06-17 | Added user settings endpoint for timezone-aware reminders |
 | 2026-06-17 | Health responses include API `version`; footer shows app and API versions |

@@ -5,8 +5,8 @@ import { runNotificationJob } from "@/lib/notifications/job";
 export const runtime = "nodejs";
 
 function getJobSecrets(): string[] {
-  return [process.env.NOTIFICATIONS_JOB_SECRET, process.env.CRON_SECRET].filter(
-    (secret): secret is string => Boolean(secret),
+  return [process.env.NOTIFICATIONS_JOB_SECRET].filter((secret): secret is string =>
+    Boolean(secret),
   );
 }
 

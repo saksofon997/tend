@@ -5,8 +5,8 @@ import {
   listPushSubscriptions,
   markPushSubscriptionNotified,
 } from "@tend/db";
-import { sendExpoPushNotification } from "./expo-push";
-import type { PushSendResult } from "./expo-push";
+import { getMissingFcmConfiguration, sendFcmPushNotification } from "./fcm-push";
+import type { PushSendResult } from "./fcm-push";
 import {
   buildTendNotificationRequest,
   isNotificationDue,
@@ -50,7 +50,7 @@ export async function runNotificationJob(
   const sendPush =
     options.sendPush ??
     ((subscription, request) =>
-      sendExpoPushNotification({
+      sendFcmPushNotification({
         to: subscription.token,
         title: request.title,
         body: request.body,
@@ -69,6 +69,12 @@ export async function runNotificationJob(
   logger.info(
     `Notification job started: subscriptions=${subscriptions.length} at=${now.toISOString()}`,
   );
+  const missingFcmConfiguration = getMissingFcmConfiguration();
+  if (subscriptions.length > 0 && missingFcmConfiguration.length > 0) {
+    logger.error(
+      `Notification job cannot send FCM pushes until configuration is complete: missing=${missingFcmConfiguration.join(",")}`,
+    );
+  }
 
   const remindersByUserId = new Map<
     string,

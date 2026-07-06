@@ -164,8 +164,9 @@ export class TendApi {
     });
   }
 
-  async listActivity() {
-    return this.request<{ events: ActivityEntryResponse[] }>("/api/v1/activity");
+  async listActivity(limit?: number) {
+    const query = limit ? `?limit=${encodeURIComponent(limit)}` : "";
+    return this.request<{ events: ActivityEntryResponse[] }>(`/api/v1/activity${query}`);
   }
 
   async updateActivity(eventId: string, tendedAt: string) {

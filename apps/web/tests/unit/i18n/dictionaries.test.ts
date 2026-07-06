@@ -9,6 +9,10 @@ describe("web i18n dictionaries", () => {
   it("includes Serbian shell and landing copy", () => {
     expect(dictionaries.sr["nav.home"]).toBe("Početna");
     expect(dictionaries.sr["footer.appReleaseSoon"]).toBe("Izdanje aplikacije uskoro...");
+    expect(dictionaries.en["landing.checkIn.preview.imageLabel"]).toBe(
+      "Preview of the Tend Check In screen",
+    );
+    expect(dictionaries.sr["landing.checkIn.preview.item"]).toBe("Zalivanje sobnih biljaka");
   });
 
   it("includes Serbian promo and item action copy", () => {

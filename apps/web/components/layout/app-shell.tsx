@@ -15,6 +15,7 @@ interface AppShellProps {
 
 const NAV_ITEMS = [
   { href: "/", labelKey: "nav.home" },
+  { href: "/check-in", labelKey: "nav.checkIn" },
   { href: "/activity", labelKey: "nav.activity" },
   { href: "/settings/availability", labelKey: "nav.availability" },
 ] as const;

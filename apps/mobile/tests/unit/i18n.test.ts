@@ -27,12 +27,16 @@ describe("mobile i18n", () => {
       "Use must sparingly for things that truly cannot drift.",
     );
     expect(t("items.add.rhythm.custom")).toBe("Custom interval");
+    expect(t("items.add.sharedWith.helper")).toBe("Optional. Enter the email they use for Tend.");
   });
 
   it("uses product-facing notification setting success copy", () => {
     setLocale("en");
     expect(t("settings.notifications.enabled")).toBe("Tend can send reminders to this phone.");
     expect(t("settings.notifications.disabled")).toBe("Reminders are off on this phone.");
+    expect(t("settings.notifications.on")).toBe("On");
+    expect(t("settings.notifications.off")).toBe("Off");
+    expect(t("settings.availability.button")).toBe("Set availability");
   });
 
   it("uses web-aligned onboarding copy", () => {

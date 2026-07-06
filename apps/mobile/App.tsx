@@ -14,14 +14,23 @@ import { refreshHomeData } from "@/utils/homeRefresh";
 import { keyboardAvoidingBehavior } from "@/utils/keyboardAvoidance";
 import { formatRelativeFromDays } from "@/utils/relativeTime";
 import { reminderItemIdsKey, selectReminderBannerItems } from "@/utils/reminderBanner";
-import { type TabKey, getTabTransition, resolveHardwareBackAction } from "@/utils/tabTransition";
+import {
+  type TabKey,
+  getTabTransitionTarget,
+  resolveHardwareBackAction,
+} from "@/utils/tabTransition";
 import { TendApi } from "@api/tendApi";
 import { DatePickerField } from "@components/date-picker-field";
 import { ItemForm } from "@components/item-form";
 import { Chip } from "@components/life-area-picker";
 import { PresetSuggestions } from "@components/preset-suggestions";
 import { PrimaryButton } from "@components/primary-button";
-import { ActivitySkeleton, AvailabilitySkeleton, HomeItemsSkeleton } from "@components/skeleton";
+import {
+  ActivitySkeleton,
+  AvailabilitySkeleton,
+  CheckInSkeleton,
+  HomeItemsSkeleton,
+} from "@components/skeleton";
 import { TimeSelect } from "@components/time-select";
 import { useActivityEvents } from "@hooks/useActivityEvents";
 import { useAvailabilityWindows } from "@hooks/useAvailabilityWindows";
@@ -38,8 +47,9 @@ import {
   setLocale,
   t,
 } from "@i18n";
-import { PRESETS_BY_AREA } from "@tend/domain";
+import { PRESETS_BY_AREA, buildCheckInSummary } from "@tend/domain";
 import {
+  type CheckInSummary,
   type LifeArea,
   type TendItemType,
   type TendPreset,
@@ -57,14 +67,19 @@ import { StatusBar } from "expo-status-bar";
 import {
   Activity,
   CalendarClock,
+  CalendarDays,
+  ChartNoAxesColumn,
   Check,
   ChevronDown,
+  HeartHandshake,
   Home,
+  ListChecks,
   LogOut,
   Pencil,
   Plus,
   Settings,
   SlidersHorizontal,
+  Sprout,
   Trash2,
   Users,
 } from "lucide-react-native";
@@ -96,7 +111,7 @@ function tabItems() {
     { key: "home", label: t("nav.home"), Icon: Home },
     { key: "activity", label: t("nav.activity"), Icon: Activity },
     { key: "add", label: t("nav.add"), Icon: Plus },
-    { key: "availability", label: t("nav.availability"), Icon: CalendarClock },
+    { key: "checkIn", label: t("nav.checkIn"), Icon: ChartNoAxesColumn },
     { key: "settings", label: t("nav.settings"), Icon: Settings },
   ] as const;
 }
@@ -509,8 +524,8 @@ function AuthedApp({
             return <AddItemScreen api={api} onSaved={() => setActiveTab("home")} />;
           }
 
-          if (tab === "availability") {
-            return <AvailabilityScreen api={api} />;
+          if (tab === "checkIn") {
+            return <CheckInScreen api={api} />;
           }
 
           return (
@@ -536,49 +551,41 @@ function AnimatedTabScreen({
   activeTab: TabKey;
   children: (tab: TabKey) => ReactNode;
 }) {
-  const [renderedTab, setRenderedTab] = useState(activeTab);
+  const previousTab = useRef(activeTab);
   const opacity = useRef(new Animated.Value(1)).current;
   const translateX = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (activeTab === renderedTab) {
+    if (activeTab === previousTab.current) {
       return;
     }
 
-    const transition = getTabTransition(renderedTab, activeTab);
+    const transition = getTabTransitionTarget(previousTab.current, activeTab);
     const translate = transition.axis === "x" ? translateX : translateY;
     const idleTranslate = transition.axis === "x" ? translateY : translateX;
+    previousTab.current = transition.renderedTab;
+
+    opacity.stopAnimation();
+    translateX.stopAnimation();
+    translateY.stopAnimation();
     idleTranslate.setValue(0);
+    translate.setValue(transition.enterOffset);
+    opacity.setValue(0);
 
     Animated.parallel([
       Animated.timing(opacity, {
-        duration: 140,
-        toValue: 0,
+        duration: 180,
+        toValue: 1,
         useNativeDriver: true,
       }),
       Animated.timing(translate, {
-        duration: 140,
-        toValue: transition.exitOffset,
+        duration: 180,
+        toValue: 0,
         useNativeDriver: true,
       }),
-    ]).start(() => {
-      setRenderedTab(activeTab);
-      translate.setValue(transition.enterOffset);
-      Animated.parallel([
-        Animated.timing(opacity, {
-          duration: 200,
-          toValue: 1,
-          useNativeDriver: true,
-        }),
-        Animated.timing(translate, {
-          duration: 200,
-          toValue: 0,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    });
-  }, [activeTab, opacity, renderedTab, translateX, translateY]);
+    ]).start();
+  }, [activeTab, opacity, translateX, translateY]);
 
   return (
     <Animated.View
@@ -590,7 +597,7 @@ function AnimatedTabScreen({
         },
       ]}
     >
-      {children(renderedTab)}
+      {children(activeTab)}
     </Animated.View>
   );
 }
@@ -1536,6 +1543,248 @@ function ActivityScreen({ api }: { api: TendApi }) {
   );
 }
 
+function CheckInScreen({ api }: { api: TendApi }) {
+  const [summary, setSummary] = useState<CheckInSummary | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadCheckIn = useCallback(
+    async (showRefreshing = false) => {
+      if (showRefreshing) {
+        setRefreshing(true);
+      }
+
+      setError(null);
+      try {
+        const [itemsBody, activityBody] = await Promise.all([
+          api.listItems(),
+          api.listActivity(100),
+        ]);
+        setSummary(buildCheckInSummary(itemsBody.items, activityBody.events));
+      } catch (loadError) {
+        setError(getErrorMessage(loadError, t("errors.checkIn.load")));
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
+      }
+    },
+    [api],
+  );
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadInitialCheckIn() {
+      await loadCheckIn();
+      if (!mounted) {
+        return;
+      }
+    }
+
+    loadInitialCheckIn();
+    return () => {
+      mounted = false;
+    };
+  }, [loadCheckIn]);
+
+  return (
+    <ScreenScroll refreshing={refreshing} onRefresh={() => loadCheckIn(true)}>
+      <View style={styles.pageHeader}>
+        <Text style={styles.pageTitle}>{t("checkIn.title")}</Text>
+        <Text style={styles.pageSubtitle}>{t("checkIn.subtitle")}</Text>
+      </View>
+
+      {error ? <AlertBox message={error} tone="error" /> : null}
+
+      {loading ? <CheckInSkeleton label={t("common.loadingCheckIn")} /> : null}
+
+      {!loading && summary ? <CheckInSummaryContent summary={summary} /> : null}
+    </ScreenScroll>
+  );
+}
+
+function CheckInSummaryContent({ summary }: { summary: CheckInSummary }) {
+  return (
+    <View style={styles.checkInStack}>
+      <View style={styles.checkInStatsGrid}>
+        <CheckInStatCard
+          icon={<Sprout size={17} color={colors.primary} />}
+          label={t("checkIn.stat.tendingLogged.label")}
+          value={String(summary.totalTends)}
+          helper={
+            summary.tendedItemCount > 0
+              ? t("checkIn.stat.tendingLogged.helper", { count: summary.tendedItemCount })
+              : t("checkIn.stat.tendingLogged.empty")
+          }
+        />
+        <CheckInStatCard
+          icon={<HeartHandshake size={17} color={colors.primary} />}
+          label={t("checkIn.stat.shared.label")}
+          value={String(summary.sharedItemCount)}
+          helper={
+            summary.mostTendedWith
+              ? t("checkIn.stat.shared.helper", { name: summary.mostTendedWith.displayName })
+              : t("checkIn.stat.shared.empty")
+          }
+        />
+      </View>
+
+      <View style={styles.settingsCard}>
+        <Text style={styles.cardTitle}>{t("checkIn.patterns.title")}</Text>
+        <View style={styles.checkInPatternList}>
+          <CheckInPatternRow
+            icon={<ListChecks size={17} color={colors.primary} />}
+            label={t("checkIn.pattern.mostTended.label")}
+            value={summary.mostTendedItem?.name ?? t("checkIn.pattern.mostTended.empty")}
+            detail={
+              summary.mostTendedItem
+                ? t("checkIn.tendedMoments", { count: summary.mostTendedItem.count })
+                : t("checkIn.pattern.mostTended.emptyDetail")
+            }
+          />
+          <CheckInPatternRow
+            icon={<HeartHandshake size={17} color={colors.primary} />}
+            label={t("checkIn.pattern.with.label")}
+            value={summary.mostTendedWith?.displayName ?? t("checkIn.pattern.with.empty")}
+            detail={
+              summary.mostTendedWith
+                ? t("checkIn.sharedTendedMoments", { count: summary.mostTendedWith.count })
+                : t("checkIn.pattern.with.emptyDetail")
+            }
+          />
+          <CheckInPatternRow
+            icon={<Sprout size={17} color={colors.primary} />}
+            label={t("checkIn.pattern.area.label")}
+            value={
+              summary.mostTendedLifeArea
+                ? lifeAreaLabel(summary.mostTendedLifeArea.lifeArea)
+                : t("checkIn.pattern.area.empty")
+            }
+            detail={
+              summary.mostTendedLifeArea
+                ? t("checkIn.tendedMoments", { count: summary.mostTendedLifeArea.count })
+                : t("checkIn.pattern.area.emptyDetail")
+            }
+          />
+          <CheckInPatternRow
+            icon={<CalendarDays size={17} color={colors.primary} />}
+            label={t("checkIn.pattern.day.label")}
+            value={
+              summary.mostActiveWeekday
+                ? t(WEEKDAYS[summary.mostActiveWeekday.weekday])
+                : t("checkIn.pattern.day.empty")
+            }
+            detail={
+              summary.mostActiveWeekday
+                ? t("checkIn.tendedMoments", { count: summary.mostActiveWeekday.count })
+                : t("checkIn.pattern.day.emptyDetail")
+            }
+          />
+        </View>
+      </View>
+
+      <View style={styles.settingsCard}>
+        <Text style={styles.cardTitle}>{t("checkIn.weekday.title")}</Text>
+        <View style={styles.weekdayGrid} accessibilityLabel={t("checkIn.weekday.label")}>
+          {summary.weekdayCounts.map((entry) => (
+            <View key={entry.weekday} style={styles.weekdayCell}>
+              <View
+                style={[styles.weekdayCount, entry.count > 0 ? styles.weekdayCountActive : null]}
+              >
+                <Text
+                  style={[
+                    styles.weekdayCountText,
+                    entry.count > 0 ? styles.weekdayCountTextActive : null,
+                  ]}
+                >
+                  {entry.count}
+                </Text>
+              </View>
+              <Text style={styles.weekdayLabel} numberOfLines={1}>
+                {t(WEEKDAYS[entry.weekday]).slice(0, 3)}
+              </Text>
+            </View>
+          ))}
+        </View>
+        {summary.totalTends === 0 ? (
+          <Text style={styles.metaText}>{t("checkIn.weekday.empty")}</Text>
+        ) : null}
+      </View>
+
+      <View style={styles.settingsCard}>
+        <Text style={styles.cardTitle}>{t("checkIn.rightNow.title")}</Text>
+        <View style={styles.attentionStatsRow}>
+          <AttentionStat
+            label={t("sections.needsAttention")}
+            value={summary.attentionCounts.needsAttention}
+          />
+          <AttentionStat
+            label={t("sections.gettingStale")}
+            value={summary.attentionCounts.gettingStale}
+          />
+          <AttentionStat label={t("status.fresh")} value={summary.attentionCounts.fresh} />
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function CheckInStatCard({
+  helper,
+  icon,
+  label,
+  value,
+}: {
+  helper: string;
+  icon: ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <View style={styles.checkInStatCard}>
+      <View style={styles.checkInStatLabelRow}>
+        {icon}
+        <Text style={styles.checkInStatLabel}>{label}</Text>
+      </View>
+      <Text style={styles.checkInStatValue}>{value}</Text>
+      <Text style={styles.metaText}>{helper}</Text>
+    </View>
+  );
+}
+
+function CheckInPatternRow({
+  detail,
+  icon,
+  label,
+  value,
+}: {
+  detail: string;
+  icon: ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <View style={styles.checkInPatternRow}>
+      <View style={styles.checkInPatternIcon}>{icon}</View>
+      <View style={styles.activityText}>
+        <Text style={styles.checkInPatternLabel}>{label}</Text>
+        <Text style={styles.cardTitle}>{value}</Text>
+        <Text style={styles.metaText}>{detail}</Text>
+      </View>
+    </View>
+  );
+}
+
+function AttentionStat({ label, value }: { label: string; value: number }) {
+  return (
+    <View style={styles.attentionStat}>
+      <Text style={styles.attentionStatValue}>{value}</Text>
+      <Text style={styles.attentionStatLabel}>{label}</Text>
+    </View>
+  );
+}
+
 function ActivityEventRow({
   event,
   onDelete,
@@ -1885,7 +2134,7 @@ function EditItemScreen({
   );
 }
 
-function AvailabilityScreen({ api }: { api: TendApi }) {
+function AvailabilityScreen({ api, onBack }: { api: TendApi; onBack?: () => void }) {
   const {
     addWindow,
     byDay,
@@ -1902,6 +2151,11 @@ function AvailabilityScreen({ api }: { api: TendApi }) {
   return (
     <ScreenScroll keyboardShouldPersistTaps="handled">
       <View style={styles.pageHeader}>
+        {onBack ? (
+          <Pressable accessibilityRole="button" onPress={onBack} style={styles.modalBackButton}>
+            <Text style={styles.onboardingGhostButtonText}>{t("onboarding.back")}</Text>
+          </Pressable>
+        ) : null}
         <Text style={styles.pageTitle}>{t("availability.title")}</Text>
         <Text style={styles.pageSubtitle}>{t("availability.subtitle")}</Text>
       </View>
@@ -1993,6 +2247,7 @@ function SettingsScreen({
   onSignedOut: () => void;
 }) {
   const [apiBaseUrl, setApiBaseUrl] = useState(api.baseUrl);
+  const [showAvailability, setShowAvailability] = useState(false);
   const [saved, setSaved] = useState(false);
   const [timezone, setTimezone] = useState(deviceTimeZone());
   const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
@@ -2046,6 +2301,10 @@ function SettingsScreen({
   async function signOut() {
     await api.logout();
     onSignedOut();
+  }
+
+  if (showAvailability) {
+    return <AvailabilityScreen api={api} onBack={() => setShowAvailability(false)} />;
   }
 
   return (
@@ -2122,20 +2381,41 @@ function SettingsScreen({
         <Text style={styles.cardTitle}>{t("settings.notifications.title")}</Text>
         <Text style={styles.metaText}>{t("settings.notifications.subtitle")}</Text>
         {statusMessage ? <AlertBox message={statusMessage} tone="info" /> : null}
-        <TouchableOpacity
-          style={[styles.secondaryButton, registering ? styles.buttonDisabled : null]}
-          disabled={registering}
-          onPress={pushToken ? disable : register}
+        <View
+          accessibilityLabel={t("settings.notifications.choiceLabel")}
+          accessibilityRole="radiogroup"
+          style={styles.notificationOptions}
         >
-          <Text style={styles.secondaryButtonText}>
-            {registering
-              ? pushToken
-                ? t("settings.notifications.disabling")
-                : t("settings.notifications.loading")
-              : pushToken
-                ? t("settings.notifications.disableButton")
-                : t("settings.notifications.button")}
-          </Text>
+          <NotificationRadioOption
+            label={t("settings.notifications.on")}
+            helper={t("settings.notifications.onHelper")}
+            selected={Boolean(pushToken)}
+            disabled={registering}
+            onPress={() => {
+              if (!pushToken) {
+                void register();
+              }
+            }}
+          />
+          <NotificationRadioOption
+            label={t("settings.notifications.off")}
+            helper={t("settings.notifications.offHelper")}
+            selected={!pushToken}
+            disabled={registering}
+            onPress={() => {
+              if (pushToken) {
+                void disable();
+              }
+            }}
+          />
+        </View>
+        <TouchableOpacity
+          accessibilityRole="button"
+          style={styles.secondaryButton}
+          onPress={() => setShowAvailability(true)}
+        >
+          <CalendarClock size={17} color={colors.primary} />
+          <Text style={styles.secondaryButtonText}>{t("settings.availability.button")}</Text>
         </TouchableOpacity>
       </View>
 
@@ -2286,7 +2566,7 @@ function LifeAreaFilter({
       </TouchableOpacity>
 
       {open ? (
-        <View style={styles.chipRow}>
+        <View style={[styles.chipRow, styles.filterChipRow]}>
           <Chip
             label={t("common.all")}
             selected={selected === null}
@@ -2400,6 +2680,42 @@ function SegmentedControl({
         );
       })}
     </View>
+  );
+}
+
+function NotificationRadioOption({
+  disabled,
+  helper,
+  label,
+  onPress,
+  selected,
+}: {
+  disabled: boolean;
+  helper: string;
+  label: string;
+  onPress: () => void;
+  selected: boolean;
+}) {
+  return (
+    <Pressable
+      accessibilityRole="radio"
+      accessibilityState={{ checked: selected, disabled }}
+      disabled={disabled}
+      style={[
+        styles.notificationOption,
+        selected ? styles.notificationOptionSelected : null,
+        disabled ? styles.buttonDisabled : null,
+      ]}
+      onPress={onPress}
+    >
+      <View style={[styles.radioOuter, selected ? styles.radioOuterSelected : null]}>
+        {selected ? <View style={styles.radioInner} /> : null}
+      </View>
+      <View style={styles.activityText}>
+        <Text style={styles.notificationOptionLabel}>{label}</Text>
+        <Text style={styles.metaText}>{helper}</Text>
+      </View>
+    </Pressable>
   );
 }
 
@@ -2946,6 +3262,9 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     gap: spacing.sm,
   },
+  filterChipRow: {
+    paddingTop: spacing.md,
+  },
   chip: {
     backgroundColor: colors.card,
     borderColor: colors.border,
@@ -3107,6 +3426,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.primaryMuted,
     borderRadius: radius.md,
+    flexDirection: "row",
+    gap: spacing.sm,
     justifyContent: "center",
     marginTop: spacing.md,
     minHeight: 46,
@@ -3281,6 +3602,162 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: spacing.lg,
     padding: spacing.lg,
+  },
+  notificationOptions: {
+    gap: spacing.sm,
+    marginTop: spacing.md,
+  },
+  notificationOption: {
+    alignItems: "center",
+    backgroundColor: colors.bg,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.md,
+    minHeight: 58,
+    padding: spacing.md,
+  },
+  notificationOptionSelected: {
+    backgroundColor: colors.primaryMuted,
+    borderColor: colors.primary,
+  },
+  notificationOptionLabel: {
+    color: colors.text,
+    fontFamily: fonts.bodySemibold,
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  radioOuter: {
+    alignItems: "center",
+    borderColor: colors.textMuted,
+    borderRadius: radius.round,
+    borderWidth: 1.5,
+    height: 20,
+    justifyContent: "center",
+    width: 20,
+  },
+  radioOuterSelected: {
+    borderColor: colors.primary,
+  },
+  radioInner: {
+    backgroundColor: colors.primary,
+    borderRadius: radius.round,
+    height: 10,
+    width: 10,
+  },
+  checkInStack: {
+    gap: spacing.lg,
+  },
+  checkInStatsGrid: {
+    gap: spacing.md,
+  },
+  checkInStatCard: {
+    backgroundColor: colors.card,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    padding: spacing.lg,
+  },
+  checkInStatLabelRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  checkInStatLabel: {
+    color: colors.primary,
+    fontFamily: fonts.bodySemibold,
+    fontSize: 14,
+  },
+  checkInStatValue: {
+    color: colors.text,
+    fontFamily: fonts.display,
+    fontSize: 30,
+    lineHeight: 36,
+    marginTop: spacing.sm,
+  },
+  checkInPatternList: {
+    gap: spacing.md,
+    marginTop: spacing.md,
+  },
+  checkInPatternRow: {
+    backgroundColor: colors.bg,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  checkInPatternIcon: {
+    paddingTop: spacing.xs,
+  },
+  checkInPatternLabel: {
+    color: colors.textMuted,
+    fontFamily: fonts.bodyMedium,
+    fontSize: 12,
+    marginBottom: spacing.xs,
+  },
+  weekdayGrid: {
+    flexDirection: "row",
+    gap: spacing.xs,
+    marginTop: spacing.md,
+  },
+  weekdayCell: {
+    alignItems: "center",
+    flex: 1,
+    minWidth: 0,
+  },
+  weekdayCount: {
+    alignItems: "center",
+    backgroundColor: colors.muted,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    height: 42,
+    justifyContent: "center",
+    width: "100%",
+  },
+  weekdayCountActive: {
+    backgroundColor: colors.freshBg,
+    borderColor: colors.fresh,
+  },
+  weekdayCountText: {
+    color: colors.textMuted,
+    fontFamily: fonts.bodySemibold,
+    fontSize: 14,
+  },
+  weekdayCountTextActive: {
+    color: colors.fresh,
+  },
+  weekdayLabel: {
+    color: colors.textMuted,
+    fontFamily: fonts.bodyMedium,
+    fontSize: 11,
+    marginTop: spacing.xs,
+  },
+  attentionStatsRow: {
+    gap: spacing.sm,
+    marginTop: spacing.md,
+  },
+  attentionStat: {
+    backgroundColor: colors.muted,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    padding: spacing.md,
+  },
+  attentionStatValue: {
+    color: colors.text,
+    fontFamily: fonts.display,
+    fontSize: 24,
+    lineHeight: 30,
+  },
+  attentionStatLabel: {
+    color: colors.textMuted,
+    fontFamily: fonts.body,
+    fontSize: 13,
+    marginTop: spacing.xs,
   },
   languageSwitch: {
     backgroundColor: colors.muted,

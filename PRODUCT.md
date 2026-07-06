@@ -1,5 +1,9 @@
 # Product
 
+## Register
+
+product
+
 ## Users
 
 Tend is for people who want help remembering recurring parts of real life without adopting a productivity system. They may open the app once or twice a week, often in a quiet maintenance mindset: checking what needs care, marking something tended, or adding a recurring item before it drifts out of memory.

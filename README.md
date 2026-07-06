@@ -46,41 +46,26 @@ More product context: [`PRODUCT.md`](PRODUCT.md) · [`docs/mvp-user-stories.md`]
 
 ---
 
-### Pre-alpha — shipped
+## Features
 
-Pre-alpha is **complete**: a web-first app with local Postgres, email/password accounts, and the full tend loop. Invite-only access is optional via `ALLOWED_EMAILS`.
+Tend ships as a hosted web app and an Expo mobile app, both backed by the same Postgres database and `/api/v1` REST API. Invite-only access is optional via `ALLOWED_EMAILS`.
 
 | Area | What's included |
 |------|-----------------|
 | **Accounts** | Register, login, logout, sessions (Lucia + bcrypt) |
-| **Onboarding** | Concept intro, preset picker across six life areas, skip-friendly |
+| **Public shell** | Landing page, sample Privacy + Terms, footer links; marketing host (`tend.qzz.io`) and app host (`app.tend.qzz.io`) |
+| **i18n** | English + Serbian on web and mobile |
+| **Onboarding** | Concept intro, preset picker across 12 life areas, skip-friendly |
 | **Items** | Create, edit, archive, delete; Must/Want, rhythm, optional life area |
+| **Shared Tends** | Tend an item with a friend — either person can mark it tended |
 | **Attention home** | Hero item, grouped sections, life-area filter, quick “Mark tended” |
+| **Check-in** | Quiet summary of tending patterns — most tended items, shared care, weekday rhythm |
 | **Item detail** | Status, history, edit form, correct past tend dates |
 | **Reminders** | Availability windows, in-app reminder surface, mark tended from reminder |
+| **Push notifications** | FCM native push for mobile reminders (scheduled via cron job) |
 | **Activity** | Recent tend events across items |
-| **Presets** | ~22 suggested tends across household, health, relationships, pets, vehicle, admin |
-
-Plan and exit criteria: [`docs/pre-alpha-development-plan.md`](docs/pre-alpha-development-plan.md)
-
----
-
-### Alpha — next
-
-Moving toward a small hosted alpha: public entry, safer account lifecycle, richer presets, and lower signup friction.
-
-| Area | Planned |
-|------|---------|
-| **Public shell** | Landing page, sample Privacy + Terms, footer links |
-| **Account deletion** | User-initiated hard delete with confirmation |
-| **Expanded presets** | 10–12 life areas, ~70–90 suggested tends |
-| **i18n** | English + Serbian |
-| **Email** | Transactional provider, password reset, deletion confirm |
-| **Google signup** | OAuth alongside email/password |
-
-Roadmap and phases: [`docs/alpha-roadmap.md`](docs/alpha-roadmap.md) · implementation detail: [`docs/alpha-development-plan.md`](docs/alpha-development-plan.md)
-
-**Not in alpha:** native mobile, push notifications, calendar sync, payments, cloud sync beyond hosted Postgres.
+| **Presets** | 82 suggested tends across 12 life areas |
+| **Settings** | Timezone and language preferences |
 
 ---
 
@@ -96,19 +81,21 @@ Roadmap and phases: [`docs/alpha-roadmap.md`](docs/alpha-roadmap.md) · implemen
 | UI | Tailwind CSS + shadcn/ui |
 | Database | PostgreSQL 16 |
 | ORM | Drizzle |
-| Auth (pre-alpha) | Lucia + bcrypt (local sessions) |
+| Auth | Lucia + bcrypt (local sessions) |
+| Mobile | Expo / React Native (Android + iOS preview builds) |
 | Monorepo | Bun workspaces + Turborepo |
 | Lint / format | Biome |
 
-Mobile (Expo / React Native) is planned after web alpha; shared domain logic lives in `packages/domain`.
+Shared domain logic lives in `packages/domain`.
 
 ### Repository structure
 
 ```
 apps/web/           Next.js UI and /api/v1 REST routes
-packages/domain/    Status, rhythm, reminders, presets (pure TS)
+apps/mobile/        Expo React Native client
+packages/domain/    Status, rhythm, reminders, presets, check-in (pure TS)
 packages/db/        Drizzle schema and migrations
-docs/               Product specs, API reference, design system, roadmaps
+docs/               Product specs, API reference, design system
 ```
 
 **UI changes:** Read [`docs/design/README.md`](docs/design/README.md) first. Reuse components from `apps/web/components/`; see `.cursor/rules/ui-design.mdc`.

@@ -25,7 +25,20 @@ mock.module("expo-device", () => ({
 }));
 
 mock.module("react-native", () => ({
+  Animated: {
+    Value: class {
+      constructor(readonly value: number) {}
+    },
+    View: "Animated.View",
+    loop: () => ({ start: () => undefined, stop: () => undefined }),
+    sequence: (animations: unknown[]) => animations,
+    timing: () => ({}),
+  },
   Platform: platformState,
+  StyleSheet: {
+    create: <T>(styles: T) => styles,
+  },
+  View: "View",
 }));
 
 mock.module("@utils/storage", () => ({

@@ -1,5 +1,6 @@
 import { colors, radius, spacing } from "@/theme";
 import { skeletonColors } from "@/utils/skeletonColors";
+import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
 import { Animated, type StyleProp, StyleSheet, View, type ViewStyle } from "react-native";
 
@@ -142,6 +143,116 @@ export function ActivitySkeleton({ label }: { label: string }) {
   );
 }
 
+function CheckInStatSkeleton() {
+  return (
+    <View style={styles.checkInStatCard}>
+      <View style={styles.checkInStatHeader}>
+        <SkeletonBone height={17} width={17} rounded={radius.round} />
+        <SkeletonBone height={16} width="48%" rounded={radius.sm} />
+      </View>
+      <SkeletonBone height={36} width={54} rounded={radius.sm} style={styles.checkInValue} />
+      <SkeletonBone height={14} width="74%" rounded={radius.sm} style={styles.checkInHelper} />
+    </View>
+  );
+}
+
+function CheckInPatternRowSkeleton() {
+  return (
+    <View style={styles.checkInPatternRow}>
+      <SkeletonBone height={17} width={17} rounded={radius.round} style={styles.checkInIcon} />
+      <View style={styles.checkInPatternText}>
+        <SkeletonBone height={12} width="48%" rounded={radius.sm} />
+        <SkeletonBone height={20} width="76%" rounded={radius.sm} />
+        <SkeletonBone height={14} width="64%" rounded={radius.sm} />
+      </View>
+    </View>
+  );
+}
+
+function CheckInCardSkeleton({
+  children,
+  titleWidth,
+}: {
+  children: ReactNode;
+  titleWidth: number | `${number}%`;
+}) {
+  return (
+    <View style={styles.checkInCard}>
+      <SkeletonBone height={20} width={titleWidth} rounded={radius.sm} />
+      {children}
+    </View>
+  );
+}
+
+const CHECK_IN_PATTERN_ROW_KEYS = [
+  "check-in-pattern-1",
+  "check-in-pattern-2",
+  "check-in-pattern-3",
+  "check-in-pattern-4",
+] as const;
+
+const CHECK_IN_WEEKDAY_KEYS = [
+  "check-in-weekday-1",
+  "check-in-weekday-2",
+  "check-in-weekday-3",
+  "check-in-weekday-4",
+  "check-in-weekday-5",
+  "check-in-weekday-6",
+  "check-in-weekday-7",
+] as const;
+
+const CHECK_IN_ATTENTION_KEYS = [
+  "check-in-attention-1",
+  "check-in-attention-2",
+  "check-in-attention-3",
+] as const;
+
+export function CheckInSkeleton({ label }: { label: string }) {
+  return (
+    <View
+      accessibilityLabel={label}
+      accessibilityRole="progressbar"
+      importantForAccessibility="yes"
+      style={styles.screenSkeleton}
+    >
+      <View style={styles.checkInStatsGrid}>
+        <CheckInStatSkeleton />
+        <CheckInStatSkeleton />
+      </View>
+
+      <CheckInCardSkeleton titleWidth="54%">
+        <View style={styles.checkInPatternList}>
+          {CHECK_IN_PATTERN_ROW_KEYS.map((key) => (
+            <CheckInPatternRowSkeleton key={key} />
+          ))}
+        </View>
+      </CheckInCardSkeleton>
+
+      <CheckInCardSkeleton titleWidth="38%">
+        <View style={styles.checkInWeekdayGrid}>
+          {CHECK_IN_WEEKDAY_KEYS.map((key) => (
+            <View key={key} style={styles.checkInWeekdayCell}>
+              <SkeletonBone height={42} rounded={radius.md} />
+              <SkeletonBone height={11} width="56%" rounded={radius.sm} />
+            </View>
+          ))}
+        </View>
+      </CheckInCardSkeleton>
+
+      <CheckInCardSkeleton titleWidth="28%">
+        <View style={styles.checkInAttentionList}>
+          {CHECK_IN_ATTENTION_KEYS.map((key) => (
+            <View key={key} style={styles.checkInAttentionRow}>
+              <SkeletonBone height={30} width={28} rounded={radius.sm} />
+              <SkeletonBone height={14} width="62%" rounded={radius.sm} />
+            </View>
+          ))}
+        </View>
+      </CheckInCardSkeleton>
+    </View>
+  );
+}
+
 function DayCardSkeleton() {
   return (
     <View style={styles.dayCard}>
@@ -241,6 +352,77 @@ const styles = StyleSheet.create({
   },
   activityMeta: {
     marginTop: spacing.xs,
+  },
+  checkInStatsGrid: {
+    gap: spacing.md,
+  },
+  checkInStatCard: {
+    backgroundColor: colors.card,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    padding: spacing.lg,
+  },
+  checkInStatHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  checkInValue: {
+    marginTop: spacing.sm,
+  },
+  checkInHelper: {
+    marginTop: spacing.xs,
+  },
+  checkInCard: {
+    backgroundColor: colors.card,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    padding: spacing.lg,
+  },
+  checkInPatternList: {
+    gap: spacing.md,
+    marginTop: spacing.md,
+  },
+  checkInPatternRow: {
+    backgroundColor: colors.bg,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.md,
+    padding: spacing.md,
+  },
+  checkInIcon: {
+    marginTop: spacing.xs,
+  },
+  checkInPatternText: {
+    flex: 1,
+    gap: spacing.xs,
+  },
+  checkInWeekdayGrid: {
+    flexDirection: "row",
+    gap: spacing.xs,
+    marginTop: spacing.md,
+  },
+  checkInWeekdayCell: {
+    alignItems: "center",
+    flex: 1,
+    gap: spacing.xs,
+    minWidth: 0,
+  },
+  checkInAttentionList: {
+    gap: spacing.sm,
+    marginTop: spacing.md,
+  },
+  checkInAttentionRow: {
+    backgroundColor: colors.muted,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    gap: spacing.xs,
+    padding: spacing.md,
   },
   dayCard: {
     backgroundColor: colors.card,

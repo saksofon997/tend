@@ -42,6 +42,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [TabList](#tablist) | `ui/tabs.tsx` | 4 |
 | [ReminderBanner](#reminderbanner) | `tend/reminder-banner.tsx` | 11 |
 | [EmptyState](#emptystate) | `tend/empty-state.tsx` | 5, 14 |
+| [CheckInView](#checkinview) | `tend/check-in-view.tsx` | Check In |
 | [ActivityListItem](#activitylistitem) | `tend/activity-list-item.tsx` | 14 |
 | [AvailabilityEditor](#availabilityeditor) | `forms/availability-editor.tsx` | 10 |
 | [ConfirmDialog](#confirmdialog) | `ui/dialog.tsx` | 9 |
@@ -725,6 +726,25 @@ interface EmptyStateProps {
 | `no-availability` | "No availability set yet" | — |
 
 **Styles:** Centered, `text-muted`, no illustration required for pre-alpha (optional `Leaf` icon 32px muted).
+
+---
+
+### CheckInView
+
+**File:** `components/tend/check-in-view.tsx`
+
+**Purpose:** Authenticated Check In page showing calm tending patterns derived from active items and recent tended events. It uses the shared `buildCheckInSummary` domain helper, not a separate analytics model.
+
+**Anatomy:**
+```
+PageHeader
+Summary stat cards
+Patterns worth knowing
+Weekday rhythm
+Right now attention mix
+```
+
+**Copy constraints:** No streaks, rankings, alarm language, or productivity-style performance framing. Use tending moments, shared care, weekdays, and current attention mix.
 
 ---
 

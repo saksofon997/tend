@@ -2,6 +2,7 @@ import { describe, expect, it } from "bun:test";
 import {
   getTabSwitchDirection,
   getTabTransition,
+  getTabTransitionTarget,
   resolveHardwareBackAction,
 } from "@utils/tabTransition";
 
@@ -17,7 +18,7 @@ describe("getTabSwitchDirection", () => {
 
   it("returns -1 when moving to an earlier tab", () => {
     expect(getTabSwitchDirection("settings", "home")).toBe(-1);
-    expect(getTabSwitchDirection("availability", "add")).toBe(-1);
+    expect(getTabSwitchDirection("checkIn", "add")).toBe(-1);
   });
 });
 
@@ -43,6 +44,26 @@ describe("getTabTransition", () => {
       axis: "y",
       enterOffset: 12,
       exitOffset: 36,
+    });
+  });
+});
+
+describe("getTabTransitionTarget", () => {
+  it("renders the next tab immediately while animating it in", () => {
+    expect(getTabTransitionTarget("home", "checkIn")).toEqual({
+      axis: "x",
+      enterOffset: 18,
+      exitOffset: -18,
+      renderedTab: "checkIn",
+    });
+  });
+
+  it("keeps the current tab rendered when the tab does not change", () => {
+    expect(getTabTransitionTarget("checkIn", "checkIn")).toEqual({
+      axis: "x",
+      enterOffset: 0,
+      exitOffset: 0,
+      renderedTab: "checkIn",
     });
   });
 });

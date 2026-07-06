@@ -97,6 +97,15 @@ export function ItemForm({
         />
       </FormField>
 
+      <FormField label={t("items.add.lastTended.label")} error={fieldErrors.lastTendedDate}>
+        <DatePickerField
+          value={values.lastTendedDate}
+          onChange={(lastTendedDate) => updateField("lastTendedDate", lastTendedDate)}
+          maxDate={todayDate}
+          invalid={Boolean(fieldErrors.lastTendedDate)}
+        />
+      </FormField>
+
       <FormField
         label={t("items.add.sharedWith.label")}
         helper={t("items.add.sharedWith.helper")}
@@ -116,15 +125,6 @@ export function ItemForm({
           placeholder={t("items.add.sharedWith.placeholder")}
           placeholderTextColor={colors.textSubtle}
           accessibilityLabel={t("items.add.sharedWith.label")}
-        />
-      </FormField>
-
-      <FormField label={t("items.add.lastTended.label")} error={fieldErrors.lastTendedDate}>
-        <DatePickerField
-          value={values.lastTendedDate}
-          onChange={(lastTendedDate) => updateField("lastTendedDate", lastTendedDate)}
-          maxDate={todayDate}
-          invalid={Boolean(fieldErrors.lastTendedDate)}
         />
       </FormField>
 

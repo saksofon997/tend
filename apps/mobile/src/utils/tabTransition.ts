@@ -1,10 +1,13 @@
-export const TAB_ORDER = ["home", "activity", "add", "availability", "settings"] as const;
+export const TAB_ORDER = ["home", "activity", "add", "checkIn", "settings"] as const;
 
 export type TabKey = (typeof TAB_ORDER)[number];
 export type TabTransition = {
   axis: "x" | "y";
   enterOffset: number;
   exitOffset: number;
+};
+export type TabTransitionTarget = TabTransition & {
+  renderedTab: TabKey;
 };
 
 const TAB_HORIZONTAL_OFFSET = 18;
@@ -49,6 +52,13 @@ export function getTabTransition(from: TabKey, to: TabKey): TabTransition {
     axis: "x",
     enterOffset: direction * TAB_HORIZONTAL_OFFSET,
     exitOffset: direction * -TAB_HORIZONTAL_OFFSET,
+  };
+}
+
+export function getTabTransitionTarget(from: TabKey, to: TabKey): TabTransitionTarget {
+  return {
+    ...getTabTransition(from, to),
+    renderedTab: to,
   };
 }
 

@@ -1484,7 +1484,31 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
 }
 
 function ActivityScreen({ api }: { api: TendApi }) {
-  const { deleteActivity, error, events, groups, loading, updateActivity } = useActivityEvents(api);
+  const [name, setName] = useState("");
+  const [debouncedName, setDebouncedName] = useState("");
+  const [type, setType] = useState<"" | "must" | "want">("");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+
+  useEffect(() => {
+    const handle = setTimeout(() => setDebouncedName(name), 250);
+    return () => clearTimeout(handle);
+  }, [name]);
+
+  const filters = useMemo(
+    () => ({
+      q: debouncedName.trim() || undefined,
+      type: type || undefined,
+      from: from || undefined,
+      to: to || undefined,
+    }),
+    [debouncedName, type, from, to],
+  );
+  const filtersActive = Boolean(filters.q || filters.type || filters.from || filters.to);
+  const { deleteActivity, error, events, groups, loading, updateActivity } = useActivityEvents(
+    api,
+    filters,
+  );
 
   function confirmDelete(eventId: string) {
     Alert.alert(t("activity.deleteConfirm.title"), t("activity.deleteConfirm.message"), [
@@ -1513,10 +1537,88 @@ function ActivityScreen({ api }: { api: TendApi }) {
         <Text style={styles.pageSubtitle}>{t("activity.subtitle")}</Text>
       </View>
 
+      <View style={styles.settingsCard}>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.cardTitle}>{t("activity.search.title")}</Text>
+          {filtersActive ? (
+            <Pressable
+              onPress={() => {
+                setName("");
+                setDebouncedName("");
+                setType("");
+                setFrom("");
+                setTo("");
+              }}
+              style={styles.authTextButton}
+            >
+              <Text style={styles.authTextButtonLabel}>{t("activity.search.clear")}</Text>
+            </Pressable>
+          ) : null}
+        </View>
+
+        <Field label={t("activity.search.name")}>
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder={t("activity.search.namePlaceholder")}
+            placeholderTextColor={colors.textMuted}
+            value={name}
+            onChangeText={setName}
+            style={styles.input}
+          />
+        </Field>
+
+        <Field label={t("activity.search.type")}>
+          <View style={styles.chipRow}>
+            <Chip
+              label={t("activity.search.typeAll")}
+              selected={type === ""}
+              onPress={() => setType("")}
+            />
+            <Chip
+              label={t("type.must")}
+              selected={type === "must"}
+              onPress={() => setType("must")}
+            />
+            <Chip
+              label={t("type.want")}
+              selected={type === "want"}
+              onPress={() => setType("want")}
+            />
+          </View>
+        </Field>
+
+        <View style={styles.activityDateFilterRow}>
+          <View style={styles.activityDateFilterField}>
+            <Field label={t("activity.search.from")}>
+              <DatePickerField
+                value={from}
+                onChange={setFrom}
+                placeholder={t("activity.search.anyDate")}
+                accessibilityLabel={t("activity.search.from")}
+              />
+            </Field>
+          </View>
+          <View style={styles.activityDateFilterField}>
+            <Field label={t("activity.search.to")}>
+              <DatePickerField
+                value={to}
+                onChange={setTo}
+                placeholder={t("activity.search.anyDate")}
+                accessibilityLabel={t("activity.search.to")}
+              />
+            </Field>
+          </View>
+        </View>
+      </View>
+
       {error ? <AlertBox message={error} tone="error" /> : null}
       {loading ? <ActivitySkeleton label={t("common.loadingActivity")} /> : null}
       {!loading && events.length === 0 ? (
-        <EmptyState title={t("activity.empty.title")} body={t("activity.empty.body")} />
+        <EmptyState
+          title={t(filtersActive ? "activity.empty.filtered.title" : "activity.empty.title")}
+          body={t(filtersActive ? "activity.empty.filtered.body" : "activity.empty.body")}
+        />
       ) : null}
 
       {!loading
@@ -1864,6 +1966,9 @@ function ActivityEventRow({
     <View style={styles.activityRow}>
       <View style={styles.activityText}>
         <Text style={styles.cardTitle}>{event.itemName}</Text>
+        <Text style={styles.metaText}>
+          {t(event.itemType === "must" ? "type.must" : "type.want")}
+        </Text>
         <Text style={styles.metaText}>{formatEventDate(event.tendedAt)}</Text>
       </View>
       <View style={styles.activityActions}>
@@ -3518,6 +3623,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 15,
     lineHeight: 22,
+  },
+  activityDateFilterRow: {
+    flexDirection: "row",
+    gap: spacing.md,
+  },
+  activityDateFilterField: {
+    flex: 1,
   },
   activityRow: {
     alignItems: "center",

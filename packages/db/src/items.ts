@@ -1,4 +1,5 @@
 import { and, desc, eq, isNull, or } from "drizzle-orm";
+import { type ActivityEventFilter, activityEventFilterConditions } from "./activity-filters";
 import type { Database, DbClient } from "./client";
 import { tendEvents, tendItems } from "./schema";
 
@@ -194,7 +195,10 @@ export async function listRecentEventsForUser(
   database: Database,
   userId: string,
   limit = 50,
+  filter?: ActivityEventFilter,
 ): Promise<RecentEventWithItem[]> {
+  const filterConditions = activityEventFilterConditions(filter);
+
   return database
     .select({
       event: tendEvents,
@@ -202,7 +206,7 @@ export async function listRecentEventsForUser(
     })
     .from(tendEvents)
     .innerJoin(tendItems, eq(tendEvents.itemId, tendItems.id))
-    .where(userItemsFilter(userId))
+    .where(and(userItemsFilter(userId), ...filterConditions))
     .orderBy(desc(tendEvents.tendedAt))
     .limit(limit);
 }

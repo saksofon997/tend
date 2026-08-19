@@ -43,6 +43,11 @@ export {
   type UpdateItemInput,
 } from "./items";
 export {
+  escapeIlikePattern,
+  hasActivityEventFilter,
+  type ActivityEventFilter,
+} from "./activity-filters";
+export {
   deletePushSubscriptionByToken,
   deletePushSubscriptionForUser,
   listPushSubscriptions,

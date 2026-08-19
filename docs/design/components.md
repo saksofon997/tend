@@ -44,6 +44,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [EmptyState](#emptystate) | `tend/empty-state.tsx` | 5, 14 |
 | [CheckInView](#checkinview) | `tend/check-in-view.tsx` | Check In |
 | [ActivityListItem](#activitylistitem) | `tend/activity-list-item.tsx` | 14 |
+| [ActivityFilters](#activityfilters) | `tend/activity-filters.tsx` | 14 |
 | [AvailabilityEditor](#availabilityeditor) | `forms/availability-editor.tsx` | 10 |
 | [ConfirmDialog](#confirmdialog) | `ui/dialog.tsx` | 9 |
 | [AuthForm](#authform) | `forms/auth-form.tsx` | 1 |
@@ -745,6 +746,23 @@ Right now attention mix
 ```
 
 **Copy constraints:** No streaks, rankings, alarm language, or productivity-style performance framing. Use tending moments, shared care, weekdays, and current attention mix.
+
+---
+
+### ActivityFilters
+
+**File:** `components/tend/activity-filters.tsx`
+
+```tsx
+interface ActivityFiltersProps {
+  value: { q: string; type: "" | "must" | "want"; from: string; to: string };
+  onChange: (filters: ActivityFiltersProps["value"]) => void;
+}
+```
+
+Quiet look-up bar on `/activity`: tend name, must/want type, and an inclusive date range. Clearing restores the unfiltered list. Empty results use a distinct “nothing matches” state, not the never-tended empty copy.
+
+**Stories:** 14
 
 ---
 

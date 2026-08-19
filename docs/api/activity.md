@@ -9,6 +9,10 @@ List recent tending events across all items for the signed-in user.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | limit | integer | no | Max events to return (1–100, default 50) |
+| q | string | no | Case-insensitive tend name search (max 100 characters) |
+| type | `"must"` \| `"want"` | no | Filter by tend type |
+| from | `YYYY-MM-DD` | no | Inclusive start date (UTC calendar day) |
+| to | `YYYY-MM-DD` | no | Inclusive end date (UTC calendar day) |
 
 **Responses**
 
@@ -25,8 +29,11 @@ List recent tending events across all items for the signed-in user.
 | id | string | Event UUID |
 | itemId | string | Parent item UUID |
 | itemName | string | Item display name |
+| itemType | `"must"` \| `"want"` | Parent item type |
 | tendedAt | ISO datetime | When the item was tended |
 | createdAt | ISO datetime | When the event was logged |
+
+Omitted filters are ignored. `from` must be on or before `to` when both are set. Extra query fields are ignored so older clients that only send `limit` keep working.
 
 ---
 

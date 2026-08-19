@@ -52,6 +52,14 @@ Do **not** require pull request reviews. That would put you back in the loop for
 
 Leave **Require approvals** at 0. Product-only stops use the `needs-product-decision` label (agents leave those PRs as drafts). Everything else squash-merges when `CI` is green, then Vercel deploys web and EAS builds Android preview.
 
+### D. `AUTO_MERGE_TOKEN` — so merge can trigger EAS and CI on `main`
+
+GitHub does not start new Actions workflows from events created by `GITHUB_TOKEN`. Auto-merge therefore squash-merges without running **CI** or **EAS Preview** on `main`.
+
+1. Create a GitHub PAT with permission to merge pull requests and trigger workflows (`repo` + `workflow` on a classic token).
+2. Add it as a repository secret named `AUTO_MERGE_TOKEN` at [repo Actions secrets](https://github.com/saksofon997/tend/settings/secrets/actions).
+3. Auto-merge already uses `AUTO_MERGE_TOKEN` when present, and falls back to `GITHUB_TOKEN`.
+
 ## Product-gate PRs
 
 If a change hits an autonomy product gate, the agent should:

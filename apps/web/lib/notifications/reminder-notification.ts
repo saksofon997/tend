@@ -27,19 +27,39 @@ function reminderBody(reminder: ReminderResponse): string {
 }
 
 function pickPriorityReminder(reminders: ReminderResponse[]): ReminderResponse | undefined {
-  return [...reminders].sort((left, right) => {
-    if (left.type !== right.type) {
-      return left.type === "must" ? -1 : 1;
+  const ranked = reminders
+    .map((reminder) => ({ reminder, rank: notificationRank(reminder) }))
+    .filter((entry): entry is { reminder: ReminderResponse; rank: number } => entry.rank !== null);
+
+  if (ranked.length === 0) {
+    return undefined;
+  }
+
+  ranked.sort((left, right) => {
+    if (left.rank !== right.rank) {
+      return left.rank - right.rank;
     }
 
-    if (left.status !== right.status) {
-      return left.status === "needs_attention" ? -1 : 1;
-    }
-
-    const leftDays = left.daysSinceLastTended ?? Number.MAX_SAFE_INTEGER;
-    const rightDays = right.daysSinceLastTended ?? Number.MAX_SAFE_INTEGER;
+    const leftDays = left.reminder.daysSinceLastTended ?? Number.MAX_SAFE_INTEGER;
+    const rightDays = right.reminder.daysSinceLastTended ?? Number.MAX_SAFE_INTEGER;
     return rightDays - leftDays;
-  })[0];
+  });
+
+  return ranked[0]?.reminder;
+}
+
+/** Only these three combinations notify. Anything else, including getting-stale wants, is silent. */
+function notificationRank(reminder: ReminderResponse): number | null {
+  if (reminder.type === "must" && reminder.status === "needs_attention") {
+    return 0;
+  }
+  if (reminder.type === "must" && reminder.status === "getting_stale") {
+    return 1;
+  }
+  if (reminder.type === "want" && reminder.status === "needs_attention") {
+    return 2;
+  }
+  return null;
 }
 
 export function buildTendNotificationRequest(

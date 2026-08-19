@@ -75,5 +75,6 @@ Run the server-side reminder notification job. Production scheduling is handled 
 **Notes**
 
 - Reminder eligibility uses the same item, availability, timezone, and priority rules as `GET /api/v1/reminders`.
+- A notification is sent only when at least one of these exists, in this order: needs-attention must, getting-stale must, needs-attention want. Getting-stale wants do not notify.
 - Notifications defer to the user's next availability window when one is configured.
 - Repeats for the same item on the same device are throttled for 23 hours.

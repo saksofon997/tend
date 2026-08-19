@@ -205,7 +205,7 @@ Honor `prefers-reduced-motion: reduce` — tokens zero out durations.
 
 ## 8. Iconography
 
-Use **Lucide React** (ships with shadcn). Stroke width 1.5, size 16–20px inline with text.
+Use **Lucide React** (ships with shadcn). Stroke width 1.5, size 16–20px inline with text. `HandsGivingIcon` is the converted filled palms-up glyph, not a Lucide stroke.
 
 | Concept | Icon |
 |---------|------|

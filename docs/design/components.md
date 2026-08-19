@@ -563,7 +563,7 @@ interface MarkTendedButtonProps {
 
 **File:** `components/tend/hands-giving-icon.tsx`
 
-Palms-up-together glyph used only on `MarkTendedButton`. Two cupped hands, stroke 1.5, `currentColor`. Do not reuse a checkmark for tending.
+Palms-up-together glyph used only on `MarkTendedButton`. Converted filled silhouette of two cupped hands, `currentColor`. Do not reuse a checkmark for tending.
 
 ---
 

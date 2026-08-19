@@ -6,3 +6,4 @@ export * from "./attention";
 export * from "./reminders";
 export * from "./presets";
 export * from "./check-in";
+export * from "./hands-giving-icon";

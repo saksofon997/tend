@@ -1,4 +1,4 @@
 interface:
   display_name: "Tend Change Instructions"
   short_description: "Follow Tend project change rules"
-  default_prompt: "Use $tend-change-instructions before changing code in this Tend project."
+  default_prompt: "Use $tend-change-instructions before changing code in this Tend project. Follow .cursor/rules/autonomy.mdc and .cursor/skills/impeccable/SKILL.md for UI."

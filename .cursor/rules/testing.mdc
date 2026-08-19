@@ -31,6 +31,7 @@ Tests live in a dedicated `tests/` folder within each package — not next to so
 | Package | Unit tests | Integration tests |
 |---------|------------|-------------------|
 | `@tend/web` | `apps/web/tests/unit/` | `apps/web/tests/integration/` |
+| `@tend/mobile` | `apps/mobile/tests/unit/` | — |
 | `@tend/domain` | `packages/domain/tests/` | — |
 | `@tend/db` | `packages/db/tests/` | — |
 

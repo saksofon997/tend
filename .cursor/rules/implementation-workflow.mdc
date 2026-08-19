@@ -13,13 +13,14 @@ Before marking any implementation task complete, agents MUST complete every item
 2. **Test** — New or changed behavior has unit tests; integration tests added where endpoints or multi-module flows are involved (see `testing` rule).
 3. **Lint** — Run the project's linter on every changed file and fix all reported issues (see `linting` rule).
 4. **API docs** — Any new or changed HTTP endpoint is documented in `docs/api/` (see `api-documentation` rule).
-5. **UI & design** — Any `apps/web/` UI change follows `docs/design/`, reuses components from `apps/web/components/`, puts user-facing copy in i18n dictionaries with translations, and is finished with the **impeccable** skill (`adapt` + `polish`) as a final touch-up pass (see `ui-design` rule).
+5. **UI & design** — Any `apps/web/` or `apps/mobile/` UI change follows `docs/design/` and `PRODUCT.md`, puts user-facing copy in i18n dictionaries with translations, and is finished with [`.cursor/skills/impeccable/SKILL.md`](../skills/impeccable/SKILL.md) (`adapt` then `polish`). Web also reuses `apps/web/components/` (see `ui-design` rule).
 6. **Mobile runnable** — Any `apps/mobile/` change runs `bun run verify` from `apps/mobile/` and leaves Expo able to bundle (see `mobile-development` rule).
+7. **Autonomy** — Proceed without implementation approval; stop only for product gates (see `autonomy` rule). Open a PR when done.
 
 ## Order of Operations
 
 ```
-read PRODUCT.md + design spec (if UI or copy) → implement → reuse/extend components → unit tests → integration tests (if applicable) → lint → update API docs → update docs/design/components.md (if new UI component) → impeccable adapt + polish (if UI) → verify checklist
+read PRODUCT.md + design spec (if UI or copy) → implement → reuse/extend components → unit tests → integration tests (if applicable) → lint → update API docs → update docs/design/components.md (if new UI component) → impeccable adapt + polish (if UI) → open PR → verify checklist
 ```
 
 ### UI changes (`apps/web/`)
@@ -30,7 +31,7 @@ Before editing pages or JSX:
 2. Search `apps/web/components/` for an existing component — **use it** instead of inline markup
 3. If no component exists but the pattern is reusable, **create one** in the correct layer (`ui/`, `layout/`, `tend/`, `forms/`) and document it in `docs/design/components.md`
 4. Use tokens from `docs/design/tokens.css` — no ad-hoc colors or fonts
-5. **Before marking the task complete:** load the **impeccable** skill and run **`adapt`** then **`polish`** on the changed UI — hierarchy, spacing, copy, states, and accessibility within Tend's design constraints (no guilt-driven UX)
+5. **Before marking the task complete:** load [`.cursor/skills/impeccable/SKILL.md`](../skills/impeccable/SKILL.md) and run **`adapt`** then **`polish`** on the changed UI — hierarchy, spacing, copy, states, and accessibility within Tend's design constraints (no guilt-driven UX). Do not run impeccable `init` or `document`.
 
 User-facing copy changes outside `apps/web/` (e.g. status labels, onboarding strings, empty states) still require [`PRODUCT.md`](../../PRODUCT.md), `docs/design/design-language.md`, and i18n dictionary entries with translations — see the `ui-design` rule.
 
@@ -47,5 +48,5 @@ If a reproducer is impractical (e.g. flaky timing, missing external service), do
 ## When Adding a New Feature
 
 - Prefer self-documenting names and small, focused modules over large undocumented blocks.
-- Colocate unit tests next to source (`*.test.ts`, `*_test.go`, etc.) or in the project's conventional test directory.
+- Put tests in each package's `tests/` folder (see `testing` rule) — not next to source files.
 - Run the full relevant test command, not only the new test file, when integration risk exists.

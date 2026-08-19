@@ -1,0 +1,29 @@
+name: Auto-merge
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review, unlabeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  enable-automerge:
+    name: Enable auto-merge
+    if: ${{ github.event.pull_request.draft == false && github.event.pull_request.base.ref == 'main' && !contains(github.event.pull_request.labels.*.name, 'needs-product-decision') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Queue squash merge when required checks pass
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          set -euo pipefail
+          if ! gh pr merge "$PR_URL" --auto --squash; then
+            echo "::error::Could not enable auto-merge. One-time GitHub settings:"
+            echo "1. https://github.com/${GITHUB_REPOSITORY}/settings — General → Pull Requests → Allow auto-merge"
+            echo "2. https://github.com/${GITHUB_REPOSITORY}/settings/rules — ruleset on main requiring status check named CI (do not require approvals)"
+            echo "Docs: docs/github-setup.md"
+            exit 1
+          fi

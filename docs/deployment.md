@@ -174,7 +174,15 @@ Start with **DNS only** (grey cloud) until the site works. You can enable Cloudf
 
 ---
 
-## 4. Post-deploy checklist
+## 4. Mobile (Expo EAS)
+
+Android **preview** APKs build on EAS when `main` changes `apps/mobile/`, `packages/domain/`, or `version.json` (workflow: [`.github/workflows/eas-preview.yml`](../.github/workflows/eas-preview.yml)).
+
+One-time GitHub setup (secret + auto-merge): [`docs/github-setup.md`](github-setup.md). Agent loop: [`docs/autonomous-development.md`](autonomous-development.md).
+
+iOS is out of scope. Play Store submission is not automatic.
+
+## 5. Post-deploy checklist
 
 - [ ] `GET /api/v1/health` returns `"database": "ok"`
 - [ ] Register a test account at `/register`

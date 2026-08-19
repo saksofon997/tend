@@ -1,0 +1,5 @@
+{
+  "name": "Tend",
+  "install": "command -v bun >/dev/null 2>&1 || (curl -fsSL https://bun.sh/install | bash)\nexport BUN_INSTALL=\"${BUN_INSTALL:-$HOME/.bun}\"\nexport PATH=\"$BUN_INSTALL/bin:$PATH\"\nbun install --frozen-lockfile",
+  "start": "if command -v docker >/dev/null 2>&1; then docker compose up -d; fi"
+}

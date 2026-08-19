@@ -178,7 +178,7 @@ Before sharing with testers, walk through [`docs/manual-test-script.md`](docs/ma
 
 ### Deployment
 
-Production hosting uses **Vercel** (app), **Neon** (Postgres), and **Cloudflare** (DNS). Step-by-step setup: [`docs/deployment.md`](docs/deployment.md).
+Production hosting uses **Vercel** (app), **Neon** (Postgres), **Cloudflare** (DNS), and **EAS** (Android preview builds on `main`). Step-by-step setup: [`docs/deployment.md`](docs/deployment.md). Agent loop (prompt → PR → merge → deploy): [`docs/autonomous-development.md`](docs/autonomous-development.md).
 
 Reminder push notifications are triggered by an external scheduler. The free setup uses [cron-job.org](https://cron-job.org/) to call the protected notification job endpoint every 30 minutes:
 

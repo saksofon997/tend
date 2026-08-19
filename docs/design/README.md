@@ -11,11 +11,13 @@ This spec is wired into Cursor change instructions:
 | Rule | Scope | Purpose |
 |------|-------|---------|
 | [`implementation-workflow.mdc`](../../.cursor/rules/implementation-workflow.mdc) | Always | Checklist step 5 + UI order of operations |
+| [`autonomy.mdc`](../../.cursor/rules/autonomy.mdc) | Always | Proceed by default; stop only for product gates |
 | [`ui-design.mdc`](../../.cursor/rules/ui-design.mdc) | `apps/web/**/*.{tsx,css}` | Design spec, reusable components, styling rules, final polish |
+| [impeccable skill](../../.cursor/skills/impeccable/SKILL.md) | UI finish | Tend-constrained `adapt` + `polish` |
 
 **Before any UI or copy work:** read [`PRODUCT.md`](../../PRODUCT.md) for product direction, then this README, `design-language.md`, and the relevant entries in `components.md`. UI and wording must stay aligned with both the design language and product constraints (calm, no guilt-driven UX, not a task manager). Reuse existing components in `apps/web/components/` before writing new markup.
 
-**Before marking UI work complete:** load the **impeccable** skill and run **`adapt`** then **`polish`** on the changed screens or components — a final touch-up pass for hierarchy, spacing, copy, states, and accessibility within Tend's design constraints.
+**Before marking UI work complete:** load [`.cursor/skills/impeccable/SKILL.md`](../../.cursor/skills/impeccable/SKILL.md) and run **`adapt`** then **`polish`** on the changed screens or components — a final touch-up pass for hierarchy, spacing, copy, states, and accessibility within Tend's design constraints. Do not run impeccable `init` or `document`.
 
 ## Documents
 
@@ -55,13 +57,7 @@ When adding a pattern used in more than one place:
 
 ## Implementation status
 
-Foundation and Phase 5 home UI are implemented. Still to build per `components.md`:
-
-- Item detail (`/items/[id]`)
-- `AvailabilityEditor`
-- `ReminderBanner` (in-app reminders)
-- `ActivityListItem` / recent activity view
-- `ConfirmDialog` for archive/delete
+Foundation, attention home, item detail, availability, in-app reminders, activity, and confirm dialogs are implemented. Extend `components.md` when adding catalog entries; do not rebuild those screens from scratch.
 
 ## File layout
 

@@ -1,19 +1,19 @@
 # GitHub one-time setup (EXPO_TOKEN + auto-merge)
 
-Cursor Cloud environment is separate — keep setting that up on its own. These two GitHub clicks close the merge and Android-preview loop. **iOS is out of scope.**
+Cursor Cloud environment is separate from GitHub Actions. Put `EXPO_TOKEN` in **both** so Cloud Agents can start a preview APK after a feature set, and so `eas-preview.yml` can run on `main`. **iOS is out of scope.**
 
-## 1. `EXPO_TOKEN` — GitHub Actions secret
+## 1. `EXPO_TOKEN` — GitHub Actions and Cloud Agent
 
-Put it **only** here. Do not commit it, do not put it in `.env`, and do not add it to the Cursor Cloud environment (that environment does not trigger EAS).
+Do not commit the token and do not put it in `.env`. Put the same Expo access token in **both** places:
 
-1. Create a token: [expo.dev/settings/access-tokens](https://expo.dev/settings/access-tokens) → **Create token**. Copy it once.
-2. Paste it: [github.com/saksofon997/tend/settings/secrets/actions](https://github.com/saksofon997/tend/settings/secrets/actions) → **New repository secret**.
-3. Name (exact): `EXPO_TOKEN`
-4. Value: the token from step 1 → **Add secret**
+1. [GitHub Actions secrets](https://github.com/saksofon997/tend/settings/secrets/actions) as `EXPO_TOKEN` — used by [`.github/workflows/eas-preview.yml`](../.github/workflows/eas-preview.yml).
+2. The Cursor Cloud environment as `EXPO_TOKEN` — used after a feature set so the agent can run `bunx eas-cli build --platform android --profile preview --non-interactive --no-wait` from `apps/mobile/`. GitHub secrets are not visible to Cloud Agents.
 
-After that, pushes to `main` that touch `apps/mobile/**`, `packages/domain/**`, or `version.json` trigger an Android EAS **preview** APK (internal). Builds show up at [expo.dev/accounts/saksofon997/projects/tend/builds](https://expo.dev/accounts/saksofon997/projects/tend/builds).
+Create the token: [expo.dev/settings/access-tokens](https://expo.dev/settings/access-tokens) → **Create token**. Copy it once.
 
-To confirm without waiting for a mobile change: Actions → **EAS Preview** → **Run workflow**.
+After that, Android **preview** APKs (internal, installable) show up at [expo.dev/accounts/saksofon997/projects/tend/builds](https://expo.dev/accounts/saksofon997/projects/tend/builds). Do not use EAS profile `development` unless asked.
+
+To confirm from GitHub without waiting for a mobile change: Actions → **EAS Preview** → **Run workflow**.
 
 ## 2. Auto-merge — three GitHub settings + one workflow
 

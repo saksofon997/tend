@@ -29,7 +29,8 @@ prompt → cloud agent branch → implement + tests + lint
 
 1. Secret `EXPO_TOKEN` at [repo Actions secrets](https://github.com/saksofon997/tend/settings/secrets/actions) (create the token at [expo.dev/settings/access-tokens](https://expo.dev/settings/access-tokens)). Not in Cursor env.
 2. [Allow auto-merge](https://github.com/saksofon997/tend/settings) + ruleset on `main` requiring status check `CI` with **0 approvals**.
-3. Optional label `needs-product-decision` for the rare PRs you should see.
+3. Secret `AUTO_MERGE_TOKEN` (PAT with `repo` + `workflow`) so squash-merge can start CI and EAS Preview on `main`. Without it, GitHub ignores `GITHUB_TOKEN` merges.
+4. Optional label `needs-product-decision` for the rare PRs you should see.
 
 **Cursor Automations / Bugbot** — optional after GitHub merge works. CI is the merge gate; Bugbot is extra review, not a required approver.
 

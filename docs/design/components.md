@@ -338,6 +338,8 @@ Footer row                    — if counter and/or error
 
 **Purpose:** Public landing at `/` for unauthenticated visitors. Value prop, product preview carousel (`LandingPromoPreview` + `PromoCarousel`), differentiation copy, Register + Sign in CTAs.
 
+**Layout:** Hero stays copy-left + preview-right. Every following section uses the same rhythm (`mt-16 border-t pt-10`), a centered `h2` intro (`max-w-2xl`), then supporting content. How-it-works and features share a 3-column point grid; features put heading before the image so scan order matches Check In.
+
 **Routes:** `/` (when no session)
 
 ---

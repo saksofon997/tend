@@ -79,14 +79,25 @@ In **Project → Settings → Environment Variables**, add:
 | `DATABASE_URL_UNPOOLED` | Neon **direct** connection string | Production, Preview, Development |
 | `SESSION_SECRET` | Random 32+ char secret (`openssl rand -base64 32`) | Production, Preview, Development |
 | `NOTIFICATIONS_JOB_SECRET` | Random token for manually triggering the notification job endpoint | Production, Preview |
-| `RESEND_API_KEY` | Resend API key for password-reset email | Production, Preview |
-| `EMAIL_FROM` | From address, e.g. `Tend <noreply@app.tend.qzz.io>` | Production, Preview |
+| `RESEND_API_KEY` | Resend API key for password-reset email (`re_…` from [resend.com/api-keys](https://resend.com/api-keys)). Never commit this. | Production, Preview |
+| `EMAIL_FROM` | From address. Until `app.tend.qzz.io` (or `tend.qzz.io`) is verified in Resend, use `Tend <onboarding@resend.dev>`. After verification: `Tend <noreply@app.tend.qzz.io>` | Production, Preview |
 | `FIREBASE_PROJECT_ID` | Firebase project ID | Production, Preview |
 | `FIREBASE_CLIENT_EMAIL` | Firebase service-account client email | Production, Preview |
 | `FIREBASE_PRIVATE_KEY` | Firebase service-account private key with newlines escaped as `\n` | Production, Preview |
 | `NODE_ENV` | `production` | Production only |
 
 **Optional:** install the [Neon Vercel integration](https://vercel.com/integrations/neon) — it can inject `DATABASE_URL` and `DATABASE_URL_UNPOOLED` automatically.
+
+### Resend (forgot-password email)
+
+Tend already sends mail through Resend’s HTTP API (`fetch https://api.resend.com/emails`). You do not need the `resend` npm snippet.
+
+1. Create an API key at [resend.com/api-keys](https://resend.com/api-keys).
+2. In **Vercel → tend-web → Settings → Environment Variables**, add `RESEND_API_KEY` for **Production** and **Preview**. Never commit the key.
+3. Until you verify `tend.qzz.io` or `app.tend.qzz.io` in Resend → Domains, set `EMAIL_FROM` to `Tend <onboarding@resend.dev>`. That test sender can only deliver to the Resend account email.
+4. After the domain is verified, set `EMAIL_FROM` to `Tend <noreply@app.tend.qzz.io>`.
+
+Locally, the same names go in `.env` (gitignored). Forgot-password still returns `{ ok: true }` if the key is missing; it just skips sending.
 
 ### Deploy
 

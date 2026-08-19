@@ -187,7 +187,7 @@ GET https://app.tend.qzz.io/api/v1/jobs/notifications
 Authorization: Bearer <NOTIFICATIONS_JOB_SECRET>
 ```
 
-The Vercel project must have `DATABASE_URL`, `SESSION_SECRET`, `NOTIFICATIONS_JOB_SECRET`, Firebase Cloud Messaging service-account env vars, and `RESEND_API_KEY` (plus optional `EMAIL_FROM`) for password-reset email. See [`docs/deployment.md`](docs/deployment.md#notification-scheduling-with-cron-joborg) for the full checklist.
+The Vercel project must have `DATABASE_URL`, `SESSION_SECRET`, `NOTIFICATIONS_JOB_SECRET`, Firebase Cloud Messaging service-account env vars, and `RESEND_API_KEY` (plus optional `EMAIL_FROM`) for password-reset email. See [`docs/deployment.md`](docs/deployment.md#resend-forgot-password-email) for Resend setup.
 
 ### API documentation
 

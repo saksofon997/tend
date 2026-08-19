@@ -23,6 +23,7 @@ import { TendApi } from "@api/tendApi";
 import { DatePickerField } from "@components/date-picker-field";
 import { HandsGivingIcon } from "@components/hands-giving-icon";
 import { ItemForm } from "@components/item-form";
+import { LanguageSwitch } from "@components/language-switch";
 import { Chip } from "@components/life-area-picker";
 import { PresetSuggestions } from "@components/preset-suggestions";
 import { PrimaryButton } from "@components/primary-button";
@@ -38,14 +39,11 @@ import { useAvailabilityWindows } from "@hooks/useAvailabilityWindows";
 import { useHomeItems } from "@hooks/useHomeItems";
 import { usePushNotifications } from "@hooks/usePushNotifications";
 import {
-  LOCALE_OPTIONS,
   LOCALE_STORAGE_KEY,
   type Locale,
   getLocale,
-  isLocale,
   lifeAreaFilterToggleLabel,
   lifeAreaLabel,
-  setLocale,
   t,
 } from "@i18n";
 import { PRESETS_BY_AREA, buildCheckInSummary } from "@tend/domain";
@@ -59,6 +57,7 @@ import {
 } from "@tend/domain";
 import { isDevMode } from "@utils/devMode";
 import { itemFormValuesFromItem } from "@utils/itemFormValues";
+import { applyLocale, localeFromStorage } from "@utils/localePreference";
 import { getErrorMessage } from "@utils/networkError";
 import { parsePasswordResetTokenFromUrl } from "@utils/passwordResetLink";
 import { restoreSession } from "@utils/sessionRestore";
@@ -270,9 +269,9 @@ function AppBootstrap() {
 
     async function boot() {
       try {
-        const savedLocale = await storage.getString(LOCALE_STORAGE_KEY);
-        if (isLocale(savedLocale)) {
-          setLocale(savedLocale);
+        const savedLocale = localeFromStorage(await storage.getString(LOCALE_STORAGE_KEY));
+        if (savedLocale) {
+          applyLocale(savedLocale);
           if (mounted) {
             setLocaleState(savedLocale);
           }
@@ -361,6 +360,12 @@ function AppBootstrap() {
     setNeedsOnboarding(false);
   }
 
+  function handleLocaleChange(nextLocale: Locale) {
+    applyLocale(nextLocale);
+    setLocaleState(nextLocale);
+    void storage.setString(LOCALE_STORAGE_KEY, nextLocale);
+  }
+
   if (booting || !api || !fontsReady || checkingSession) {
     return <BootLoader />;
   }
@@ -370,8 +375,10 @@ function AppBootstrap() {
       return (
         <LoginScreen
           api={api}
+          locale={locale}
           onCreateAccount={() => setAuthMode("register")}
           onForgotPassword={() => setAuthMode("forgotPassword")}
+          onLocaleChange={handleLocaleChange}
           onSignedIn={handleSignedIn}
         />
       );
@@ -381,6 +388,8 @@ function AppBootstrap() {
       return (
         <RegisterScreen
           api={api}
+          locale={locale}
+          onLocaleChange={handleLocaleChange}
           onSignIn={() => setAuthMode("signIn")}
           onSignedIn={(signedInUser) => handleSignedIn(signedInUser, true)}
         />
@@ -388,15 +397,24 @@ function AppBootstrap() {
     }
 
     if (authMode === "forgotPassword") {
-      return <ForgotPasswordScreen api={api} onBack={() => setAuthMode("signIn")} />;
+      return (
+        <ForgotPasswordScreen
+          api={api}
+          locale={locale}
+          onBack={() => setAuthMode("signIn")}
+          onLocaleChange={handleLocaleChange}
+        />
+      );
     }
 
     if (authMode === "resetPassword") {
       return (
         <ResetPasswordScreen
           api={api}
+          locale={locale}
           token={resetToken}
           onBack={() => setAuthMode("signIn")}
+          onLocaleChange={handleLocaleChange}
           onComplete={() => {
             setResetToken(null);
             setAuthMode("signIn");
@@ -407,7 +425,9 @@ function AppBootstrap() {
 
     return (
       <AuthSplashScreen
+        locale={locale}
         onCreateAccount={() => setAuthMode("register")}
+        onLocaleChange={handleLocaleChange}
         onSignIn={() => setAuthMode("signIn")}
       />
     );
@@ -421,11 +441,7 @@ function AppBootstrap() {
     <AuthedApp
       api={api}
       locale={locale}
-      onLocaleChange={(nextLocale) => {
-        setLocale(nextLocale);
-        setLocaleState(nextLocale);
-        void storage.setString(LOCALE_STORAGE_KEY, nextLocale);
-      }}
+      onLocaleChange={handleLocaleChange}
       user={user}
       onSignedOut={() => {
         setUser(null);
@@ -437,10 +453,14 @@ function AppBootstrap() {
 }
 
 function AuthSplashScreen({
+  locale,
   onCreateAccount,
+  onLocaleChange,
   onSignIn,
 }: {
+  locale: Locale;
   onCreateAccount: () => void;
+  onLocaleChange: (locale: Locale) => void;
   onSignIn: () => void;
 }) {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -478,6 +498,7 @@ function AuthSplashScreen({
           source={require("./assets/tend-logo.png")}
           style={styles.splashLogo}
         />
+        <LanguageSwitch compact locale={locale} onLocaleChange={onLocaleChange} />
       </View>
 
       <View style={styles.splashCarouselArea}>
@@ -713,11 +734,15 @@ function AuthFormShell({
   children,
   description,
   footer,
+  locale,
+  onLocaleChange,
   title,
 }: {
   children: ReactNode;
   description?: string;
   footer: ReactNode;
+  locale: Locale;
+  onLocaleChange: (locale: Locale) => void;
   title: string;
 }) {
   return (
@@ -729,13 +754,14 @@ function AuthFormShell({
           contentContainerStyle={[styles.onboardingContent, styles.keyboardAwareScrollContent]}
           style={styles.screen}
         >
-          <View style={styles.onboardingLogoWrap}>
+          <View style={styles.authHeader}>
             <Image
               accessibilityLabel={t("app.logo")}
               resizeMode="contain"
               source={require("./assets/tend-logo.png")}
               style={styles.splashLogo}
             />
+            <LanguageSwitch compact locale={locale} onLocaleChange={onLocaleChange} />
           </View>
           <View style={styles.onboardingCard}>
             <Text style={styles.pageTitle}>{title}</Text>
@@ -751,13 +777,17 @@ function AuthFormShell({
 
 function LoginScreen({
   api,
+  locale,
   onCreateAccount,
   onForgotPassword,
+  onLocaleChange,
   onSignedIn,
 }: {
   api: TendApi;
+  locale: Locale;
   onCreateAccount: () => void;
   onForgotPassword: () => void;
+  onLocaleChange: (locale: Locale) => void;
   onSignedIn: (user: UserResponse) => Promise<void>;
 }) {
   const [email, setEmail] = useState("");
@@ -814,6 +844,8 @@ function LoginScreen({
           </View>
         </>
       }
+      locale={locale}
+      onLocaleChange={onLocaleChange}
       title={t("auth.signIn.title")}
     >
       {showApiUrlField ? (
@@ -860,10 +892,14 @@ function LoginScreen({
 
 function RegisterScreen({
   api,
+  locale,
+  onLocaleChange,
   onSignIn,
   onSignedIn,
 }: {
   api: TendApi;
+  locale: Locale;
+  onLocaleChange: (locale: Locale) => void;
   onSignIn: () => void;
   onSignedIn: (user: UserResponse) => Promise<void>;
 }) {
@@ -935,6 +971,8 @@ function RegisterScreen({
           </View>
         </>
       }
+      locale={locale}
+      onLocaleChange={onLocaleChange}
       title={t("auth.createAccount.title")}
     >
       {showApiUrlField ? (
@@ -1001,10 +1039,14 @@ function RegisterScreen({
 
 function ForgotPasswordScreen({
   api,
+  locale,
   onBack,
+  onLocaleChange,
 }: {
   api: TendApi;
+  locale: Locale;
   onBack: () => void;
+  onLocaleChange: (locale: Locale) => void;
 }) {
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -1044,6 +1086,8 @@ function ForgotPasswordScreen({
           </Pressable>
         </>
       }
+      locale={locale}
+      onLocaleChange={onLocaleChange}
       title={t("auth.forgotPassword.title")}
     >
       {sent ? (
@@ -1068,13 +1112,17 @@ function ForgotPasswordScreen({
 
 function ResetPasswordScreen({
   api,
+  locale,
   token,
   onBack,
+  onLocaleChange,
   onComplete,
 }: {
   api: TendApi;
+  locale: Locale;
   token: string | null;
   onBack: () => void;
+  onLocaleChange: (locale: Locale) => void;
   onComplete: () => void;
 }) {
   const [password, setPassword] = useState("");
@@ -1126,6 +1174,8 @@ function ResetPasswordScreen({
           </Pressable>
         </>
       }
+      locale={locale}
+      onLocaleChange={onLocaleChange}
       title={t("auth.resetPassword.title")}
     >
       {updated ? <AlertBox message={t("auth.resetPassword.success")} tone="info" /> : null}
@@ -2640,33 +2690,7 @@ function SettingsScreen({
       <View style={styles.settingsCard}>
         <Text style={styles.cardTitle}>{t("settings.language.title")}</Text>
         <Text style={styles.metaText}>{t("settings.language.subtitle")}</Text>
-        <View style={styles.languageSwitch} accessibilityLabel={t("language.label")}>
-          {LOCALE_OPTIONS.map((option) => {
-            const selected = locale === option.value;
-
-            return (
-              <TouchableOpacity
-                key={option.value}
-                accessibilityRole="button"
-                accessibilityState={{ selected }}
-                style={[
-                  styles.languageSwitchOption,
-                  selected ? styles.languageSwitchSelected : null,
-                ]}
-                onPress={() => onLocaleChange(option.value)}
-              >
-                <Text
-                  style={[
-                    styles.languageSwitchText,
-                    selected ? styles.languageSwitchTextSelected : null,
-                  ]}
-                >
-                  {t(option.labelKey)}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+        <LanguageSwitch locale={locale} onLocaleChange={onLocaleChange} />
       </View>
 
       <View style={styles.settingsCard}>
@@ -4082,36 +4106,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: spacing.xs,
   },
-  languageSwitch: {
-    backgroundColor: colors.muted,
-    borderRadius: radius.md,
-    flexDirection: "row",
-    gap: spacing.xs,
-    marginTop: spacing.md,
-    padding: spacing.xs,
-  },
-  languageSwitchOption: {
-    alignItems: "center",
-    borderRadius: radius.sm,
-    flex: 1,
-    justifyContent: "center",
-    minHeight: 44,
-    paddingHorizontal: spacing.md,
-  },
-  languageSwitchSelected: {
-    backgroundColor: colors.card,
-    borderColor: colors.borderSubtle,
-    borderWidth: 1,
-  },
-  languageSwitchText: {
-    color: colors.textMuted,
-    fontFamily: fonts.bodyMedium,
-    fontSize: 14,
-  },
-  languageSwitchTextSelected: {
-    color: colors.text,
-    fontFamily: fonts.bodySemibold,
-  },
   signOutButton: {
     alignItems: "center",
     flexDirection: "row",
@@ -4135,10 +4129,15 @@ const styles = StyleSheet.create({
   },
   splashHeader: {
     alignItems: "center",
-    paddingHorizontal: spacing.xl,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+    justifyContent: "space-between",
+    paddingHorizontal: spacing.lg,
     paddingTop: spacing.sm,
   },
   splashLogo: {
+    flexShrink: 1,
     height: 38,
     width: 132,
   },
@@ -4237,6 +4236,15 @@ const styles = StyleSheet.create({
   },
   onboardingLogoWrap: {
     alignItems: "center",
+    marginBottom: spacing.lg,
+    marginTop: spacing.md,
+  },
+  authHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+    justifyContent: "space-between",
     marginBottom: spacing.lg,
     marginTop: spacing.md,
   },

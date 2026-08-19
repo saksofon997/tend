@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { getLocale, lifeAreaFilterToggleLabel, setLocale, t } from "../../src/i18n";
+import { LOCALE_OPTIONS, getLocale, lifeAreaFilterToggleLabel, setLocale, t } from "../../src/i18n";
 
 describe("mobile i18n", () => {
   it("uses web-aligned status labels", () => {
@@ -49,6 +49,12 @@ describe("mobile i18n", () => {
     );
     expect(t("onboarding.preset.title")).toBe("Pick a suggestion");
     expect(t("onboarding.form.save")).toBe("Save and continue");
+  });
+
+  it("lists English and Serbian for the start-screen language switch", () => {
+    setLocale("en");
+    expect(LOCALE_OPTIONS.map((option) => option.value)).toEqual(["en", "sr"]);
+    expect(t("language.label")).toBe("Language");
   });
 
   it("translates forgot-password copy", () => {

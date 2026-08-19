@@ -117,7 +117,7 @@ Linked Tend wordmark image. Used in `AppShell`, `AuthLayout`, and anywhere the b
 
 **File:** `components/layout/language-select.tsx`
 
-Native select for public language switching. Used in the landing header near sign in. Authenticated app language switching lives inside `UserMenu` as radio items.
+Native select for public language switching. Used in the landing header near sign in. Authenticated app language switching lives inside `UserMenu` as radio items. On mobile, `LanguageSwitch` is in the splash and auth headers so language can be chosen before sign-in or onboarding.
 
 ---
 

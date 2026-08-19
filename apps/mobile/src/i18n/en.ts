@@ -16,6 +16,15 @@ export const en = {
   "auth.email.placeholder": "you@example.com",
   "auth.mobileApiHint":
     "On a phone, use your computer's LAN IP (shown in the Expo terminal). Android emulators use 10.0.2.2; iOS simulators use localhost.",
+  "auth.forgotPassword.backToSignIn": "Back to sign in",
+  "auth.forgotPassword.button": "Send reset link",
+  "auth.forgotPassword.description":
+    "Enter the email you use for Tend. If an account exists, we'll send a reset link.",
+  "auth.forgotPassword.link": "Forgot password?",
+  "auth.forgotPassword.loading": "Sending…",
+  "auth.forgotPassword.sent":
+    "If that email is on Tend, a reset link is on its way. It expires in an hour.",
+  "auth.forgotPassword.title": "Forgot your password?",
   "auth.password.label": "Password",
   "auth.password.helper": "At least 8 characters",
   "auth.password.placeholder": "Password",
@@ -23,6 +32,12 @@ export const en = {
   "auth.passwordConfirm.placeholder": "Confirm password",
   "auth.register.description":
     "What should we call you? We'll greet you by this name on the home screen.",
+  "auth.resetPassword.button": "Save new password",
+  "auth.resetPassword.description": "Pick a new password for your Tend account.",
+  "auth.resetPassword.loading": "Saving…",
+  "auth.resetPassword.missingToken": "This reset link is missing its token. Request a new one.",
+  "auth.resetPassword.success": "Password updated. You can sign in now.",
+  "auth.resetPassword.title": "Choose a new password",
   "auth.signIn.button": "Sign in",
   "auth.signIn.inlineLink": "Sign in",
   "auth.signIn.loading": "Signing in…",
@@ -126,7 +141,9 @@ export const en = {
   "errors.notifications.disable": "Could not disable notifications on this device.",
   "errors.retry": "Please try again.",
   "errors.createAccount": "Unable to create account",
+  "errors.forgotPassword": "Unable to send a reset link",
   "errors.passwordConfirm": "Passwords do not match",
+  "errors.resetPassword": "Unable to update password",
   "errors.settings.load": "Could not load settings.",
   "errors.settings.save": "Could not save settings.",
   "errors.signIn": "Unable to sign in",

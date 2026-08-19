@@ -16,7 +16,7 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 | Resource | Doc | Description |
 |----------|-----|-------------|
 | Health | [health.md](./health.md) | Liveness and database connectivity |
-| Auth | [auth.md](./auth.md) | Local account registration and sessions |
+| Auth | [auth.md](./auth.md) | Local account registration, sessions, and password reset |
 | Items | [items.md](./items.md) | Tend item CRUD, tend events, presets |
 | Activity | [activity.md](./activity.md) | Correct or remove tended events |
 | Availability | [availability.md](./availability.md) | Weekly free-time windows |
@@ -29,6 +29,7 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 
 | Date | Change |
 |------|--------|
+| 2026-08-19 | Added password reset endpoints (`forgot-password`, `reset-password`) |
 | 2026-06-25 | Switched server-side notification sends from Expo Push to FCM native device tokens |
 | 2026-06-25 | Removed the standalone notification worker; scheduling is handled by cron-job.org hitting the HTTP job endpoint |
 | 2026-06-19 | Added push subscription endpoints and 30-minute server-side notification job |

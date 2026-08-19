@@ -89,6 +89,68 @@ Return the signed-in user.
 
 ---
 
+### `POST /api/v1/auth/forgot-password`
+
+Request a password reset email. The response is the same whether or not the email is registered, so accounts are not revealed.
+
+**Auth:** None
+
+**Request body**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| email | string | yes | Account email; normalized to lowercase |
+| locale | `"en"` \| `"sr"` | no | Language for the reset email |
+
+**Responses**
+
+| Status | Body | Description |
+|--------|------|-------------|
+| 200 | `{ ok: true }` | Request accepted |
+| 400 | `{ error: string }` | Validation failure |
+
+**Example**
+
+```json
+{ "email": "saki@example.com", "locale": "en" }
+```
+
+**Notes**
+
+- Reset links expire after one hour and can be used once.
+- Email delivery uses Resend when `RESEND_API_KEY` is set. `EMAIL_FROM` defaults to `Tend <noreply@app.tend.qzz.io>`.
+- The emailed link points at `/reset-password?token=…` on the app host.
+
+---
+
+### `POST /api/v1/auth/reset-password`
+
+Set a new password from a reset token. Existing sessions for that account are ended.
+
+**Auth:** None
+
+**Request body**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| token | string | yes | Token from the reset email |
+| password | string | yes | New password, minimum 8 characters |
+
+**Responses**
+
+| Status | Body | Description |
+|--------|------|-------------|
+| 200 | `{ ok: true }` | Password updated |
+| 400 | `{ error: string }` | Validation failure, or the token is invalid or expired |
+
+**Example**
+
+```json
+{ "token": "…", "password": "new-password-123" }
+```
+
+---
+
 ### `User`
 
 | Field | Type | Description |
@@ -97,4 +159,4 @@ Return the signed-in user.
 | displayName | string | Display name |
 | email | string | Email address |
 
-**Pre-alpha note:** No cloud sync, email verification, or password reset. Set `ALLOWED_EMAILS` (comma-separated) in production to restrict who can register and sign in.
+**Pre-alpha note:** Email verification is not required. Password reset is available through `/forgot-password`. Set `ALLOWED_EMAILS` (comma-separated) in production to restrict who can register and sign in.

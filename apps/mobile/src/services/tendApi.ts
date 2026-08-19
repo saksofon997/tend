@@ -113,6 +113,20 @@ export class TendApi {
     });
   }
 
+  async forgotPassword(email: string, locale: "en" | "sr") {
+    return this.request<{ ok: true }>("/api/v1/auth/forgot-password", {
+      method: "POST",
+      body: { email, locale },
+    });
+  }
+
+  async resetPassword(token: string, password: string) {
+    return this.request<{ ok: true }>("/api/v1/auth/reset-password", {
+      method: "POST",
+      body: { token, password },
+    });
+  }
+
   async register(displayName: string, email: string, password: string) {
     return this.request<{ user: UserResponse }>("/api/v1/auth/register", {
       method: "POST",

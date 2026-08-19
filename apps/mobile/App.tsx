@@ -59,6 +59,7 @@ import {
 import { isDevMode } from "@utils/devMode";
 import { itemFormValuesFromItem } from "@utils/itemFormValues";
 import { getErrorMessage } from "@utils/networkError";
+import { parsePasswordResetTokenFromUrl } from "@utils/passwordResetLink";
 import { restoreSession } from "@utils/sessionRestore";
 import { storage } from "@utils/storage";
 import { timeOptionsAfter } from "@utils/timeOptions";
@@ -91,6 +92,7 @@ import {
   BackHandler,
   Image,
   KeyboardAvoidingView,
+  Linking,
   Modal,
   Platform,
   Pressable,
@@ -217,7 +219,7 @@ function reminderBannerHeadline(reminderCount: number, now = new Date()) {
   return FREE_TIME_HEADLINE_VARIANTS[variantIndex](freeTimePhrase(now), reminderCount > 1);
 }
 
-type AuthMode = "splash" | "signIn" | "register";
+type AuthMode = "splash" | "signIn" | "register" | "forgotPassword" | "resetPassword";
 
 export default function App() {
   return (
@@ -249,6 +251,7 @@ function AppBootstrap() {
   const [user, setUser] = useState<UserResponse | null>(null);
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
   const [authMode, setAuthMode] = useState<AuthMode>("splash");
+  const [resetToken, setResetToken] = useState<string | null>(null);
   const [booting, setBooting] = useState(true);
   const [checkingSession, setCheckingSession] = useState(false);
   const [locale, setLocaleState] = useState<Locale>(getLocale());
@@ -312,6 +315,29 @@ function AppBootstrap() {
     };
   }, []);
 
+  useEffect(() => {
+    function applyResetUrl(url: string | null) {
+      if (!url) {
+        return;
+      }
+
+      const token = parsePasswordResetTokenFromUrl(url);
+      if (!token) {
+        return;
+      }
+
+      setResetToken(token);
+      setAuthMode("resetPassword");
+    }
+
+    void Linking.getInitialURL().then(applyResetUrl);
+    const subscription = Linking.addEventListener("url", (event) => {
+      applyResetUrl(event.url);
+    });
+
+    return () => subscription.remove();
+  }, []);
+
   async function handleSignedIn(signedInUser: UserResponse, forceOnboarding = false) {
     setCheckingSession(true);
     setUser(signedInUser);
@@ -344,6 +370,7 @@ function AppBootstrap() {
         <LoginScreen
           api={api}
           onCreateAccount={() => setAuthMode("register")}
+          onForgotPassword={() => setAuthMode("forgotPassword")}
           onSignedIn={handleSignedIn}
         />
       );
@@ -355,6 +382,24 @@ function AppBootstrap() {
           api={api}
           onSignIn={() => setAuthMode("signIn")}
           onSignedIn={(signedInUser) => handleSignedIn(signedInUser, true)}
+        />
+      );
+    }
+
+    if (authMode === "forgotPassword") {
+      return <ForgotPasswordScreen api={api} onBack={() => setAuthMode("signIn")} />;
+    }
+
+    if (authMode === "resetPassword") {
+      return (
+        <ResetPasswordScreen
+          api={api}
+          token={resetToken}
+          onBack={() => setAuthMode("signIn")}
+          onComplete={() => {
+            setResetToken(null);
+            setAuthMode("signIn");
+          }}
         />
       );
     }
@@ -706,10 +751,12 @@ function AuthFormShell({
 function LoginScreen({
   api,
   onCreateAccount,
+  onForgotPassword,
   onSignedIn,
 }: {
   api: TendApi;
   onCreateAccount: () => void;
+  onForgotPassword: () => void;
   onSignedIn: (user: UserResponse) => Promise<void>;
 }) {
   const [email, setEmail] = useState("");
@@ -755,6 +802,9 @@ function LoginScreen({
             }
             onPress={signIn}
           />
+          <Pressable style={styles.authTextButton} onPress={onForgotPassword}>
+            <Text style={styles.authTextButtonLabel}>{t("auth.forgotPassword.link")}</Text>
+          </Pressable>
           <View style={styles.authSwitchRow}>
             <Text style={styles.authSwitchText}>{t("auth.signIn.prompt")} </Text>
             <Pressable onPress={onCreateAccount}>
@@ -943,6 +993,166 @@ function RegisterScreen({
         />
       </Field>
 
+      {error ? <AlertBox message={error} tone="error" /> : null}
+    </AuthFormShell>
+  );
+}
+
+function ForgotPasswordScreen({
+  api,
+  onBack,
+}: {
+  api: TendApi;
+  onBack: () => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function sendResetLink() {
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      await api.forgotPassword(email.trim(), getLocale());
+      setSent(true);
+    } catch (requestError) {
+      setError(getErrorMessage(requestError, t("errors.forgotPassword")));
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <AuthFormShell
+      description={t("auth.forgotPassword.description")}
+      footer={
+        <>
+          {sent ? null : (
+            <PrimaryButton
+              label={
+                submitting ? t("auth.forgotPassword.loading") : t("auth.forgotPassword.button")
+              }
+              disabled={submitting || !email}
+              onPress={sendResetLink}
+            />
+          )}
+          <Pressable style={styles.authTextButton} onPress={onBack}>
+            <Text style={styles.authTextButtonLabel}>{t("auth.forgotPassword.backToSignIn")}</Text>
+          </Pressable>
+        </>
+      }
+      title={t("auth.forgotPassword.title")}
+    >
+      {sent ? (
+        <AlertBox message={t("auth.forgotPassword.sent")} tone="info" />
+      ) : (
+        <Field label={t("auth.email.label")} required>
+          <TextInput
+            autoCapitalize="none"
+            autoComplete="email"
+            autoCorrect={false}
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+          />
+        </Field>
+      )}
+      {error ? <AlertBox message={error} tone="error" /> : null}
+    </AuthFormShell>
+  );
+}
+
+function ResetPasswordScreen({
+  api,
+  token,
+  onBack,
+  onComplete,
+}: {
+  api: TendApi;
+  token: string | null;
+  onBack: () => void;
+  onComplete: () => void;
+}) {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [updated, setUpdated] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function savePassword() {
+    if (!token) {
+      setError(t("auth.resetPassword.missingToken"));
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError(t("errors.passwordConfirm"));
+      return;
+    }
+
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      await api.resetPassword(token, password);
+      setUpdated(true);
+    } catch (resetError) {
+      setError(getErrorMessage(resetError, t("errors.resetPassword")));
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <AuthFormShell
+      description={t("auth.resetPassword.description")}
+      footer={
+        <>
+          {updated || !token ? null : (
+            <PrimaryButton
+              label={submitting ? t("auth.resetPassword.loading") : t("auth.resetPassword.button")}
+              disabled={submitting || !password || !confirmPassword}
+              onPress={savePassword}
+            />
+          )}
+          <Pressable style={styles.authTextButton} onPress={updated ? onComplete : onBack}>
+            <Text style={styles.authTextButtonLabel}>
+              {updated ? t("auth.signIn.inlineLink") : t("auth.forgotPassword.backToSignIn")}
+            </Text>
+          </Pressable>
+        </>
+      }
+      title={t("auth.resetPassword.title")}
+    >
+      {updated ? <AlertBox message={t("auth.resetPassword.success")} tone="info" /> : null}
+      {!token && !updated ? (
+        <AlertBox message={t("auth.resetPassword.missingToken")} tone="error" />
+      ) : null}
+      {!updated && token ? (
+        <>
+          <Field label={t("auth.password.label")} helper={t("auth.password.helper")} required>
+            <TextInput
+              autoComplete="new-password"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+              style={styles.input}
+            />
+          </Field>
+          <Field label={t("auth.passwordConfirm.label")} required>
+            <TextInput
+              autoComplete="new-password"
+              secureTextEntry
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              style={styles.input}
+            />
+          </Field>
+        </>
+      ) : null}
       {error ? <AlertBox message={error} tone="error" /> : null}
     </AuthFormShell>
   );

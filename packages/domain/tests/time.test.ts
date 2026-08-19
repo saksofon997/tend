@@ -1,10 +1,24 @@
 import { describe, expect, it } from "bun:test";
 import {
   calendarDaysBetween,
+  isCalendarDate,
   isValidTimeZone,
   localDateInTimeZone,
   zonedLocalDateToInstant,
 } from "../src/time";
+
+describe("isCalendarDate", () => {
+  it("accepts a real YYYY-MM-DD day", () => {
+    expect(isCalendarDate("2026-08-19")).toBe(true);
+  });
+
+  it("rejects locale-typed and incomplete dates", () => {
+    expect(isCalendarDate("21. 02. yyyy")).toBe(false);
+    expect(isCalendarDate("21. 02. 2026")).toBe(false);
+    expect(isCalendarDate("2026-02-31")).toBe(false);
+    expect(isCalendarDate("")).toBe(false);
+  });
+});
 
 describe("calendarDaysBetween", () => {
   it("counts whole calendar days between UTC date keys", () => {

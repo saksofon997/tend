@@ -6,10 +6,12 @@ import { ActivityFilters } from "@/components/tend/activity-filters";
 import { ActivityListItem } from "@/components/tend/activity-list-item";
 import { EmptyStatePreset } from "@/components/tend/empty-state";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { activityLoadErrorMessage, isAbortError } from "@/lib/activity/load-error";
 import {
   type ActivitySearchFilters,
   EMPTY_ACTIVITY_SEARCH_FILTERS,
   activitySearchQueryString,
+  canRequestActivitySearch,
   hasActivitySearchFilters,
 } from "@/lib/activity/search-filters";
 import type { ActivityEntryResponse } from "@/lib/activity/serialize";
@@ -40,32 +42,50 @@ export function ActivityView({ user, initialEvents }: ActivityViewProps) {
       return;
     }
 
+    if (!canRequestActivitySearch(filters)) {
+      return;
+    }
+
+    if (!hasActivitySearchFilters(filters)) {
+      setEvents(initialEvents);
+      setError(null);
+    }
+
+    const controller = new AbortController();
     const delay = filters.q.trim() ? 250 : 0;
-    const handle = window.setTimeout(() => {
-      void loadEvents(filters);
+    const fallback = t("errors.activity.load");
+    const handle = window.setTimeout(async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetch(`/api/v1/activity${activitySearchQueryString(filters)}`, {
+          signal: controller.signal,
+        });
+        if (!response.ok) {
+          throw new Error(fallback);
+        }
+
+        const body = (await response.json()) as { events: ActivityEntryResponse[] };
+        setEvents(body.events);
+      } catch (loadError) {
+        if (isAbortError(loadError)) {
+          return;
+        }
+
+        setError(activityLoadErrorMessage(loadError, fallback));
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
     }, delay);
 
-    return () => window.clearTimeout(handle);
-  }, [filters]);
-
-  async function loadEvents(nextFilters: ActivitySearchFilters) {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch(`/api/v1/activity${activitySearchQueryString(nextFilters)}`);
-      if (!response.ok) {
-        throw new Error(t("errors.activity.load"));
-      }
-
-      const body = (await response.json()) as { events: ActivityEntryResponse[] };
-      setEvents(body.events);
-    } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : t("errors.activity.load"));
-    } finally {
-      setLoading(false);
-    }
-  }
+    return () => {
+      window.clearTimeout(handle);
+      controller.abort();
+    };
+  }, [filters, initialEvents, t]);
 
   async function handleEventUpdate(eventId: string, tendedAt: string) {
     setError(null);

@@ -1756,14 +1756,15 @@ function ActivityScreen({ api }: { api: TendApi }) {
     return () => clearTimeout(handle);
   }, [name]);
 
+  const invertedDates = Boolean(from && to && from > to);
   const filters = useMemo(
     () => ({
       q: debouncedName.trim() || undefined,
       type: type || undefined,
-      from: from || undefined,
-      to: to || undefined,
+      from: from && !invertedDates ? from : undefined,
+      to: to && !invertedDates ? to : undefined,
     }),
-    [debouncedName, type, from, to],
+    [debouncedName, type, from, to, invertedDates],
   );
   const filtersActive = Boolean(filters.q || filters.type || filters.from || filters.to);
   const { deleteActivity, error, events, groups, loading, updateActivity } = useActivityEvents(
@@ -1857,6 +1858,7 @@ function ActivityScreen({ api }: { api: TendApi }) {
                 onChange={setFrom}
                 placeholder={t("activity.search.anyDate")}
                 accessibilityLabel={t("activity.search.from")}
+                invalid={invertedDates}
               />
             </Field>
           </View>
@@ -1867,6 +1869,7 @@ function ActivityScreen({ api }: { api: TendApi }) {
                 onChange={setTo}
                 placeholder={t("activity.search.anyDate")}
                 accessibilityLabel={t("activity.search.to")}
+                invalid={invertedDates}
               />
             </Field>
           </View>

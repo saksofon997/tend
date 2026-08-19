@@ -1,5 +1,6 @@
 "use client";
 
+import { DatePickerField } from "@/components/forms/date-picker-field";
 import { FormField } from "@/components/forms/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +11,7 @@ import {
   hasActivitySearchFilters,
 } from "@/lib/activity/search-filters";
 import { useI18n } from "@/lib/i18n/client";
-import { cn } from "@/lib/utils";
+import { todayDateInputValue } from "@/lib/onboarding/constants";
 
 interface ActivityFiltersProps {
   value: ActivitySearchFilters;
@@ -20,6 +21,8 @@ interface ActivityFiltersProps {
 export function ActivityFilters({ value, onChange }: ActivityFiltersProps) {
   const { t } = useI18n();
   const filtersActive = hasActivitySearchFilters(value);
+  const today = todayDateInputValue();
+  const inverted = Boolean(value.from && value.to && value.from > value.to);
 
   function patch(partial: Partial<ActivitySearchFilters>) {
     onChange({ ...value, ...partial });
@@ -75,23 +78,25 @@ export function ActivityFilters({ value, onChange }: ActivityFiltersProps) {
 
         <div className="grid grid-cols-2 gap-3">
           <FormField id="activity-search-from" label={t("activity.search.from")}>
-            <Input
+            <DatePickerField
               id="activity-search-from"
-              type="date"
               value={value.from}
-              onChange={(event) => patch({ from: event.target.value })}
-              aria-invalid={Boolean(value.from && value.to && value.from > value.to)}
+              onChange={(from) => patch({ from })}
+              max={today}
+              placeholder={t("activity.search.anyDate")}
+              allowEmpty
+              invalid={inverted}
             />
           </FormField>
           <FormField id="activity-search-to" label={t("activity.search.to")}>
-            <Input
+            <DatePickerField
               id="activity-search-to"
-              type="date"
               value={value.to}
-              onChange={(event) => patch({ to: event.target.value })}
-              className={cn(
-                value.from && value.to && value.from > value.to && "border-destructive",
-              )}
+              onChange={(to) => patch({ to })}
+              max={today}
+              placeholder={t("activity.search.anyDate")}
+              allowEmpty
+              invalid={inverted}
             />
           </FormField>
         </div>

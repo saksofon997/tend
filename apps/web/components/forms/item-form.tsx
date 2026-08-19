@@ -1,5 +1,6 @@
 "use client";
 
+import { DatePickerField } from "@/components/forms/date-picker-field";
 import { FormField } from "@/components/forms/form-field";
 import { RhythmSelect } from "@/components/forms/rhythm-select";
 import { TypeSelector } from "@/components/forms/type-selector";
@@ -144,13 +145,12 @@ export function ItemForm({
         label={t("items.add.lastTended.label")}
         error={fieldErrors.lastTendedDate}
       >
-        <Input
+        <DatePickerField
           id="item-last-tended"
-          type="date"
-          max={todayDate}
           value={lastTendedDate}
-          onChange={(event) => setLastTendedDate(event.target.value)}
-          aria-invalid={Boolean(fieldErrors.lastTendedDate)}
+          onChange={setLastTendedDate}
+          max={todayDate}
+          invalid={Boolean(fieldErrors.lastTendedDate)}
         />
       </FormField>
 

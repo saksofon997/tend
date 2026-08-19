@@ -9,7 +9,8 @@ describe("web i18n dictionaries", () => {
   it("includes Serbian shell and landing copy", () => {
     expect(dictionaries.sr["nav.home"]).toBe("Početna");
     expect(dictionaries.sr["activity.empty.title"]).toBe("Još nema zabeleženih aktivnosti");
-    expect(dictionaries.en["activity.search.title"]).toBe("Look up activity");
+    expect(dictionaries.sr["activity.search.title"]).toBe("Pretraži aktivnost");
+    expect(dictionaries.sr["activity.search.namePlaceholder"]).toBe("Pretraži tend");
     expect(dictionaries.sr["activity.empty.filtered.title"]).toBe("Ništa ne odgovara toj pretrazi");
     expect(dictionaries.sr["footer.appReleaseSoon"]).toBe("Izdanje aplikacije uskoro...");
     expect(dictionaries.en["landing.checkIn.preview.imageLabel"]).toBe(

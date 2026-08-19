@@ -3,7 +3,7 @@ import { colors, fonts, radius, spacing } from "@/theme";
 import { t } from "@i18n";
 import DateTimePicker, { type DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { Calendar } from "lucide-react-native";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 
 interface DatePickerFieldProps {
@@ -49,6 +49,12 @@ export function DatePickerField({
     [maxDate],
   );
   const selectedDate = useMemo(() => parseDateInput(value || todayDateInputValue()), [value]);
+
+  useEffect(() => {
+    if (!value) {
+      setShowPicker(false);
+    }
+  }, [value]);
 
   function handleChange(event: DateTimePickerEvent, nextDate?: Date) {
     if (Platform.OS === "android") {

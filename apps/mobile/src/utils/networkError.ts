@@ -1,7 +1,7 @@
 import { ApiError } from "@api/apiError";
 
 const NETWORK_ERROR_PATTERN =
-  /java\.io\.|IOException|ECONNREFUSED|ENETUNREACH|Failed to connect|Network request failed|timed out/i;
+  /java\.io\.|IOException|ECONNREFUSED|ENETUNREACH|Failed to connect|Failed to fetch|Network request failed|timed out/i;
 
 export function isNetworkFailureMessage(message: string): boolean {
   return NETWORK_ERROR_PATTERN.test(message);

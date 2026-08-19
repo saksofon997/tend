@@ -113,3 +113,12 @@ export function formatEventDate(date: Date | string, locale: Locale = "en"): str
     day: "numeric",
   });
 }
+
+export function formatDatePickerLabel(value: string, locale: Locale = "en"): string {
+  const [year, month, day] = value.split("-").map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString(DATE_LOCALES[locale], {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}

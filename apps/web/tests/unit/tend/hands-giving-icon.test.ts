@@ -7,6 +7,6 @@ describe("HandsGivingIcon", () => {
     expect(icon.props["data-icon"]).toBe("hands-giving");
     expect(icon.props.stroke).toBe("currentColor");
     expect(icon.props.fill).toBe("none");
-    expect(icon.props.children).toHaveLength(7);
+    expect(icon.props.children).toHaveLength(11);
   });
 });

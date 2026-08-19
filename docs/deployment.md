@@ -178,11 +178,9 @@ Start with **DNS only** (grey cloud) until the site works. You can enable Cloudf
 
 Android **preview** APKs build on EAS when `main` changes `apps/mobile/`, `packages/domain/`, or `version.json` (workflow: [`.github/workflows/eas-preview.yml`](../.github/workflows/eas-preview.yml)).
 
-One-time: add GitHub Actions secret `EXPO_TOKEN` ([Expo access token](https://docs.expo.dev/accounts/programmatic-access/)). Builds appear at [expo.dev/accounts/saksofon997/projects/tend/builds](https://expo.dev/accounts/saksofon997/projects/tend/builds).
+One-time GitHub setup (secret + auto-merge): [`docs/github-setup.md`](github-setup.md). Agent loop: [`docs/autonomous-development.md`](autonomous-development.md).
 
-iOS and store submission are not automatic (`ios.bundleIdentifier` and Apple credentials are a product/setup decision). The EAS `production` profile exists for a deliberate release, not for every merge.
-
-Agent loop: [`docs/autonomous-development.md`](autonomous-development.md).
+iOS is out of scope. Play Store submission is not automatic.
 
 ## 5. Post-deploy checklist
 

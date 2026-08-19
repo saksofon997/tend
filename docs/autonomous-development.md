@@ -21,16 +21,19 @@ prompt → cloud agent branch → implement + tests + lint
 | Web deploy | Vercel production from `main` (`apps/web`) |
 | Mobile preview | `.github/workflows/eas-preview.yml` — Android `preview` profile on `main` when mobile-related paths change |
 
-## What you still configure once (dashboard)
+## What you still configure once
 
-These cannot live as code. Until they are on, the loop pauses after the PR.
+**Cursor Cloud environment** — you are already setting this up. Keep going there; it is not blocked on the items below.
 
-1. **Cursor Cloud environment** — This repo had no linked environment when audited. Save an environment with Bun, `bun install --frozen-lockfile`, and Docker Compose Postgres so agents can run `ci:check`. A committed [`.cursor/environment.json`](../.cursor/environment.json) is the repo-managed starting point.
-2. **Cursor Automations** — Prompt (or Slack/Linear) → Cloud Agent on this repo, branch from `main`.
-3. **Bugbot (or equivalent PR review)** — Enable on GitHub PRs so review is automatic. CI is the hard gate; Bugbot is the design/logic reviewer.
-4. **GitHub auto-merge** — On the repo: allow auto-merge, protect `main`, require `CI` (and Bugbot if you want it required). Then PRs merge when checks go green unless a product-gate review is requested.
-5. **`EXPO_TOKEN`** — GitHub Actions secret (Expo access token) so EAS preview builds actually trigger. Create at [expo.dev programmatic access](https://docs.expo.dev/accounts/programmatic-access/).
-6. **Store submission** — App Store / Play remain a product decision. Preview APKs are enough for testers: [Expo builds](https://expo.dev/accounts/saksofon997/projects/tend/builds).
+**GitHub (do these now):** follow [`docs/github-setup.md`](github-setup.md) for `EXPO_TOKEN` and auto-merge. Short version:
+
+1. Secret `EXPO_TOKEN` at [repo Actions secrets](https://github.com/saksofon997/tend/settings/secrets/actions) (create the token at [expo.dev/settings/access-tokens](https://expo.dev/settings/access-tokens)). Not in Cursor env.
+2. [Allow auto-merge](https://github.com/saksofon997/tend/settings) + ruleset on `main` requiring status check `CI` with **0 approvals**.
+3. Optional label `needs-product-decision` for the rare PRs you should see.
+
+**Cursor Automations / Bugbot** — optional after GitHub merge works. CI is the merge gate; Bugbot is extra review, not a required approver.
+
+**Play Store** — not automatic. Android preview APKs are the ship path. iOS is out of scope.
 
 ## How agents should behave
 
@@ -59,8 +62,8 @@ If you later install the pbakaus plugin locally, the Tend skill still wins.
 | Channel | When | How |
 |---------|------|-----|
 | Android preview APK | Push to `main` touching `apps/mobile/**`, `packages/domain/**`, or `version.json` | EAS profile `preview` (internal) |
-| iOS | Not automatic | Missing `ios.bundleIdentifier` in `app.config.js`; needs Apple credentials — product/setup decision |
-| Production store | Not automatic | EAS `production` profile exists; submitting is a product decision |
+| iOS | Out of scope | No bundle id, no CI, no store submit |
+| Play Store production | Not automatic | Preview APKs are enough for testers |
 
 OTA (`eas update`) is not configured; native preview builds are the ship path.
 

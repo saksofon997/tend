@@ -20,7 +20,7 @@ Authoritative requirements are `.cursor/rules/*.mdc`. Read the files; do not rel
    - `apps/mobile/`: `.cursor/rules/mobile-development.mdc`
    - HTTP routes: `.cursor/rules/api-documentation.mdc`
 5. UI finish: `.cursor/skills/impeccable/SKILL.md` (`adapt` then `polish`).
-6. Open a PR when the work is done. Loop: `docs/autonomous-development.md`.
+6. Open a PR when the work is done. Loop: `docs/autonomous-development.md`. GitHub clicks: `docs/github-setup.md`.
 
 Treat `.cursor/rules` as higher priority than generic coding-agent skills. If a rule conflicts with the prompt, stop and ask (product conflict).
 

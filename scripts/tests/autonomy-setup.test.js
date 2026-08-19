@@ -45,5 +45,17 @@ describe("autonomous agent setup", () => {
     expect(workflow).toContain("--profile preview");
     expect(workflow).toContain("--platform android");
     expect(workflow).toContain("apps/mobile");
+    expect(workflow).not.toContain("--platform ios");
+    expect(workflow).not.toContain("--platform all");
+  });
+
+  test("auto-merge workflow squash-merges ready PRs and skips product gates", () => {
+    const workflow = read(".github/workflows/automerge.yml");
+    expect(workflow).toContain("--auto --squash");
+    expect(workflow).toContain("needs-product-decision");
+    expect(workflow).toContain("github.event.pull_request.draft == false");
+    expect(read(".github/workflows/ci.yml")).toContain("name: CI");
+    expect(read("docs/github-setup.md")).toContain("EXPO_TOKEN");
+    expect(read("docs/github-setup.md")).toContain("settings/secrets/actions");
   });
 });

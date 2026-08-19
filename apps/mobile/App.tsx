@@ -21,6 +21,7 @@ import {
 } from "@/utils/tabTransition";
 import { TendApi } from "@api/tendApi";
 import { DatePickerField } from "@components/date-picker-field";
+import { HandsGivingIcon } from "@components/hands-giving-icon";
 import { ItemForm } from "@components/item-form";
 import { LanguageSwitch } from "@components/language-switch";
 import { Chip } from "@components/life-area-picker";
@@ -58,6 +59,7 @@ import { isDevMode } from "@utils/devMode";
 import { itemFormValuesFromItem } from "@utils/itemFormValues";
 import { applyLocale, localeFromStorage } from "@utils/localePreference";
 import { getErrorMessage } from "@utils/networkError";
+import { parsePasswordResetTokenFromUrl } from "@utils/passwordResetLink";
 import { restoreSession } from "@utils/sessionRestore";
 import { storage } from "@utils/storage";
 import { timeOptionsAfter } from "@utils/timeOptions";
@@ -90,6 +92,7 @@ import {
   BackHandler,
   Image,
   KeyboardAvoidingView,
+  Linking,
   Modal,
   Platform,
   Pressable,
@@ -216,7 +219,7 @@ function reminderBannerHeadline(reminderCount: number, now = new Date()) {
   return FREE_TIME_HEADLINE_VARIANTS[variantIndex](freeTimePhrase(now), reminderCount > 1);
 }
 
-type AuthMode = "splash" | "signIn" | "register";
+type AuthMode = "splash" | "signIn" | "register" | "forgotPassword" | "resetPassword";
 
 export default function App() {
   return (
@@ -248,6 +251,7 @@ function AppBootstrap() {
   const [user, setUser] = useState<UserResponse | null>(null);
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
   const [authMode, setAuthMode] = useState<AuthMode>("splash");
+  const [resetToken, setResetToken] = useState<string | null>(null);
   const [booting, setBooting] = useState(true);
   const [checkingSession, setCheckingSession] = useState(false);
   const [locale, setLocaleState] = useState<Locale>(getLocale());
@@ -311,6 +315,29 @@ function AppBootstrap() {
     };
   }, []);
 
+  useEffect(() => {
+    function applyResetUrl(url: string | null) {
+      if (!url) {
+        return;
+      }
+
+      const token = parsePasswordResetTokenFromUrl(url);
+      if (!token) {
+        return;
+      }
+
+      setResetToken(token);
+      setAuthMode("resetPassword");
+    }
+
+    void Linking.getInitialURL().then(applyResetUrl);
+    const subscription = Linking.addEventListener("url", (event) => {
+      applyResetUrl(event.url);
+    });
+
+    return () => subscription.remove();
+  }, []);
+
   async function handleSignedIn(signedInUser: UserResponse, forceOnboarding = false) {
     setCheckingSession(true);
     setUser(signedInUser);
@@ -350,6 +377,7 @@ function AppBootstrap() {
           api={api}
           locale={locale}
           onCreateAccount={() => setAuthMode("register")}
+          onForgotPassword={() => setAuthMode("forgotPassword")}
           onLocaleChange={handleLocaleChange}
           onSignedIn={handleSignedIn}
         />
@@ -364,6 +392,33 @@ function AppBootstrap() {
           onLocaleChange={handleLocaleChange}
           onSignIn={() => setAuthMode("signIn")}
           onSignedIn={(signedInUser) => handleSignedIn(signedInUser, true)}
+        />
+      );
+    }
+
+    if (authMode === "forgotPassword") {
+      return (
+        <ForgotPasswordScreen
+          api={api}
+          locale={locale}
+          onBack={() => setAuthMode("signIn")}
+          onLocaleChange={handleLocaleChange}
+        />
+      );
+    }
+
+    if (authMode === "resetPassword") {
+      return (
+        <ResetPasswordScreen
+          api={api}
+          locale={locale}
+          token={resetToken}
+          onBack={() => setAuthMode("signIn")}
+          onLocaleChange={handleLocaleChange}
+          onComplete={() => {
+            setResetToken(null);
+            setAuthMode("signIn");
+          }}
         />
       );
     }
@@ -724,12 +779,14 @@ function LoginScreen({
   api,
   locale,
   onCreateAccount,
+  onForgotPassword,
   onLocaleChange,
   onSignedIn,
 }: {
   api: TendApi;
   locale: Locale;
   onCreateAccount: () => void;
+  onForgotPassword: () => void;
   onLocaleChange: (locale: Locale) => void;
   onSignedIn: (user: UserResponse) => Promise<void>;
 }) {
@@ -776,6 +833,9 @@ function LoginScreen({
             }
             onPress={signIn}
           />
+          <Pressable style={styles.authTextButton} onPress={onForgotPassword}>
+            <Text style={styles.authTextButtonLabel}>{t("auth.forgotPassword.link")}</Text>
+          </Pressable>
           <View style={styles.authSwitchRow}>
             <Text style={styles.authSwitchText}>{t("auth.signIn.prompt")} </Text>
             <Pressable onPress={onCreateAccount}>
@@ -972,6 +1032,178 @@ function RegisterScreen({
         />
       </Field>
 
+      {error ? <AlertBox message={error} tone="error" /> : null}
+    </AuthFormShell>
+  );
+}
+
+function ForgotPasswordScreen({
+  api,
+  locale,
+  onBack,
+  onLocaleChange,
+}: {
+  api: TendApi;
+  locale: Locale;
+  onBack: () => void;
+  onLocaleChange: (locale: Locale) => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function sendResetLink() {
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      await api.forgotPassword(email.trim(), getLocale());
+      setSent(true);
+    } catch (requestError) {
+      setError(getErrorMessage(requestError, t("errors.forgotPassword")));
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <AuthFormShell
+      description={t("auth.forgotPassword.description")}
+      footer={
+        <>
+          {sent ? null : (
+            <PrimaryButton
+              label={
+                submitting ? t("auth.forgotPassword.loading") : t("auth.forgotPassword.button")
+              }
+              disabled={submitting || !email}
+              onPress={sendResetLink}
+            />
+          )}
+          <Pressable style={styles.authTextButton} onPress={onBack}>
+            <Text style={styles.authTextButtonLabel}>{t("auth.forgotPassword.backToSignIn")}</Text>
+          </Pressable>
+        </>
+      }
+      locale={locale}
+      onLocaleChange={onLocaleChange}
+      title={t("auth.forgotPassword.title")}
+    >
+      {sent ? (
+        <AlertBox message={t("auth.forgotPassword.sent")} tone="info" />
+      ) : (
+        <Field label={t("auth.email.label")} required>
+          <TextInput
+            autoCapitalize="none"
+            autoComplete="email"
+            autoCorrect={false}
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+          />
+        </Field>
+      )}
+      {error ? <AlertBox message={error} tone="error" /> : null}
+    </AuthFormShell>
+  );
+}
+
+function ResetPasswordScreen({
+  api,
+  locale,
+  token,
+  onBack,
+  onLocaleChange,
+  onComplete,
+}: {
+  api: TendApi;
+  locale: Locale;
+  token: string | null;
+  onBack: () => void;
+  onLocaleChange: (locale: Locale) => void;
+  onComplete: () => void;
+}) {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [updated, setUpdated] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function savePassword() {
+    if (!token) {
+      setError(t("auth.resetPassword.missingToken"));
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError(t("errors.passwordConfirm"));
+      return;
+    }
+
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      await api.resetPassword(token, password);
+      setUpdated(true);
+    } catch (resetError) {
+      setError(getErrorMessage(resetError, t("errors.resetPassword")));
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <AuthFormShell
+      description={t("auth.resetPassword.description")}
+      footer={
+        <>
+          {updated || !token ? null : (
+            <PrimaryButton
+              label={submitting ? t("auth.resetPassword.loading") : t("auth.resetPassword.button")}
+              disabled={submitting || !password || !confirmPassword}
+              onPress={savePassword}
+            />
+          )}
+          <Pressable style={styles.authTextButton} onPress={updated ? onComplete : onBack}>
+            <Text style={styles.authTextButtonLabel}>
+              {updated ? t("auth.signIn.inlineLink") : t("auth.forgotPassword.backToSignIn")}
+            </Text>
+          </Pressable>
+        </>
+      }
+      locale={locale}
+      onLocaleChange={onLocaleChange}
+      title={t("auth.resetPassword.title")}
+    >
+      {updated ? <AlertBox message={t("auth.resetPassword.success")} tone="info" /> : null}
+      {!token && !updated ? (
+        <AlertBox message={t("auth.resetPassword.missingToken")} tone="error" />
+      ) : null}
+      {!updated && token ? (
+        <>
+          <Field label={t("auth.password.label")} helper={t("auth.password.helper")} required>
+            <TextInput
+              autoComplete="new-password"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+              style={styles.input}
+            />
+          </Field>
+          <Field label={t("auth.passwordConfirm.label")} required>
+            <TextInput
+              autoComplete="new-password"
+              secureTextEntry
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              style={styles.input}
+            />
+          </Field>
+        </>
+      ) : null}
       {error ? <AlertBox message={error} tone="error" /> : null}
     </AuthFormShell>
   );
@@ -1513,7 +1745,31 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
 }
 
 function ActivityScreen({ api }: { api: TendApi }) {
-  const { deleteActivity, error, events, groups, loading, updateActivity } = useActivityEvents(api);
+  const [name, setName] = useState("");
+  const [debouncedName, setDebouncedName] = useState("");
+  const [type, setType] = useState<"" | "must" | "want">("");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+
+  useEffect(() => {
+    const handle = setTimeout(() => setDebouncedName(name), 250);
+    return () => clearTimeout(handle);
+  }, [name]);
+
+  const filters = useMemo(
+    () => ({
+      q: debouncedName.trim() || undefined,
+      type: type || undefined,
+      from: from || undefined,
+      to: to || undefined,
+    }),
+    [debouncedName, type, from, to],
+  );
+  const filtersActive = Boolean(filters.q || filters.type || filters.from || filters.to);
+  const { deleteActivity, error, events, groups, loading, updateActivity } = useActivityEvents(
+    api,
+    filters,
+  );
 
   function confirmDelete(eventId: string) {
     Alert.alert(t("activity.deleteConfirm.title"), t("activity.deleteConfirm.message"), [
@@ -1542,10 +1798,88 @@ function ActivityScreen({ api }: { api: TendApi }) {
         <Text style={styles.pageSubtitle}>{t("activity.subtitle")}</Text>
       </View>
 
+      <View style={styles.settingsCard}>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.cardTitle}>{t("activity.search.title")}</Text>
+          {filtersActive ? (
+            <Pressable
+              onPress={() => {
+                setName("");
+                setDebouncedName("");
+                setType("");
+                setFrom("");
+                setTo("");
+              }}
+              style={styles.authTextButton}
+            >
+              <Text style={styles.authTextButtonLabel}>{t("activity.search.clear")}</Text>
+            </Pressable>
+          ) : null}
+        </View>
+
+        <Field label={t("activity.search.name")}>
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder={t("activity.search.namePlaceholder")}
+            placeholderTextColor={colors.textMuted}
+            value={name}
+            onChangeText={setName}
+            style={styles.input}
+          />
+        </Field>
+
+        <Field label={t("activity.search.type")}>
+          <View style={styles.chipRow}>
+            <Chip
+              label={t("activity.search.typeAll")}
+              selected={type === ""}
+              onPress={() => setType("")}
+            />
+            <Chip
+              label={t("type.must")}
+              selected={type === "must"}
+              onPress={() => setType("must")}
+            />
+            <Chip
+              label={t("type.want")}
+              selected={type === "want"}
+              onPress={() => setType("want")}
+            />
+          </View>
+        </Field>
+
+        <View style={styles.activityDateFilterRow}>
+          <View style={styles.activityDateFilterField}>
+            <Field label={t("activity.search.from")}>
+              <DatePickerField
+                value={from}
+                onChange={setFrom}
+                placeholder={t("activity.search.anyDate")}
+                accessibilityLabel={t("activity.search.from")}
+              />
+            </Field>
+          </View>
+          <View style={styles.activityDateFilterField}>
+            <Field label={t("activity.search.to")}>
+              <DatePickerField
+                value={to}
+                onChange={setTo}
+                placeholder={t("activity.search.anyDate")}
+                accessibilityLabel={t("activity.search.to")}
+              />
+            </Field>
+          </View>
+        </View>
+      </View>
+
       {error ? <AlertBox message={error} tone="error" /> : null}
       {loading ? <ActivitySkeleton label={t("common.loadingActivity")} /> : null}
       {!loading && events.length === 0 ? (
-        <EmptyState title={t("activity.empty.title")} body={t("activity.empty.body")} />
+        <EmptyState
+          title={t(filtersActive ? "activity.empty.filtered.title" : "activity.empty.title")}
+          body={t(filtersActive ? "activity.empty.filtered.body" : "activity.empty.body")}
+        />
       ) : null}
 
       {!loading
@@ -1893,6 +2227,9 @@ function ActivityEventRow({
     <View style={styles.activityRow}>
       <View style={styles.activityText}>
         <Text style={styles.cardTitle}>{event.itemName}</Text>
+        <Text style={styles.metaText}>
+          {t(event.itemType === "must" ? "type.must" : "type.want")}
+        </Text>
         <Text style={styles.metaText}>{formatEventDate(event.tendedAt)}</Text>
       </View>
       <View style={styles.activityActions}>
@@ -1938,7 +2275,7 @@ function ReminderBanner({
                 style={styles.markButtonCompact}
                 onPress={() => onTend(reminder.itemId)}
               >
-                <Check size={15} color={colors.inverse} />
+                <HandsGivingIcon size={15} color={colors.inverse} />
                 <Text style={styles.markButtonText}>{t("items.markTended")}</Text>
               </TouchableOpacity>
             </View>
@@ -2538,7 +2875,7 @@ function ItemCard({
       <View style={styles.itemFooter}>
         <StatusBadge status={item.status} />
         <TouchableOpacity style={styles.markButton} onPress={onTend}>
-          <Check size={16} color={colors.inverse} />
+          <HandsGivingIcon size={16} color={colors.inverse} />
           <Text style={styles.markButtonText}>{t("items.markTended")}</Text>
         </TouchableOpacity>
       </View>
@@ -3521,6 +3858,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 15,
     lineHeight: 22,
+  },
+  activityDateFilterRow: {
+    flexDirection: "row",
+    gap: spacing.md,
+  },
+  activityDateFilterField: {
+    flex: 1,
   },
   activityRow: {
     alignItems: "center",

@@ -12,7 +12,10 @@ interface EmptyStateProps {
 
 type PresetCopy = { titleKey: TranslationKey; descriptionKey?: TranslationKey };
 
-const PRESETS: Record<"no-items" | "all-fresh" | "no-activity" | "no-availability", PresetCopy> = {
+const PRESETS: Record<
+  "no-items" | "all-fresh" | "no-activity" | "no-activity-matches" | "no-availability",
+  PresetCopy
+> = {
   "no-items": {
     titleKey: "home.empty.title",
     descriptionKey: "home.empty.body",
@@ -24,6 +27,10 @@ const PRESETS: Record<"no-items" | "all-fresh" | "no-activity" | "no-availabilit
   "no-activity": {
     titleKey: "activity.empty.title",
     descriptionKey: "activity.empty.body",
+  },
+  "no-activity-matches": {
+    titleKey: "activity.empty.filtered.title",
+    descriptionKey: "activity.empty.filtered.body",
   },
   "no-availability": {
     titleKey: "availability.empty.title",

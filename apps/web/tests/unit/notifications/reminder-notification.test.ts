@@ -128,10 +128,23 @@ describe("buildTendNotificationRequest", () => {
     expect(request?.triggerAt?.toISOString()).toBe("2026-06-17T16:00:00.000Z");
   });
 
-  it("schedules deferred wants for the next availability window", () => {
+  it("does not notify for getting-stale wants", () => {
     const request = buildTendNotificationRequest(
       remindersResponse({
-        nextWindowAt: "2026-06-17T16:00:00.000Z",
+        inAvailabilityWindow: true,
+        surfaceNow: [
+          {
+            itemId: "want-1",
+            name: "Bed sheets",
+            type: "want",
+            status: "getting_stale",
+            daysSinceLastTended: 8,
+            sharedWith: null,
+            emphasis: "normal",
+            visibility: "now",
+            copy: "Bed sheets was last tended 8 days ago.",
+          },
+        ],
         reminders: [
           {
             itemId: "want-1",
@@ -141,16 +154,110 @@ describe("buildTendNotificationRequest", () => {
             daysSinceLastTended: 8,
             sharedWith: null,
             emphasis: "normal",
-            visibility: "next_window",
+            visibility: "now",
             copy: "Bed sheets was last tended 8 days ago.",
           },
         ],
       }),
     );
 
+    expect(request).toBeNull();
+  });
+
+  it("schedules deferred needs-attention wants for the next availability window", () => {
+    const request = buildTendNotificationRequest(
+      remindersResponse({
+        nextWindowAt: "2026-06-17T16:00:00.000Z",
+        reminders: [
+          {
+            itemId: "want-1",
+            name: "Bed sheets",
+            type: "want",
+            status: "needs_attention",
+            daysSinceLastTended: 14,
+            sharedWith: null,
+            emphasis: "normal",
+            visibility: "next_window",
+            copy: "Bed sheets needs attention.",
+          },
+        ],
+      }),
+    );
+
     expect(request?.title).toBe("Bed sheets could use tending");
-    expect(request?.body).toBe("Starting to drift from its rhythm, with no rush attached.");
+    expect(request?.body).toBe("Past its usual rhythm. Take a look when there is room.");
     expect(request?.triggerAt?.toISOString()).toBe("2026-06-17T16:00:00.000Z");
+  });
+
+  it("notifies needs-attention wants when no musts need a nudge", () => {
+    const request = buildTendNotificationRequest(
+      remindersResponse({
+        inAvailabilityWindow: true,
+        surfaceNow: [
+          {
+            itemId: "want-1",
+            name: "Bed sheets",
+            type: "want",
+            status: "needs_attention",
+            daysSinceLastTended: 14,
+            sharedWith: null,
+            emphasis: "normal",
+            visibility: "now",
+            copy: "Bed sheets needs attention.",
+          },
+        ],
+      }),
+    );
+
+    expect(request?.title).toBe("Bed sheets could use tending");
+    expect(request?.itemId).toBe("want-1");
+    expect(request?.body).toBe("Past its usual rhythm. Take a look when there is room.");
+  });
+
+  it("ranks needs-attention musts ahead of getting-stale musts and needs-attention wants", () => {
+    const request = buildTendNotificationRequest(
+      remindersResponse({
+        inAvailabilityWindow: true,
+        surfaceNow: [
+          {
+            itemId: "want-1",
+            name: "Bed sheets",
+            type: "want",
+            status: "needs_attention",
+            daysSinceLastTended: 21,
+            sharedWith: null,
+            emphasis: "normal",
+            visibility: "now",
+            copy: "Bed sheets needs attention.",
+          },
+          {
+            itemId: "must-stale",
+            name: "Pet food",
+            type: "must",
+            status: "getting_stale",
+            daysSinceLastTended: 12,
+            sharedWith: null,
+            emphasis: "strong",
+            visibility: "now",
+            copy: "Pet food is marked as a must and is getting stale.",
+          },
+          {
+            itemId: "must-attention",
+            name: "Medication",
+            type: "must",
+            status: "needs_attention",
+            daysSinceLastTended: 3,
+            sharedWith: null,
+            emphasis: "strong",
+            visibility: "now",
+            copy: "Medication is marked as a must and needs attention.",
+          },
+        ],
+      }),
+    );
+
+    expect(request?.itemId).toBe("must-attention");
+    expect(request?.title).toBe("Medication could use tending");
   });
 
   it("uses musts before wants for deferred notification titles", () => {

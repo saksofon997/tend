@@ -4,7 +4,10 @@
     "DATABASE_URL",
     "DATABASE_URL_UNPOOLED",
     "SESSION_SECRET",
-    "ALLOWED_EMAILS"
+    "ALLOWED_EMAILS",
+    "RESEND_API_KEY",
+    "EMAIL_FROM",
+    "APP_ORIGIN"
   ],
   "tasks": {
     "build": {

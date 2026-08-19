@@ -83,6 +83,19 @@ export function appUrl(path: string): string {
   return origin ? `${origin}${normalizedPath}` : normalizedPath;
 }
 
+export function getAbsoluteAppOrigin(): string {
+  if (process.env.NODE_ENV === "production") {
+    return `https://${getCanonicalAppHost()}`;
+  }
+
+  return process.env.APP_ORIGIN?.replace(/\/$/, "") || "http://localhost:3000";
+}
+
+export function absoluteAppUrl(path: string): string {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${getAbsoluteAppOrigin()}${normalizedPath}`;
+}
+
 export function marketingUrl(path: string): string {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   const origin = getMarketingOrigin();

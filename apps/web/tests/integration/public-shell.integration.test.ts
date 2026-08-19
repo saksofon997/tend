@@ -26,6 +26,14 @@ describe("middleware public shell", () => {
     }
   });
 
+  it("allows unauthenticated GET /forgot-password and /reset-password without redirect", async () => {
+    for (const path of ["/forgot-password", "/reset-password"]) {
+      const response = await middleware(requestFor(path));
+      expect(response.status).toBe(200);
+      expect(response.headers.get("location")).toBeNull();
+    }
+  });
+
   it("redirects unauthenticated GET /activity to login", async () => {
     for (const path of ["/activity", "/check-in"]) {
       const response = await middleware(requestFor(path));
@@ -52,7 +60,14 @@ describe("middleware host split", () => {
   });
 
   it("redirects marketing host auth and app routes to the app domain", async () => {
-    for (const path of ["/login", "/register", "/activity", "/check-in", "/api/v1/health"]) {
+    for (const path of [
+      "/login",
+      "/register",
+      "/forgot-password",
+      "/activity",
+      "/check-in",
+      "/api/v1/health",
+    ]) {
       const response = await middleware(requestFor(path, "tend.qzz.io"));
       expect(response.status).toBe(308);
       expect(response.headers.get("location")).toBe(`https://app.tend.qzz.io${path}`);
@@ -68,9 +83,11 @@ describe("middleware host split", () => {
   });
 
   it("keeps app host auth routes on the app domain", async () => {
-    const response = await middleware(requestFor("/login", "app.tend.qzz.io"));
-    expect(response.status).toBe(200);
-    expect(response.headers.get("location")).toBeNull();
+    for (const path of ["/login", "/register", "/forgot-password", "/reset-password"]) {
+      const response = await middleware(requestFor(path, "app.tend.qzz.io"));
+      expect(response.status).toBe(200);
+      expect(response.headers.get("location")).toBeNull();
+    }
   });
 
   it("redirects vercel.app traffic to the app domain", async () => {

@@ -2,6 +2,7 @@ import { describe, expect, it } from "bun:test";
 import {
   DEFAULT_CANONICAL_APP_HOST,
   DEFAULT_MARKETING_HOST,
+  absoluteAppUrl,
   appUrl,
   buildHostRedirectUrl,
   isAppProductionHost,
@@ -97,5 +98,13 @@ describe("appUrl and marketingUrl", () => {
   it("returns relative paths outside production", () => {
     expect(appUrl("/login")).toBe("/login");
     expect(marketingUrl("/privacy")).toBe("/privacy");
+  });
+});
+
+describe("absoluteAppUrl", () => {
+  it("builds a local reset URL outside production", () => {
+    expect(absoluteAppUrl("/reset-password?token=abc")).toBe(
+      "http://localhost:3000/reset-password?token=abc",
+    );
   });
 });

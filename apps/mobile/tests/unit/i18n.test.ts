@@ -12,6 +12,7 @@ describe("mobile i18n", () => {
     setLocale("en");
     expect(t("home.empty.title")).toBe("Nothing to tend yet");
     expect(t("activity.empty.title")).toBe("No tending logged yet");
+    expect(t("activity.empty.filtered.title")).toBe("Nothing matches that look-up");
   });
 
   it("formats life area filter toggle labels like web", () => {
@@ -54,6 +55,16 @@ describe("mobile i18n", () => {
     setLocale("en");
     expect(LOCALE_OPTIONS.map((option) => option.value)).toEqual(["en", "sr"]);
     expect(t("language.label")).toBe("Language");
+  });
+
+  it("translates forgot-password copy", () => {
+    setLocale("en");
+    expect(t("auth.forgotPassword.link")).toBe("Forgot password?");
+    expect(t("auth.resetPassword.title")).toBe("Choose a new password");
+
+    setLocale("sr");
+    expect(t("auth.forgotPassword.link")).toBe("Zaboravljena lozinka?");
+    setLocale("en");
   });
 
   it("switches to Serbian copy", () => {

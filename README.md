@@ -52,7 +52,7 @@ Tend ships as a hosted web app and an Expo mobile app, both backed by the same P
 
 | Area | What's included |
 |------|-----------------|
-| **Accounts** | Register, login, logout, sessions (Lucia + bcrypt) |
+| **Accounts** | Register, login, logout, sessions (Lucia + bcrypt), password reset via email |
 | **Public shell** | Landing page, sample Privacy + Terms, footer links; marketing host (`tend.qzz.io`) and app host (`app.tend.qzz.io`) |
 | **i18n** | English + Serbian on web and mobile |
 | **Onboarding** | Concept intro, preset picker across 12 life areas, skip-friendly |
@@ -187,7 +187,7 @@ GET https://app.tend.qzz.io/api/v1/jobs/notifications
 Authorization: Bearer <NOTIFICATIONS_JOB_SECRET>
 ```
 
-The Vercel project must have `DATABASE_URL`, `SESSION_SECRET`, `NOTIFICATIONS_JOB_SECRET`, and Firebase Cloud Messaging service-account env vars configured. See [`docs/deployment.md`](docs/deployment.md#notification-scheduling-with-cron-joborg) for the full checklist.
+The Vercel project must have `DATABASE_URL`, `SESSION_SECRET`, `NOTIFICATIONS_JOB_SECRET`, Firebase Cloud Messaging service-account env vars, and `RESEND_API_KEY` (plus optional `EMAIL_FROM`) for password-reset email. See [`docs/deployment.md`](docs/deployment.md#notification-scheduling-with-cron-joborg) for the full checklist.
 
 ### API documentation
 

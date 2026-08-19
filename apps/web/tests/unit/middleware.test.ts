@@ -30,6 +30,15 @@ describe("allowsUnauthenticatedAccess", () => {
     expect(allowsUnauthenticatedAccess("/promo/tend-logo.png")).toBe(true);
   });
 
+  it("allows forgot and reset password pages", () => {
+    expect(isPublicPath("/forgot-password")).toBe(true);
+    expect(isPublicPath("/reset-password")).toBe(true);
+    expect(allowsUnauthenticatedAccess("/forgot-password")).toBe(true);
+    expect(allowsUnauthenticatedAccess("/reset-password")).toBe(true);
+    expect(allowsUnauthenticatedAccess("/api/v1/auth/forgot-password")).toBe(true);
+    expect(allowsUnauthenticatedAccess("/api/v1/auth/reset-password")).toBe(true);
+  });
+
   it("blocks protected app routes", () => {
     expect(allowsUnauthenticatedAccess("/activity")).toBe(false);
     expect(allowsUnauthenticatedAccess("/items/abc")).toBe(false);

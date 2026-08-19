@@ -106,12 +106,27 @@ describe("activity list integration", () => {
       expect(listResponse.status).toBe(200);
 
       const body = (await listResponse.json()) as {
-        events: Array<{ itemName: string; itemId: string }>;
+        events: Array<{ itemName: string; itemId: string; itemType: string }>;
       };
 
       expect(body.events.length).toBeGreaterThanOrEqual(1);
       expect(body.events[0]?.itemName).toBe("Water plants");
       expect(body.events[0]?.itemId).toBe(item.id);
+      expect(body.events[0]?.itemType).toBe("want");
+
+      const filteredResponse = await getActivity(
+        authedRequest("http://localhost/api/v1/activity?q=plants&type=want", sessionId),
+      );
+      expect(filteredResponse.status).toBe(200);
+      const filtered = (await filteredResponse.json()) as { events: Array<{ itemId: string }> };
+      expect(filtered.events[0]?.itemId).toBe(item.id);
+
+      const missedResponse = await getActivity(
+        authedRequest("http://localhost/api/v1/activity?q=plants&type=must", sessionId),
+      );
+      expect(missedResponse.status).toBe(200);
+      const missed = (await missedResponse.json()) as { events: unknown[] };
+      expect(missed.events).toEqual([]);
     } finally {
       await deleteItemsForUser(getDb(), userId);
       await deleteUserByEmail(getDb(), email);

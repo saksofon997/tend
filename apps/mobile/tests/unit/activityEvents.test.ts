@@ -7,6 +7,7 @@ function event(overrides: Partial<ActivityEntryResponse>): ActivityEntryResponse
     id: "event-1",
     itemId: "item-1",
     itemName: "Water plants",
+    itemType: "want",
     tendedAt: "2026-06-10T12:00:00.000Z",
     createdAt: "2026-06-10T12:00:00.000Z",
     ...overrides,

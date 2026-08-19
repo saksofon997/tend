@@ -12,6 +12,7 @@ interface DatePickerFieldProps {
   maxDate?: string;
   invalid?: boolean;
   accessibilityLabel?: string;
+  placeholder?: string;
 }
 
 function parseDateInput(value: string) {
@@ -40,13 +41,14 @@ export function DatePickerField({
   maxDate,
   invalid = false,
   accessibilityLabel = t("items.add.lastTended.label"),
+  placeholder,
 }: DatePickerFieldProps) {
   const [showPicker, setShowPicker] = useState(false);
   const maximumDate = useMemo(
     () => (maxDate ? parseDateInput(maxDate) : parseDateInput(todayDateInputValue())),
     [maxDate],
   );
-  const selectedDate = useMemo(() => parseDateInput(value), [value]);
+  const selectedDate = useMemo(() => parseDateInput(value || todayDateInputValue()), [value]);
 
   function handleChange(event: DateTimePickerEvent, nextDate?: Date) {
     if (Platform.OS === "android") {
@@ -69,7 +71,13 @@ export function DatePickerField({
         onPress={() => setShowPicker((open) => !open)}
       >
         <Calendar size={18} color={colors.textMuted} />
-        <Text style={styles.triggerText}>{formatDisplayDate(value)}</Text>
+        <Text
+          style={[styles.triggerText, !value && placeholder ? styles.triggerPlaceholder : null]}
+        >
+          {value
+            ? formatDisplayDate(value)
+            : (placeholder ?? formatDisplayDate(todayDateInputValue()))}
+        </Text>
       </Pressable>
 
       {showPicker ? (
@@ -101,6 +109,9 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontFamily: fonts.body,
     fontSize: 16,
+  },
+  triggerPlaceholder: {
+    color: colors.textMuted,
   },
   triggerInvalid: {
     borderColor: colors.error,

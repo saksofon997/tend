@@ -111,6 +111,9 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
             >
               {entry.itemName}
             </Link>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              {t(entry.itemType === "must" ? "type.must" : "type.want")}
+            </p>
             <time className="mt-0.5 block text-sm text-muted-foreground" dateTime={entry.tendedAt}>
               {formatEventDate(entry.tendedAt, locale)}
             </time>

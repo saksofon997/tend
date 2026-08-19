@@ -33,6 +33,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [TendItemCard](#tenditemcard) | `tend/tend-item-card.tsx` | 5, 7, 11 |
 | [AttentionSection](#attentionsection) | `tend/attention-section.tsx` | 5 |
 | [MarkTendedButton](#marktendedbutton) | `tend/mark-tended-button.tsx` | 7, 11 |
+| [HandsGivingIcon](#handsgivingicon) | `tend/hands-giving-icon.tsx` | 7, 11 |
 | [TypeSelector](#typeselector) | `forms/type-selector.tsx` | 3, 8, 12 |
 | [RhythmSelect](#rhythmselect) | `forms/rhythm-select.tsx` | 3, 4, 8 |
 | [LifeAreaChip](#lifeareachip) | `tend/life-area-chip.tsx` | 4, 13 |
@@ -44,6 +45,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [EmptyState](#emptystate) | `tend/empty-state.tsx` | 5, 14 |
 | [CheckInView](#checkinview) | `tend/check-in-view.tsx` | Check In |
 | [ActivityListItem](#activitylistitem) | `tend/activity-list-item.tsx` | 14 |
+| [ActivityFilters](#activityfilters) | `tend/activity-filters.tsx` | 14 |
 | [AvailabilityEditor](#availabilityeditor) | `forms/availability-editor.tsx` | 10 |
 | [ConfirmDialog](#confirmdialog) | `ui/dialog.tsx` | 9 |
 | [AuthForm](#authform) | `forms/auth-form.tsx` | 1 |
@@ -115,7 +117,7 @@ Linked Tend wordmark image. Used in `AppShell`, `AuthLayout`, and anywhere the b
 
 **File:** `components/layout/language-select.tsx`
 
-Native select for public language switching. Used in the landing header near sign in. Authenticated app language switching lives inside `UserMenu` as radio items.
+Native select for public language switching. Used in the landing header near sign in. Authenticated app language switching lives inside `UserMenu` as radio items. On mobile, `LanguageSwitch` is in the splash and auth headers so language can be chosen before sign-in or onboarding.
 
 ---
 
@@ -338,6 +340,8 @@ Footer row                    — if counter and/or error
 
 **Purpose:** Public landing at `/` for unauthenticated visitors. Value prop, product preview carousel (`LandingPromoPreview` + `PromoCarousel`), differentiation copy, Register + Sign in CTAs.
 
+**Layout:** Hero stays copy-left + preview-right. Every following section uses the same rhythm (`mt-16 border-t pt-10`), a centered `h2` intro (`max-w-2xl`), then supporting content. How-it-works and features share a 3-column point grid; features put heading before the image so scan order matches Check In.
+
 **Routes:** `/` (when no session)
 
 ---
@@ -547,10 +551,18 @@ interface MarkTendedButtonProps {
 - Label: "Mark tended" (not "Complete" or "Done")
 - Loading: "Updating…"
 - Confirmation: "Tended" for less than 1 second when the parent surface does not immediately remove the item
-- Icon: `Check` 16px before label
+- Icon: `HandsGivingIcon` 16px before label (palms up together; not a checkmark)
 - Variant: `default` (primary green)
 - Motion: subtle hover lift and check scale, using Tend duration tokens and respecting reduced motion
 - On success: parent removes card from section when appropriate (optimistic update encouraged)
+
+---
+
+### HandsGivingIcon
+
+**File:** `components/tend/hands-giving-icon.tsx`
+
+Palms-up-together glyph used only on `MarkTendedButton`. Lucide-like stroke 1.5, `currentColor`. Do not reuse a checkmark for tending.
 
 ---
 
@@ -748,6 +760,23 @@ Right now attention mix
 
 ---
 
+### ActivityFilters
+
+**File:** `components/tend/activity-filters.tsx`
+
+```tsx
+interface ActivityFiltersProps {
+  value: { q: string; type: "" | "must" | "want"; from: string; to: string };
+  onChange: (filters: ActivityFiltersProps["value"]) => void;
+}
+```
+
+Quiet look-up bar on `/activity`: tend name, must/want type, and an inclusive date range. Clearing restores the unfiltered list. Empty results use a distinct “nothing matches” state, not the never-tended empty copy.
+
+**Stories:** 14
+
+---
+
 ### ActivityListItem
 
 **File:** `components/tend/activity-list-item.tsx`
@@ -785,7 +814,9 @@ interface AuthFormData {
 }
 ```
 
-Wraps `FormField` + `Input` / `PasswordInput` + `Button`. Register includes display name and confirm password fields with live password validation.
+Wraps `FormField` + `Input` / `PasswordInput` + `Button`. Register includes display name and confirm password fields with live password validation. Sign-in includes a **Forgot password?** link to `/forgot-password`.
+
+Related routes: `/forgot-password` (`ForgotPasswordForm`), `/reset-password` (`ResetPasswordForm`).
 
 Pre-alpha footer note via `Alert` variant `info`.
 

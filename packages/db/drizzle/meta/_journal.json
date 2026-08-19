@@ -43,6 +43,13 @@
       "when": 1781886048060,
       "tag": "0006_condemned_pepper_potts",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1787140024555,
+      "tag": "0007_password_reset_tokens",
+      "breakpoints": true
     }
   ]
 }

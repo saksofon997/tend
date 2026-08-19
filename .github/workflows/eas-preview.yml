@@ -1,0 +1,46 @@
+name: EAS Preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+    paths:
+      - "apps/mobile/**"
+      - "packages/domain/**"
+      - "version.json"
+      - ".github/workflows/eas-preview.yml"
+
+jobs:
+  preview-android:
+    name: Trigger Android preview build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Require EXPO_TOKEN
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "Add a GitHub Actions secret named EXPO_TOKEN (Expo access token)."
+            echo "https://docs.expo.dev/accounts/programmatic-access/"
+            exit 1
+          fi
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          packager: bun
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Trigger EAS preview build
+        working-directory: apps/mobile
+        run: bunx eas-cli build --platform android --profile preview --non-interactive --no-wait

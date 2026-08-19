@@ -17,9 +17,8 @@ Every code change MUST be linted before the task is complete.
 ## Preferred Commands (use what the repo defines)
 
 ```bash
-# After tooling is set up — adjust to match package.json / Makefile / CI
-npm run lint          # or: pnpm lint, bun run lint
-npm run format        # if separate from lint
+bun run lint
+bun run lint:fix   # if the linter reported issues
 ```
 
 If no lint script exists yet, set one up as part of the first implementation task and document the command in the project README.

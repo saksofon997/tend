@@ -46,6 +46,12 @@ If dependencies were added or `bun.lock` changed, run `bun install` from the **r
 - **Fonts and static assets** ship from `apps/mobile/assets/` via `require()` — do not depend on `@expo-google-fonts/*` packages (Metro resolution is unreliable in this monorepo).
 - Prefer existing web copy via `apps/mobile/src/i18n/en.ts` and `t()`; align UI with `docs/design/design-language.md`.
 
+## UI and copy
+
+Mobile must match web product language (`PRODUCT.md`, `docs/design/design-language.md`): Fresh / Getting stale / Needs attention, no guilt UX. Put strings in `apps/mobile/src/i18n/` with `en` and `sr`.
+
+After functional mobile UI work, load [`.cursor/skills/impeccable/SKILL.md`](../skills/impeccable/SKILL.md) and run **`adapt`** (native layout, safe area, hit targets) then **`polish`**. Do not copy web Tailwind into React Native; reuse the mobile theme and existing screens.
+
 ## Manual smoke check (when UI or native modules change)
 
 After `bun run verify`, start the dev server and confirm the bundle completes:

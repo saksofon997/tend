@@ -106,9 +106,9 @@ Auth and onboarding use `AuthLayout` / `OnboardingStep` — not full `AppShell` 
 
 ## Final polish (required)
 
-After functional UI work is done — and before marking the task complete — load the **impeccable** skill and finish with **`adapt`** then **`polish`** on the screens or components you changed.
+After functional UI work is done — and before marking the task complete — load [`.cursor/skills/impeccable/SKILL.md`](../skills/impeccable/SKILL.md) and finish with **`adapt`** then **`polish`** on the screens or components you changed.
 
 - **`adapt`:** fit the UI to Tend's product constraints and existing components/tokens; fix hierarchy, spacing, and responsive behavior without reinventing the design system
 - **`polish`:** refine typography, copy tone, micro-interactions, empty/error states, and accessibility
 
-Keep Tend's non-negotiables: no guilt-driven UX, no alarm-red overdue styling, status labels from the design spec. Impeccable is the last pass, not a license to ignore `docs/design/`.
+Keep Tend's non-negotiables: no guilt-driven UX, no alarm-red overdue styling, status labels from the design spec. Impeccable is the last pass, not a license to ignore `docs/design/`. Never run impeccable `init`, `document`, `bolder`, or `overdrive`.

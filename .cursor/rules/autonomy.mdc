@@ -1,0 +1,41 @@
+---
+description: Autonomous agent loop — proceed by default, stop only for product decisions
+alwaysApply: true
+---
+
+# Autonomy
+
+Tend is meant to run as **prompt → branch → implement → review → merge → deploy**. The human's job is product direction, not implementation approval.
+
+## Default: proceed
+
+Do not wait for confirmation on implementation details: file layout, naming, tests, lint, component reuse, copy that already matches `PRODUCT.md`, or UI polish within the design spec.
+
+The prompt plus `PRODUCT.md` and `docs/design/` are the spec. Do not run Superpowers brainstorming, writing-plans, or other multi-step approval loops for ordinary implementation work — those gates block this loop.
+
+If a `.cursor` rule conflicts with the prompt, stop (that is a product conflict). Otherwise implement.
+
+## Stop and ask — product decisions only
+
+Ask at most one question, with a recommended option. Stop when the work would:
+
+- Invent a new user-facing concept, status, or metaphor beyond Fresh / Getting stale / Needs attention
+- Add guilt, pressure, streaks, due dates, scores, or alarm styling (contradicts `PRODUCT.md`)
+- Change who can sign up, what is stored, privacy/legal copy, or account deletion
+- Submit to App Store / Play Store, or change production mobile signing
+- Break the `/api/v1` contract in a way existing clients cannot ignore
+- Add billing, tracking/analytics beyond current Sentry, or a new third-party that sees user data
+- Expand Must/Want, rhythm, or reminder behavior in a way the prompt did not specify
+
+Routine bugs, refactors, tests, docs, token-aligned UI, and Expo **preview** builds are not product decisions.
+
+## After the work
+
+1. Open a pull request against `main`.
+2. Run the verification the implementation workflow requires. CI on the PR is the review gate.
+3. Do not merge unless repository auto-merge is already enabled and required checks are green. Do not ping the human to "take a look" after a routine change.
+4. Web production deploys from `main` via Vercel. Mobile preview builds trigger from `main` via EAS (see `docs/autonomous-development.md`). Store submission stays a product decision.
+
+## Completion summary
+
+State what shipped, which product gates did **not** apply, which verification ran, and any remaining human setup (secrets, auto-merge, store submit).

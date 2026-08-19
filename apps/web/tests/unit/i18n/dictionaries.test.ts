@@ -26,6 +26,8 @@ describe("web i18n dictionaries", () => {
     expect(dictionaries.sr["items.lastActivityPrefix"]).toBe("Poslednja aktivnost");
     expect(dictionaries.en["auth.forgotPassword.link"]).toBe("Forgot password?");
     expect(dictionaries.sr["auth.forgotPassword.link"]).toBe("Zaboravljena lozinka?");
+    expect(dictionaries.en["email.passwordReset.subject"]).toBe("Reset your Tend password");
+    expect(dictionaries.sr["email.passwordReset.action"]).toBe("Izaberi novu lozinku");
   });
 
   it("translates status labels", () => {

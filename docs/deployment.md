@@ -189,9 +189,17 @@ Start with **DNS only** (grey cloud) until the site works. You can enable Cloudf
 
 ## 4. Mobile (Expo EAS)
 
-Android **preview** APKs build on EAS when `main` changes `apps/mobile/`, `packages/domain/`, or `version.json` (workflow: [`.github/workflows/eas-preview.yml`](../.github/workflows/eas-preview.yml)).
+The Android artifact after a feature set is an EAS **preview APK** (profile `preview`), not a development client.
 
-One-time GitHub setup (secret + auto-merge): [`docs/github-setup.md`](github-setup.md). Agent loop: [`docs/autonomous-development.md`](autonomous-development.md).
+Agents with `EXPO_TOKEN` start it from `apps/mobile/`:
+
+```bash
+bunx eas-cli build --platform android --profile preview --non-interactive --no-wait
+```
+
+The same profile also runs on `main` when `apps/mobile/`, `packages/domain/`, or `version.json` change (workflow: [`.github/workflows/eas-preview.yml`](../.github/workflows/eas-preview.yml)), if auto-merge can trigger Actions (`AUTO_MERGE_TOKEN`).
+
+One-time GitHub + Cloud token setup: [`docs/github-setup.md`](github-setup.md). Agent loop: [`docs/autonomous-development.md`](autonomous-development.md).
 
 iOS is out of scope. Play Store submission is not automatic.
 

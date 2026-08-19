@@ -35,7 +35,7 @@ Routine bugs, refactors, tests, docs, token-aligned UI, and Expo **preview** bui
 2. Run the verification the implementation workflow requires. CI on the PR is the review gate.
 3. If a product gate applies: open the PR as **draft** and add the label `needs-product-decision`. Otherwise leave it ready for review so `.github/workflows/automerge.yml` can squash-merge when `CI` is green.
 4. Do not ping the human to "take a look" after a routine change.
-5. Web production deploys from `main` via Vercel. Android preview builds trigger from `main` via EAS. iOS is out of scope. Play Store submit stays a product decision.
+5. Web production deploys from `main` via Vercel. After a feature set, start an Android **preview APK** (`eas.json` profile `preview`) with `bunx eas-cli build --platform android --profile preview --non-interactive --no-wait` from `apps/mobile/` when `EXPO_TOKEN` is available. Do not use the `development` profile unless asked. GitHub workflow `.github/workflows/eas-preview.yml` is the same profile on `main`. iOS is out of scope. Play Store submit stays a product decision.
 
 ## Completion summary
 

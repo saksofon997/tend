@@ -62,6 +62,18 @@ cd apps/mobile && bun run dev
 
 Reload once on a simulator or device if fonts, assets, or native modules changed.
 
+## After a feature set — Android preview APK
+
+The expected Android artifact is an EAS **preview** APK (installable, internal distribution), not a `development` client and not Expo Go.
+
+From `apps/mobile/` when `EXPO_TOKEN` is set:
+
+```bash
+bunx eas-cli build --platform android --profile preview --non-interactive --no-wait
+```
+
+Include the Expo build URL in the completion summary. Builds appear at [expo.dev/accounts/saksofon997/projects/tend/builds](https://expo.dev/accounts/saksofon997/projects/tend/builds). Do not start profile `development` unless the prompt asks for a Metro-bound dev client.
+
 ## Do not
 
 - Import packages without declaring them in `apps/mobile/package.json`.

@@ -16,6 +16,7 @@ Before marking any implementation task complete, agents MUST complete every item
 5. **UI & design** — Any `apps/web/` or `apps/mobile/` UI change follows `docs/design/` and `PRODUCT.md`, puts user-facing copy in i18n dictionaries with translations, and is finished with [`.cursor/skills/impeccable/SKILL.md`](../skills/impeccable/SKILL.md) (`adapt` then `polish`). Web also reuses `apps/web/components/` (see `ui-design` rule).
 6. **Mobile runnable** — Any `apps/mobile/` change runs `bun run verify` from `apps/mobile/` and leaves Expo able to bundle (see `mobile-development` rule).
 7. **Autonomy** — Proceed without implementation approval; stop only for product gates (see `autonomy` rule). Open a PR when done.
+8. **Android preview** — After a feature set ships (or when the prompt asks for the usual Android build), start an EAS **preview APK** from `apps/mobile/`: `bunx eas-cli build --platform android --profile preview --non-interactive --no-wait`. Include the Expo URL in the completion summary. Do not use profile `development` unless asked.
 
 ## Order of Operations
 

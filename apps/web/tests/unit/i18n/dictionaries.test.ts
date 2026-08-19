@@ -21,6 +21,8 @@ describe("web i18n dictionaries", () => {
     );
     expect(dictionaries.sr["items.markTended"]).toBe("Označi kao pobrinuto");
     expect(dictionaries.sr["items.lastActivityPrefix"]).toBe("Poslednja aktivnost");
+    expect(dictionaries.en["auth.forgotPassword.link"]).toBe("Forgot password?");
+    expect(dictionaries.sr["auth.forgotPassword.link"]).toBe("Zaboravljena lozinka?");
   });
 
   it("translates status labels", () => {

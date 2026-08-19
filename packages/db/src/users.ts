@@ -76,3 +76,11 @@ export async function createUserRecord(
 
   return user;
 }
+
+export async function updateUserPasswordHash(
+  database: Database,
+  userId: string,
+  passwordHash: string,
+): Promise<void> {
+  await database.update(users).set({ passwordHash }).where(eq(users.id, userId));
+}

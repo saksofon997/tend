@@ -1,10 +1,12 @@
 import { describe, expect, it } from "bun:test";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
 import {
+  forgotPasswordSchema,
   formatZodError,
   loginSchema,
   registerFormSchema,
   registerSchema,
+  resetPasswordSchema,
 } from "@/lib/auth/validation";
 
 describe("password", () => {
@@ -108,5 +110,68 @@ describe("loginSchema", () => {
   it("requires email and password", () => {
     const result = loginSchema.safeParse({ email: "", password: "" });
     expect(result.success).toBe(false);
+  });
+});
+
+describe("forgotPasswordSchema", () => {
+  it("accepts a valid email and optional locale", () => {
+    const result = forgotPasswordSchema.safeParse({
+      email: "Saki@Example.com",
+      locale: "sr",
+    });
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.email).toBe("saki@example.com");
+      expect(result.data.locale).toBe("sr");
+    }
+  });
+
+  it("rejects an invalid email", () => {
+    const result = forgotPasswordSchema.safeParse({ email: "not-an-email" });
+    expect(result.success).toBe(false);
+  });
+});
+
+describe("resetPasswordSchema", () => {
+  it("accepts a token and matching passwords", () => {
+    const result = resetPasswordSchema.safeParse({
+      token: "reset-token",
+      password: "password123",
+      confirmPassword: "password123",
+    });
+
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects mismatched passwords", () => {
+    const result = resetPasswordSchema.safeParse({
+      token: "reset-token",
+      password: "password123",
+      confirmPassword: "different123",
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(formatZodError(result.error)).toBe("Passwords do not match");
+    }
+  });
+
+  it("rejects a missing token", () => {
+    const result = resetPasswordSchema.safeParse({
+      token: "",
+      password: "password123",
+    });
+
+    expect(result.success).toBe(false);
+  });
+
+  it("accepts an API payload without confirmPassword", () => {
+    const result = resetPasswordSchema.safeParse({
+      token: "reset-token",
+      password: "password123",
+    });
+
+    expect(result.success).toBe(true);
   });
 });

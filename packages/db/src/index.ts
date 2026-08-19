@@ -5,8 +5,15 @@ export {
   createUserRecord,
   findUserByEmail,
   listUserSummariesByIds,
+  updateUserPasswordHash,
   type UserSummary,
 } from "./users";
+export {
+  deletePasswordResetTokensForUser,
+  findPasswordResetTokenByHash,
+  replacePasswordResetToken,
+  type PasswordResetTokenRow,
+} from "./password-reset";
 export {
   completeOnboarding,
   getUserSettings,

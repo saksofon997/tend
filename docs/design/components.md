@@ -785,7 +785,9 @@ interface AuthFormData {
 }
 ```
 
-Wraps `FormField` + `Input` / `PasswordInput` + `Button`. Register includes display name and confirm password fields with live password validation.
+Wraps `FormField` + `Input` / `PasswordInput` + `Button`. Register includes display name and confirm password fields with live password validation. Sign-in includes a **Forgot password?** link to `/forgot-password`.
+
+Related routes: `/forgot-password` (`ForgotPasswordForm`), `/reset-password` (`ResetPasswordForm`).
 
 Pre-alpha footer note via `Alert` variant `info`.
 

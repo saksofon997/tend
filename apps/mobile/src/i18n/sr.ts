@@ -18,6 +18,15 @@ export const sr = {
   "auth.email.placeholder": "ti@example.com",
   "auth.mobileApiHint":
     "Na telefonu koristi LAN IP svog računara (prikazan u Expo terminalu). Android emulatori koriste 10.0.2.2; iOS simulatori koriste localhost.",
+  "auth.forgotPassword.backToSignIn": "Nazad na prijavu",
+  "auth.forgotPassword.button": "Pošalji link za reset",
+  "auth.forgotPassword.description":
+    "Unesi email koji koristiš za Tend. Ako nalog postoji, poslaćemo link za reset.",
+  "auth.forgotPassword.link": "Zaboravljena lozinka?",
+  "auth.forgotPassword.loading": "Slanje…",
+  "auth.forgotPassword.sent":
+    "Ako je taj email na Tendu, link za reset je na putu. Važi jedan sat.",
+  "auth.forgotPassword.title": "Zaboravljena lozinka?",
   "auth.password.label": "Lozinka",
   "auth.password.helper": "Najmanje 8 karaktera",
   "auth.password.placeholder": "Lozinka",
@@ -25,6 +34,12 @@ export const sr = {
   "auth.passwordConfirm.placeholder": "Potvrdi lozinku",
   "auth.register.description":
     "Kako da te zovemo? Tim imenom ćemo te pozdraviti na početnom ekranu.",
+  "auth.resetPassword.button": "Sačuvaj novu lozinku",
+  "auth.resetPassword.description": "Izaberi novu lozinku za svoj Tend nalog.",
+  "auth.resetPassword.loading": "Čuvanje…",
+  "auth.resetPassword.missingToken": "Ovom linku nedostaje token. Zatraži novi.",
+  "auth.resetPassword.success": "Lozinka je ažurirana. Sada možeš da se prijaviš.",
+  "auth.resetPassword.title": "Izaberi novu lozinku",
   "auth.signIn.button": "Prijavi se",
   "auth.signIn.inlineLink": "Prijavi se",
   "auth.signIn.loading": "Prijavljivanje…",
@@ -130,7 +145,9 @@ export const sr = {
   "errors.notifications.disable": "Nije moguće isključiti obaveštenja na ovom uređaju.",
   "errors.retry": "Pokušaj ponovo.",
   "errors.createAccount": "Nije moguće napraviti nalog",
+  "errors.forgotPassword": "Nije moguće poslati link za reset",
   "errors.passwordConfirm": "Lozinke se ne poklapaju",
+  "errors.resetPassword": "Nije moguće ažurirati lozinku",
   "errors.settings.load": "Nije moguće učitati podešavanja.",
   "errors.settings.save": "Nije moguće sačuvati podešavanja.",
   "errors.signIn": "Nije moguće prijaviti se",

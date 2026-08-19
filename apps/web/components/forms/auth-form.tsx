@@ -210,6 +210,14 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
           </Button>
         </form>
 
+        {isRegister ? null : (
+          <p className="mt-4 text-center text-sm">
+            <Link href="/forgot-password" className="text-primary hover:underline">
+              {t("auth.forgotPassword.link")}
+            </Link>
+          </p>
+        )}
+
         <p className="mt-6 text-center text-sm text-muted-foreground">
           {isRegister ? (
             <>

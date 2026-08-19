@@ -50,6 +50,16 @@ describe("mobile i18n", () => {
     expect(t("onboarding.form.save")).toBe("Save and continue");
   });
 
+  it("translates forgot-password copy", () => {
+    setLocale("en");
+    expect(t("auth.forgotPassword.link")).toBe("Forgot password?");
+    expect(t("auth.resetPassword.title")).toBe("Choose a new password");
+
+    setLocale("sr");
+    expect(t("auth.forgotPassword.link")).toBe("Zaboravljena lozinka?");
+    setLocale("en");
+  });
+
   it("switches to Serbian copy", () => {
     setLocale("sr");
 

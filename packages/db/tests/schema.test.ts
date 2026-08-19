@@ -1,6 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import {
   lifeAreaEnum,
+  passwordResetTokens,
   pushSubscriptions,
   tendItemTypeEnum,
   tendItems,
@@ -42,5 +43,11 @@ describe("schema enums", () => {
 
   it("defines optional friend sharing on tend items", () => {
     expect(tendItems.sharedWithUserId.name).toBe("shared_with_user_id");
+  });
+
+  it("defines password reset tokens", () => {
+    expect(passwordResetTokens.tokenHash.name).toBe("token_hash");
+    expect(passwordResetTokens.expiresAt.name).toBe("expires_at");
+    expect(passwordResetTokens.userId.name).toBe("user_id");
   });
 });

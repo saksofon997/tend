@@ -79,6 +79,8 @@ In **Project → Settings → Environment Variables**, add:
 | `DATABASE_URL_UNPOOLED` | Neon **direct** connection string | Production, Preview, Development |
 | `SESSION_SECRET` | Random 32+ char secret (`openssl rand -base64 32`) | Production, Preview, Development |
 | `NOTIFICATIONS_JOB_SECRET` | Random token for manually triggering the notification job endpoint | Production, Preview |
+| `RESEND_API_KEY` | Resend API key for password-reset email | Production, Preview |
+| `EMAIL_FROM` | From address, e.g. `Tend <noreply@app.tend.qzz.io>` | Production, Preview |
 | `FIREBASE_PROJECT_ID` | Firebase project ID | Production, Preview |
 | `FIREBASE_CLIENT_EMAIL` | Firebase service-account client email | Production, Preview |
 | `FIREBASE_PRIVATE_KEY` | Firebase service-account private key with newlines escaped as `\n` | Production, Preview |

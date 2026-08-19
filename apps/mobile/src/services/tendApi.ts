@@ -11,6 +11,7 @@ import type {
 } from "@/types";
 import { ApiError } from "@api/apiError";
 import type { AvailabilityWindow } from "@tend/domain";
+import { type ActivityListParams, buildActivityListQuery } from "@utils/activitySearch";
 import { resolveStoredApiBaseUrl } from "@utils/apiBaseUrl";
 import { isDevMode } from "@utils/devMode";
 import { toNetworkApiError } from "@utils/networkError";
@@ -178,9 +179,10 @@ export class TendApi {
     });
   }
 
-  async listActivity(limit?: number) {
-    const query = limit ? `?limit=${encodeURIComponent(limit)}` : "";
-    return this.request<{ events: ActivityEntryResponse[] }>(`/api/v1/activity${query}`);
+  async listActivity(limitOrOptions?: number | ActivityListParams) {
+    return this.request<{ events: ActivityEntryResponse[] }>(
+      `/api/v1/activity${buildActivityListQuery(limitOrOptions)}`,
+    );
   }
 
   async updateActivity(eventId: string, tendedAt: string) {

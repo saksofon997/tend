@@ -1,10 +1,11 @@
 import type { ActivityEntryResponse } from "@/types";
 import type { TendApi } from "@api/tendApi";
 import { t } from "@i18n";
+import type { ActivityListParams } from "@utils/activitySearch";
 import { getErrorMessage } from "@utils/networkError";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export function useActivityEvents(api: TendApi) {
+export function useActivityEvents(api: TendApi, filters: ActivityListParams = {}) {
   const [events, setEvents] = useState<ActivityEntryResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -12,14 +13,14 @@ export function useActivityEvents(api: TendApi) {
   const loadActivity = useCallback(async () => {
     setError(null);
     try {
-      const body = await api.listActivity();
+      const body = await api.listActivity(filters);
       setEvents(body.events);
     } catch (loadError) {
       setError(getErrorMessage(loadError, t("errors.activity.load")));
     } finally {
       setLoading(false);
     }
-  }, [api]);
+  }, [api, filters]);
 
   useEffect(() => {
     let mounted = true;
@@ -52,6 +53,7 @@ export function useActivityEvents(api: TendApi) {
         id: body.event.id,
         itemId: body.event.itemId,
         itemName: body.item.name,
+        itemType: body.item.type,
         tendedAt: body.event.tendedAt,
         createdAt: body.event.createdAt,
       };

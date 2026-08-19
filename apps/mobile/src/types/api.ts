@@ -37,6 +37,7 @@ export interface ActivityEntryResponse {
   id: string;
   itemId: string;
   itemName: string;
+  itemType: TendItemType;
   tendedAt: string;
   createdAt: string;
 }

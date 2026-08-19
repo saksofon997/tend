@@ -12,6 +12,7 @@ describe("mobile i18n", () => {
     setLocale("en");
     expect(t("home.empty.title")).toBe("Nothing to tend yet");
     expect(t("activity.empty.title")).toBe("No tending logged yet");
+    expect(t("activity.empty.filtered.title")).toBe("Nothing matches that look-up");
   });
 
   it("formats life area filter toggle labels like web", () => {

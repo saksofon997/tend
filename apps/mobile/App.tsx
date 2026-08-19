@@ -21,6 +21,7 @@ import {
 } from "@/utils/tabTransition";
 import { TendApi } from "@api/tendApi";
 import { DatePickerField } from "@components/date-picker-field";
+import { HandsGivingIcon } from "@components/hands-giving-icon";
 import { ItemForm } from "@components/item-form";
 import { Chip } from "@components/life-area-picker";
 import { PresetSuggestions } from "@components/preset-suggestions";
@@ -1909,7 +1910,7 @@ function ReminderBanner({
                 style={styles.markButtonCompact}
                 onPress={() => onTend(reminder.itemId)}
               >
-                <Check size={15} color={colors.inverse} />
+                <HandsGivingIcon size={15} color={colors.inverse} />
                 <Text style={styles.markButtonText}>{t("items.markTended")}</Text>
               </TouchableOpacity>
             </View>
@@ -2535,7 +2536,7 @@ function ItemCard({
       <View style={styles.itemFooter}>
         <StatusBadge status={item.status} />
         <TouchableOpacity style={styles.markButton} onPress={onTend}>
-          <Check size={16} color={colors.inverse} />
+          <HandsGivingIcon size={16} color={colors.inverse} />
           <Text style={styles.markButtonText}>{t("items.markTended")}</Text>
         </TouchableOpacity>
       </View>

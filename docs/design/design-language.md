@@ -209,7 +209,7 @@ Use **Lucide React** (ships with shadcn). Stroke width 1.5, size 16–20px inlin
 
 | Concept | Icon |
 |---------|------|
-| Mark tended | `Check` or `Leaf` |
+| Mark tended | Palms-up-together (`HandsGivingIcon`) — tending, not a to-do check |
 | Add item | `Plus` |
 | Edit | `Pencil` |
 | Archive | `Archive` |

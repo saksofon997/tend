@@ -1,9 +1,10 @@
 "use client";
 
+import { HandsGivingIcon } from "@/components/tend/hands-giving-icon";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n/client";
 import { cn } from "@/lib/utils";
-import { Check, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 interface MarkTendedButtonProps {
@@ -86,12 +87,12 @@ export function MarkTendedButton({
       {loading ? (
         <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
       ) : (
-        <Check
+        <HandsGivingIcon
           className={cn(
-            "h-4 w-4 transition-transform duration-[var(--tend-duration-fast)] ease-[var(--tend-ease)] group-hover:scale-110 group-active:scale-95 motion-reduce:transition-none",
+            "transition-transform duration-[var(--tend-duration-fast)] ease-[var(--tend-ease)] group-hover:scale-110 group-active:scale-95 motion-reduce:transition-none",
             confirmed && "scale-110",
           )}
-          aria-hidden
+          size={16}
         />
       )}
       {markTendedButtonLabel({

@@ -33,6 +33,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [TendItemCard](#tenditemcard) | `tend/tend-item-card.tsx` | 5, 7, 11 |
 | [AttentionSection](#attentionsection) | `tend/attention-section.tsx` | 5 |
 | [MarkTendedButton](#marktendedbutton) | `tend/mark-tended-button.tsx` | 7, 11 |
+| [HandsGivingIcon](#handsgivingicon) | `tend/hands-giving-icon.tsx` | 7, 11 |
 | [TypeSelector](#typeselector) | `forms/type-selector.tsx` | 3, 8, 12 |
 | [RhythmSelect](#rhythmselect) | `forms/rhythm-select.tsx` | 3, 4, 8 |
 | [LifeAreaChip](#lifeareachip) | `tend/life-area-chip.tsx` | 4, 13 |
@@ -548,10 +549,18 @@ interface MarkTendedButtonProps {
 - Label: "Mark tended" (not "Complete" or "Done")
 - Loading: "Updating…"
 - Confirmation: "Tended" for less than 1 second when the parent surface does not immediately remove the item
-- Icon: `Check` 16px before label
+- Icon: `HandsGivingIcon` 16px before label (palms up together; not a checkmark)
 - Variant: `default` (primary green)
 - Motion: subtle hover lift and check scale, using Tend duration tokens and respecting reduced motion
 - On success: parent removes card from section when appropriate (optimistic update encouraged)
+
+---
+
+### HandsGivingIcon
+
+**File:** `components/tend/hands-giving-icon.tsx`
+
+Palms-up-together glyph used only on `MarkTendedButton`. Lucide-like stroke 1.5, `currentColor`. Do not reuse a checkmark for tending.
 
 ---
 

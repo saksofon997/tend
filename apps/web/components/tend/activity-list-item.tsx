@@ -1,9 +1,9 @@
 "use client";
 
+import { DatePickerField } from "@/components/forms/date-picker-field";
 import { FormField } from "@/components/forms/form-field";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import type { ActivityEntryResponse } from "@/lib/activity/serialize";
 import { formatEventDate } from "@/lib/design/relative-time";
 import { useI18n } from "@/lib/i18n/client";
@@ -73,11 +73,10 @@ export function ActivityListItem({ entry, onUpdate, onDelete }: ActivityListItem
           <p className="break-words text-sm font-medium text-foreground">{entry.itemName}</p>
 
           <FormField id={`activity-date-${entry.id}`} label={t("activity.event.tendedOn")}>
-            <Input
+            <DatePickerField
               id={`activity-date-${entry.id}`}
-              type="date"
               value={dateValue}
-              onChange={(changeEvent) => setDateValue(changeEvent.target.value)}
+              onChange={setDateValue}
             />
           </FormField>
 

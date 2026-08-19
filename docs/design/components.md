@@ -21,6 +21,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [Button](#button) | `ui/button.tsx` | All |
 | [DropdownMenu](#dropdownmenu) | `ui/dropdown-menu.tsx` | All |
 | [FormField](#formfield) | `forms/form-field.tsx` | 1, 3, 8, 10 |
+| [DatePickerField](#datepickerfield) | `forms/date-picker-field.tsx` | 3, 8, 14 |
 | [Input](#input) | `ui/input.tsx` | 1, 3, 8 |
 | [PasswordInput](#passwordinput) | `forms/password-input.tsx` | 1 |
 | [Select](#select) | `ui/select.tsx` | 3, 4, 8, 13 |
@@ -562,7 +563,7 @@ interface MarkTendedButtonProps {
 
 **File:** `components/tend/hands-giving-icon.tsx`
 
-Palms-up-together glyph used only on `MarkTendedButton`. Lucide-like stroke 1.5, `currentColor`. Do not reuse a checkmark for tending.
+Palms-up-together glyph used only on `MarkTendedButton`. Two cupped hands, stroke 1.5, `currentColor`. Do not reuse a checkmark for tending.
 
 ---
 
@@ -771,7 +772,7 @@ interface ActivityFiltersProps {
 }
 ```
 
-Quiet look-up bar on `/activity`: tend name, must/want type, and an inclusive date range. Clearing restores the unfiltered list. Empty results use a distinct “nothing matches” state, not the never-tended empty copy.
+Quiet look-up bar on `/activity`: tend name, must/want type, and an inclusive date range via `DatePickerField` (calendar trigger, formatted date, optional clear). Clearing restores the unfiltered list. Empty results use a distinct “nothing matches” state, not the never-tended empty copy.
 
 **Stories:** 14
 
@@ -824,6 +825,29 @@ Pre-alpha footer note via `Alert` variant `info`.
 
 ---
 
+### DatePickerField
+
+**File:** `components/forms/date-picker-field.tsx`
+
+```tsx
+interface DatePickerFieldProps {
+  id: string;
+  value: string; // YYYY-MM-DD or ""
+  onChange: (value: string) => void;
+  min?: string;
+  max?: string;
+  placeholder?: string;
+  allowEmpty?: boolean;
+  invalid?: boolean;
+}
+```
+
+Calendar-styled date control. Shows a formatted date (or placeholder) with a calendar icon; the native date picker opens on click. Optional dates can be cleared. Used by `ActivityFilters`, `ItemForm`, `ActivityListItem`, and `TendEventRow`.
+
+**Stories:** 3, 8, 14
+
+---
+
 ### ItemForm
 
 **File:** `components/forms/item-form.tsx`
@@ -846,7 +870,7 @@ interface ItemFormValues {
 }
 ```
 
-Composes: name `Input`, `TypeSelector`, `RhythmSelect`, life area `Select`, optional friend email `Input type="email"`, last tended date `Input type="date"`.
+Composes: name `Input`, `TypeSelector`, `RhythmSelect`, life area `Select`, optional friend email `Input type="email"`, last tended date `DatePickerField`.
 
 Extract from current `onboarding-flow.tsx` `itemForm()` — that function is the behavioral reference.
 

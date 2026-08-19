@@ -1,5 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import {
+  formatDatePickerLabel,
   formatEventDate,
   formatRelativeFromDays,
   formatRelativeTended,
@@ -75,5 +76,12 @@ describe("formatEventDate", () => {
   it("formats dates with the Serbian locale", () => {
     expect(formatEventDate("2026-05-31T12:00:00.000Z", "sr")).toContain("2026");
     expect(formatEventDate("2026-05-31T12:00:00.000Z", "sr")).not.toBe("May 31, 2026");
+  });
+});
+
+describe("formatDatePickerLabel", () => {
+  it("formats a YYYY-MM-DD value without a locale-typed placeholder", () => {
+    expect(formatDatePickerLabel("2026-02-21", "en")).toBe("Feb 21, 2026");
+    expect(formatDatePickerLabel("2026-02-21", "sr")).not.toContain("yyyy");
   });
 });

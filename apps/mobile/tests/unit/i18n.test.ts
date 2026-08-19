@@ -71,7 +71,8 @@ describe("mobile i18n", () => {
     setLocale("sr");
 
     expect(getLocale()).toBe("sr");
-    expect(t("settings.language.title")).toBe("Jezik");
+    expect(t("activity.search.title")).toBe("Pretraži aktivnost");
+    expect(t("activity.search.namePlaceholder")).toBe("Pretraži tend");
     expect(lifeAreaFilterToggleLabel("health")).toBe("Filtriranje po oblasti · Zdravlje");
 
     setLocale("en");

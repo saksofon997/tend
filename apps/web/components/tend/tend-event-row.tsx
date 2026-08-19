@@ -1,9 +1,9 @@
 "use client";
 
+import { DatePickerField } from "@/components/forms/date-picker-field";
 import { FormField } from "@/components/forms/form-field";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { formatEventDate } from "@/lib/design/relative-time";
 import { useI18n } from "@/lib/i18n/client";
 import type { TendEventResponse } from "@/lib/items/serialize";
@@ -70,11 +70,10 @@ export function TendEventRow({ event, onUpdate, onDelete }: TendEventRowProps) {
       {editing ? (
         <div className="flex flex-col gap-3">
           <FormField id={`event-date-${event.id}`} label={t("activity.event.tendedOn")}>
-            <Input
+            <DatePickerField
               id={`event-date-${event.id}`}
-              type="date"
               value={dateValue}
-              onChange={(changeEvent) => setDateValue(changeEvent.target.value)}
+              onChange={setDateValue}
             />
           </FormField>
 

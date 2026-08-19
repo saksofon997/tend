@@ -6,7 +6,7 @@ interface HandsGivingIconProps {
   strokeWidth?: number;
 }
 
-/** Palms-up-together mark for tending — care offered, not a to-do check. */
+/** Palms-up-together mark for tending — two cupped hands, not a to-do check. */
 export function HandsGivingIcon({ className, size = 16, strokeWidth = 1.5 }: HandsGivingIconProps) {
   return (
     <svg
@@ -24,12 +24,16 @@ export function HandsGivingIcon({ className, size = 16, strokeWidth = 1.5 }: Han
       data-icon="hands-giving"
     >
       <title>Hands giving</title>
-      <path d="M12 13.2c-1.5-1.2-4.2-1.5-6 .4-1.4 1.4-1.6 3.6-.4 5.2 1.1 1.5 3.1 2.2 5 1.8.9-.2 1.6-.7 2.2-1.4" />
-      <path d="M7.4 11.2c-.3-1.6.7-3.1 2.3-3.5 1.3-.3 2.6.4 3.1 1.7" />
-      <path d="M9.8 8.4c-.2-1.3.7-2.5 2-2.8" />
-      <path d="M12 13.2c1.5-1.2 4.2-1.5 6 .4 1.4 1.4 1.6 3.6.4 5.2-1.1 1.5-3.1 2.2-5 1.8-.9-.2-1.6-.7-2.2-1.4" />
-      <path d="M16.6 11.2c.3-1.6-.7-3.1-2.3-3.5-1.3-.3-2.6.4-3.1 1.7" />
-      <path d="M14.2 8.4c.2-1.3-.7-2.5-2-2.8" />
+      <path d="M8.1 14.7c-1.7-.7-3.6-.1-4.2 1.5-.6 1.5.3 3.1 1.8 3.5" />
+      <path d="M5.8 19.5c.8.6 1.9 1 3.2 1h3" />
+      <path d="M7.1 15.3c-.5-2.5.2-4.8 2-6" />
+      <path d="M9 14.8c-.2-2.9.7-5.3 2.4-6.5" />
+      <path d="M10.9 14.6c0-2.9.9-5.4 2.4-6.6" />
+      <path d="M15.9 14.7c1.7-.7 3.6-.1 4.2 1.5.6 1.5-.3 3.1-1.8 3.5" />
+      <path d="M18.2 19.5c-.8.6-1.9 1-3.2 1h-3" />
+      <path d="M16.9 15.3c.5-2.5-.2-4.8-2-6" />
+      <path d="M15 14.8c.2-2.9-.7-5.3-2.4-6.5" />
+      <path d="M13.1 14.6c0-2.9-.9-5.4-2.4-6.6" />
     </svg>
   );
 }

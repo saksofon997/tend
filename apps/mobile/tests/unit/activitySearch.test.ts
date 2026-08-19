@@ -20,4 +20,13 @@ describe("buildActivityListQuery", () => {
       }),
     ).toBe("?q=plants&type=must&from=2026-08-01&to=2026-08-19");
   });
+
+  it("omits locale-typed dates so a reset does not send a broken from/to", () => {
+    expect(
+      buildActivityListQuery({
+        from: "21. 02. yyyy",
+        to: "dd. mm. yyyy",
+      }),
+    ).toBe("");
+  });
 });

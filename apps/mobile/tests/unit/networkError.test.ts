@@ -32,5 +32,8 @@ describe("networkError", () => {
         "Could not load items",
       ),
     ).toBe("Could not load items");
+    expect(getErrorMessage(new TypeError("Failed to fetch"), "Could not load activity")).toBe(
+      "Could not load activity",
+    );
   });
 });

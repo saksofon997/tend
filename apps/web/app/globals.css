@@ -92,6 +92,17 @@
   .tend-carousel-caption {
     animation: tend-carousel-caption-enter var(--tend-duration-slow) var(--tend-ease);
   }
+
+  /* Full-field hit target for native date pickers (Chrome only exposes the calendar glyph). */
+  .tend-date-picker-native::-webkit-calendar-picker-indicator {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+  }
 }
 
 @keyframes tend-carousel-caption-enter {

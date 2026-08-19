@@ -135,8 +135,8 @@ describe("notification job", () => {
           {
             itemId: `${userId}-item`,
             name: "Plants",
-            type: "want",
-            status: "getting_stale",
+            type: "must",
+            status: "needs_attention",
             daysSinceLastTended: 4,
             sharedWith: null,
             emphasis: "normal",

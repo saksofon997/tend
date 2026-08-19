@@ -68,6 +68,10 @@ const CHECK_IN_WEEKDAY_COUNTS = [
   { weekday: 0, count: 1 },
 ] as const;
 
+export const LANDING_SECTION_CLASS = "mt-16 border-t border-border pt-10";
+export const LANDING_SECTION_INTRO_CLASS = "mx-auto max-w-2xl text-center";
+export const LANDING_POINT_GRID_CLASS = "mt-8 grid gap-6 sm:grid-cols-3";
+
 export function LandingPage() {
   const { t } = useI18n();
 
@@ -109,75 +113,52 @@ export function LandingPage() {
           </div>
         </section>
 
-        <section aria-label={t("landing.howItWorks")} className="mt-14 grid gap-6 sm:grid-cols-3">
-          {VALUE_POINTS.map((point) => (
-            <article key={point.titleKey}>
-              <h2 className="font-display text-lg font-medium text-foreground">
-                {t(point.titleKey)}
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {t(point.bodyKey)}
-              </p>
-            </article>
-          ))}
-        </section>
-
-        <section
-          aria-labelledby="landing-features-title"
-          className="mt-16 border-t border-border pt-10"
-        >
-          <div className="mx-auto flex max-w-2xl flex-col items-center gap-8 text-center">
-            <div className="w-full max-w-[26rem] overflow-hidden rounded-lg border border-border bg-card shadow-sm">
-              <Image
-                src="/promo/tend-friend.png"
-                alt={t("landing.features.imageAlt")}
-                width={1448}
-                height={1086}
-                sizes="(max-width: 640px) 100vw, 26rem"
-                className="h-full w-full object-cover"
+        <section aria-labelledby="landing-how-it-works-title" className={LANDING_SECTION_CLASS}>
+          <LandingSectionIntro id="landing-how-it-works-title" title={t("landing.howItWorks")} />
+          <div className={LANDING_POINT_GRID_CLASS}>
+            {VALUE_POINTS.map((point) => (
+              <LandingPoint
+                key={point.titleKey}
+                title={t(point.titleKey)}
+                body={t(point.bodyKey)}
               />
-            </div>
-            <div className="max-w-2xl">
-              <h2
-                id="landing-features-title"
-                className="font-display text-2xl font-medium text-foreground"
-              >
-                {t("landing.features.title")}
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {t("landing.features.subtitle")}
-              </p>
-            </div>
-          </div>
-          <div className="mt-6 grid gap-6 sm:grid-cols-3">
-            {FEATURE_POINTS.map((point) => (
-              <article key={point.titleKey}>
-                <h3 className="font-display text-lg font-medium text-foreground">
-                  {t(point.titleKey)}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {t(point.bodyKey)}
-                </p>
-              </article>
             ))}
           </div>
         </section>
 
-        <section
-          aria-labelledby="landing-check-in-title"
-          className="mt-16 border-t border-border pt-10"
-        >
-          <div className="mx-auto max-w-2xl text-center">
-            <h2
-              id="landing-check-in-title"
-              className="font-display text-2xl font-medium text-foreground"
-            >
-              {t("landing.checkIn.title")}
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              {t("landing.checkIn.subtitle")}
-            </p>
+        <section aria-labelledby="landing-features-title" className={LANDING_SECTION_CLASS}>
+          <LandingSectionIntro
+            id="landing-features-title"
+            title={t("landing.features.title")}
+            subtitle={t("landing.features.subtitle")}
+          />
+          <div className="mx-auto mt-8 w-full max-w-[26rem] overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+            <Image
+              src="/promo/tend-friend.png"
+              alt={t("landing.features.imageAlt")}
+              width={1448}
+              height={1086}
+              sizes="(max-width: 640px) 100vw, 26rem"
+              className="h-full w-full object-cover"
+            />
           </div>
+          <div className={LANDING_POINT_GRID_CLASS}>
+            {FEATURE_POINTS.map((point) => (
+              <LandingPoint
+                key={point.titleKey}
+                title={t(point.titleKey)}
+                body={t(point.bodyKey)}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section aria-labelledby="landing-check-in-title" className={LANDING_SECTION_CLASS}>
+          <LandingSectionIntro
+            id="landing-check-in-title"
+            title={t("landing.checkIn.title")}
+            subtitle={t("landing.checkIn.subtitle")}
+          />
 
           <div className="mt-8 grid gap-6 md:grid-cols-[minmax(0,1.15fr)_minmax(16rem,0.85fr)] md:items-center">
             <LandingCheckInScreenshot />
@@ -185,12 +166,7 @@ export function LandingPage() {
             <div className="grid gap-4">
               {CHECK_IN_POINTS.map((point) => (
                 <article key={point.titleKey} className="border-border border-b pb-4 last:border-0">
-                  <h3 className="font-display text-lg font-medium text-foreground">
-                    {t(point.titleKey)}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {t(point.bodyKey)}
-                  </p>
+                  <LandingPointCopy title={t(point.titleKey)} body={t(point.bodyKey)} />
                 </article>
               ))}
             </div>
@@ -200,6 +176,44 @@ export function LandingPage() {
 
       <SiteFooter />
     </div>
+  );
+}
+
+function LandingSectionIntro({
+  id,
+  subtitle,
+  title,
+}: {
+  id: string;
+  subtitle?: string;
+  title: string;
+}) {
+  return (
+    <div className={LANDING_SECTION_INTRO_CLASS}>
+      <h2 id={id} className="font-display text-2xl font-medium text-foreground text-balance">
+        {title}
+      </h2>
+      {subtitle ? (
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground text-pretty">{subtitle}</p>
+      ) : null}
+    </div>
+  );
+}
+
+function LandingPointCopy({ body, title }: { body: string; title: string }) {
+  return (
+    <>
+      <h3 className="font-display text-lg font-medium text-foreground">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">{body}</p>
+    </>
+  );
+}
+
+function LandingPoint({ body, title }: { body: string; title: string }) {
+  return (
+    <article className="min-w-0">
+      <LandingPointCopy body={body} title={title} />
+    </article>
   );
 }
 

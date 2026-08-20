@@ -1,6 +1,6 @@
 # Tend Design Language
 
-A visual and interaction language for a life-maintenance app that feels calm, honest, and useful — never like a productivity tool or guilt-driven todo list.
+A visual and interaction language for a comfort companion that feels calm, honest, and useful — never like a productivity tool or guilt-driven todo list.
 
 ---
 
@@ -30,12 +30,13 @@ These come directly from the MVP product rules. Every UI decision should pass at
 
 ## 2. Visual personality
 
-**One-line summary:** *A quiet kitchen counter note — warm paper, soft pencil, clear handwriting.*
+**One-line summary:** *A cozy nature comic on warm linen — sun at the top, a few blades of grass, thought-shaped cards.*
 
-- **Mild colors:** Warm neutrals (linen, clay, sage). Status uses muted earth tones, not traffic lights.
+- **Mild colors:** Warm neutrals (linen, clay, sage) plus a soft sun-gold wash. Status uses muted earth tones, not traffic lights.
 - **Subtle inputs:** Hairline borders, filled backgrounds only on focus. No heavy box shadows on fields.
-- **Gentle fonts:** Serif display for warmth; sans body for clarity. Never ultra-condensed or monospace UI.
+- **Gentle fonts:** Fraunces for display (soft old-print, comic-adjacent without Comic Sans); Nunito for body. Never ultra-condensed or monospace UI.
 - **Straightforward layout:** Single-column content, clear section headers, obvious primary buttons.
+- **Scene, not chrome:** A linen weave, faint sunrays from the top, and a few grass blades at the bottom. Cards use an organic thought-bubble radius, not a cartoon tail on every row.
 
 ---
 
@@ -47,16 +48,16 @@ Load in `app/layout.tsx` via `next/font/google`:
 
 | Role | Family | Weights | Usage |
 |------|--------|---------|-------|
-| Display | **Newsreader** | 400, 500, 600 | Page titles, hero text, onboarding headlines |
-| Body / UI | **DM Sans** | 400, 500, 600 | Body copy, labels, buttons, list items |
+| Display | **Fraunces** | 400, 500, 600 | Page titles, hero text, onboarding headlines |
+| Body / UI | **Nunito** | 400, 500, 600 | Body copy, labels, buttons, list items |
 | Mono (optional) | **DM Mono** | 400 | Time ranges in availability editor only |
 
 ```tsx
 // layout.tsx pattern
-import { DM_Sans, Newsreader } from "next/font/google";
+import { Fraunces, Nunito } from "next/font/google";
 
-const display = Newsreader({ subsets: ["latin"], variable: "--font-display" });
-const body = DM_Sans({ subsets: ["latin"], variable: "--font-body" });
+const display = Fraunces({ subsets: ["latin", "latin-ext"], variable: "--font-display" });
+const body = Nunito({ subsets: ["latin", "latin-ext"], variable: "--font-body" });
 ```
 
 Apply: `className={`${display.variable} ${body.variable} font-body`}` on `<body>`.
@@ -93,8 +94,8 @@ All values live in [`tokens.css`](./tokens.css). Use semantic tokens, not raw he
 ### Surfaces
 
 ```
-Page          → --tend-bg (#f7f5f2 linen)
-Card          → --tend-bg-elevated (#fff)
+Page          → --tend-bg (#f7f5f2 linen), with a sun-gold wash from the top and grass blades at the bottom
+Card          → --tend-bg-elevated (#fff), organic thought-bubble radius (`--tend-radius-thought`)
 Inset section → --tend-bg-muted
 List hover    → --tend-bg-subtle
 ```
@@ -180,7 +181,7 @@ Tend is mostly **flat**. Depth is communicated through background shifts, not sh
 
 | Element | Treatment |
 |---------|-----------|
-| Cards | `1px` border `--tend-border`, `radius-lg`, optional `--tend-shadow-sm` |
+| Cards | Thought-bubble radius `--tend-radius-thought`, `1.5px` border `--tend-border`, optional `--tend-shadow-sm` |
 | Inputs | `1px` border `--tend-border-subtle`, no shadow; focus ring `2px` `--tend-border-focus` |
 | Modals / sheets | `--tend-shadow-lg`, `radius-xl` |
 | Buttons | No shadow; filled primary or ghost secondary |
@@ -316,8 +317,8 @@ Recommended shadcn components to install first: `button`, `input`, `label`, `sel
 
 ## 12. Reference mood
 
-Think: **paper planner on a wooden table**, not **SaaS dashboard**.
+Think: **a cozy nature comic on a linen page**, not **SaaS dashboard**.
 
 - Warm, lived-in, unhurried
 - Information density: low on home, medium on forms
-- Delight from clarity and copy, not animation or gamification
+- Delight from clarity, copy, and a quiet outdoor scene — not gamification

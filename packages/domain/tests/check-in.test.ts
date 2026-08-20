@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { buildCheckInSummary } from "../src/check-in";
+import { buildCheckInSummary, eventsInCheckInPeriod } from "../src/check-in";
 import type { CheckInEventInput, CheckInItemInput } from "../src/check-in";
 
 const items: CheckInItemInput[] = [
@@ -60,6 +60,7 @@ describe("buildCheckInSummary", () => {
 
     expect(summary.totalTends).toBe(4);
     expect(summary.tendedItemCount).toBe(3);
+    expect(summary.careDays).toBe(2);
     expect(summary.activeItemCount).toBe(3);
     expect(summary.sharedItemCount).toBe(1);
     expect(summary.mostTendedItem).toEqual({
@@ -82,10 +83,24 @@ describe("buildCheckInSummary", () => {
 
     expect(summary.totalTends).toBe(0);
     expect(summary.tendedItemCount).toBe(0);
+    expect(summary.careDays).toBe(0);
     expect(summary.mostTendedItem).toBeNull();
     expect(summary.mostTendedWith).toBeNull();
     expect(summary.mostTendedLifeArea).toBeNull();
     expect(summary.mostActiveWeekday).toBeNull();
     expect(summary.weekdayCounts.every((entry) => entry.count === 0)).toBe(true);
+  });
+
+  it("keeps only events inside the selected check-in period", () => {
+    const now = new Date("2026-07-14T12:00:00.000Z");
+    const filtered = eventsInCheckInPeriod(events, "week", now);
+
+    expect(filtered.map((event) => event.id)).toEqual(["event-3", "event-4"]);
+    expect(buildCheckInSummary(items, filtered).totalTends).toBe(2);
+  });
+
+  it("leaves all events in place for the all-time period", () => {
+    const now = new Date("2026-07-14T12:00:00.000Z");
+    expect(eventsInCheckInPeriod(events, "all", now)).toEqual(events);
   });
 });

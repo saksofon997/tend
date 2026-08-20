@@ -3,12 +3,13 @@
 import { LanguageSelect } from "@/components/layout/language-select";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { TendLogoLink } from "@/components/layout/tend-logo-link";
+import { TendSceneBackground } from "@/components/layout/tend-scene-background";
 import { LandingPromoPreview } from "@/components/marketing/landing-promo-preview";
 import { Button } from "@/components/ui/button";
 import { appUrl } from "@/lib/canonical-host";
 import { useI18n } from "@/lib/i18n/client";
 import { WEEKDAY_TRANSLATION_KEYS } from "@/lib/i18n/labels";
-import { CalendarDays, HeartHandshake, Leaf, ListChecks, Sprout } from "lucide-react";
+import { CalendarDays, HeartHandshake, Leaf, ListChecks, Sprout, SunMedium } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -76,8 +77,9 @@ export function LandingPage() {
   const { t } = useI18n();
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <header className="tend-marketing-column flex items-center justify-between py-6">
+    <div className="relative flex min-h-screen flex-col">
+      <TendSceneBackground />
+      <header className="tend-marketing-column relative z-10 flex items-center justify-between py-6">
         <TendLogoLink imageClassName="h-8 w-auto" priority />
         <div className="flex items-center gap-2">
           <LanguageSelect id="landing-language" />
@@ -87,7 +89,7 @@ export function LandingPage() {
         </div>
       </header>
 
-      <main className="tend-marketing-column flex flex-1 flex-col pb-12 pt-4 lg:pt-10">
+      <main className="tend-marketing-column relative z-10 flex flex-1 flex-col pb-12 pt-4 lg:pt-10">
         <section className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-12 xl:gap-16">
           <div className="max-w-xl">
             <p className="text-sm font-medium text-primary">{t("landing.eyebrow")}</p>
@@ -174,7 +176,9 @@ export function LandingPage() {
         </section>
       </main>
 
-      <SiteFooter />
+      <div className="relative z-10">
+        <SiteFooter />
+      </div>
     </div>
   );
 }
@@ -224,7 +228,7 @@ function LandingCheckInScreenshot() {
     <div
       role="img"
       aria-label={t("landing.checkIn.preview.imageLabel")}
-      className="overflow-hidden rounded-xl border border-border bg-card shadow-sm"
+      className="tend-thought-card overflow-hidden border border-border bg-card shadow-sm"
     >
       <div aria-hidden="true">
         <div className="flex items-center justify-between border-border border-b bg-card px-4 py-3">
@@ -241,7 +245,7 @@ function LandingCheckInScreenshot() {
           </div>
         </div>
 
-        <div className="bg-background p-4 sm:p-5">
+        <div className="bg-background/70 p-4 sm:p-5">
           <div>
             <p className="font-display font-medium text-2xl text-foreground">
               {t("checkIn.title")}
@@ -249,12 +253,30 @@ function LandingCheckInScreenshot() {
             <p className="mt-1 text-muted-foreground text-xs">{t("checkIn.subtitle")}</p>
           </div>
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div className="mt-3 flex flex-wrap gap-2">
+            <span className="rounded-full bg-[var(--tend-primary-muted)] px-3 py-1 font-medium text-primary text-xs">
+              {t("checkIn.period.week")}
+            </span>
+            <span className="rounded-full bg-muted px-3 py-1 text-muted-foreground text-xs">
+              {t("checkIn.period.month")}
+            </span>
+            <span className="rounded-full bg-muted px-3 py-1 text-muted-foreground text-xs">
+              {t("checkIn.period.all")}
+            </span>
+          </div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
             <CheckInPreviewStat
               icon={<Sprout className="size-4" />}
               label={t("checkIn.stat.tendingLogged.label")}
               value="12"
               helper={t("checkIn.stat.tendingLogged.helper", { count: 5 })}
+            />
+            <CheckInPreviewStat
+              icon={<SunMedium className="size-4" />}
+              label={t("checkIn.stat.careDays.label")}
+              value="6"
+              helper={t("checkIn.stat.careDays.helper")}
             />
             <CheckInPreviewStat
               icon={<HeartHandshake className="size-4" />}
@@ -266,7 +288,7 @@ function LandingCheckInScreenshot() {
             />
           </div>
 
-          <div className="mt-3 rounded-lg border border-border bg-card p-4">
+          <div className="mt-3 tend-thought-card border border-border bg-card p-4">
             <p className="font-medium text-foreground text-sm">{t("checkIn.patterns.title")}</p>
             <div className="mt-3 grid gap-2">
               <CheckInPreviewPattern
@@ -291,7 +313,7 @@ function LandingCheckInScreenshot() {
           </div>
 
           <div className="mt-3 grid gap-3 lg:grid-cols-[1fr_0.72fr]">
-            <div className="rounded-lg border border-border bg-card p-4">
+            <div className="tend-thought-card border border-border bg-card p-4">
               <div className="flex items-center gap-2 font-medium text-foreground text-sm">
                 <CalendarDays className="size-4 text-primary" />
                 {t("checkIn.weekday.title")}
@@ -319,7 +341,7 @@ function LandingCheckInScreenshot() {
               </div>
             </div>
 
-            <div className="rounded-lg border border-border bg-card p-4">
+            <div className="tend-thought-card border border-border bg-card p-4">
               <p className="font-medium text-foreground text-sm">{t("checkIn.rightNow.title")}</p>
               <div className="mt-3 grid gap-2">
                 <CheckInPreviewCount label={t("sections.needsAttention")} value="2" />
@@ -346,7 +368,7 @@ function CheckInPreviewStat({
   value: string;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-4">
+    <div className="tend-thought-card border border-border bg-card p-4">
       <div className="flex items-center gap-2 font-medium text-primary text-xs">
         {icon}
         <span>{label}</span>
@@ -369,7 +391,7 @@ function CheckInPreviewPattern({
   value: string;
 }) {
   return (
-    <div className="flex gap-3 rounded-md border border-border bg-background/60 p-3">
+    <div className="tend-thought-inset flex gap-3 border border-border bg-background/60 p-3">
       <div className="mt-0.5 text-primary">{icon}</div>
       <div className="min-w-0">
         <div className="text-muted-foreground text-xs">{label}</div>
@@ -382,7 +404,7 @@ function CheckInPreviewPattern({
 
 function CheckInPreviewCount({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between rounded-md border border-border bg-muted/40 px-3 py-2">
+    <div className="tend-thought-inset flex items-center justify-between border border-border bg-muted/40 px-3 py-2">
       <span className="truncate text-muted-foreground text-xs">{label}</span>
       <span className="font-display text-foreground text-lg">{value}</span>
     </div>

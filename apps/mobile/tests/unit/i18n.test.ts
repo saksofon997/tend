@@ -1,7 +1,13 @@
 import { describe, expect, it } from "bun:test";
 import { LOCALE_OPTIONS, getLocale, lifeAreaFilterToggleLabel, setLocale, t } from "../../src/i18n";
+import { en } from "../../src/i18n/en";
+import { sr } from "../../src/i18n/sr";
 
 describe("mobile i18n", () => {
+  it("keeps Serbian keys aligned with English", () => {
+    expect(Object.keys(sr).sort()).toEqual(Object.keys(en).sort());
+  });
+
   it("uses web-aligned status labels", () => {
     setLocale("en");
     expect(t("status.fresh")).toBe("Fresh");
@@ -43,7 +49,7 @@ describe("mobile i18n", () => {
   it("uses web-aligned onboarding copy", () => {
     setLocale("en");
     expect(t("onboarding.welcome.title")).toBe("Welcome to Tend");
-    expect(t("onboarding.choose.title")).toBe("What do you want to tend first?");
+    expect(t("onboarding.choose.title")).toBe("What would feel good to tend first?");
     expect(t("onboarding.choose.description")).toBe(
       "Write your own, pick a suggestion, or skip and look around first.",
     );

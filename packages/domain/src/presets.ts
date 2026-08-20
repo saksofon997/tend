@@ -23,12 +23,12 @@ const health: TendPreset[] = [
 ];
 
 const relationships: TendPreset[] = [
+  { name: "Call parents", type: "want", rhythmDays: 14, lifeArea: "relationships" },
+  { name: "Coffee with a friend", type: "want", rhythmDays: 14, lifeArea: "relationships" },
+  { name: "Send a thoughtful message", type: "want", rhythmDays: 7, lifeArea: "relationships" },
+  { name: "Meet a friend", type: "want", rhythmDays: 30, lifeArea: "relationships" },
   { name: "Dinner with partner", type: "want", rhythmDays: 14, lifeArea: "relationships" },
   { name: "Movie night", type: "want", rhythmDays: 14, lifeArea: "relationships" },
-  { name: "Call parents", type: "want", rhythmDays: 14, lifeArea: "relationships" },
-  { name: "Meet a friend", type: "want", rhythmDays: 30, lifeArea: "relationships" },
-  { name: "Send a thoughtful message", type: "want", rhythmDays: 7, lifeArea: "relationships" },
-  { name: "Plan a date night", type: "want", rhythmDays: 14, lifeArea: "relationships" },
   { name: "Check in with a sibling", type: "want", rhythmDays: 14, lifeArea: "relationships" },
   { name: "Write a thank-you note", type: "want", rhythmDays: 30, lifeArea: "relationships" },
 ];
@@ -64,12 +64,14 @@ const lifeAdmin: TendPreset[] = [
 ];
 
 const selfCare: TendPreset[] = [
-  { name: "Rest day", type: "want", rhythmDays: 7, lifeArea: "self_care" },
-  { name: "Journal", type: "want", rhythmDays: 7, lifeArea: "self_care" },
-  { name: "Screen-free evening", type: "want", rhythmDays: 7, lifeArea: "self_care" },
   { name: "Meditate", type: "want", rhythmDays: 1, lifeArea: "self_care" },
-  { name: "Skincare routine", type: "want", rhythmDays: 1, lifeArea: "self_care" },
+  { name: "Journal", type: "want", rhythmDays: 7, lifeArea: "self_care" },
+  { name: "Evening reflection", type: "want", rhythmDays: 1, lifeArea: "self_care" },
+  { name: "Plan the week ahead", type: "want", rhythmDays: 7, lifeArea: "self_care" },
   { name: "Read for pleasure", type: "want", rhythmDays: 7, lifeArea: "self_care" },
+  { name: "Screen-free evening", type: "want", rhythmDays: 7, lifeArea: "self_care" },
+  { name: "Sit outside", type: "want", rhythmDays: 7, lifeArea: "self_care" },
+  { name: "Rest day", type: "want", rhythmDays: 7, lifeArea: "self_care" },
 ];
 
 const finance: TendPreset[] = [

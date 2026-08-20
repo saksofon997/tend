@@ -22,14 +22,14 @@ export function PresetSuggestions({
   id,
 }: PresetSuggestionsProps) {
   const { t } = useI18n();
-  const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("household");
+  const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("self_care");
   const presets = PRESETS_BY_AREA[selectedArea];
 
   return (
     <section
       id={id}
       className={cn(
-        "rounded-lg border border-[var(--tend-border-subtle)] bg-[var(--tend-bg-elevated)] p-4",
+        "tend-thought-card border border-[var(--tend-border-subtle)] bg-[var(--tend-bg-elevated)] p-4",
         className,
       )}
       aria-label={t("items.add.suggestions.label")}

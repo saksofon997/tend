@@ -2,6 +2,7 @@
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { TendLogoLink } from "@/components/layout/tend-logo-link";
+import { TendSceneBackground } from "@/components/layout/tend-scene-background";
 import { UserMenu } from "@/components/layout/user-menu";
 import { useI18n } from "@/lib/i18n/client";
 import { cn } from "@/lib/utils";
@@ -32,8 +33,9 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
   const { t } = useI18n();
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <header className="sticky top-0 z-10 border-b border-border bg-card">
+    <div className="relative flex min-h-screen flex-col">
+      <TendSceneBackground />
+      <header className="sticky top-0 z-10 border-b border-border bg-card/80 backdrop-blur-[3px]">
         <div className={APP_SHELL_HEADER_ROW_CLASS}>
           <TendLogoLink />
 
@@ -58,9 +60,11 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
         </div>
       </header>
 
-      <main className="tend-content-column flex-1 py-6">{children}</main>
+      <main className="tend-content-column relative z-10 flex-1 py-6">{children}</main>
 
-      <SiteFooter />
+      <div className="relative z-10">
+        <SiteFooter />
+      </div>
     </div>
   );
 }

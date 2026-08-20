@@ -1,4 +1,43 @@
+import { MS_PER_DAY } from "./time";
 import type { LifeArea, TendItemType, TendStatus } from "./types";
+
+export const CHECK_IN_PERIODS = ["week", "month", "ninety", "all"] as const;
+
+export type CheckInPeriod = (typeof CHECK_IN_PERIODS)[number];
+
+const CHECK_IN_PERIOD_DAYS: Record<Exclude<CheckInPeriod, "all">, number> = {
+  week: 7,
+  month: 30,
+  ninety: 90,
+};
+
+export function isCheckInPeriod(value: string): value is CheckInPeriod {
+  return (CHECK_IN_PERIODS as readonly string[]).includes(value);
+}
+
+export function checkInPeriodStart(period: CheckInPeriod, now: Date): Date | null {
+  if (period === "all") {
+    return null;
+  }
+
+  return new Date(now.getTime() - CHECK_IN_PERIOD_DAYS[period] * MS_PER_DAY);
+}
+
+export function eventsInCheckInPeriod(
+  events: CheckInEventInput[],
+  period: CheckInPeriod,
+  now: Date,
+): CheckInEventInput[] {
+  const start = checkInPeriodStart(period, now);
+  if (!start) {
+    return events;
+  }
+
+  return events.filter((event) => {
+    const tendedAt = event.tendedAt instanceof Date ? event.tendedAt : new Date(event.tendedAt);
+    return !Number.isNaN(tendedAt.getTime()) && tendedAt.getTime() >= start.getTime();
+  });
+}
 
 export interface CheckInSharedUserInput {
   id?: string;
@@ -51,6 +90,7 @@ export interface CheckInAttentionCounts {
 export interface CheckInSummary {
   totalTends: number;
   tendedItemCount: number;
+  careDays: number;
   activeItemCount: number;
   sharedItemCount: number;
   mostTendedItem: CheckInTopItem | null;
@@ -81,6 +121,7 @@ export function buildCheckInSummary(
   const lifeAreaCounts = new Map<LifeArea, CheckInTopLifeArea>();
   const weekdayCounts = WEEKDAY_COUNT_TEMPLATE.map((entry) => ({ ...entry }));
   const tendedItemIds = new Set<string>();
+  const careDays = new Set<string>();
 
   for (const event of events) {
     tendedItemIds.add(event.itemId);
@@ -118,12 +159,14 @@ export function buildCheckInSummary(
         count: weekdayCounts[tendedAt.getDay()]?.count ?? 0,
       };
       weekdayCounts[tendedAt.getDay()].count += 1;
+      careDays.add(tendedAt.toISOString().slice(0, 10));
     }
   }
 
   return {
     totalTends: events.length,
     tendedItemCount: tendedItemIds.size,
+    careDays: careDays.size,
     activeItemCount: items.length,
     sharedItemCount: items.filter((item) => item.sharedWith).length,
     mostTendedItem: topByCount([...itemCounts.values()]),

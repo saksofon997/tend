@@ -6,8 +6,9 @@ export const REMINDER_NOTIFICATION_THROTTLE_MS = 23 * 60 * 60 * 1000;
 export interface TendNotificationRequest {
   title: string;
   body: string;
-  itemId: string;
+  itemId: string | null;
   triggerAt: Date | null;
+  kind?: "weekly_support";
 }
 
 function reminderBody(reminder: ReminderResponse): string {

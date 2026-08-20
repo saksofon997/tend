@@ -37,8 +37,9 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply text-foreground font-sans antialiased;
     font-family: var(--tend-font-body);
+    background-color: var(--tend-bg);
   }
 }
 
@@ -102,6 +103,61 @@
     margin: 0;
     padding: 0;
     cursor: pointer;
+  }
+
+  .tend-thought-card {
+    border-radius: var(--tend-radius-thought);
+    border-width: 1.5px;
+  }
+
+  .tend-thought-inset {
+    border-radius: var(--tend-radius-thought-inset);
+  }
+
+  .tend-scene {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .tend-scene__linen {
+    position: absolute;
+    inset: 0;
+    background-color: var(--tend-bg);
+    background-image: repeating-linear-gradient(
+        0deg,
+        rgba(44, 41, 37, 0.018) 0 1px,
+        transparent 1px 3px
+      ), repeating-linear-gradient(90deg, rgba(44, 41, 37, 0.02) 0 1px, transparent 1px 4px);
+  }
+
+  .tend-scene__sun {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-conic-gradient(
+        from -18deg at 50% -8%,
+        rgba(255, 220, 150, 0.14) 0deg 7deg,
+        transparent 7deg 22deg
+      ),
+      radial-gradient(
+        ellipse 90% 46% at 50% -8%,
+        var(--tend-sun) 0%,
+        var(--tend-sun-soft) 34%,
+        transparent 72%
+      );
+  }
+
+  .tend-scene__grass {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: min(22vh, 11rem);
+    width: 100%;
+    color: var(--tend-grass);
+    opacity: 0.28;
   }
 }
 

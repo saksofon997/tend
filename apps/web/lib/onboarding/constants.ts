@@ -1,18 +1,18 @@
 import type { LifeArea } from "@tend/domain";
 
 export const LIFE_AREA_ORDER: Array<Exclude<LifeArea, "personal">> = [
-  "household",
-  "food_kitchen",
-  "home_maintenance",
-  "outdoor",
-  "health",
   "self_care",
+  "health",
   "relationships",
   "kids_family",
+  "household",
+  "food_kitchen",
+  "outdoor",
   "pets",
-  "vehicle",
   "finance",
   "life_admin",
+  "home_maintenance",
+  "vehicle",
 ];
 
 export const LIFE_AREA_LABELS: Record<LifeArea, string> = {

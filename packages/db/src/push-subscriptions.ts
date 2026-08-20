@@ -91,3 +91,20 @@ export async function markPushSubscriptionNotified(
 
   return subscription ?? null;
 }
+
+export async function markPushSubscriptionWeeklySupport(
+  database: Database,
+  subscriptionId: string,
+  notifiedAt: Date,
+): Promise<PushSubscriptionRow | null> {
+  const [subscription] = await database
+    .update(pushSubscriptions)
+    .set({
+      lastWeeklySupportAt: notifiedAt,
+      updatedAt: notifiedAt,
+    })
+    .where(eq(pushSubscriptions.id, subscriptionId))
+    .returning();
+
+  return subscription ?? null;
+}

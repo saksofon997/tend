@@ -1,15 +1,17 @@
 export const fonts = {
-  display: "Newsreader_500Medium",
-  displayRegular: "Newsreader_400Regular",
-  displaySemibold: "Newsreader_600SemiBold",
-  body: "DMSans_400Regular",
-  bodyMedium: "DMSans_500Medium",
-  bodySemibold: "DMSans_600SemiBold",
+  display: "Fraunces_500Medium",
+  displayRegular: "Fraunces_400Regular",
+  displaySemibold: "Fraunces_600SemiBold",
+  body: "Nunito_400Regular",
+  bodyMedium: "Nunito_500Medium",
+  bodySemibold: "Nunito_600SemiBold",
 } as const;
 
 export const colors = {
   // Keep in sync with docs/design/tokens.css (--tend-bg and related surface tokens).
   bg: "#f7f5f2",
+  sun: "rgba(255, 214, 140, 0.42)",
+  grass: "#7a9270",
   card: "#ffffff",
   muted: "#efede8",
   subtle: "#f3f1ec",
@@ -58,3 +60,10 @@ export const radius = {
   xl: 16,
   round: 999,
 };
+
+export const thoughtRadius = {
+  borderTopLeftRadius: 22,
+  borderTopRightRadius: 16,
+  borderBottomRightRadius: 24,
+  borderBottomLeftRadius: 18,
+} as const;

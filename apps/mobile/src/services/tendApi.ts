@@ -10,7 +10,7 @@ import type {
   UserSettingsResponse,
 } from "@/types";
 import { ApiError } from "@api/apiError";
-import type { AvailabilityWindow } from "@tend/domain";
+import type { AvailabilityWindow, CheckInPeriod, CheckInSummary } from "@tend/domain";
 import { type ActivityListParams, buildActivityListQuery } from "@utils/activitySearch";
 import { resolveStoredApiBaseUrl } from "@utils/apiBaseUrl";
 import { isDevMode } from "@utils/devMode";
@@ -177,6 +177,12 @@ export class TendApi {
       method: "POST",
       body: {},
     });
+  }
+
+  async listCheckIn(period: CheckInPeriod = "week") {
+    return this.request<{ period: CheckInPeriod; summary: CheckInSummary }>(
+      `/api/v1/check-in?period=${period}`,
+    );
   }
 
   async listActivity(limitOrOptions?: number | ActivityListParams) {

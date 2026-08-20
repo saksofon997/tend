@@ -39,6 +39,7 @@ describe("schema enums", () => {
     expect(pushSubscriptions.token.name).toBe("token");
     expect(pushSubscriptions.lastNotifiedItemId.name).toBe("last_notified_item_id");
     expect(pushSubscriptions.lastNotifiedAt.name).toBe("last_notified_at");
+    expect(pushSubscriptions.lastWeeklySupportAt.name).toBe("last_weekly_support_at");
   });
 
   it("defines optional friend sharing on tend items", () => {

@@ -133,31 +133,12 @@
       ), repeating-linear-gradient(90deg, rgba(44, 41, 37, 0.02) 0 1px, transparent 1px 4px);
   }
 
-  .tend-scene__sun {
+  .tend-scene__art {
     position: absolute;
     inset: 0;
-    background-image: repeating-conic-gradient(
-        from -18deg at 50% -8%,
-        rgba(255, 220, 150, 0.14) 0deg 7deg,
-        transparent 7deg 22deg
-      ),
-      radial-gradient(
-        ellipse 90% 46% at 50% -8%,
-        var(--tend-sun) 0%,
-        var(--tend-sun-soft) 34%,
-        transparent 72%
-      );
-  }
-
-  .tend-scene__grass {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: min(22vh, 11rem);
     width: 100%;
+    height: 100%;
     color: var(--tend-grass);
-    opacity: 0.28;
   }
 }
 

@@ -16,7 +16,7 @@ Tend is not therapy, diagnosis, or a meditation timer. It does not treat mental 
 
 ## Brand Personality
 
-Calm, honest, useful. Tend should feel like a cozy nature-focused old comic on warm linen: a little sun, a few blades of grass, and thought-shaped cards. Warm, clear, and human, with enough structure to be reliable and no pressure mechanics.
+Calm, honest, useful. Tend should feel like a cozy nature-focused old comic on warm linen: sun from one side, a quiet grass verge, and thought-shaped cards. Warm, clear, and human, with enough structure to be reliable and no pressure mechanics.
 
 ## Anti-references
 

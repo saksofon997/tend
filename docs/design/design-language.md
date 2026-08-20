@@ -30,13 +30,13 @@ These come directly from the MVP product rules. Every UI decision should pass at
 
 ## 2. Visual personality
 
-**One-line summary:** *A cozy nature comic on warm linen — sun at the top, a few blades of grass, thought-shaped cards.*
+**One-line summary:** *A cozy nature comic on warm linen — sun from the upper left, a grass verge, thought-shaped cards.*
 
-- **Mild colors:** Warm neutrals (linen, clay, sage) plus a soft sun-gold wash. Status uses muted earth tones, not traffic lights.
+- **Mild colors:** Warm neutrals (linen, clay, sage) plus a soft sun-gold wash from one side. Status uses muted earth tones, not traffic lights.
 - **Subtle inputs:** Hairline borders, filled backgrounds only on focus. No heavy box shadows on fields.
 - **Gentle fonts:** Fraunces for display (soft old-print, comic-adjacent without Comic Sans); Nunito for body. Never ultra-condensed or monospace UI.
 - **Straightforward layout:** Single-column content, clear section headers, obvious primary buttons.
-- **Scene, not chrome:** A linen weave, faint sunrays from the top, and a few grass blades at the bottom. Cards use an organic thought-bubble radius, not a cartoon tail on every row.
+- **Scene, not chrome:** A linen weave, faint uneven sunrays from the upper left, and a quiet grass verge at the bottom. Cards use an organic thought-bubble radius, not a cartoon tail on every row.
 
 ---
 
@@ -94,7 +94,7 @@ All values live in [`tokens.css`](./tokens.css). Use semantic tokens, not raw he
 ### Surfaces
 
 ```
-Page          → --tend-bg (#f7f5f2 linen), with a sun-gold wash from the top and grass blades at the bottom
+Page          → --tend-bg (#f7f5f2 linen), with a sun-gold wash from the upper left and grass along the bottom
 Card          → --tend-bg-elevated (#fff), organic thought-bubble radius (`--tend-radius-thought`)
 Inset section → --tend-bg-muted
 List hover    → --tend-bg-subtle

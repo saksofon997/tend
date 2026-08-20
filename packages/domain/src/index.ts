@@ -8,3 +8,4 @@ export * from "./presets";
 export * from "./check-in";
 export * from "./weekly-support";
 export * from "./hands-giving-icon";
+export * from "./scene";

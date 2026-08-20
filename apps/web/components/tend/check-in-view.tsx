@@ -2,28 +2,50 @@
 
 import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/layout/page-header";
+import { CheckInPeriodFilter } from "@/components/tend/check-in-period-filter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n/client";
 import { LIFE_AREA_TRANSLATION_KEYS, WEEKDAY_TRANSLATION_KEYS } from "@/lib/i18n/labels";
 import { cn } from "@/lib/utils";
-import type { CheckInSummary } from "@tend/domain";
-import { CalendarDays, HeartHandshake, Leaf, ListChecks, Sprout } from "lucide-react";
+import type { CheckInPeriod, CheckInSummary } from "@tend/domain";
+import { weeklySupportTone } from "@tend/domain";
+import { CalendarDays, HeartHandshake, Leaf, ListChecks, Sprout, SunMedium } from "lucide-react";
+import { useRouter } from "next/navigation";
+import type { ReactNode } from "react";
 
 interface CheckInViewProps {
   user: { displayName: string };
+  period: CheckInPeriod;
   summary: CheckInSummary;
 }
 
-export function CheckInView({ user, summary }: CheckInViewProps) {
+export function CheckInView({ user, period, summary }: CheckInViewProps) {
   const { t } = useI18n();
+  const router = useRouter();
   const hasHistory = summary.totalTends > 0;
+  const tone = weeklySupportTone(summary.totalTends);
+  const noteKey =
+    tone === "quiet"
+      ? "checkIn.note.quiet"
+      : tone === "present"
+        ? "checkIn.note.present"
+        : "checkIn.note.steady";
 
   return (
     <AppShell user={user} activePath="/check-in">
       <PageHeader title={t("checkIn.title")} subtitle={t("checkIn.subtitle")} />
 
       <div className="flex flex-col gap-5">
-        <section className="grid gap-3 sm:grid-cols-2">
+        <CheckInPeriodFilter
+          period={period}
+          onChange={(nextPeriod) => {
+            router.replace(nextPeriod === "week" ? "/check-in" : `/check-in?period=${nextPeriod}`);
+          }}
+        />
+
+        <p className="text-sm leading-relaxed text-muted-foreground text-pretty">{t(noteKey)}</p>
+
+        <section className="grid gap-3 sm:grid-cols-3">
           <CheckInStatCard
             icon={<Sprout aria-hidden className="size-4" />}
             label={t("checkIn.stat.tendingLogged.label")}
@@ -32,6 +54,16 @@ export function CheckInView({ user, summary }: CheckInViewProps) {
               summary.tendedItemCount > 0
                 ? t("checkIn.stat.tendingLogged.helper", { count: summary.tendedItemCount })
                 : t("checkIn.stat.tendingLogged.empty")
+            }
+          />
+          <CheckInStatCard
+            icon={<SunMedium aria-hidden className="size-4" />}
+            label={t("checkIn.stat.careDays.label")}
+            value={summary.careDays.toString()}
+            helper={
+              summary.careDays > 0
+                ? t("checkIn.stat.careDays.helper")
+                : t("checkIn.stat.careDays.empty")
             }
           />
           <CheckInStatCard
@@ -118,7 +150,8 @@ export function CheckInView({ user, summary }: CheckInViewProps) {
                   <div key={entry.weekday} className="min-w-0 text-center">
                     <div
                       className={cn(
-                        "flex min-h-12 items-center justify-center rounded-md border px-1 text-sm",
+                        "flex min-h-12 items-center justify-center border px-1 text-sm",
+                        "tend-thought-inset",
                         active
                           ? "border-[var(--tend-status-fresh)] bg-[var(--tend-status-fresh-bg)] text-[var(--tend-status-fresh)]"
                           : "border-border bg-muted/50 text-muted-foreground",
@@ -169,7 +202,7 @@ function CheckInStatCard({
   value,
 }: {
   helper: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
   value: string;
 }) {
@@ -194,12 +227,12 @@ function PatternRow({
   value,
 }: {
   detail: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
   value: string;
 }) {
   return (
-    <div className="flex gap-3 rounded-md border border-border bg-background/60 p-3">
+    <div className="tend-thought-inset flex gap-3 border border-border bg-background/60 p-3">
       <div className="mt-0.5 text-primary">{icon}</div>
       <div className="min-w-0">
         <div className="text-muted-foreground text-xs">{label}</div>
@@ -212,7 +245,7 @@ function PatternRow({
 
 function AttentionPill({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-md border border-border bg-muted/40 p-3">
+    <div className="tend-thought-inset border border-border bg-muted/40 p-3">
       <div className="font-display text-2xl text-foreground">{value}</div>
       <div className="mt-1 text-muted-foreground text-sm">{label}</div>
     </div>

@@ -5,7 +5,16 @@ import * as actualDb from "@tend/db";
 
 const listPushSubscriptions = mock(() => Promise.resolve([] as PushSubscriptionRow[]));
 const markPushSubscriptionNotified = mock(() => Promise.resolve(null));
+const markPushSubscriptionWeeklySupport = mock(() => Promise.resolve(null));
 const deletePushSubscriptionByToken = mock(() => Promise.resolve());
+const getUserSettings = mock(() =>
+  Promise.resolve({
+    userId: "user-1",
+    timezone: "UTC",
+    onboardingCompletedAt: new Date("2026-06-01T12:00:00.000Z"),
+  }),
+);
+const listRecentEventsForUser = mock(() => Promise.resolve([]));
 const getReminderResponseForUser = mock(() =>
   Promise.resolve({
     reminders: [],
@@ -19,7 +28,10 @@ mock.module("@tend/db", () => ({
   ...actualDb,
   listPushSubscriptions,
   markPushSubscriptionNotified,
+  markPushSubscriptionWeeklySupport,
   deletePushSubscriptionByToken,
+  getUserSettings,
+  listRecentEventsForUser,
 }));
 
 mock.module("@/lib/reminders/user-reminders", () => ({
@@ -48,6 +60,7 @@ function subscription(overrides: Partial<PushSubscriptionRow> = {}): PushSubscri
     platform: "ios",
     lastNotifiedItemId: null,
     lastNotifiedAt: null,
+    lastWeeklySupportAt: new Date("2026-06-24T12:00:00.000Z"),
     createdAt: new Date("2026-06-01T12:00:00.000Z"),
     updatedAt: new Date("2026-06-01T12:00:00.000Z"),
     ...overrides,
@@ -58,9 +71,20 @@ describe("notification job", () => {
   beforeEach(() => {
     listPushSubscriptions.mockReset();
     markPushSubscriptionNotified.mockReset();
+    markPushSubscriptionWeeklySupport.mockReset();
     deletePushSubscriptionByToken.mockReset();
+    getUserSettings.mockReset();
+    listRecentEventsForUser.mockReset();
     getReminderResponseForUser.mockReset();
     listPushSubscriptions.mockImplementation(() => Promise.resolve([]));
+    getUserSettings.mockImplementation(() =>
+      Promise.resolve({
+        userId: "user-1",
+        timezone: "UTC",
+        onboardingCompletedAt: new Date("2026-06-01T12:00:00.000Z"),
+      }),
+    );
+    listRecentEventsForUser.mockImplementation(() => Promise.resolve([]));
     getReminderResponseForUser.mockImplementation(() =>
       Promise.resolve({
         reminders: [],
@@ -184,6 +208,39 @@ describe("notification job", () => {
     );
     expect(messages.at(-1)).toBe(
       "info:Notification job finished: checked=4 sent=1 skipped=1 failed=2 invalidated=1",
+    );
+  });
+
+  it("sends a weekly support note instead of an item reminder when one is due", async () => {
+    const { logger, messages } = createLogger();
+    const now = new Date("2026-06-24T12:00:00.000Z");
+    listPushSubscriptions.mockImplementation(() =>
+      Promise.resolve([
+        subscription({
+          id: "sub-weekly",
+          userId: "user-weekly",
+          lastWeeklySupportAt: null,
+        }),
+      ]),
+    );
+    listRecentEventsForUser.mockImplementation(() => Promise.resolve([]));
+
+    const result = await runNotificationJob({} as never, {
+      now,
+      logger,
+      sendPush: async (_subscription, request) => {
+        expect(request.kind).toBe("weekly_support");
+        expect(request.itemId).toBeNull();
+        expect(request.title).toContain("small week");
+        return { ok: true, invalidToken: false, error: null };
+      },
+    });
+
+    expect(result.sent).toBe(1);
+    expect(markPushSubscriptionWeeklySupport).toHaveBeenCalled();
+    expect(markPushSubscriptionNotified).not.toHaveBeenCalled();
+    expect(messages).toContain(
+      "info:Notification sent: subscriptionId=sub-weekly userId=user-weekly itemId=weekly_support",
     );
   });
 });

@@ -1,8 +1,8 @@
 export const tendFonts = {
-  Newsreader_400Regular: require("../assets/fonts/Newsreader_400Regular.ttf"),
-  Newsreader_500Medium: require("../assets/fonts/Newsreader_500Medium.ttf"),
-  Newsreader_600SemiBold: require("../assets/fonts/Newsreader_600SemiBold.ttf"),
-  DMSans_400Regular: require("../assets/fonts/DMSans_400Regular.ttf"),
-  DMSans_500Medium: require("../assets/fonts/DMSans_500Medium.ttf"),
-  DMSans_600SemiBold: require("../assets/fonts/DMSans_600SemiBold.ttf"),
+  Fraunces_400Regular: require("../assets/fonts/Fraunces_400Regular.ttf"),
+  Fraunces_500Medium: require("../assets/fonts/Fraunces_500Medium.ttf"),
+  Fraunces_600SemiBold: require("../assets/fonts/Fraunces_600SemiBold.ttf"),
+  Nunito_400Regular: require("../assets/fonts/Nunito_400Regular.ttf"),
+  Nunito_500Medium: require("../assets/fonts/Nunito_500Medium.ttf"),
+  Nunito_600SemiBold: require("../assets/fonts/Nunito_600SemiBold.ttf"),
 } as const;

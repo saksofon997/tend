@@ -65,7 +65,7 @@ Foundation, attention home, item detail, availability, in-app reminders, activit
 apps/web/
 ├── app/
 │   ├── globals.css          # imports tokens.css + tailwind
-│   └── layout.tsx           # fonts (Newsreader + DM Sans)
+│   └── layout.tsx           # fonts (Fraunces + Nunito)
 ├── components/
 │   ├── ui/                  # primitives
 │   ├── layout/              # AppShell, PageHeader, …

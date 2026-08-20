@@ -29,6 +29,25 @@ describe("presets", () => {
     expect(names).toContain("Clean AC filter");
   });
 
+  it("steers self-care suggestions toward everyday wellbeing", () => {
+    const names = getPresetsByArea("self_care").map((preset) => preset.name);
+    expect(names.slice(0, 6)).toEqual([
+      "Meditate",
+      "Journal",
+      "Evening reflection",
+      "Plan the week ahead",
+      "Read for pleasure",
+      "Screen-free evening",
+    ]);
+  });
+
+  it("leads relationship suggestions with connection, not chores", () => {
+    const names = getPresetsByArea("relationships").map((preset) => preset.name);
+    expect(names).toContain("Call parents");
+    expect(names).toContain("Coffee with a friend");
+    expect(names.indexOf("Call parents")).toBeLessThan(names.indexOf("Dinner with partner"));
+  });
+
   it("provides at least six presets per area", () => {
     for (const area of EXPECTED_AREAS) {
       expect(getPresetsByArea(area).length).toBeGreaterThanOrEqual(6);

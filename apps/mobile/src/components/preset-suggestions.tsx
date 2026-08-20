@@ -12,7 +12,7 @@ interface PresetSuggestionsProps {
 }
 
 export function PresetSuggestions({ onSelect, selectedPresetName }: PresetSuggestionsProps) {
-  const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("household");
+  const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("self_care");
   const presets = PRESETS_BY_AREA[selectedArea];
 
   return (

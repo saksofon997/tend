@@ -23,12 +23,15 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 | Reminders | [reminders.md](./reminders.md) | In-app reminder eligibility |
 | Notifications | [notifications.md](./notifications.md) | Push subscriptions and server-side notification job |
 | Settings | [settings.md](./settings.md) | User preferences such as timezone |
+| Check In | [check-in.md](./check-in.md) | Period-filtered tending summary |
 | Onboarding | [onboarding.md](./onboarding.md) | First-run setup status |
 
 ## Changelog
 
 | Date | Change |
 |------|--------|
+| 2026-08-20 | Added `GET /api/v1/check-in` with week/month/90-day/all period filtering |
+| 2026-08-20 | Weekly support push: one daytime companion note per device based on tends in the last seven days |
 | 2026-08-19 | Added password reset endpoints (`forgot-password`, `reset-password`) |
 | 2026-06-25 | Switched server-side notification sends from Expo Push to FCM native device tokens |
 | 2026-06-25 | Removed the standalone notification worker; scheduling is handled by cron-job.org hitting the HTTP job endpoint |

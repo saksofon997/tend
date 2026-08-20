@@ -6,6 +6,12 @@ describe("web i18n dictionaries", () => {
     expect(Object.keys(sr).sort()).toEqual(Object.keys(en).sort());
   });
 
+  it("positions the landing page as a calm companion, not a to-do app", () => {
+    expect(dictionaries.en["landing.title"]).toBe("A safe place to tend what keeps you well");
+    expect(dictionaries.en["landing.subtitle"]).toContain("without turning them into a to-do list");
+    expect(dictionaries.en["landing.point.life.body"]).toContain("Meditation, journaling");
+  });
+
   it("includes Serbian shell and landing copy", () => {
     expect(dictionaries.sr["nav.home"]).toBe("Početna");
     expect(dictionaries.sr["activity.empty.title"]).toBe("Još nema zabeleženih aktivnosti");
@@ -16,7 +22,7 @@ describe("web i18n dictionaries", () => {
     expect(dictionaries.en["landing.checkIn.preview.imageLabel"]).toBe(
       "Preview of the Tend Check In screen",
     );
-    expect(dictionaries.sr["landing.checkIn.preview.item"]).toBe("Zalivanje sobnih biljaka");
+    expect(dictionaries.sr["landing.checkIn.preview.item"]).toBe("Večernje osmišljavanje");
   });
 
   it("includes Serbian promo and item action copy", () => {

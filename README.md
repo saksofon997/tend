@@ -7,9 +7,9 @@
   <a href="https://tend.qzz.io"><img src="https://deploy-badge.vercel.app/?url=https://tend.qzz.io&name=Tend&logo=vercel&style=flat" alt="Tend deployment" /></a>
 </p>
 
-<p align="center"><strong>The stuff that drifts, remembered softly.</strong></p>
+<p align="center"><strong>A safe place to tend what keeps you well.</strong></p>
 
-Tend is a lightweight life-maintenance app for recurring things that matter — household care, health upkeep, relationships, pets, vehicles, and life admin — without guilt-driven overdue tasks or productivity theater.
+Tend is a calm companion for the recurring care that keeps you well — rest, reflection, connection, and the rest of life — without guilt-driven overdue tasks or productivity theater.
 
 > What parts of my life could use attention now?
 
@@ -23,13 +23,13 @@ Latest mobile test build: [Expo preview builds](https://expo.dev/accounts/saksof
 
 ### Who it's for
 
-People who want help remembering recurring parts of real life without adopting a task manager. Open it once or twice a week in a quiet maintenance mindset: check what needs care, mark something tended, or add a recurring item before it drifts out of memory.
+People who want a quiet companion for everyday care without adopting a task manager. Open it once or twice a week: check what could use attention, mark something tended, or add a small ritual before it drifts.
 
 ### How it works
 
 | Concept | What it means |
 |---------|---------------|
-| **Tend item** | A recurring thing you maintain — change bed sheets, call parents, pay a bill |
+| **Tend item** | A recurring thing you maintain — meditate, journal, call parents, change the sheets |
 | **Must / Want** | Must items get stronger attention; Want items can drift without shame |
 | **Rhythm** | How often you want to tend it — every week, month, quarter… |
 | **Status** | Derived from rhythm + last tended — *Fresh*, *Getting stale*, *Needs attention* |
@@ -59,12 +59,12 @@ Tend ships as a hosted web app and an Expo mobile app, both backed by the same P
 | **Items** | Create, edit, archive, delete; Must/Want, rhythm, optional life area |
 | **Shared Tends** | Tend an item with a friend — either person can mark it tended |
 | **Attention home** | Hero item, grouped sections, life-area filter, quick “Mark tended” |
-| **Check-in** | Quiet summary of tending patterns — most tended items, shared care, weekday rhythm |
+| **Check-in** | Quiet summary of tending patterns with week / month / 90-day / all filters |
 | **Item detail** | Status, history, edit form, correct past tend dates |
 | **Reminders** | Availability windows, in-app reminder surface, mark tended from reminder |
-| **Push notifications** | FCM native push for mobile reminders (scheduled via cron job) |
+| **Push notifications** | FCM native push for item reminders and a weekly supportive note |
 | **Activity** | Recent tend events across items |
-| **Presets** | 82 suggested tends across 12 life areas |
+| **Presets** | Suggested tends across 12 life areas, led by self-care |
 | **Settings** | Timezone and language preferences |
 
 ---

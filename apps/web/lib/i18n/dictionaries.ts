@@ -31,7 +31,7 @@ export const en = {
   "auth.createAccount.loading": "Creating account…",
   "auth.createAccount.prompt": "Already have an account?",
   "auth.createAccount.title": "Create your account",
-  "auth.description": "Welcome back. See what could use a little attention today.",
+  "auth.description": "Welcome back. See what could use a little care today.",
   "auth.displayName.label": "Display name",
   "auth.email.label": "Email",
   "auth.error.fallback": "Something went wrong",
@@ -80,6 +80,9 @@ export const en = {
   "availability.subtitle":
     "Set when you are usually free to tend things. Notifications wait for these windows; musts still get priority over wants.",
   "availability.title": "Availability",
+  "checkIn.note.present": "Care found a few moments in this stretch. That is plenty.",
+  "checkIn.note.quiet": "This stretch can stay light. One quiet tend is enough when there is room.",
+  "checkIn.note.steady": "You came back to a few things. Keep the pace that feels kind.",
   "checkIn.pattern.area.empty": "No clear area yet",
   "checkIn.pattern.area.emptyDetail": "Add life areas to make this more useful",
   "checkIn.pattern.area.label": "Life area tended most",
@@ -93,15 +96,23 @@ export const en = {
   "checkIn.pattern.with.emptyDetail": "Shared Tends count when either person tends",
   "checkIn.pattern.with.label": "Most tended with",
   "checkIn.patterns.title": "Patterns worth knowing",
+  "checkIn.period.all": "All time",
+  "checkIn.period.label": "Look back over",
+  "checkIn.period.month": "Past month",
+  "checkIn.period.ninety": "Past 90 days",
+  "checkIn.period.week": "Past week",
   "checkIn.rightNow.title": "Right now",
   "checkIn.sharedTendedMoments": "Shared tended moments: {{count}}",
+  "checkIn.stat.careDays.empty": "Care days will appear as you tend",
+  "checkIn.stat.careDays.helper": "Days when care showed up",
+  "checkIn.stat.careDays.label": "Days with care",
   "checkIn.stat.shared.empty": "Shared care will appear here",
   "checkIn.stat.shared.helper": "Most often with {{name}}",
   "checkIn.stat.shared.label": "Shared Tends",
   "checkIn.stat.tendingLogged.empty": "Nothing logged yet",
   "checkIn.stat.tendingLogged.helper": "{{count}} Tends touched",
   "checkIn.stat.tendingLogged.label": "Tending logged",
-  "checkIn.subtitle": "A quiet look at what your tending has been showing.",
+  "checkIn.subtitle": "A quiet look at the care that found its way in.",
   "checkIn.tendedMoments": "Tended moments: {{count}}",
   "checkIn.title": "Check In",
   "checkIn.weekday.empty": "Your weekday rhythm will fill in as you tend items over time.",
@@ -153,7 +164,7 @@ export const en = {
   "home.addItem": "Add item",
   "home.areaEmpty.body": "Try another life area, or add something that fits here.",
   "home.areaEmpty.title": "No items in this area",
-  "home.empty.body": "Add something you want to keep up with: plants, sheets, a friendship.",
+  "home.empty.body": "Add something you want to keep close: a walk, a journal, a friendship.",
   "home.empty.title": "Nothing to tend yet",
   "home.allFresh.body":
     "Your rhythms look good. Tend will nudge you when something starts to drift.",
@@ -164,9 +175,9 @@ export const en = {
   "language.serbian": "Serbian",
   "landing.howItWorks": "How Tend works",
   "landing.createAccount": "Create an account",
-  "landing.eyebrow": "Life maintenance, remembered softly",
+  "landing.eyebrow": "A quiet companion for everyday care",
   "landing.feature.friend.body":
-    "Add a friend's email to dinner, hangouts, or check-ins. The Tend appears for both of you.",
+    "Add a friend's email to coffee, walks, or check-ins. The Tend appears for both of you.",
   "landing.feature.friend.title": "Tend with a friend",
   "landing.feature.rhythm.body":
     "Keep the same quiet rhythm and status language, whether a Tend belongs to you or is shared.",
@@ -175,12 +186,12 @@ export const en = {
     "Either person can mark a shared Tend as tended, so care counts when it happens.",
   "landing.feature.tended.title": "One tended moment is enough",
   "landing.features.subtitle":
-    "For the recurring care that naturally involves someone else, Tend can now keep both people gently aware.",
+    "For the recurring care that naturally involves someone else, Tend can keep both people gently aware.",
   "landing.features.imageAlt":
     "Two people setting a dinner table for a shared recurring care moment",
   "landing.features.title": "Care can belong to two people",
   "landing.checkIn.point.days.body":
-    "Weekday patterns help you notice when tending naturally happens.",
+    "Weekday patterns help you notice when care naturally finds a moment.",
   "landing.checkIn.point.days.title": "The days that carry care",
   "landing.checkIn.point.item.body":
     "See which Tends have been cared for most often, without turning them into streaks.",
@@ -188,9 +199,9 @@ export const en = {
   "landing.checkIn.point.people.body":
     "Shared Tends show who care most often happens with, useful for dinners, calls, and check-ins.",
   "landing.checkIn.point.people.title": "Who care happens with",
-  "landing.checkIn.preview.area": "Household",
+  "landing.checkIn.preview.area": "Self-care",
   "landing.checkIn.preview.imageLabel": "Preview of the Tend Check In screen",
-  "landing.checkIn.preview.item": "Water houseplants",
+  "landing.checkIn.preview.item": "Evening reflection",
   "landing.checkIn.preview.shared": "Maya",
   "landing.checkIn.preview.sharedLabel": "Most tended with",
   "landing.checkIn.preview.tended": "Tended moments",
@@ -198,21 +209,21 @@ export const en = {
   "landing.checkIn.preview.weekday": "Thu",
   "landing.checkIn.preview.weekdayLabel": "Most active day",
   "landing.checkIn.subtitle":
-    "Check In gathers the patterns that are actually useful: what gets tended, who shares care with you, and which days tend to hold those moments.",
+    "Check In gathers the patterns that are actually useful: what you returned to, who shared care, and which days held those moments. Look at a week, a month, or longer.",
   "landing.checkIn.title": "Notice your tending rhythm",
   "landing.point.awareness.body":
     "Tend surfaces what could use attention with calm language. No red overdue badges, streaks, or guilt loops.",
   "landing.point.awareness.title": "Awareness, not pressure",
   "landing.point.life.body":
-    "Track household care, health upkeep, relationships, pets, vehicles, and life admin in one quiet place.",
-  "landing.point.life.title": "Built for real life",
+    "Meditation, journaling, a walk, coffee with a friend, calling home — and the rest of life, if it still needs tending.",
+  "landing.point.life.title": "Built for the care that keeps you well",
   "landing.point.scan.body":
-    "Open once or twice a week, see what drifted, mark something tended, and move on. Under a minute to add an item.",
+    "Open once or twice a week, see what drifted, mark something tended, and move on. No streaks, no overdue theater.",
   "landing.point.scan.title": "Fast to scan",
   "landing.signIn": "Sign in",
   "landing.subtitle":
-    "Track the recurring care that keeps life steady: bed sheets, bills, check-ins, dinner plans, vet visits, oil changes. Tend keeps it calm, and shared Tends can appear for both people.",
-  "landing.title": "The recurring parts of life, tended alone or together",
+    "Tend remembers the small recurring things that keep you well — rest, reflection, connection — without turning them into a to-do list. Shared Tends can appear for both people.",
+  "landing.title": "A safe place to tend what keeps you well",
   "notFound.backHome": "Go back home",
   "notFound.title": "Page not found",
   "pageError.retry": "Try again",
@@ -224,7 +235,7 @@ export const en = {
   "promo.activity.title": "Care leaves a quiet trail.",
   "promo.care.alt": "Tend onboarding screen for picking a first item to tend",
   "promo.care.description":
-    "Onboarding is a soft prompt, not a setup project. Pick one recurring thing and move on.",
+    "Onboarding is a soft prompt, not a setup project. Pick one recurring thing — a journal, a walk, a call — and move on.",
   "promo.care.title": "Begin with one small act of care.",
   "promo.friend.alt": "Tend promo mockup showing a dinner Tend shared with a friend",
   "promo.friend.description":
@@ -233,7 +244,7 @@ export const en = {
   "promo.remember.alt":
     "Tend home screen showing gentle attention for recurring life care, without overdue badges",
   "promo.remember.description":
-    "Household care, health, relationships, and life admin, gathered without overdue badges.",
+    "Meditation, a walk, a call home, screen-off time — gathered without overdue badges.",
   "promo.remember.title": "The stuff that drifts, remembered softly.",
   "promo.reminder.alt":
     "Tend reminder banner surfacing items that could use attention with calm context",
@@ -271,7 +282,8 @@ export const en = {
   "items.add.sharedWith.placeholder": "friend@example.com",
   "items.add.subtitle": "Something you want to keep up with over time.",
   "items.add.suggestions.button": "Need ideas?",
-  "items.add.suggestions.hint": "Tap one to pre-fill the form below.",
+  "items.add.suggestions.hint":
+    "Start with rest, reflection, or connection — or pick another area.",
   "items.add.suggestions.label": "Item suggestions",
   "items.add.title": "Add item",
   "items.add.type.label": "Type",
@@ -306,10 +318,11 @@ export const en = {
   "onboarding.browseSuggestions": "Browse suggestions",
   "onboarding.choose.description":
     "Write your own, pick a suggestion, or skip and look around first.",
-  "onboarding.choose.title": "What do you want to tend first?",
+  "onboarding.choose.title": "What would feel good to tend first?",
   "onboarding.form.description": "Adjust type, rhythm, or last tended before saving.",
   "onboarding.form.save": "Save and continue",
-  "onboarding.preset.description": "Choose a life area, then tap something that fits your life.",
+  "onboarding.preset.description":
+    "Start with rest, reflection, or connection. Household and life admin are still here if you need them.",
   "onboarding.preset.title": "Pick a suggestion",
   "onboarding.skipForNow": "Skip for now",
   "onboarding.skipToApp": "Skip to the app",
@@ -363,7 +376,7 @@ export const sr = {
   "auth.createAccount.loading": "Pravljenje naloga…",
   "auth.createAccount.prompt": "Već imaš nalog?",
   "auth.createAccount.title": "Napravi svoj nalog",
-  "auth.description": "Dobro došli nazad. Pogledaj šta bi danas moglo da se odradi.",
+  "auth.description": "Dobro došli nazad. Pogledaj šta bi danas moglo da dobije malo brige.",
   "auth.displayName.label": "Ime za prikaz",
   "auth.email.label": "Email",
   "auth.error.fallback": "Nešto je pošlo naopako",
@@ -412,6 +425,11 @@ export const sr = {
   "availability.subtitle":
     "Podesi kada obično imaš vremena da se pobrineš za stvari. Obaveštenja čekaju ove termine; 'must' stavke imaju prednost nad 'want' stavkama.",
   "availability.title": "Dostupnost",
+  "checkIn.note.present":
+    "Briga je našla nekoliko trenutaka u ovom periodu. To je sasvim dovoljno.",
+  "checkIn.note.quiet":
+    "Ovaj period može ostati lagan. Jedan tih tend je dovoljan kad imaš prostora.",
+  "checkIn.note.steady": "Vratio/la si se na nekoliko stvari. Zadrži ritam koji ti prija.",
   "checkIn.pattern.area.empty": "Još nema istaknute oblasti",
   "checkIn.pattern.area.emptyDetail": "Dodaj oblasti života kako bi se ovde pojavio obrazac",
   "checkIn.pattern.area.label": "Oblast kojoj posvećuješ najviše pažnje",
@@ -427,15 +445,23 @@ export const sr = {
   "checkIn.pattern.with.emptyDetail": "Zajedničke stavke se računaju kada ih bilo ko obavi",
   "checkIn.pattern.with.label": "Najčešće deliš brigu sa",
   "checkIn.patterns.title": "Obrasci koje vredi primetiti",
+  "checkIn.period.all": "Sve vreme",
+  "checkIn.period.label": "Pogledaj period",
+  "checkIn.period.month": "Prošli mesec",
+  "checkIn.period.ninety": "Poslednjih 90 dana",
+  "checkIn.period.week": "Prošla nedelja",
   "checkIn.rightNow.title": "Trenutno stanje",
   "checkIn.sharedTendedMoments": "Zajednički trenuci: {{count}}",
+  "checkIn.stat.careDays.empty": "Dani brige će se pojaviti kako budeš tendovao/la",
+  "checkIn.stat.careDays.helper": "Dani kada se briga pojavila",
+  "checkIn.stat.careDays.label": "Dani sa brigom",
   "checkIn.stat.shared.empty": "Zajedničke aktivnosti će se pojaviti ovde",
   "checkIn.stat.shared.helper": "Najčešće sa: {{name}}",
   "checkIn.stat.shared.label": "Zajedničke obaveze",
   "checkIn.stat.tendingLogged.empty": "Još uvek nema zabeleženih aktivnosti",
   "checkIn.stat.tendingLogged.helper": "Obavljeno stavki: {{count}}",
   "checkIn.stat.tendingLogged.label": "Zabeležene aktivnosti",
-  "checkIn.subtitle": "Miran osvrt na to kako tvoj ritam izgleda.",
+  "checkIn.subtitle": "Miran osvrt na brigu koja je našla put.",
   "checkIn.tendedMoments": "Trenuci posvećenosti: {{count}}",
   "checkIn.title": "Pregled",
   "checkIn.weekday.empty": "Tvoj dnevni ritam će se oblikovati kako budeš obavljao/la stavke.",
@@ -487,7 +513,7 @@ export const sr = {
   "home.addItem": "Dodaj stavku",
   "home.areaEmpty.body": "Probaj drugu oblast života ili dodaj nešto što ovde pripada.",
   "home.areaEmpty.title": "Nema stavki u ovoj oblasti",
-  "home.empty.body": "Dodaj nešto što želiš da održavaš: biljke, posteljinu, prijateljstvo.",
+  "home.empty.body": "Dodaj nešto što želiš da držiš blizu: šetnju, dnevnik, prijateljstvo.",
   "home.empty.title": "Još uvek nema ničega za brigu",
   "home.allFresh.body":
     "Tvoj ritam izgleda dobro. Tend će te nežno podsetiti kada se pojave zapostavljene stvari.",
@@ -498,9 +524,9 @@ export const sr = {
   "language.serbian": "Srpski",
   "landing.howItWorks": "Kako Tend radi",
   "landing.createAccount": "Napravi nalog",
-  "landing.eyebrow": "Održavanje života, zapamćeno nežno",
+  "landing.eyebrow": "Tihi pratilac za svakodnevnu brigu",
   "landing.feature.friend.body":
-    "Dodaj email prijatelja za večere, viđanja ili javljanja. Tend će se pojaviti kod oboje.",
+    "Dodaj email prijatelja za kafu, šetnje ili javljanja. Tend će se pojaviti kod oboje.",
   "landing.feature.friend.title": "Tend sa prijateljem",
   "landing.feature.rhythm.body":
     "Zadrži isti miran ritam i status, bilo da je Tend samo tvoj ili deljen.",
@@ -509,12 +535,12 @@ export const sr = {
     "Bilo ko od vas može označiti deljeni Tend kao pobrinut, i to će se važiti za oboje.",
   "landing.feature.tended.title": "Dovoljan je jedan trenutak brige",
   "landing.features.subtitle":
-    "Za ponavljajuće stavke koje prirodno uključuju još nekog, Tend sada može nežno da obavesti obe osobe.",
+    "Za ponavljajuće stavke koje prirodno uključuju još nekog, Tend može nežno da obavesti obe osobe.",
   "landing.features.imageAlt": "Dve osobe postavljaju sto za deljeni ponavljajući trenutak brige",
   "landing.features.title": "Brigu je lakše podeliti sa drugom osobom",
 
   "landing.checkIn.point.days.body":
-    "Obrasci po danima pomažu ti da primetiš kada se stvari prirodno obavljaju.",
+    "Obrasci po danima pomažu ti da primetiš kada briga prirodno nađe trenutak.",
   "landing.checkIn.point.days.title": "Dani kada si najaktivniji",
   "landing.checkIn.point.item.body":
     "Pogledaj koje stavke najčešće obavljaš, bez pritiska i nizova.",
@@ -522,9 +548,9 @@ export const sr = {
   "landing.checkIn.point.people.body":
     "Zajedničke stavke pokazuju sa kim najčešće deliš vreme – bilo to za večere, pozive ili viđanja.",
   "landing.checkIn.point.people.title": "Sa kim najčešće deliš brigu",
-  "landing.checkIn.preview.area": "Domaćinstvo",
+  "landing.checkIn.preview.area": "Briga o sebi",
   "landing.checkIn.preview.imageLabel": "Prikaz Tend Check In ekrana",
-  "landing.checkIn.preview.item": "Zalivanje sobnih biljaka",
+  "landing.checkIn.preview.item": "Večernje osmišljavanje",
   "landing.checkIn.preview.shared": "Maja",
   "landing.checkIn.preview.sharedLabel": "Najčešće sa",
   "landing.checkIn.preview.tended": "Trenuci posvećenosti",
@@ -532,21 +558,21 @@ export const sr = {
   "landing.checkIn.preview.weekday": "Čet",
   "landing.checkIn.preview.weekdayLabel": "Najaktivniji dan",
   "landing.checkIn.subtitle":
-    "Pregled okuplja obrasce koji su zaista korisni: šta se obavlja, ko deli obaveze sa tobom i kojim danima se to najčešće dešava.",
+    "Pregled okuplja obrasce koji su zaista korisni: čemu si se vratio/la, ko je delio brigu i koji dani su držali te trenutke. Pogledaj nedelju, mesec ili duže.",
   "landing.checkIn.title": "Osvrti se na svoj ritam",
   "landing.point.awareness.body":
     "Tend prikazuje šta traži pažnju mirnim jezikom. Bez crvenih oznaka kašnjenja, dugih nizova ili krivice.",
   "landing.point.awareness.title": "Svest, ne pritisak",
   "landing.point.life.body":
-    "Prati kućnu brigu, zdravlje, odnose, ljubimce, vozila i kućnu administraciju na jednom tihom mestu.",
-  "landing.point.life.title": "Napravljen za stvaran život",
+    "Meditacija, dnevnik, šetnja, kafa sa prijateljem, poziv kući — i ostali deo života, ako i dalje treba brigu.",
+  "landing.point.life.title": "Napravljen za brigu koja te drži na okupu",
   "landing.point.scan.body":
-    "Otvori jednom ili dvaput nedeljno, vidi šta je zapostavljeno, označi da si se za nešto pobrinuo i nastavi. Dodavanje stavke traje manje od minuta.",
+    "Otvori jednom ili dvaput nedeljno, vidi šta je zapostavljeno, označi da si se za nešto pobrinuo i nastavi. Bez nizova i bez kaznenog kašnjenja.",
   "landing.point.scan.title": "Brz pregled",
   "landing.signIn": "Prijavi se",
   "landing.subtitle":
-    "Prati ponavljajuću brigu koja održava život mirnim: posteljina, računi, javljanja, večere, veterinar, zamena ulja. Tend ostaje miran, a deljeni Tendovi mogu da se pojave kod dve osobe.",
-  "landing.title": "Ponavljajući delovi života, održavani samostalno ili zajedno",
+    "Tend pamti male ponavljajuće stvari koje te drže na okupu — odmor, osmišljavanje, povezanost — bez pretvaranja u listu zadataka. Deljeni Tendovi mogu da se pojave kod dve osobe.",
+  "landing.title": "Sigurno mesto da se pobrineš za ono što te drži na okupu",
   "notFound.backHome": "Nazad na početnu",
   "notFound.title": "Stranica nije pronađena",
   "pageError.retry": "Pokušaj ponovo",
@@ -557,7 +583,7 @@ export const sr = {
   "promo.activity.title": "Briga ostavlja tih trag.",
   "promo.care.alt": "Tend uvodni ekran za izbor prve stavke za brigu",
   "promo.care.description":
-    "Uvod je blag podsetnik, ne projekat podešavanja. Izaberi jednu ponavljajuću stvar i nastavi.",
+    "Uvod je blag podsetnik, ne projekat podešavanja. Izaberi jednu ponavljajuću stvar — dnevnik, šetnju, poziv — i nastavi.",
   "promo.care.title": "Počni od jednog malog čina brige.",
   "promo.friend.alt": "Tend promo prikaz večere deljene sa prijateljem",
   "promo.friend.description":
@@ -566,7 +592,7 @@ export const sr = {
   "promo.remember.alt":
     "Tend početni ekran koji mirno prikazuje ponavljajuću životnu brigu, bez oznaka kašnjenja",
   "promo.remember.description":
-    "Kuća, zdravlje, odnosi i životna administracija, skupljeni bez oznaka kašnjenja.",
+    "Meditacija, šetnja, poziv kući, vreme bez ekrana — skupljeni bez oznaka kašnjenja.",
   "promo.remember.title": "Stvari koje se zapostave, zapamćene nežno.",
   "promo.reminder.alt": "Tend podsetnik koji mirno prikazuje stavke koje traže pažnju",
   "promo.reminder.description":
@@ -603,7 +629,8 @@ export const sr = {
   "items.add.sharedWith.placeholder": "prijatelj@example.com",
   "items.add.subtitle": "Nešto što želiš da održavaš tokom vremena.",
   "items.add.suggestions.button": "Trebaju ti ideje?",
-  "items.add.suggestions.hint": "Dodirni da popuniš formu ispod.",
+  "items.add.suggestions.hint":
+    "Počni od odmora, osmišljavanja ili povezanosti — ili izaberi drugu oblast.",
   "items.add.suggestions.label": "Predlozi stavki",
   "items.add.title": "Dodaj stavku",
   "items.add.type.label": "Tip",
@@ -638,10 +665,11 @@ export const sr = {
   "onboarding.back": "Nazad",
   "onboarding.browseSuggestions": "Pregledaj predloge",
   "onboarding.choose.description": "Napiši svoju, izaberi predlog ili preskoči i prvo razgledaj.",
-  "onboarding.choose.title": "Za šta želiš prvo da se pobrineš?",
+  "onboarding.choose.title": "Šta bi ti prijala da prvo tenduješ?",
   "onboarding.form.description": "Izaberi tip, ritam ili datum poslednje aktivnosti pre čuvanja.",
   "onboarding.form.save": "Sačuvaj i nastavi",
-  "onboarding.preset.description": "Izaberi oblast života, zatim dodirni nešto što ti odgovara.",
+  "onboarding.preset.description":
+    "Počni od odmora, osmišljavanja ili povezanosti. Kuća i administracija su i dalje tu ako ti trebaju.",
   "onboarding.preset.title": "Izaberi predlog",
   "onboarding.skipForNow": "Preskoči za sada",
   "onboarding.skipToApp": "Preskoči u aplikaciju",

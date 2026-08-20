@@ -8,6 +8,9 @@
 :root {
   /* ── Color: surfaces ───────────────────────────────────── */
   --tend-bg: #f7f5f2; /* warm linen page background */
+  --tend-sun: rgba(255, 214, 140, 0.42);
+  --tend-sun-soft: rgba(255, 232, 186, 0.2);
+  --tend-grass: #7a9270;
   --tend-bg-elevated: #ffffff; /* cards, modals */
   --tend-bg-muted: #efede8; /* inset sections, tab tracks */
   --tend-bg-subtle: #f3f1ec; /* hover on list rows */
@@ -63,8 +66,8 @@
   --tend-info-bg: #eef1f5;
 
   /* ── Typography ────────────────────────────────────────── */
-  --tend-font-display: "Newsreader", "Georgia", serif;
-  --tend-font-body: "DM Sans", system-ui, sans-serif;
+  --tend-font-display: "Fraunces", "Palatino Linotype", "Book Antiqua", serif;
+  --tend-font-body: "Nunito", system-ui, sans-serif;
   --tend-font-mono: "DM Mono", ui-monospace, monospace;
 
   --tend-text-xs: 0.75rem; /* 12px — badges, captions */
@@ -98,7 +101,9 @@
   /* ── Radius ────────────────────────────────────────────── */
   --tend-radius-sm: 0.375rem; /* 6px — badges, chips */
   --tend-radius-md: 0.5rem; /* 8px — inputs, buttons */
-  --tend-radius-lg: 0.75rem; /* 12px — cards */
+  --tend-radius-lg: 0.75rem; /* 12px — default chips */
+  --tend-radius-thought: 1.65rem 1.2rem 1.75rem 1.35rem / 1.4rem 1.7rem 1.15rem 1.55rem;
+  --tend-radius-thought-inset: 1.1rem 0.85rem 1.2rem 0.95rem / 1rem 1.15rem 0.8rem 1.05rem;
   --tend-radius-xl: 1rem; /* 16px — modals, hero cards */
   --tend-radius-full: 9999px;
 

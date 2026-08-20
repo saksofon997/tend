@@ -11,6 +11,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | Component | File | Stories |
 |-----------|------|---------|
 | [AppShell](#appshell) | `layout/app-shell.tsx` | All |
+| [TendSceneBackground](#tendscenebackground) | `layout/tend-scene-background.tsx` | All |
 | [SiteFooter](#sitefooter) | `layout/site-footer.tsx` | 1, All |
 | [LanguageSelect](#languageselect) | `layout/language-select.tsx` | 1 |
 | [LandingPage](#landingpage) | `marketing/landing-page.tsx` | 1 |
@@ -45,6 +46,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [ReminderBanner](#reminderbanner) | `tend/reminder-banner.tsx` | 11 |
 | [EmptyState](#emptystate) | `tend/empty-state.tsx` | 5, 14 |
 | [CheckInView](#checkinview) | `tend/check-in-view.tsx` | Check In |
+| [CheckInPeriodFilter](#checkinperiodfilter) | `tend/check-in-period-filter.tsx` | Check In |
 | [ActivityListItem](#activitylistitem) | `tend/activity-list-item.tsx` | 14 |
 | [ActivityFilters](#activityfilters) | `tend/activity-filters.tsx` | 14 |
 | [AvailabilityEditor](#availabilityeditor) | `forms/availability-editor.tsx` | 10 |
@@ -92,7 +94,15 @@ interface AppShellProps {
 - Nav links: centered in the column; `text-sm`, muted default, primary color when active
 - User menu: `UserMenu` dropdown in the header trailing slot (sign out today; expandable)
 
-**Notes:** Hide full nav during onboarding. Auth pages use `AuthLayout` with `SiteFooter`.
+**Notes:** Hide full nav during onboarding. Auth pages use `AuthLayout` with `SiteFooter`. Page chrome sits on `TendSceneBackground` (linen, sun wash, grass).
+
+---
+
+### TendSceneBackground
+
+**File:** `components/layout/tend-scene-background.tsx`
+
+Decorative linen weave, a quiet sunray wash from the top, and a few grass blades at the bottom. `aria-hidden`. Used in `AppShell`, `AuthLayout`, `OnboardingLayout`, `LandingPage`, and `LegalPage`. Keep it faint — not a cartoon lawn.
 
 ---
 
@@ -279,11 +289,11 @@ Same visual treatment as Input. Chevron icon muted. Dropdown panel: elevated car
 ```
 
 - Background: `--tend-bg-elevated`
-- Border: `1px --tend-border`
-- Radius: `--tend-radius-lg`
+- Border: `1.5px --tend-border`
+- Radius: `--tend-radius-thought` (organic thought-bubble; no comic tail)
 - Padding: `--tend-space-4` (content), `--tend-space-5` (header)
 
-Used for: auth forms, preset picker container.
+Used for: auth forms, preset picker container, Check In stats.
 
 ---
 
@@ -504,7 +514,7 @@ interface TendItemCardProps {
 **Layout:** Single-column stack. Name and metadata are grouped first; status and action sit in a second row below, with status left and `MarkTendedButton` right.
 
 **Variants:**
-- **Default:** Card border, white bg
+- **Default:** Thought-bubble card border, white bg
 - **Must + needs_attention:** Add `border-l-4 border-l-[--tend-type-must-border]` and `--tend-type-must-bg` tint
 - **Looking good section:** Slightly reduced opacity (0.85) optional
 
@@ -751,13 +761,21 @@ interface EmptyStateProps {
 **Anatomy:**
 ```
 PageHeader
-Summary stat cards
+Period filter (week / month / 90 days / all)
+Gentle qualitative note
+Summary stat cards (tending logged, days with care, shared)
 Patterns worth knowing
 Weekday rhythm
 Right now attention mix
 ```
 
-**Copy constraints:** No streaks, rankings, alarm language, or productivity-style performance framing. Use tending moments, shared care, weekdays, and current attention mix.
+**Copy constraints:** No streaks, rankings, alarm language, or productivity-style performance framing. Use tending moments, shared care, weekdays, and current attention mix. Period filtering changes history stats only; "Right now" stays current.
+
+### CheckInPeriodFilter
+
+**File:** `components/tend/check-in-period-filter.tsx`
+
+Quiet chip row for `week`, `month`, `ninety`, and `all`. Used on Check In and the marketing Check In preview. Minimum hit target 44px.
 
 ---
 

@@ -1,10 +1,19 @@
 import { getReminderResponseForUser } from "@/lib/reminders/user-reminders";
-import type { Database, PushSubscriptionRow } from "@tend/db";
+import type { Database, PushSubscriptionRow, RecentEventWithItem } from "@tend/db";
 import {
   deletePushSubscriptionByToken,
+  getUserSettings,
   listPushSubscriptions,
+  listRecentEventsForUser,
   markPushSubscriptionNotified,
+  markPushSubscriptionWeeklySupport,
 } from "@tend/db";
+import {
+  isValidTimeZone,
+  isWeeklySupportDue,
+  weeklySupportCopy,
+  weeklySupportLookbackStart,
+} from "@tend/domain";
 import { getMissingFcmConfiguration, sendFcmPushNotification } from "./fcm-push";
 import type { PushSendResult } from "./fcm-push";
 import {
@@ -33,8 +42,22 @@ export type SendPushNotification = (
   request: TendNotificationRequest,
 ) => Promise<PushSendResult>;
 
+const WEEKLY_SUPPORT_EVENT_LIMIT = 200;
+
 export function formatNotificationJobResult(result: NotificationJobResult): string {
   return `checked=${result.checked} sent=${result.sent} skipped=${result.skipped} failed=${result.failed} invalidated=${result.invalidated}`;
+}
+
+export function notificationPushData(request: TendNotificationRequest): Record<string, string> {
+  if (request.kind === "weekly_support" || !request.itemId) {
+    return { kind: "weekly_support" };
+  }
+
+  return { itemId: request.itemId };
+}
+
+function requestLabel(request: TendNotificationRequest): string {
+  return request.itemId ?? "weekly_support";
 }
 
 export async function runNotificationJob(
@@ -54,7 +77,7 @@ export async function runNotificationJob(
         to: subscription.token,
         title: request.title,
         body: request.body,
-        data: { itemId: request.itemId },
+        data: notificationPushData(request),
       }));
 
   const result: NotificationJobResult = {
@@ -80,17 +103,23 @@ export async function runNotificationJob(
     string,
     Awaited<ReturnType<typeof getReminderResponseForUser>>
   >();
+  const settingsByUserId = new Map<string, Awaited<ReturnType<typeof getUserSettings>>>();
+  const weeklyEventsByUserId = new Map<string, RecentEventWithItem[]>();
 
   for (const subscription of subscriptions) {
     result.checked += 1;
 
-    let reminders = remindersByUserId.get(subscription.userId);
-    if (!reminders) {
-      reminders = await getReminderResponseForUser(database, subscription.userId, now);
-      remindersByUserId.set(subscription.userId, reminders);
-    }
+    const weeklyRequest = await buildWeeklySupportRequestIfDue(
+      database,
+      subscription,
+      now,
+      settingsByUserId,
+      weeklyEventsByUserId,
+    );
+    const request =
+      weeklyRequest ??
+      (await reminderRequestForSubscription(database, subscription.userId, now, remindersByUserId));
 
-    const request = buildTendNotificationRequest(reminders);
     if (!request) {
       result.skipped += 1;
       logger.info(
@@ -99,24 +128,31 @@ export async function runNotificationJob(
       continue;
     }
 
-    if (!shouldSendReminderNotification(subscription, request, now)) {
+    if (
+      request.kind !== "weekly_support" &&
+      !shouldSendReminderNotification(subscription, request, now)
+    ) {
       result.skipped += 1;
       const reason = isNotificationDue(request, now) ? "throttled" : "not_due";
       logger.info(
-        `Notification skipped: subscriptionId=${subscription.id} userId=${subscription.userId} itemId=${request.itemId} reason=${reason}`,
+        `Notification skipped: subscriptionId=${subscription.id} userId=${subscription.userId} itemId=${requestLabel(request)} reason=${reason}`,
       );
       continue;
     }
 
     const sendResult = await sendPush(subscription, request);
     if (sendResult.ok) {
-      await markPushSubscriptionNotified(database, subscription.id, {
-        itemId: request.itemId,
-        notifiedAt: now,
-      });
+      if (request.kind === "weekly_support") {
+        await markPushSubscriptionWeeklySupport(database, subscription.id, now);
+      } else if (request.itemId) {
+        await markPushSubscriptionNotified(database, subscription.id, {
+          itemId: request.itemId,
+          notifiedAt: now,
+        });
+      }
       result.sent += 1;
       logger.info(
-        `Notification sent: subscriptionId=${subscription.id} userId=${subscription.userId} itemId=${request.itemId}`,
+        `Notification sent: subscriptionId=${subscription.id} userId=${subscription.userId} itemId=${requestLabel(request)}`,
       );
       continue;
     }
@@ -129,7 +165,7 @@ export async function runNotificationJob(
       );
     } else {
       logger.warn(
-        `Notification send failed: subscriptionId=${subscription.id} userId=${subscription.userId} itemId=${request.itemId} error=${sendResult.error ?? "unknown"}`,
+        `Notification send failed: subscriptionId=${subscription.id} userId=${subscription.userId} itemId=${requestLabel(request)} error=${sendResult.error ?? "unknown"}`,
       );
     }
     result.failed += 1;
@@ -137,4 +173,64 @@ export async function runNotificationJob(
 
   logger.info(`Notification job finished: ${formatNotificationJobResult(result)}`);
   return result;
+}
+
+async function reminderRequestForSubscription(
+  database: Database,
+  userId: string,
+  now: Date,
+  remindersByUserId: Map<string, Awaited<ReturnType<typeof getReminderResponseForUser>>>,
+): Promise<TendNotificationRequest | null> {
+  let reminders = remindersByUserId.get(userId);
+  if (!reminders) {
+    reminders = await getReminderResponseForUser(database, userId, now);
+    remindersByUserId.set(userId, reminders);
+  }
+
+  return buildTendNotificationRequest(reminders);
+}
+
+async function buildWeeklySupportRequestIfDue(
+  database: Database,
+  subscription: PushSubscriptionRow,
+  now: Date,
+  settingsByUserId: Map<string, Awaited<ReturnType<typeof getUserSettings>>>,
+  weeklyEventsByUserId: Map<string, RecentEventWithItem[]>,
+): Promise<TendNotificationRequest | null> {
+  let settings = settingsByUserId.get(subscription.userId);
+  if (settings === undefined) {
+    settings = await getUserSettings(database, subscription.userId);
+    settingsByUserId.set(subscription.userId, settings);
+  }
+
+  const timezone =
+    settings?.timezone && isValidTimeZone(settings.timezone) ? settings.timezone : "UTC";
+
+  if (
+    !isWeeklySupportDue(now, timezone, subscription.lastWeeklySupportAt, subscription.createdAt)
+  ) {
+    return null;
+  }
+
+  let events = weeklyEventsByUserId.get(subscription.userId);
+  if (!events) {
+    events = await listRecentEventsForUser(
+      database,
+      subscription.userId,
+      WEEKLY_SUPPORT_EVENT_LIMIT,
+      {
+        from: weeklySupportLookbackStart(now),
+      },
+    );
+    weeklyEventsByUserId.set(subscription.userId, events);
+  }
+
+  const copy = weeklySupportCopy(events.length);
+  return {
+    title: copy.title,
+    body: copy.body,
+    itemId: null,
+    triggerAt: null,
+    kind: "weekly_support",
+  };
 }

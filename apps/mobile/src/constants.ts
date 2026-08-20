@@ -6,18 +6,18 @@ export const RHYTHM_MAX_DAYS = 365;
 export const REMINDER_POLL_MS = 5 * 60 * 1000;
 
 export const LIFE_AREA_ORDER: Array<Exclude<LifeArea, "personal">> = [
-  "household",
-  "food_kitchen",
-  "home_maintenance",
-  "outdoor",
-  "health",
   "self_care",
+  "health",
   "relationships",
   "kids_family",
+  "household",
+  "food_kitchen",
+  "outdoor",
   "pets",
-  "vehicle",
   "finance",
   "life_admin",
+  "home_maintenance",
+  "vehicle",
 ];
 
 export const LIFE_AREA_LABELS: Record<LifeArea, string> = {

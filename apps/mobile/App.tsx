@@ -1,3 +1,4 @@
+import { SceneBackground } from "@/components/scene-background";
 import {
   LIFE_AREA_ORDER,
   REMINDER_POLL_MS,
@@ -6,8 +7,7 @@ import {
   isoToDateInputValue,
   todayDateInputValue,
 } from "@/constants";
-import { tendFonts } from "@/fonts";
-import { colors, fonts, radius, spacing } from "@/theme";
+import { colors, fonts, radius, spacing, thoughtRadius } from "@/theme";
 import type { ActivityEntryResponse, ItemResponse, ReminderResponse, UserResponse } from "@/types";
 import { getAttentionSectionDefaults } from "@/utils/homeGroups";
 import { refreshHomeData } from "@/utils/homeRefresh";
@@ -46,14 +46,19 @@ import {
   lifeAreaLabel,
   t,
 } from "@i18n";
-import { PRESETS_BY_AREA, buildCheckInSummary } from "@tend/domain";
 import {
-  type CheckInSummary,
-  type LifeArea,
-  type TendItemType,
-  type TendPreset,
-  type TendStatus,
+  CHECK_IN_PERIODS,
+  PRESETS_BY_AREA,
   parseTimeToMinutes,
+  weeklySupportTone,
+} from "@tend/domain";
+import type {
+  CheckInPeriod,
+  CheckInSummary,
+  LifeArea,
+  TendItemType,
+  TendPreset,
+  TendStatus,
 } from "@tend/domain";
 import { isDevMode } from "@utils/devMode";
 import { itemFormValuesFromItem } from "@utils/itemFormValues";
@@ -81,6 +86,7 @@ import {
   Settings,
   SlidersHorizontal,
   Sprout,
+  SunMedium,
   Trash2,
   Users,
 } from "lucide-react-native";
@@ -577,6 +583,7 @@ function AuthedApp({
 
   return (
     <SafeAreaView style={styles.app} edges={["top"]}>
+      <SceneBackground />
       <AnimatedTabScreen activeTab={activeTab}>
         {(tab) => {
           if (tab === "home") {
@@ -747,6 +754,7 @@ function AuthFormShell({
 }) {
   return (
     <SafeAreaView style={styles.authScreen}>
+      <SceneBackground />
       <KeyboardAwareScreen>
         <ScrollView
           keyboardShouldPersistTaps="handled"
@@ -1245,7 +1253,7 @@ function OnboardingFlow({ api, onComplete }: { api: TendApi; onComplete: () => v
   const [step, setStep] = useState<OnboardingStepKey>("welcome");
   const [carouselIndex, setCarouselIndex] = useState(0);
   const promoSlides = authPromoSlides();
-  const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("household");
+  const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("self_care");
   const [itemFormOrigin, setItemFormOrigin] = useState<ItemFormOrigin>("choose");
   const [draft, setDraft] = useState<ItemDraft>(() => createDefaultDraft(todayDate));
   const [error, setError] = useState<string | null>(null);
@@ -1474,6 +1482,7 @@ function OnboardingShell({
 }) {
   return (
     <SafeAreaView style={styles.authScreen}>
+      <SceneBackground />
       <KeyboardAwareScreen>
         <ScrollView
           keyboardShouldPersistTaps="handled"
@@ -1909,7 +1918,15 @@ function ActivityScreen({ api }: { api: TendApi }) {
   );
 }
 
+const CHECK_IN_PERIOD_LABELS = {
+  week: "checkIn.period.week",
+  month: "checkIn.period.month",
+  ninety: "checkIn.period.ninety",
+  all: "checkIn.period.all",
+} as const;
+
 function CheckInScreen({ api }: { api: TendApi }) {
+  const [period, setPeriod] = useState<CheckInPeriod>("week");
   const [summary, setSummary] = useState<CheckInSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -1923,11 +1940,8 @@ function CheckInScreen({ api }: { api: TendApi }) {
 
       setError(null);
       try {
-        const [itemsBody, activityBody] = await Promise.all([
-          api.listItems(),
-          api.listActivity(100),
-        ]);
-        setSummary(buildCheckInSummary(itemsBody.items, activityBody.events));
+        const body = await api.listCheckIn(period);
+        setSummary(body.summary);
       } catch (loadError) {
         setError(getErrorMessage(loadError, t("errors.checkIn.load")));
       } finally {
@@ -1935,7 +1949,7 @@ function CheckInScreen({ api }: { api: TendApi }) {
         setRefreshing(false);
       }
     },
-    [api],
+    [api, period],
   );
 
   useEffect(() => {
@@ -1961,6 +1975,37 @@ function CheckInScreen({ api }: { api: TendApi }) {
         <Text style={styles.pageSubtitle}>{t("checkIn.subtitle")}</Text>
       </View>
 
+      <View
+        accessibilityRole="tablist"
+        accessibilityLabel={t("checkIn.period.label")}
+        style={styles.periodRow}
+      >
+        {CHECK_IN_PERIODS.map((entry) => {
+          const selected = entry === period;
+          return (
+            <Pressable
+              key={entry}
+              accessibilityRole="tab"
+              accessibilityState={{ selected }}
+              onPress={() => {
+                if (entry === period) {
+                  return;
+                }
+                setPeriod(entry);
+                setLoading(true);
+              }}
+              style={[styles.periodChip, selected ? styles.periodChipSelected : null]}
+            >
+              <Text
+                style={[styles.periodChipText, selected ? styles.periodChipTextSelected : null]}
+              >
+                {t(CHECK_IN_PERIOD_LABELS[entry])}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+
       {error ? <AlertBox message={error} tone="error" /> : null}
 
       {loading ? <CheckInSkeleton label={t("common.loadingCheckIn")} /> : null}
@@ -1971,8 +2016,17 @@ function CheckInScreen({ api }: { api: TendApi }) {
 }
 
 function CheckInSummaryContent({ summary }: { summary: CheckInSummary }) {
+  const tone = weeklySupportTone(summary.totalTends);
+  const noteKey =
+    tone === "quiet"
+      ? "checkIn.note.quiet"
+      : tone === "present"
+        ? "checkIn.note.present"
+        : "checkIn.note.steady";
+
   return (
     <View style={styles.checkInStack}>
+      <Text style={styles.pageSubtitle}>{t(noteKey)}</Text>
       <View style={styles.checkInStatsGrid}>
         <CheckInStatCard
           icon={<Sprout size={17} color={colors.primary} />}
@@ -1982,6 +2036,16 @@ function CheckInSummaryContent({ summary }: { summary: CheckInSummary }) {
             summary.tendedItemCount > 0
               ? t("checkIn.stat.tendingLogged.helper", { count: summary.tendedItemCount })
               : t("checkIn.stat.tendingLogged.empty")
+          }
+        />
+        <CheckInStatCard
+          icon={<SunMedium size={17} color={colors.primary} />}
+          label={t("checkIn.stat.careDays.label")}
+          value={String(summary.careDays)}
+          helper={
+            summary.careDays > 0
+              ? t("checkIn.stat.careDays.helper")
+              : t("checkIn.stat.careDays.empty")
           }
         />
         <CheckInStatCard
@@ -3250,11 +3314,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   screenFrame: {
-    backgroundColor: colors.bg,
+    backgroundColor: "transparent",
     flex: 1,
   },
   screen: {
-    backgroundColor: colors.bg,
+    backgroundColor: "transparent",
     flex: 1,
   },
   keyboardAwareScreen: {
@@ -3461,7 +3525,7 @@ const styles = StyleSheet.create({
   itemCard: {
     backgroundColor: colors.card,
     borderColor: colors.border,
-    borderRadius: radius.lg,
+    ...thoughtRadius,
     borderWidth: 1,
     padding: spacing.lg,
   },
@@ -3948,7 +4012,7 @@ const styles = StyleSheet.create({
   settingsCard: {
     backgroundColor: colors.card,
     borderColor: colors.border,
-    borderRadius: radius.lg,
+    ...thoughtRadius,
     borderWidth: 1,
     marginBottom: spacing.lg,
     padding: spacing.lg,
@@ -3999,13 +4063,38 @@ const styles = StyleSheet.create({
   checkInStack: {
     gap: spacing.lg,
   },
+  periodRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: spacing.sm,
+    marginBottom: spacing.md,
+  },
+  periodChip: {
+    backgroundColor: colors.muted,
+    borderRadius: radius.round,
+    minHeight: 44,
+    justifyContent: "center",
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  periodChipSelected: {
+    backgroundColor: colors.primaryMuted,
+  },
+  periodChipText: {
+    color: colors.textMuted,
+    fontFamily: fonts.bodyMedium,
+    fontSize: 12,
+  },
+  periodChipTextSelected: {
+    color: colors.primary,
+  },
   checkInStatsGrid: {
     gap: spacing.md,
   },
   checkInStatCard: {
     backgroundColor: colors.card,
     borderColor: colors.border,
-    borderRadius: radius.lg,
+    ...thoughtRadius,
     borderWidth: 1,
     padding: spacing.lg,
   },
@@ -4033,7 +4122,7 @@ const styles = StyleSheet.create({
   checkInPatternRow: {
     backgroundColor: colors.bg,
     borderColor: colors.border,
-    borderRadius: radius.md,
+    ...thoughtRadius,
     borderWidth: 1,
     flexDirection: "row",
     gap: spacing.md,
@@ -4062,7 +4151,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.muted,
     borderColor: colors.border,
-    borderRadius: radius.md,
+    ...thoughtRadius,
     borderWidth: 1,
     height: 42,
     justifyContent: "center",

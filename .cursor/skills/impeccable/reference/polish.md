@@ -4,7 +4,7 @@ Final pass on the screens or components you changed. Bounded: one inspect, one f
 
 ## Checklist
 
-- **Type:** Display (Newsreader) for titles on web; body/UI (DM Sans). Mobile matches the established theme. No extra font families.
+- **Type:** Display (Fraunces) for titles on web; body/UI (Nunito). Mobile matches the established theme. No extra font families.
 - **Spacing:** Consistent with nearby screens; generous, not sparse-to-the-point-of-lost. No nested cards.
 - **Copy:** Warm, honest, useful. Status and empty states from the design language. No urgency theater.
 - **States:** Default, empty, error, loading (if the flow can wait), disabled. Errors are calm and actionable.

@@ -59,6 +59,7 @@ export {
   deletePushSubscriptionForUser,
   listPushSubscriptions,
   markPushSubscriptionNotified,
+  markPushSubscriptionWeeklySupport,
   upsertPushSubscriptionForUser,
   type PushSubscriptionRow,
   type UpsertPushSubscriptionInput,

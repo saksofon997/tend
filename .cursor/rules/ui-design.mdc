@@ -21,7 +21,7 @@ Tokens live in [`docs/design/tokens.css`](../../docs/design/tokens.css), importe
 
 When changing layout, styling, microcopy, labels, empty states, or any user-facing wording:
 
-- **Product direction** — Read [`PRODUCT.md`](../../PRODUCT.md) first. Tend is calm life-maintenance, not a task manager. Match brand personality (warm, honest, useful), design principles (awareness not pressure, sparse musts), and anti-references (no guilt UX, streaks, alarm dashboards, productivity-suite patterns).
+- **Product direction** — Read [`PRODUCT.md`](../../PRODUCT.md) first. Tend is a calm companion for everyday care, not a task manager or a clinical mental-health product. Match brand personality (warm, honest, useful), design principles (awareness not pressure, sparse musts), and anti-references (no guilt UX, streaks, alarm dashboards, productivity-suite patterns).
 - **Design language** — Apply [`docs/design/design-language.md`](../../docs/design/design-language.md) for visual tone, typography, color, motion, and copy voice. Do not invent ad-hoc styling or phrasing that conflicts with the spec.
 - **Internationalization** — Add every new or changed user-facing string to the app's i18n dictionaries and provide translations in every supported locale. Do not hard-code user-facing copy in components, route handlers, utilities, notifications, or validation messages.
 - **Consistency** — Reuse existing components and copy helpers (`lib/design/status-labels.ts`, `RelativeTime`, etc.) before writing new strings or markup.
@@ -32,7 +32,7 @@ If a requested change would violate `PRODUCT.md` or the design language, push ba
 
 - No guilt-driven UX: no red overdue styling, no "OVERDUE" / "LATE" copy, no streaks
 - Status labels: `Fresh`, `Getting stale`, `Needs attention`
-- Mild palette, subtle inputs, gentle fonts (Newsreader + DM Sans), straightforward layout
+- Mild palette, subtle inputs, gentle fonts (Fraunces + Nunito), straightforward layout
 - Must items get stronger emphasis than wants — still never alarm-red
 
 ## Component layers

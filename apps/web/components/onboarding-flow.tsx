@@ -53,7 +53,7 @@ export function OnboardingFlow() {
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("household");
+  const [selectedArea, setSelectedArea] = useState<Exclude<LifeArea, "personal">>("self_care");
   const [itemFormOrigin, setItemFormOrigin] = useState<ItemFormOrigin>("choose");
   const [draft, setDraft] = useState<ItemDraft>(() => createDefaultDraft(todayDate));
 

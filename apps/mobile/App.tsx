@@ -7,6 +7,7 @@ import {
   isoToDateInputValue,
   todayDateInputValue,
 } from "@/constants";
+import { tendFonts } from "@/fonts";
 import { colors, fonts, radius, spacing, thoughtRadius } from "@/theme";
 import type { ActivityEntryResponse, ItemResponse, ReminderResponse, UserResponse } from "@/types";
 import { getAttentionSectionDefaults } from "@/utils/homeGroups";

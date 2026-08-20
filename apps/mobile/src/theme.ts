@@ -10,7 +10,9 @@ export const fonts = {
 export const colors = {
   // Keep in sync with docs/design/tokens.css (--tend-bg and related surface tokens).
   bg: "#f7f5f2",
-  sun: "rgba(255, 214, 140, 0.42)",
+  sun: "rgba(255, 220, 160, 0.22)",
+  sunSoft: "rgba(255, 232, 196, 0.12)",
+  sunRay: "rgba(255, 214, 148, 0.9)",
   grass: "#7a9270",
   card: "#ffffff",
   muted: "#efede8",

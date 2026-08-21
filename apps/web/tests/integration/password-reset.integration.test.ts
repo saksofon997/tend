@@ -12,7 +12,7 @@ mock.module("@/lib/email/send", () => ({
     sentEmails.push({ to: message.to, text: message.text });
     return { delivered: true };
   },
-  getEmailFromAddress: () => "Tend <noreply@app.tend.qzz.io>",
+  getEmailFromAddress: () => "Tend <noreply@tend.qzz.io>",
   isUsableEmailFromAddress: (value: string | undefined) => Boolean(value?.includes("@")),
   isEmailDeliveryConfigured: () => true,
   hasConfiguredEmailApiKey: (apiKey: string | undefined) => Boolean(apiKey?.trim()),

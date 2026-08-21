@@ -5,12 +5,25 @@ export interface EmailMessage {
   html: string;
 }
 
+export const DEFAULT_EMAIL_FROM_ADDRESS = "Tend <noreply@tend.qzz.io>";
+
 // Built from parts so secret-redaction cannot rewrite the documented Resend test sender.
 const RESEND_TEST_MAILBOX = `${"onboard"}${"ing"}`;
 const RESEND_TEST_DOMAIN = `${"resend"}.${"dev"}`;
 export const RESEND_TEST_FROM_ADDRESS = `Tend <${RESEND_TEST_MAILBOX}@${RESEND_TEST_DOMAIN}>`;
 
 const FROM_ADDRESS_PATTERN = /[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+/;
+
+function normalizedFromAddress(value: string): string {
+  return value.includes("<") ? value : `Tend <${value}>`;
+}
+
+// Resend verified tend.qzz.io, not the app host. Rewrite leftover env values
+// (app-host from-addresses, Resend test sender) so mail uses the marketing domain.
+function shouldUseDefaultFromAddress(value: string): boolean {
+  const lower = value.toLowerCase();
+  return lower.includes("@app.tend.qzz.io") || lower.includes("@resend.dev");
+}
 
 export function isUsableEmailFromAddress(value: string | undefined): boolean {
   const trimmed = value?.trim() ?? "";
@@ -24,14 +37,15 @@ export function isUsableEmailFromAddress(value: string | undefined): boolean {
 export function getEmailFromAddress(from = process.env.EMAIL_FROM): string {
   const trimmed = from?.trim() ?? "";
   if (!isUsableEmailFromAddress(trimmed)) {
-    return RESEND_TEST_FROM_ADDRESS;
+    return DEFAULT_EMAIL_FROM_ADDRESS;
   }
 
-  if (trimmed.includes("<")) {
-    return trimmed;
+  const normalized = normalizedFromAddress(trimmed);
+  if (shouldUseDefaultFromAddress(normalized)) {
+    return DEFAULT_EMAIL_FROM_ADDRESS;
   }
 
-  return `Tend <${trimmed}>`;
+  return normalized;
 }
 
 export function hasConfiguredEmailApiKey(apiKey: string | undefined): boolean {

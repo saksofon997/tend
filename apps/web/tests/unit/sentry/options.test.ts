@@ -6,21 +6,22 @@ import {
   getTracesSampleRate,
   isSentryEnabled,
 } from "@/lib/sentry/options";
+import { restoreEnv, unsetEnv } from "../../env";
 
 const originalSentryDsn = process.env.SENTRY_DSN;
 const originalPublicSentryDsn = process.env.NEXT_PUBLIC_SENTRY_DSN;
 const originalNodeEnv = process.env.NODE_ENV;
 
 afterEach(() => {
-  process.env.SENTRY_DSN = originalSentryDsn;
-  process.env.NEXT_PUBLIC_SENTRY_DSN = originalPublicSentryDsn;
-  process.env.NODE_ENV = originalNodeEnv;
+  restoreEnv("SENTRY_DSN", originalSentryDsn);
+  restoreEnv("NEXT_PUBLIC_SENTRY_DSN", originalPublicSentryDsn);
+  restoreEnv("NODE_ENV", originalNodeEnv);
 });
 
 describe("sentry options", () => {
   it("returns undefined when no DSN is configured", () => {
-    process.env.SENTRY_DSN = undefined;
-    process.env.NEXT_PUBLIC_SENTRY_DSN = undefined;
+    unsetEnv("SENTRY_DSN");
+    unsetEnv("NEXT_PUBLIC_SENTRY_DSN");
 
     expect(getSentryDsn()).toBeUndefined();
     expect(isSentryEnabled()).toBe(false);
@@ -35,7 +36,7 @@ describe("sentry options", () => {
   });
 
   it("falls back to NEXT_PUBLIC_SENTRY_DSN", () => {
-    process.env.SENTRY_DSN = undefined;
+    unsetEnv("SENTRY_DSN");
     process.env.NEXT_PUBLIC_SENTRY_DSN = "https://client@o1.ingest.sentry.io/2";
 
     expect(getSentryDsn()).toBe("https://client@o1.ingest.sentry.io/2");

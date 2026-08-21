@@ -1,19 +1,16 @@
 import { afterEach, describe, expect, it } from "bun:test";
 import { isEmailAllowed, isRegistrationRestricted } from "@/lib/auth/allowed-emails";
+import { restoreEnv, unsetEnv } from "../../env";
 
 const originalAllowedEmails = process.env.ALLOWED_EMAILS;
 
 afterEach(() => {
-  if (originalAllowedEmails === undefined) {
-    process.env.ALLOWED_EMAILS = undefined;
-  } else {
-    process.env.ALLOWED_EMAILS = originalAllowedEmails;
-  }
+  restoreEnv("ALLOWED_EMAILS", originalAllowedEmails);
 });
 
 describe("allowed emails", () => {
   it("allows any email when ALLOWED_EMAILS is unset", () => {
-    process.env.ALLOWED_EMAILS = undefined;
+    unsetEnv("ALLOWED_EMAILS");
 
     expect(isRegistrationRestricted()).toBe(false);
     expect(isEmailAllowed("anyone@example.com")).toBe(true);

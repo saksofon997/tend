@@ -6,15 +6,12 @@ import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 import { validateSessionFromId } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { deleteUserByEmail, isDatabaseAvailable } from "@tend/db";
+import { restoreEnv, unsetEnv } from "../env";
 
 const originalAllowedEmails = process.env.ALLOWED_EMAILS;
 
 afterEach(() => {
-  if (originalAllowedEmails === undefined) {
-    process.env.ALLOWED_EMAILS = undefined;
-  } else {
-    process.env.ALLOWED_EMAILS = originalAllowedEmails;
-  }
+  restoreEnv("ALLOWED_EMAILS", originalAllowedEmails);
 });
 
 function uniqueEmail(): string {
@@ -45,7 +42,7 @@ describe("auth integration", () => {
       return;
     }
 
-    process.env.ALLOWED_EMAILS = undefined;
+    unsetEnv("ALLOWED_EMAILS");
 
     const email = uniqueEmail();
     const password = "password123";
@@ -114,7 +111,7 @@ describe("auth integration", () => {
       return;
     }
 
-    process.env.ALLOWED_EMAILS = undefined;
+    unsetEnv("ALLOWED_EMAILS");
 
     const email = uniqueEmail();
 
@@ -228,7 +225,7 @@ describe("auth integration", () => {
     }
 
     const email = uniqueEmail();
-    process.env.ALLOWED_EMAILS = undefined;
+    unsetEnv("ALLOWED_EMAILS");
 
     try {
       const registerResponse = await register(

@@ -1,7 +1,11 @@
 import { describe, expect, it } from "bun:test";
 import { escapeHtml } from "@/lib/email/html";
 import { buildPasswordResetEmail } from "@/lib/email/password-reset";
-import { getEmailFromAddress, hasConfiguredEmailApiKey } from "@/lib/email/send";
+import {
+  RESEND_TEST_FROM_ADDRESS,
+  getEmailFromAddress,
+  hasConfiguredEmailApiKey,
+} from "@/lib/email/send";
 import { EMAIL_TOKENS } from "@/lib/email/tokens";
 
 describe("password reset email", () => {
@@ -64,9 +68,9 @@ describe("email HTML escaping", () => {
 });
 
 describe("email delivery configuration", () => {
-  it("uses the Tend noreply address by default", () => {
-    expect(getEmailFromAddress()).toContain("Tend");
-    expect(getEmailFromAddress()).toContain("noreply@");
+  it("uses Resend's test sender when EMAIL_FROM is not a usable address", () => {
+    expect(getEmailFromAddress("")).toBe(RESEND_TEST_FROM_ADDRESS);
+    expect(getEmailFromAddress("Tend <not-an-address>")).toBe(RESEND_TEST_FROM_ADDRESS);
   });
 
   it("treats a missing Resend key as unconfigured", () => {

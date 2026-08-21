@@ -80,7 +80,7 @@ In **Project → Settings → Environment Variables**, add:
 | `SESSION_SECRET` | Random 32+ char secret (`openssl rand -base64 32`) | Production, Preview, Development |
 | `NOTIFICATIONS_JOB_SECRET` | Random token for manually triggering the notification job endpoint | Production, Preview |
 | `RESEND_API_KEY` | Resend API key for password-reset email (`re_…` from [resend.com/api-keys](https://resend.com/api-keys)). Never commit this. | Production, Preview |
-| `EMAIL_FROM` | From address. Until `app.tend.qzz.io` (or `tend.qzz.io`) is verified in Resend, use `Tend <onboarding@resend.dev>`. After verification: `Tend <noreply@app.tend.qzz.io>` | Production, Preview |
+| `EMAIL_FROM` | From address. Optional. Defaults to Resend’s onboarding test sender until the Tend domain is verified. After verification: `Tend <noreply@app.tend.qzz.io>`. If an unverified from-address is rejected, send retries with the Resend test sender. | Production, Preview |
 | `FIREBASE_PROJECT_ID` | Firebase project ID | Production, Preview |
 | `FIREBASE_CLIENT_EMAIL` | Firebase service-account client email | Production, Preview |
 | `FIREBASE_PRIVATE_KEY` | Firebase service-account private key with newlines escaped as `\n` | Production, Preview |
@@ -94,8 +94,8 @@ Tend already sends mail through Resend’s HTTP API (`fetch https://api.resend.c
 
 1. Create an API key at [resend.com/api-keys](https://resend.com/api-keys).
 2. In **Vercel → tend-web → Settings → Environment Variables**, add `RESEND_API_KEY` for **Production** and **Preview**. Never commit the key.
-3. Until you verify `tend.qzz.io` or `app.tend.qzz.io` in Resend → Domains, set `EMAIL_FROM` to `Tend <onboarding@resend.dev>`. That test sender can only deliver to the Resend account email.
-4. After the domain is verified, set `EMAIL_FROM` to `Tend <noreply@app.tend.qzz.io>`.
+3. You can leave `EMAIL_FROM` unset. Tend defaults to Resend’s onboarding test sender and retries with that sender if a configured from-address is rejected (for example `noreply@app.tend.qzz.io` before the domain is verified). The test sender can only deliver to the Resend account email.
+4. After you verify `tend.qzz.io` or `app.tend.qzz.io` in Resend → Domains, set `EMAIL_FROM` to `Tend <noreply@app.tend.qzz.io>` so reset mail can reach any account.
 
 Locally, the same names go in `.env` (gitignored). Forgot-password still returns `{ ok: true }` if the key is missing; it just skips sending.
 

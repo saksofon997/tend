@@ -118,7 +118,7 @@ Request a password reset email. The response is the same whether or not the emai
 **Notes**
 
 - Reset links expire after one hour and can be used once.
-- Email delivery uses Resend when `RESEND_API_KEY` is set. Put that key in **Vercel → Settings → Environment Variables** (Production and Preview), not in git. Optional `EMAIL_FROM` defaults to `Tend <noreply@app.tend.qzz.io>` after the domain is verified in Resend. Until then, use `Tend <onboarding@resend.dev>` (Resend’s test sender; it can only deliver to the Resend account email).
+- Email delivery uses Resend when `RESEND_API_KEY` is set. Put that key in **Vercel → Settings → Environment Variables** (Production and Preview), not in git. `EMAIL_FROM` defaults to Resend’s onboarding test sender so mail can send before `app.tend.qzz.io` is verified. If a configured from-address is rejected (unverified domain or invalid `from`), delivery retries with that test sender. After you verify the domain in Resend, set `EMAIL_FROM` to `Tend <noreply@app.tend.qzz.io>` to send to any address. The test sender can only deliver to the Resend account email.
 - The emailed link points at `/reset-password?token=…` on the app host.
 
 ---

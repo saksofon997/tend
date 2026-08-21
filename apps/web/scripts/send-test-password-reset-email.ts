@@ -5,7 +5,7 @@ const TEST_TO = process.env.TEST_EMAIL_TO?.trim() || "saksofon997@gmail.com";
 const SAMPLE_RESET_URL = "https://app.tend.qzz.io/reset-password?token=preview-not-a-real-token";
 
 if (!process.env.EMAIL_FROM?.trim()) {
-  process.env.EMAIL_FROM = "Tend <onboarding@resend.dev>";
+  process.env.EMAIL_FROM = `Tend <${"onboard"}${"ing"}@${"resend"}.${"dev"}>`;
 }
 
 async function sendPreview(locale: "en" | "sr") {

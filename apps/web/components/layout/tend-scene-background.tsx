@@ -1,4 +1,4 @@
-/** Decorative linen, sun, and grass. Purely visual — ignore for accessibility. */
+/** Decorative linen, a soft top sun oval (same as mobile), and grass. Purely visual. */
 export function TendSceneBackground() {
   return (
     <div className="tend-scene" aria-hidden="true">

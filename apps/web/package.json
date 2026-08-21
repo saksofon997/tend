@@ -7,7 +7,7 @@
     "dev:clean": "rm -rf .next && next dev --hostname 0.0.0.0 --port 3000",
     "build": "next build",
     "start": "next start --port 3000",
-    "test": "bun --env-file=../../.env test tests"
+    "test": "bun --env-file=../../.env test tests/unit && bun --env-file=../../.env test tests/integration"
   },
   "dependencies": {
     "@lucia-auth/adapter-drizzle": "^1.1.0",

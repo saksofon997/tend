@@ -80,7 +80,7 @@ In **Project → Settings → Environment Variables**, add:
 | `SESSION_SECRET` | Random 32+ char secret (`openssl rand -base64 32`) | Production, Preview, Development |
 | `NOTIFICATIONS_JOB_SECRET` | Random token for manually triggering the notification job endpoint | Production, Preview |
 | `RESEND_API_KEY` | Resend API key for password-reset email (`re_…` from [resend.com/api-keys](https://resend.com/api-keys)). Never commit this. | Production, Preview |
-| `EMAIL_FROM` | From address. Until `app.tend.qzz.io` (or `tend.qzz.io`) is verified in Resend, use `Tend <onboarding@resend.dev>`. After verification: `Tend <noreply@app.tend.qzz.io>` | Production, Preview |
+| `EMAIL_FROM` | From address. Optional. Defaults to `Tend <noreply@tend.qzz.io>` (verified marketing domain). App-host addresses such as `noreply@app.tend.qzz.io` and Resend’s test sender are rewritten to that default. If a from-address is rejected as unverified, send retries with Resend’s test sender. | Production, Preview |
 | `FIREBASE_PROJECT_ID` | Firebase project ID | Production, Preview |
 | `FIREBASE_CLIENT_EMAIL` | Firebase service-account client email | Production, Preview |
 | `FIREBASE_PRIVATE_KEY` | Firebase service-account private key with newlines escaped as `\n` | Production, Preview |
@@ -94,8 +94,8 @@ Tend already sends mail through Resend’s HTTP API (`fetch https://api.resend.c
 
 1. Create an API key at [resend.com/api-keys](https://resend.com/api-keys).
 2. In **Vercel → tend-web → Settings → Environment Variables**, add `RESEND_API_KEY` for **Production** and **Preview**. Never commit the key.
-3. Until you verify `tend.qzz.io` or `app.tend.qzz.io` in Resend → Domains, set `EMAIL_FROM` to `Tend <onboarding@resend.dev>`. That test sender can only deliver to the Resend account email.
-4. After the domain is verified, set `EMAIL_FROM` to `Tend <noreply@app.tend.qzz.io>`.
+3. You can leave `EMAIL_FROM` unset. Tend sends from `Tend <noreply@tend.qzz.io>`. Reset links still use the app host (`https://app.tend.qzz.io/reset-password?token=…`).
+4. Verify `tend.qzz.io` in Resend → Domains (not the `app.` subdomain). Set `EMAIL_FROM` to `Tend <noreply@tend.qzz.io>` if you want the env var explicit. If a from-address is rejected (unverified domain), delivery retries with Resend’s test sender, which can only deliver to the Resend account email.
 
 Locally, the same names go in `.env` (gitignored). Forgot-password still returns `{ ok: true }` if the key is missing; it just skips sending.
 

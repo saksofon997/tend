@@ -7,11 +7,13 @@ import { deleteUserByEmail, isDatabaseAvailable } from "@tend/db";
 const sentEmails: Array<{ to: string; text: string }> = [];
 
 mock.module("@/lib/email/send", () => ({
+  RESEND_TEST_FROM_ADDRESS: "Tend <test-sender@example.com>",
   sendEmail: async (message: { to: string; text: string }) => {
     sentEmails.push({ to: message.to, text: message.text });
     return { delivered: true };
   },
-  getEmailFromAddress: () => "Tend <noreply@app.tend.qzz.io>",
+  getEmailFromAddress: () => "Tend <noreply@tend.qzz.io>",
+  isUsableEmailFromAddress: (value: string | undefined) => Boolean(value?.includes("@")),
   isEmailDeliveryConfigured: () => true,
   hasConfiguredEmailApiKey: (apiKey: string | undefined) => Boolean(apiKey?.trim()),
 }));

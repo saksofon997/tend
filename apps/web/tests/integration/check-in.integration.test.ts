@@ -8,6 +8,7 @@ import { validateSessionFromId } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
 import { deleteItemsForUser, deleteUserByEmail, isDatabaseAvailable } from "@tend/db";
 import type { CheckInSummary } from "@tend/domain";
+import { unsetEnv } from "../env";
 
 function uniqueEmail(): string {
   return `check-in-${Date.now()}-${Math.random().toString(36).slice(2)}@example.com`;
@@ -27,7 +28,7 @@ function getSessionIdFromResponse(response: Response): string | null {
 }
 
 async function registerTestUser() {
-  process.env.ALLOWED_EMAILS = undefined;
+  unsetEnv("ALLOWED_EMAILS");
 
   const email = uniqueEmail();
   const password = "password123";

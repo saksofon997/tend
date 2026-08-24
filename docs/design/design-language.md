@@ -36,7 +36,7 @@ These come directly from the MVP product rules. Every UI decision should pass at
 - **Subtle inputs:** Hairline borders, filled backgrounds only on focus. No heavy box shadows on fields.
 - **Gentle fonts:** Fraunces for display (soft old-print, comic-adjacent without Comic Sans); Nunito for body. Never ultra-condensed or monospace UI.
 - **Straightforward layout:** Single-column content, clear section headers, obvious primary buttons.
-- **Scene, not chrome:** A linen weave, a soft sun oval at the top (not a high-contrast burst from the center), and a few grass blades at the bottom. Cards use an organic thought-bubble radius, not a cartoon tail on every row.
+- **Scene, not chrome:** A linen weave, faint sunrays from the top-left corner, and a few grass blades at the bottom. Cards use an organic thought-bubble radius, not a cartoon tail on every row.
 
 ---
 
@@ -94,7 +94,7 @@ All values live in [`tokens.css`](./tokens.css). Use semantic tokens, not raw he
 ### Surfaces
 
 ```
-Page          → --tend-bg (#f7f5f2 linen), with a soft sun oval at the top (matching mobile) and grass blades at the bottom
+Page          → --tend-bg (#f7f5f2 linen), with a soft sun-gold wash from the top-left and grass blades at the bottom
 Card          → --tend-bg-elevated (#fff), organic thought-bubble radius (`--tend-radius-thought`)
 Inset section → --tend-bg-muted
 List hover    → --tend-bg-subtle

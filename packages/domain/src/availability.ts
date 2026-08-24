@@ -1,23 +1,52 @@
 import { dateAtTime, daysBetween, parseTimeToMinutes } from "./time";
 import type { AvailabilityWindow } from "./types";
 
-export function isInAvailabilityWindow(windows: AvailabilityWindow[], now: Date): boolean {
+export function findCurrentAvailabilityWindow(
+  windows: AvailabilityWindow[],
+  now: Date,
+): AvailabilityWindow | null {
   if (windows.length === 0) {
-    return false;
+    return null;
   }
 
   const dayOfWeek = now.getDay();
   const minutesNow = now.getHours() * 60 + now.getMinutes();
 
-  return windows.some((window) => {
-    if (window.dayOfWeek !== dayOfWeek) {
-      return false;
-    }
+  return (
+    windows.find((window) => {
+      if (window.dayOfWeek !== dayOfWeek) {
+        return false;
+      }
 
-    const start = parseTimeToMinutes(window.startTime);
-    const end = parseTimeToMinutes(window.endTime);
-    return minutesNow >= start && minutesNow < end;
-  });
+      const start = parseTimeToMinutes(window.startTime);
+      const end = parseTimeToMinutes(window.endTime);
+      return minutesNow >= start && minutesNow < end;
+    }) ?? null
+  );
+}
+
+export function isInAvailabilityWindow(windows: AvailabilityWindow[], now: Date): boolean {
+  return findCurrentAvailabilityWindow(windows, now) !== null;
+}
+
+/** True when a previous send already happened inside the window that contains `now`. */
+export function wasNotifiedInCurrentAvailabilityWindow(
+  windows: AvailabilityWindow[],
+  lastNotifiedAt: Date | null,
+  now: Date,
+): boolean {
+  if (!lastNotifiedAt) {
+    return false;
+  }
+
+  const current = findCurrentAvailabilityWindow(windows, now);
+  if (!current) {
+    return false;
+  }
+
+  const start = dateAtTime(now, parseTimeToMinutes(current.startTime));
+  const end = dateAtTime(now, parseTimeToMinutes(current.endTime));
+  return lastNotifiedAt.getTime() >= start.getTime() && lastNotifiedAt.getTime() < end.getTime();
 }
 
 export function findNextAvailabilityWindow(windows: AvailabilityWindow[], now: Date): Date | null {

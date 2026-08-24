@@ -128,22 +128,31 @@
     background-color: var(--tend-bg);
     background-image: repeating-linear-gradient(
         0deg,
-        rgba(44, 41, 37, 0.018) 0 1px,
-        transparent 1px 3px
-      ), repeating-linear-gradient(90deg, rgba(44, 41, 37, 0.02) 0 1px, transparent 1px 4px);
+        rgba(44, 41, 37, 0.01) 0 1px,
+        transparent 1px 4px
+      ), repeating-linear-gradient(90deg, rgba(44, 41, 37, 0.012) 0 1px, transparent 1px 5px);
   }
 
-  /* Match mobile SceneBackground: a 360x220 oval sitting just above the top edge. */
+  /* Soft wash and rays from the top-left, like a quiet comic panel — not a centered oval. */
   .tend-scene__sun {
     position: absolute;
-    top: -90px;
-    left: 50%;
-    width: 360px;
-    height: 220px;
-    border-radius: 180px;
-    background-color: var(--tend-sun);
+    inset: 0;
+    background-image: radial-gradient(
+      ellipse 78% 62% at 0% 0%,
+      var(--tend-sun) 0%,
+      var(--tend-sun-soft) 42%,
+      transparent 74%
+    );
+  }
+
+  .tend-scene__sunrays {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: min(72vw, 54rem);
+    height: min(58vh, 30rem);
+    color: var(--tend-sun);
     opacity: 0.55;
-    transform: translateX(-50%);
   }
 
   .tend-scene__grass {
@@ -151,10 +160,10 @@
     right: 0;
     bottom: 0;
     left: 0;
-    height: min(22vh, 11rem);
+    height: min(18vh, 7.5rem);
     width: 100%;
     color: var(--tend-grass);
-    opacity: 0.28;
+    opacity: 0.35;
   }
 }
 

@@ -23,13 +23,13 @@ export async function upsertPushSubscriptionForUser(
       platform: input.platform,
       updatedAt: now,
     })
+    // App launch re-saves the same token; keep send history so the job cannot
+    // notify again every 30 minutes inside the current availability window.
     .onConflictDoUpdate({
       target: pushSubscriptions.token,
       set: {
         userId,
         platform: input.platform,
-        lastNotifiedItemId: null,
-        lastNotifiedAt: null,
         updatedAt: now,
       },
     })

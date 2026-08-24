@@ -102,7 +102,7 @@ interface AppShellProps {
 
 **File:** `components/layout/tend-scene-background.tsx`
 
-Decorative linen weave, a soft oval sun at the top (same 360×220 wash as mobile), and a few grass blades at the bottom. `aria-hidden`. Used in `AppShell`, `AuthLayout`, `OnboardingLayout`, `LandingPage`, and `LegalPage`. Keep it faint — not a centered sunburst or a cartoon lawn.
+Decorative linen weave, a quiet sunray wash from the top-left corner, and a few grass blades at the bottom (same blade path as mobile). `aria-hidden`. Used in `AppShell`, `AuthLayout`, `OnboardingLayout`, `LandingPage`, and `LegalPage`. Keep it faint — not a centered burst or a cartoon lawn.
 
 ---
 

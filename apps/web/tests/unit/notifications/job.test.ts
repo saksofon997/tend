@@ -14,6 +14,7 @@ const getUserSettings = mock(() =>
     onboardingCompletedAt: new Date("2026-06-01T12:00:00.000Z"),
   }),
 );
+const listAvailabilityWindowsForUser = mock(() => Promise.resolve([]));
 const listRecentEventsForUser = mock(() => Promise.resolve([]));
 const getReminderResponseForUser = mock(() =>
   Promise.resolve({
@@ -31,6 +32,7 @@ mock.module("@tend/db", () => ({
   markPushSubscriptionWeeklySupport,
   deletePushSubscriptionByToken,
   getUserSettings,
+  listAvailabilityWindowsForUser,
   listRecentEventsForUser,
 }));
 
@@ -74,9 +76,11 @@ describe("notification job", () => {
     markPushSubscriptionWeeklySupport.mockReset();
     deletePushSubscriptionByToken.mockReset();
     getUserSettings.mockReset();
+    listAvailabilityWindowsForUser.mockReset();
     listRecentEventsForUser.mockReset();
     getReminderResponseForUser.mockReset();
     listPushSubscriptions.mockImplementation(() => Promise.resolve([]));
+    listAvailabilityWindowsForUser.mockImplementation(() => Promise.resolve([]));
     getUserSettings.mockImplementation(() =>
       Promise.resolve({
         userId: "user-1",
@@ -241,6 +245,72 @@ describe("notification job", () => {
     expect(markPushSubscriptionNotified).not.toHaveBeenCalled();
     expect(messages).toContain(
       "info:Notification sent: subscriptionId=sub-weekly userId=user-weekly itemId=weekly_support",
+    );
+  });
+
+  it("sends at most one reminder during an availability window even when the job runs again", async () => {
+    const { logger, messages } = createLogger();
+    const now = new Date("2026-06-15T18:30:00.000Z");
+    listPushSubscriptions.mockImplementation(() =>
+      Promise.resolve([
+        subscription({
+          id: "sub-window",
+          userId: "user-window",
+          lastNotifiedItemId: "must-1",
+          lastNotifiedAt: new Date("2026-06-15T17:00:00.000Z"),
+          lastWeeklySupportAt: new Date("2026-06-14T12:00:00.000Z"),
+        }),
+      ]),
+    );
+    listAvailabilityWindowsForUser.mockImplementation(() =>
+      Promise.resolve([
+        {
+          id: "window-1",
+          userId: "user-window",
+          dayOfWeek: 1,
+          startTime: "17:00:00",
+          endTime: "19:00:00",
+        },
+      ]),
+    );
+    getReminderResponseForUser.mockImplementation(() =>
+      Promise.resolve({
+        reminders: [],
+        surfaceNow: [
+          {
+            itemId: "want-1",
+            name: "Bed sheets",
+            type: "want",
+            status: "needs_attention",
+            daysSinceLastTended: 14,
+            sharedWith: null,
+            emphasis: "normal",
+            visibility: "now",
+            copy: "Bed sheets needs attention.",
+          },
+        ],
+        nextWindowAt: null,
+        inAvailabilityWindow: true,
+      }),
+    );
+
+    const result = await runNotificationJob({} as never, {
+      now,
+      logger,
+      sendPush: async () => {
+        throw new Error("should not send a second notification in the same window");
+      },
+    });
+
+    expect(result).toEqual({
+      checked: 1,
+      sent: 0,
+      skipped: 1,
+      failed: 0,
+      invalidated: 0,
+    });
+    expect(messages).toContain(
+      "info:Notification skipped: subscriptionId=sub-window userId=user-window itemId=want-1 reason=throttled",
     );
   });
 });

@@ -30,6 +30,7 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 
 | Date | Change |
 |------|--------|
+| 2026-08-24 | Notification job sends at most one push per availability-window occurrence |
 | 2026-08-21 | Password-reset mail is sent from `noreply@tend.qzz.io`; reset links stay on the app host |
 | 2026-08-20 | Added `GET /api/v1/check-in` with week/month/90-day/all period filtering |
 | 2026-08-20 | Weekly support push: one daytime companion note per device based on tends in the last seven days |

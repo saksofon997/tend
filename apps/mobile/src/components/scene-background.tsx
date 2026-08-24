@@ -15,12 +15,12 @@ export function SceneBackground() {
     >
       <View style={styles.sun} />
       <Svg style={styles.sunrays} viewBox="0 0 100 100" preserveAspectRatio="xMinYMin slice">
-        <Path d="M0 0 L54 6 L48 12 Z" fill={colors.sun} opacity={0.18} />
-        <Path d="M0 0 L64 18 L56 22 Z" fill={colors.sun} opacity={0.14} />
-        <Path d="M0 0 L72 34 L62 36 Z" fill={colors.sun} opacity={0.11} />
-        <Path d="M0 0 L58 48 L50 46 Z" fill={colors.sun} opacity={0.13} />
-        <Path d="M0 0 L38 58 L34 50 Z" fill={colors.sun} opacity={0.1} />
-        <Path d="M0 0 L22 62 L20 52 Z" fill={colors.sun} opacity={0.12} />
+        <Path d="M0 0 L54 6 L48 12 Z" fill={colors.sunRay} opacity={0.22} />
+        <Path d="M0 0 L64 18 L56 22 Z" fill={colors.sunRay} opacity={0.18} />
+        <Path d="M0 0 L72 34 L62 36 Z" fill={colors.sunRay} opacity={0.14} />
+        <Path d="M0 0 L58 48 L50 46 Z" fill={colors.sunRay} opacity={0.16} />
+        <Path d="M0 0 L38 58 L34 50 Z" fill={colors.sunRay} opacity={0.12} />
+        <Path d="M0 0 L22 62 L20 52 Z" fill={colors.sunRay} opacity={0.15} />
       </Svg>
       <Svg style={styles.grass} viewBox="0 0 1200 160" preserveAspectRatio="xMidYMax meet">
         <Path

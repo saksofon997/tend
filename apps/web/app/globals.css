@@ -151,8 +151,8 @@
     left: 0;
     width: min(72vw, 54rem);
     height: min(58vh, 30rem);
-    color: var(--tend-sun);
-    opacity: 0.55;
+    color: var(--tend-sun-ray);
+    opacity: 0.28;
   }
 
   .tend-scene__grass {
@@ -163,7 +163,7 @@
     height: min(18vh, 7.5rem);
     width: 100%;
     color: var(--tend-grass);
-    opacity: 0.35;
+    opacity: 0.4;
   }
 }
 

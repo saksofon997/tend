@@ -14,12 +14,12 @@ export function TendSceneBackground() {
       >
         <title>Decorative sunrays</title>
         <g fill="currentColor">
-          <path d="M0 0 L54 6 L48 12 Z" opacity="0.18" />
-          <path d="M0 0 L64 18 L56 22 Z" opacity="0.14" />
-          <path d="M0 0 L72 34 L62 36 Z" opacity="0.11" />
-          <path d="M0 0 L58 48 L50 46 Z" opacity="0.13" />
-          <path d="M0 0 L38 58 L34 50 Z" opacity="0.1" />
-          <path d="M0 0 L22 62 L20 52 Z" opacity="0.12" />
+          <path d="M0 0 L54 6 L48 12 Z" opacity="0.55" />
+          <path d="M0 0 L64 18 L56 22 Z" opacity="0.42" />
+          <path d="M0 0 L72 34 L62 36 Z" opacity="0.34" />
+          <path d="M0 0 L58 48 L50 46 Z" opacity="0.4" />
+          <path d="M0 0 L38 58 L34 50 Z" opacity="0.32" />
+          <path d="M0 0 L22 62 L20 52 Z" opacity="0.38" />
         </g>
       </svg>
       <svg

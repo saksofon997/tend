@@ -10,6 +10,7 @@
   --tend-bg: #f7f5f2; /* warm linen page background */
   --tend-sun: rgba(255, 214, 140, 0.42);
   --tend-sun-soft: rgba(255, 232, 186, 0.2);
+  --tend-sun-ray: rgb(255, 214, 140); /* opaque gold for faint SVG rays */
   --tend-grass: #7a9270;
   --tend-bg-elevated: #ffffff; /* cards, modals */
   --tend-bg-muted: #efede8; /* inset sections, tab tracks */

@@ -11,6 +11,7 @@ export const colors = {
   // Keep in sync with docs/design/tokens.css (--tend-bg and related surface tokens).
   bg: "#f7f5f2",
   sun: "rgba(255, 214, 140, 0.42)",
+  sunRay: "rgb(255, 214, 140)",
   grass: "#7a9270",
   card: "#ffffff",
   muted: "#efede8",

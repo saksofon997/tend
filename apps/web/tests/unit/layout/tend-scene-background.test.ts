@@ -33,6 +33,6 @@ describe("TendSceneBackground sun", () => {
 
     expect(sceneSource).toContain(grassPath);
     expect(mobileSceneSource).toContain(grassPath);
-    expect(globalsCss).toMatch(/\.tend-scene__grass[\s\S]*opacity:\s*0\.35/);
+    expect(globalsCss).toMatch(/\.tend-scene__grass[\s\S]*opacity:\s*0\.4/);
   });
 });

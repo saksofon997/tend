@@ -1,9 +1,27 @@
-/** Decorative linen, a soft top sun oval (same as mobile), and grass. Purely visual. */
+/** Decorative linen, a quiet sun from the top-left, and grass. Purely visual. */
 export function TendSceneBackground() {
   return (
     <div className="tend-scene" aria-hidden="true">
       <div className="tend-scene__linen" />
       <div className="tend-scene__sun" />
+      <svg
+        className="tend-scene__sunrays"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMinYMin slice"
+        focusable="false"
+        role="img"
+        aria-hidden="true"
+      >
+        <title>Decorative sunrays</title>
+        <g fill="currentColor">
+          <path d="M0 0 L54 6 L48 12 Z" opacity="0.18" />
+          <path d="M0 0 L64 18 L56 22 Z" opacity="0.14" />
+          <path d="M0 0 L72 34 L62 36 Z" opacity="0.11" />
+          <path d="M0 0 L58 48 L50 46 Z" opacity="0.13" />
+          <path d="M0 0 L38 58 L34 50 Z" opacity="0.1" />
+          <path d="M0 0 L22 62 L20 52 Z" opacity="0.12" />
+        </g>
+      </svg>
       <svg
         className="tend-scene__grass"
         viewBox="0 0 1200 160"
@@ -13,21 +31,14 @@ export function TendSceneBackground() {
         aria-hidden="true"
       >
         <title>Decorative grass</title>
-        <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M86 160c8-46 4-92-18-148" strokeWidth="2.2" />
-          <path d="M104 160c2-40 14-86 42-128" strokeWidth="1.8" />
-          <path d="M118 160c-6-38-22-78-12-132" strokeWidth="1.6" />
-          <path d="M312 160c10-42 2-96-22-142" strokeWidth="2" />
-          <path d="M328 160c4-48 18-90 48-126" strokeWidth="1.7" />
-          <path d="M538 160c-8-50 6-98 28-140" strokeWidth="2.1" />
-          <path d="M556 160c8-44-6-88-28-132" strokeWidth="1.6" />
-          <path d="M572 160c2-52 16-94 44-130" strokeWidth="1.8" />
-          <path d="M864 160c-10-46 4-94 26-138" strokeWidth="2" />
-          <path d="M882 160c6-40-8-86-24-128" strokeWidth="1.7" />
-          <path d="M1088 160c8-48-4-96-26-140" strokeWidth="2.2" />
-          <path d="M1106 160c4-42 16-88 40-124" strokeWidth="1.6" />
-          <path d="M1120 160c-6-38-18-82-8-126" strokeWidth="1.5" />
-        </g>
+        <path
+          d="M86 160c8-46 4-92-18-148M104 160c2-40 14-86 42-128M118 160c-6-38-22-78-12-132M312 160c10-42 2-96-22-142M328 160c4-48 18-90 48-126M538 160c-8-50 6-98 28-140M556 160c8-44-6-88-28-132M572 160c2-52 16-94 44-130M864 160c-10-46 4-94 26-138M882 160c6-40-8-86-24-128M1088 160c8-48-4-96-26-140M1106 160c4-42 16-88 40-124M1120 160c-6-38-18-82-8-126"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+        />
       </svg>
     </div>
   );

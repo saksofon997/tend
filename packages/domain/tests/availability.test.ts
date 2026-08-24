@@ -1,9 +1,18 @@
 import { describe, expect, it } from "bun:test";
-import { findNextAvailabilityWindow, isInAvailabilityWindow } from "../src/availability";
+import {
+  findCurrentAvailabilityWindow,
+  findNextAvailabilityWindow,
+  isInAvailabilityWindow,
+  wasNotifiedInCurrentAvailabilityWindow,
+} from "../src/availability";
 import type { AvailabilityWindow } from "../src/types";
 
 const mondayEvening: AvailabilityWindow[] = [
   { dayOfWeek: 1, startTime: "18:00", endTime: "22:00" },
+];
+
+const mondayLateAfternoon: AvailabilityWindow[] = [
+  { dayOfWeek: 1, startTime: "17:00", endTime: "19:00" },
 ];
 
 // 2026-06-15 is a Monday
@@ -24,6 +33,58 @@ describe("isInAvailabilityWindow", () => {
 
   it("returns false at the window end boundary", () => {
     expect(isInAvailabilityWindow(mondayEvening, new Date("2026-06-15T22:00:00"))).toBe(false);
+  });
+});
+
+describe("findCurrentAvailabilityWindow", () => {
+  it("returns the window that contains now", () => {
+    expect(
+      findCurrentAvailabilityWindow(mondayLateAfternoon, new Date("2026-06-15T17:30:00")),
+    ).toEqual({ dayOfWeek: 1, startTime: "17:00", endTime: "19:00" });
+  });
+
+  it("returns null outside a configured window", () => {
+    expect(
+      findCurrentAvailabilityWindow(mondayLateAfternoon, new Date("2026-06-15T16:59:00")),
+    ).toBeNull();
+  });
+});
+
+describe("wasNotifiedInCurrentAvailabilityWindow", () => {
+  it("is true when the last send was earlier in the same 17-19 window", () => {
+    expect(
+      wasNotifiedInCurrentAvailabilityWindow(
+        mondayLateAfternoon,
+        new Date("2026-06-15T17:00:00"),
+        new Date("2026-06-15T18:30:00"),
+      ),
+    ).toBe(true);
+  });
+
+  it("is false when the last send was a previous day's window", () => {
+    expect(
+      wasNotifiedInCurrentAvailabilityWindow(
+        [
+          { dayOfWeek: 0, startTime: "17:00", endTime: "19:00" },
+          { dayOfWeek: 1, startTime: "17:00", endTime: "19:00" },
+        ],
+        new Date("2026-06-14T17:00:00"),
+        new Date("2026-06-15T17:00:00"),
+      ),
+    ).toBe(false);
+  });
+
+  it("is false when the last send was a different window the same day", () => {
+    expect(
+      wasNotifiedInCurrentAvailabilityWindow(
+        [
+          { dayOfWeek: 1, startTime: "09:00", endTime: "11:00" },
+          { dayOfWeek: 1, startTime: "17:00", endTime: "19:00" },
+        ],
+        new Date("2026-06-15T09:30:00"),
+        new Date("2026-06-15T17:00:00"),
+      ),
+    ).toBe(false);
   });
 });
 

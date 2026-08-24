@@ -1,27 +1,33 @@
+import { toDomainAvailabilityWindow } from "@/lib/availability/serialize";
 import { getReminderResponseForUser } from "@/lib/reminders/user-reminders";
 import type { Database, PushSubscriptionRow, RecentEventWithItem } from "@tend/db";
 import {
   deletePushSubscriptionByToken,
   getUserSettings,
+  listAvailabilityWindowsForUser,
   listPushSubscriptions,
   listRecentEventsForUser,
   markPushSubscriptionNotified,
   markPushSubscriptionWeeklySupport,
 } from "@tend/db";
 import {
+  type AvailabilityWindow,
   isValidTimeZone,
   isWeeklySupportDue,
+  localDateInTimeZone,
   weeklySupportCopy,
   weeklySupportLookbackStart,
 } from "@tend/domain";
 import { getMissingFcmConfiguration, sendFcmPushNotification } from "./fcm-push";
 import type { PushSendResult } from "./fcm-push";
 import {
+  type ReminderNotificationThrottleContext,
+  type TendNotificationRequest,
   buildTendNotificationRequest,
   isNotificationDue,
+  latestNotificationAt,
   shouldSendReminderNotification,
 } from "./reminder-notification";
-import type { TendNotificationRequest } from "./reminder-notification";
 
 export interface NotificationJobLogger {
   info(message: string): void;
@@ -105,6 +111,7 @@ export async function runNotificationJob(
   >();
   const settingsByUserId = new Map<string, Awaited<ReturnType<typeof getUserSettings>>>();
   const weeklyEventsByUserId = new Map<string, RecentEventWithItem[]>();
+  const windowsByUserId = new Map<string, AvailabilityWindow[]>();
 
   for (const subscription of subscriptions) {
     result.checked += 1;
@@ -128,10 +135,15 @@ export async function runNotificationJob(
       continue;
     }
 
-    if (
-      request.kind !== "weekly_support" &&
-      !shouldSendReminderNotification(subscription, request, now)
-    ) {
+    const throttleContext = await throttleContextForSubscription(
+      database,
+      subscription,
+      now,
+      settingsByUserId,
+      windowsByUserId,
+    );
+
+    if (!shouldSendReminderNotification(subscription, request, now, throttleContext)) {
       result.skipped += 1;
       const reason = isNotificationDue(request, now) ? "throttled" : "not_due";
       logger.info(
@@ -188,6 +200,41 @@ async function reminderRequestForSubscription(
   }
 
   return buildTendNotificationRequest(reminders);
+}
+
+async function throttleContextForSubscription(
+  database: Database,
+  subscription: PushSubscriptionRow,
+  now: Date,
+  settingsByUserId: Map<string, Awaited<ReturnType<typeof getUserSettings>>>,
+  windowsByUserId: Map<string, AvailabilityWindow[]>,
+): Promise<ReminderNotificationThrottleContext> {
+  let settings = settingsByUserId.get(subscription.userId);
+  if (settings === undefined) {
+    settings = await getUserSettings(database, subscription.userId);
+    settingsByUserId.set(subscription.userId, settings);
+  }
+
+  const timezone =
+    settings?.timezone && isValidTimeZone(settings.timezone) ? settings.timezone : "UTC";
+
+  let windows = windowsByUserId.get(subscription.userId);
+  if (!windows) {
+    const rows = await listAvailabilityWindowsForUser(database, subscription.userId);
+    windows = rows.map(toDomainAvailabilityWindow);
+    windowsByUserId.set(subscription.userId, windows);
+  }
+
+  const lastPushAt = latestNotificationAt(
+    subscription.lastNotifiedAt,
+    subscription.lastWeeklySupportAt,
+  );
+
+  return {
+    windows,
+    localNow: localDateInTimeZone(now, timezone),
+    lastNotifiedAtLocal: lastPushAt ? localDateInTimeZone(lastPushAt, timezone) : null,
+  };
 }
 
 async function buildWeeklySupportRequestIfDue(

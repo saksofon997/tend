@@ -1,7 +1,14 @@
 import type { ReminderResponse, RemindersApiResponse } from "@/lib/reminders/serialize";
 import type { PushSubscriptionRow } from "@tend/db";
+import { type AvailabilityWindow, wasNotifiedInCurrentAvailabilityWindow } from "@tend/domain";
 
 export const REMINDER_NOTIFICATION_THROTTLE_MS = 23 * 60 * 60 * 1000;
+
+export interface ReminderNotificationThrottleContext {
+  windows: AvailabilityWindow[];
+  localNow: Date;
+  lastNotifiedAtLocal: Date | null;
+}
 
 export interface TendNotificationRequest {
   title: string;
@@ -111,17 +118,46 @@ export function isNotificationDue(request: TendNotificationRequest, now: Date): 
   return !request.triggerAt || request.triggerAt <= now;
 }
 
+export function latestNotificationAt(...values: Array<Date | null | undefined>): Date | null {
+  const dates = values.filter((value): value is Date => value instanceof Date);
+  if (dates.length === 0) {
+    return null;
+  }
+
+  return dates.reduce((latest, current) =>
+    current.getTime() > latest.getTime() ? current : latest,
+  );
+}
+
 export function shouldSendReminderNotification(
   subscription: Pick<PushSubscriptionRow, "lastNotifiedAt" | "lastNotifiedItemId">,
   request: TendNotificationRequest,
   now: Date,
+  context: ReminderNotificationThrottleContext = {
+    windows: [],
+    localNow: now,
+    lastNotifiedAtLocal: subscription.lastNotifiedAt,
+  },
 ): boolean {
-  if (!isNotificationDue(request, now)) {
+  if (request.kind !== "weekly_support" && !isNotificationDue(request, now)) {
     return false;
   }
 
   if (
-    subscription.lastNotifiedItemId === request.itemId &&
+    wasNotifiedInCurrentAvailabilityWindow(
+      context.windows,
+      context.lastNotifiedAtLocal,
+      context.localNow,
+    )
+  ) {
+    return false;
+  }
+
+  if (context.windows.length > 0) {
+    return true;
+  }
+
+  if (
     subscription.lastNotifiedAt &&
     now.getTime() - subscription.lastNotifiedAt.getTime() < REMINDER_NOTIFICATION_THROTTLE_MS
   ) {

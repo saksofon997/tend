@@ -51,7 +51,7 @@ Remove a saved push token for the signed-in user.
 
 ### `GET /api/v1/jobs/notifications`
 
-Run the server-side reminder notification job. Production scheduling is handled by cron-job.org calling this endpoint every 30 minutes, which sends at most one relevant push per device when a notification is due.
+Run the server-side reminder notification job. Production scheduling is handled by cron-job.org calling this endpoint every 30 minutes, which sends at most one relevant push per device per availability window.
 
 **Auth:** `Authorization: Bearer <NOTIFICATIONS_JOB_SECRET>` (required)
 
@@ -78,4 +78,6 @@ Run the server-side reminder notification job. Production scheduling is handled 
 - A reminder notification is sent only when at least one of these exists, in this order: needs-attention must, getting-stale must, needs-attention want. Getting-stale wants do not notify.
 - When a weekly support note is due (daytime in the user's timezone, and at least 6.5 days since the last weekly note or since the device was registered), that note is sent instead of an item reminder for that run. Copy stays qualitative: a quiet week, a few moments of care, or coming back more than once — never a score.
 - Notifications defer to the user's next availability window when one is configured.
-- Repeats for the same item on the same device are throttled for 23 hours.
+- At most one push is sent during each availability-window occurrence (for example a 17:00–19:00 window). Later job runs in that same window are skipped, including a different item.
+- When no availability window is configured, repeats on the same device are throttled for 23 hours regardless of item.
+- Re-saving the same device token does not clear notification history.

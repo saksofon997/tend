@@ -1,6 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import {
   buildTendNotificationRequest,
+  latestNotificationAt,
   shouldSendReminderNotification,
 } from "@/lib/notifications/reminder-notification";
 import type { RemindersApiResponse } from "@/lib/reminders/serialize";
@@ -333,5 +334,83 @@ describe("shouldSendReminderNotification", () => {
         new Date("2026-06-17T10:30:00.000Z"),
       ),
     ).toBe(false);
+  });
+
+  it("throttles a different item within a day when no availability window is configured", () => {
+    expect(
+      shouldSendReminderNotification(
+        {
+          lastNotifiedAt: new Date("2026-06-17T10:00:00.000Z"),
+          lastNotifiedItemId: "must-1",
+        },
+        {
+          title: "Bed sheets could use tending",
+          body: "Past its usual rhythm. Take a look when there is room.",
+          itemId: "want-1",
+          triggerAt: null,
+        },
+        new Date("2026-06-17T10:30:00.000Z"),
+      ),
+    ).toBe(false);
+  });
+
+  it("does not send again later in the same availability window even for a different item", () => {
+    const windows = [{ dayOfWeek: 1, startTime: "17:00", endTime: "19:00" }];
+    const lastNotifiedAtLocal = new Date("2026-06-15T17:00:00");
+    const localNow = new Date("2026-06-15T18:30:00");
+
+    expect(
+      shouldSendReminderNotification(
+        {
+          lastNotifiedAt: lastNotifiedAtLocal,
+          lastNotifiedItemId: "must-1",
+        },
+        {
+          title: "Bed sheets could use tending",
+          body: "Past its usual rhythm. Take a look when there is room.",
+          itemId: "want-1",
+          triggerAt: null,
+        },
+        localNow,
+        { windows, localNow, lastNotifiedAtLocal },
+      ),
+    ).toBe(false);
+  });
+
+  it("sends at the start of the next day's matching window", () => {
+    const windows = [
+      { dayOfWeek: 1, startTime: "17:00", endTime: "19:00" },
+      { dayOfWeek: 2, startTime: "17:00", endTime: "19:00" },
+    ];
+    const lastNotifiedAtLocal = new Date("2026-06-15T17:00:00");
+    const localNow = new Date("2026-06-16T17:00:00");
+
+    expect(
+      shouldSendReminderNotification(
+        {
+          lastNotifiedAt: lastNotifiedAtLocal,
+          lastNotifiedItemId: "must-1",
+        },
+        {
+          title: "Medication could use tending",
+          body: "Marked as a must, so Tend keeps it easy to see.",
+          itemId: "must-1",
+          triggerAt: null,
+        },
+        localNow,
+        { windows, localNow, lastNotifiedAtLocal },
+      ),
+    ).toBe(true);
+  });
+});
+
+describe("latestNotificationAt", () => {
+  it("returns the later of reminder and weekly support timestamps", () => {
+    expect(
+      latestNotificationAt(
+        new Date("2026-06-15T17:00:00.000Z"),
+        new Date("2026-06-01T12:00:00.000Z"),
+      )?.toISOString(),
+    ).toBe("2026-06-15T17:00:00.000Z");
   });
 });

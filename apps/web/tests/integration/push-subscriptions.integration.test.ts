@@ -7,7 +7,13 @@ import {
 import { SESSION_COOKIE_NAME } from "@/lib/auth/constants";
 import { validateSessionFromId } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
-import { deleteUserByEmail, isDatabaseAvailable } from "@tend/db";
+import {
+  createItemForUser,
+  deleteUserByEmail,
+  isDatabaseAvailable,
+  listPushSubscriptions,
+  markPushSubscriptionNotified,
+} from "@tend/db";
 import { unsetEnv } from "../env";
 
 function uniqueEmail(): string {
@@ -106,6 +112,61 @@ describe("push subscriptions integration", () => {
       );
       expect(deleteResponse.status).toBe(200);
       expect(await deleteResponse.json()).toEqual({ ok: true });
+    } finally {
+      await deleteUserByEmail(getDb(), email);
+    }
+  });
+
+  it("keeps notification history when the same device token is saved again", async () => {
+    if (!(await isDatabaseAvailable())) {
+      console.warn("Skipping: database not available");
+      return;
+    }
+
+    const { email, sessionId } = await registerTestUser();
+    const token = `native-fcm-token-${crypto.randomUUID()}`;
+    const notifiedAt = new Date("2026-06-15T17:00:00.000Z");
+
+    try {
+      const session = await validateSessionFromId(sessionId);
+      if (!session.user) {
+        throw new Error("Expected registered user");
+      }
+
+      const item = await createItemForUser(getDb(), session.user.id, {
+        name: "Plants",
+        type: "must",
+        rhythmDays: 3,
+        lastTendedAt: new Date("2026-06-01T12:00:00.000Z"),
+        status: "needs_attention",
+      });
+
+      const saveResponse = await savePushSubscription(
+        authedRequest("http://localhost/api/v1/push-subscriptions", sessionId, {
+          method: "POST",
+          body: JSON.stringify({ token, platform: "android" }),
+        }),
+      );
+      expect(saveResponse.status).toBe(201);
+      const saveBody = (await saveResponse.json()) as { subscription: { id: string } };
+
+      await markPushSubscriptionNotified(getDb(), saveBody.subscription.id, {
+        itemId: item.id,
+        notifiedAt,
+      });
+
+      const refreshResponse = await savePushSubscription(
+        authedRequest("http://localhost/api/v1/push-subscriptions", sessionId, {
+          method: "POST",
+          body: JSON.stringify({ token, platform: "android" }),
+        }),
+      );
+      expect(refreshResponse.status).toBe(201);
+
+      const subscriptions = await listPushSubscriptions(getDb());
+      const saved = subscriptions.find((subscription) => subscription.token === token);
+      expect(saved?.lastNotifiedItemId).toBe(item.id);
+      expect(saved?.lastNotifiedAt?.toISOString()).toBe(notifiedAt.toISOString());
     } finally {
       await deleteUserByEmail(getDb(), email);
     }

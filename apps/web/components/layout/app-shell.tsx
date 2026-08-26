@@ -5,8 +5,10 @@ import { TendLogoLink } from "@/components/layout/tend-logo-link";
 import { TendSceneBackground } from "@/components/layout/tend-scene-background";
 import { UserMenu } from "@/components/layout/user-menu";
 import { useI18n } from "@/lib/i18n/client";
+import { useShellHeaderCollapsed } from "@/lib/layout/shell-header-collapse";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useState } from "react";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -30,13 +32,25 @@ export const APP_SHELL_NAV_CLASS =
 
 export const APP_SHELL_USER_MENU_SLOT_CLASS = "ml-auto flex shrink-0 items-center gap-2";
 
+export const APP_SHELL_HEADER_CLASS =
+  "sticky top-0 z-10 border-b border-border bg-card/80 backdrop-blur-[3px] transition-transform duration-[var(--tend-duration-normal)] ease-[var(--tend-ease)] motion-reduce:transition-none md:translate-y-0";
+
+export const APP_SHELL_HEADER_COLLAPSED_CLASS =
+  "-translate-y-full pointer-events-none md:pointer-events-auto";
+
 export function AppShell({ children, user, activePath }: AppShellProps) {
   const { t } = useI18n();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const headerCollapsed = useShellHeaderCollapsed(menuOpen);
 
   return (
     <div className="relative flex min-h-screen flex-col">
       <TendSceneBackground />
-      <header className="sticky top-0 z-10 border-b border-border bg-card/80 backdrop-blur-[3px]">
+      <header
+        className={cn(APP_SHELL_HEADER_CLASS, headerCollapsed && APP_SHELL_HEADER_COLLAPSED_CLASS)}
+        data-collapsed={headerCollapsed ? "true" : "false"}
+        inert={headerCollapsed}
+      >
         <div className={APP_SHELL_HEADER_ROW_CLASS}>
           <TendLogoLink />
 
@@ -58,7 +72,9 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
             ))}
           </nav>
 
-          <div className={APP_SHELL_USER_MENU_SLOT_CLASS}>{user ? <UserMenu /> : null}</div>
+          <div className={APP_SHELL_USER_MENU_SLOT_CLASS}>
+            {user ? <UserMenu onOpenChange={setMenuOpen} /> : null}
+          </div>
         </div>
       </header>
 

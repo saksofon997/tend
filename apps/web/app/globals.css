@@ -184,50 +184,22 @@
     inset: 0;
     z-index: 0;
     overflow: hidden;
-  }
-
-  .tend-scene__linen {
-    position: absolute;
-    inset: 0;
     background-color: var(--tend-bg);
-    background-image: repeating-linear-gradient(
-        0deg,
-        rgba(44, 41, 37, 0.01) 0 1px,
-        transparent 1px 4px
-      ), repeating-linear-gradient(90deg, rgba(44, 41, 37, 0.012) 0 1px, transparent 1px 5px);
   }
 
-  /* Soft wash and rays from the top-left, like a quiet comic panel — not a centered oval. */
-  .tend-scene__sun {
+  .tend-scene picture {
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(
-      ellipse 78% 62% at 0% 0%,
-      var(--tend-sun) 0%,
-      var(--tend-sun-soft) 42%,
-      transparent 74%
-    );
+    display: block;
   }
 
-  .tend-scene__sunrays {
+  .tend-scene__art {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: min(72vw, 54rem);
-    height: min(58vh, 30rem);
-    color: var(--tend-sun-ray);
-    opacity: 0.28;
-  }
-
-  .tend-scene__grass {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: min(18vh, 7.5rem);
+    inset: 0;
     width: 100%;
-    color: var(--tend-grass);
-    opacity: 0.4;
+    height: 100%;
+    object-fit: cover;
+    object-position: left bottom;
   }
 }
 

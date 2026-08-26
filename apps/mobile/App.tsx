@@ -500,6 +500,7 @@ function AuthSplashScreen({
 
   return (
     <SafeAreaView style={styles.authSplashScreen}>
+      <SceneBackground />
       <View style={styles.splashHeader}>
         <Image
           accessibilityLabel={t("app.logo")}

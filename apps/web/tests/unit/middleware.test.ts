@@ -11,6 +11,11 @@ describe("isStaticAssetPath", () => {
     expect(isStaticAssetPath("/promo/tend-logo.svg")).toBe(true);
   });
 
+  it("allows illustrated scene backgrounds without auth", () => {
+    expect(isStaticAssetPath("/scene/tend-scene-landscape.webp")).toBe(true);
+    expect(isStaticAssetPath("/scene/tend-scene-portrait.webp")).toBe(true);
+  });
+
   it("does not treat app routes as static assets", () => {
     expect(isStaticAssetPath("/login")).toBe(false);
     expect(isStaticAssetPath("/items/abc")).toBe(false);

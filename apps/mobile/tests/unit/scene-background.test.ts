@@ -1,22 +1,23 @@
 import { describe, expect, it } from "bun:test";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-const sceneSource = readFileSync(
-  join(import.meta.dir, "../../src/components/scene-background.tsx"),
-  "utf8",
-);
+const mobileRoot = join(import.meta.dir, "../..");
+const sceneSource = readFileSync(join(mobileRoot, "src/components/scene-background.tsx"), "utf8");
+const portraitFile = join(mobileRoot, "assets/scene/tend-scene-portrait.webp");
+const splashSource = readFileSync(join(mobileRoot, "App.tsx"), "utf8");
 
 describe("SceneBackground", () => {
-  it("places the sun wash in the top-left with sunrays", () => {
-    expect(sceneSource).toContain("left: -90");
-    expect(sceneSource).toContain("top: -140");
-    expect(sceneSource).toContain("styles.sunrays");
+  it("covers the screen with the portrait meadow illustration", () => {
+    expect(sceneSource).toContain("tend-scene-portrait.webp");
+    expect(sceneSource).toContain('resizeMode="cover"');
+    expect(sceneSource).not.toContain("react-native-svg");
+    expect(existsSync(portraitFile)).toBe(true);
+    expect(statSync(portraitFile).size).toBeGreaterThan(10_000);
   });
 
-  it("draws the shared grass blade path", () => {
-    expect(sceneSource).toContain(
-      "M86 160c8-46 4-92-18-148M104 160c2-40 14-86 42-128M118 160c-6-38-22-78-12-132",
-    );
+  it("paints the splash screen as well as signed-in and auth shells", () => {
+    expect(splashSource).toContain("<SceneBackground />");
+    expect(splashSource.match(/<SceneBackground \/>/g)?.length).toBeGreaterThanOrEqual(4);
   });
 });

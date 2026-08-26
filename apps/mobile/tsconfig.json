@@ -21,5 +21,5 @@
     "skipLibCheck": true,
     "types": ["react", "react-native"]
   },
-  "include": ["App.tsx", "src/**/*.ts", "src/**/*.tsx"]
+  "include": ["App.tsx", "src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"]
 }

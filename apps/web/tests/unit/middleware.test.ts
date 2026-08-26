@@ -40,6 +40,7 @@ describe("allowsUnauthenticatedAccess", () => {
   });
 
   it("blocks protected app routes", () => {
+    expect(allowsUnauthenticatedAccess("/history")).toBe(false);
     expect(allowsUnauthenticatedAccess("/activity")).toBe(false);
     expect(allowsUnauthenticatedAccess("/reflections")).toBe(false);
     expect(allowsUnauthenticatedAccess("/items/abc")).toBe(false);

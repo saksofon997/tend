@@ -18,7 +18,7 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 | Health | [health.md](./health.md) | Liveness and database connectivity |
 | Auth | [auth.md](./auth.md) | Local account registration, sessions, and password reset |
 | Items | [items.md](./items.md) | Tend item CRUD, tend events, presets |
-| Activity | [activity.md](./activity.md) | Correct or remove tended events |
+| Activity | [activity.md](./activity.md) | History UI; correct or remove tended events |
 | Availability | [availability.md](./availability.md) | Weekly free-time windows |
 | Reminders | [reminders.md](./reminders.md) | In-app reminder eligibility |
 | Notifications | [notifications.md](./notifications.md) | Push subscriptions and server-side notification job |

@@ -18,7 +18,7 @@ export const NAV_ITEMS = [
   { href: "/", labelKey: "nav.home" },
   { href: "/check-in", labelKey: "nav.checkIn" },
   { href: "/reflections", labelKey: "nav.reflections" },
-  { href: "/activity", labelKey: "nav.activity", hideOnMobile: true },
+  { href: "/history", labelKey: "nav.activity", hideOnMobile: true },
   { href: "/settings/availability", labelKey: "nav.availability" },
 ] as const;
 

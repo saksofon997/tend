@@ -22,7 +22,7 @@ export function formatRelativeFromDays(
 ): string {
   if (daysSince === null) {
     if (prefix) {
-      return locale === "sr" ? "Nema aktivnosti" : "No activity yet";
+      return locale === "sr" ? "Nikad pobrinuto" : "Never tended";
     }
 
     if (locale === "sr") {

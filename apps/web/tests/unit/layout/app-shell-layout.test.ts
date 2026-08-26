@@ -18,15 +18,15 @@ describe("AppShell responsive header layout", () => {
     expect(APP_SHELL_USER_MENU_SLOT_CLASS).toContain("shrink-0");
   });
 
-  it("puts Reflections in primary nav and keeps Activity for desktop", () => {
+  it("puts Reflections in primary nav and keeps History for desktop", () => {
     expect(NAV_ITEMS.map((item) => item.href)).toEqual([
       "/",
       "/check-in",
       "/reflections",
-      "/activity",
+      "/history",
       "/settings/availability",
     ]);
-    const activity = NAV_ITEMS.find((item) => item.href === "/activity");
-    expect(activity && "hideOnMobile" in activity && activity.hideOnMobile).toBe(true);
+    const history = NAV_ITEMS.find((item) => item.href === "/history");
+    expect(history && "hideOnMobile" in history && history.hideOnMobile).toBe(true);
   });
 });

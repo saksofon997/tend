@@ -280,11 +280,12 @@ FAB or header "Add" → /items/new
 - Empty days are fine — show muted "No windows"
 - Save is explicit; no auto-save toast spam
 
-### Activity (`/activity`)
+### History (`/history`)
 
 - Flat list: item name + tended date
 - Tap to correct — no streaks, no stats
 - On mobile web, reached from Check In rather than the primary nav
+- `/activity` redirects here
 
 ### Reflections (`/reflections`)
 

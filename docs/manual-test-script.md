@@ -136,14 +136,14 @@ Run through this checklist on a clean local setup before sharing the pre-alpha w
 
 ---
 
-## Story 14 — Recent activity
+## Story 14 — History
 
 | Step | Action | Expected |
 |------|--------|----------|
-| 14.1 | Open `/activity` with no events | "No tending logged yet" empty state |
+| 14.1 | Open `/history` with no events | "No tending logged yet" empty state |
 | 14.2 | Mark items tended | Events appear with item name and date |
-| 14.3 | Edit event date from activity | Item status recalculates |
-| 14.4 | Delete event from activity | Item last tended updates from remaining history |
+| 14.3 | Edit event date from history | Item status recalculates |
+| 14.4 | Delete event from history | Item last tended updates from remaining history |
 
 ---
 

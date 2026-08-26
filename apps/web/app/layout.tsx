@@ -17,7 +17,7 @@ const body = Nunito({
 
 export const metadata: Metadata = {
   title: "Tend",
-  description: "A quiet companion for the recurring care that keeps you well.",
+  description: "A companion for the recurring care that keeps you well.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

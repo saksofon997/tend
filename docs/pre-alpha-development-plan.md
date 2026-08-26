@@ -345,7 +345,7 @@ All routes require session except register/login.
 | `/items/[id]` | Detail + edit |
 | `/presets` | Browse/add presets (or modal from home) |
 | `/settings/availability` | Weekly windows |
-| `/activity` | Recent tending history |
+| `/history` | Tended-date history (`/activity` redirects here) |
 
 ---
 

@@ -175,18 +175,7 @@
   }
 
   .tend-reflections-notebook {
-    display: grid;
-    gap: var(--tend-space-4);
-    max-height: min(44rem, calc(100dvh - 13rem));
-    overflow-y: auto;
-    padding-bottom: var(--tend-space-4);
-    scroll-snap-type: y mandatory;
-    scrollbar-gutter: stable;
-  }
-
-  .tend-reflections-notebook__page {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+    max-height: min(36rem, calc(100dvh - 14rem));
   }
 
   .tend-scene {

@@ -33,7 +33,7 @@ This spec is wired into Cursor change instructions:
 Per `docs/pre-alpha-development-plan.md`:
 
 - **Tailwind CSS 4** for utility styling
-- **shadcn-style primitives** in `components/ui/` (Button, Input, Select, Dialog, etc.)
+- **shadcn-style primitives** in `components/ui/` (Button, Input, Select, Calendar, Carousel, Dialog, etc.)
 - **CSS variables** from `tokens.css` as the single source of truth for color, type, and spacing
 
 Do not introduce a second token system. Extend theme variables to map to Tend tokens.

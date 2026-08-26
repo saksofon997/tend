@@ -3,6 +3,7 @@ import {
   APP_SHELL_HEADER_ROW_CLASS,
   APP_SHELL_NAV_CLASS,
   APP_SHELL_USER_MENU_SLOT_CLASS,
+  NAV_ITEMS,
 } from "@/components/layout/app-shell";
 
 describe("AppShell responsive header layout", () => {
@@ -15,5 +16,17 @@ describe("AppShell responsive header layout", () => {
     expect(APP_SHELL_NAV_CLASS).toContain("md:w-auto");
     expect(APP_SHELL_USER_MENU_SLOT_CLASS).toContain("ml-auto");
     expect(APP_SHELL_USER_MENU_SLOT_CLASS).toContain("shrink-0");
+  });
+
+  it("puts Reflections in primary nav and keeps Activity for desktop", () => {
+    expect(NAV_ITEMS.map((item) => item.href)).toEqual([
+      "/",
+      "/check-in",
+      "/reflections",
+      "/activity",
+      "/settings/availability",
+    ]);
+    const activity = NAV_ITEMS.find((item) => item.href === "/activity");
+    expect(activity && "hideOnMobile" in activity && activity.hideOnMobile).toBe(true);
   });
 });

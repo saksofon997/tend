@@ -35,7 +35,7 @@ describe("middleware public shell", () => {
   });
 
   it("redirects unauthenticated GET /activity to login", async () => {
-    for (const path of ["/activity", "/check-in"]) {
+    for (const path of ["/activity", "/check-in", "/reflections"]) {
       const response = await middleware(requestFor(path));
       expect(response.status).toBe(307);
       expect(response.headers.get("location")).toBe("http://localhost/login");
@@ -66,6 +66,7 @@ describe("middleware host split", () => {
       "/forgot-password",
       "/activity",
       "/check-in",
+      "/reflections",
       "/api/v1/health",
     ]) {
       const response = await middleware(requestFor(path, "tend.qzz.io"));

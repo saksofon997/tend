@@ -4,6 +4,7 @@ export type {
   ItemResponse,
   OnboardingStatusResponse,
   PushSubscriptionResponse,
+  ReflectionResponse,
   ReminderResponse,
   RemindersResponse,
   TendEventResponse,

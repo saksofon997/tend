@@ -125,6 +125,12 @@
   --tend-content-marketing: 68rem; /* 1088px — landing and marketing hero */
   --tend-nav-height: 3.5rem; /* 56px */
 
+  /* ── Reflections paper ─────────────────────────────────── */
+  --tend-paper: #f3eee4;
+  --tend-paper-line: rgba(92, 115, 82, 0.18);
+  --tend-paper-margin: rgba(166, 124, 107, 0.42);
+  --tend-paper-line-height: 1.75rem;
+
   /* ── shadcn mappings ───────────────────────────────────── */
   --background: var(--tend-bg);
   --foreground: var(--tend-text);

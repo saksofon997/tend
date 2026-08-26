@@ -1,4 +1,5 @@
 import {
+  date,
   integer,
   pgEnum,
   pgTable,
@@ -6,6 +7,7 @@ import {
   text,
   time,
   timestamp,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 
@@ -103,6 +105,26 @@ export const availabilityWindows = pgTable("availability_windows", {
   startTime: time("start_time").notNull(),
   endTime: time("end_time").notNull(),
 });
+
+export const reflections = pgTable(
+  "reflections",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    entryDate: date("entry_date", { mode: "string" }).notNull(),
+    body: text("body").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => ({
+    userEntryDateUnique: uniqueIndex("reflections_user_entry_date_unique").on(
+      table.userId,
+      table.entryDate,
+    ),
+  }),
+);
 
 export const pushSubscriptions = pgTable("push_subscriptions", {
   id: uuid("id").primaryKey().defaultRandom(),

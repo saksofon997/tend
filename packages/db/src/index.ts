@@ -55,6 +55,14 @@ export {
   type ActivityEventFilter,
 } from "./activity-filters";
 export {
+  deleteReflectionForUser,
+  getReflectionForUser,
+  listReflectionsForUser,
+  upsertReflectionForUser,
+  type ListReflectionsOptions,
+  type ReflectionRow,
+} from "./reflections";
+export {
   deletePushSubscriptionByToken,
   deletePushSubscriptionForUser,
   listPushSubscriptions,

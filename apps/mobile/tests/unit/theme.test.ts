@@ -9,4 +9,8 @@ describe("theme colors", () => {
   it("uses an opaque sun-ray gold matching the web scene token", () => {
     expect(colors.sunRay).toBe("rgb(255, 214, 140)");
   });
+
+  it("uses the same paper cream as the web reflections leaf", () => {
+    expect(colors.paper).toBe("#f3eee4");
+  });
 });

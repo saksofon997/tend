@@ -284,6 +284,13 @@ FAB or header "Add" → /items/new
 
 - Flat list: item name + tended date
 - Tap to correct — no streaks, no stats
+- On mobile web, reached from Check In rather than the primary nav
+
+### Reflections (`/reflections`)
+
+- One leaf per calendar day, up to 1000 characters
+- Date picker to jump; desktop month tiles; mobile notebook paging
+- Lined paper, never a score or streak
 
 ---
 

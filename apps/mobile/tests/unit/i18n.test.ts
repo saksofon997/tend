@@ -18,6 +18,8 @@ describe("mobile i18n", () => {
     setLocale("en");
     expect(t("home.empty.title")).toBe("Nothing to tend yet");
     expect(t("activity.empty.title")).toBe("No tending logged yet");
+    expect(t("reflections.title")).toBe("Reflections");
+    expect(t("nav.reflections")).toBe("Reflections");
     expect(t("activity.empty.filtered.title")).toBe("Nothing matches that look-up");
   });
 

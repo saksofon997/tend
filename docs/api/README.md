@@ -24,12 +24,14 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 | Notifications | [notifications.md](./notifications.md) | Push subscriptions and server-side notification job |
 | Settings | [settings.md](./settings.md) | User preferences such as timezone |
 | Check In | [check-in.md](./check-in.md) | Period-filtered tending summary |
+| Reflections | [reflections.md](./reflections.md) | One journal leaf per calendar day |
 | Onboarding | [onboarding.md](./onboarding.md) | First-run setup status |
 
 ## Changelog
 
 | Date | Change |
 |------|--------|
+| 2026-08-26 | Added Reflections endpoints (`GET /api/v1/reflections`, `GET`/`PUT`/`DELETE /api/v1/reflections/:date`) |
 | 2026-08-24 | Notification job sends at most one push per availability-window occurrence |
 | 2026-08-21 | Password-reset mail is sent from `noreply@tend.qzz.io`; reset links stay on the app host |
 | 2026-08-20 | Added `GET /api/v1/check-in` with week/month/90-day/all period filtering |

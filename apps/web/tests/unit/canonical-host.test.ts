@@ -66,6 +66,7 @@ describe("isMarketingPath", () => {
     expect(isMarketingPath("/privacy")).toBe(true);
     expect(isMarketingPath("/terms")).toBe(true);
     expect(isMarketingPath("/promo/tend-logo.png")).toBe(true);
+    expect(isMarketingPath("/scene/tend-scene-landscape.webp")).toBe(true);
   });
 
   it("blocks app and auth routes", () => {

@@ -102,7 +102,7 @@ interface AppShellProps {
 - Nav links: centered in the column; `text-sm`, muted default, primary color when active
 - User menu: `UserMenu` dropdown in the header trailing slot (sign out today; expandable)
 
-**Notes:** Hide full nav during onboarding. Auth pages use `AuthLayout` with `SiteFooter`. Page chrome sits on `TendSceneBackground` (linen, sun wash, grass).
+**Notes:** Hide full nav during onboarding. Auth pages use `AuthLayout` with `SiteFooter`. Page chrome sits on `TendSceneBackground` (illustrated meadow).
 
 ---
 
@@ -110,7 +110,7 @@ interface AppShellProps {
 
 **File:** `components/layout/tend-scene-background.tsx`
 
-Decorative linen weave, a quiet sunray wash from the top-left corner, and a few grass blades at the bottom (same blade path as mobile). `aria-hidden`. Used in `AppShell`, `AuthLayout`, `OnboardingLayout`, `LandingPage`, and `LegalPage`. Keep it faint — not a centered burst or a cartoon lawn.
+Decorative illustrated meadow: warm paper, sunrays from the top-left, grass and small flowers along the bottom. Landscape art (`/scene/tend-scene-landscape.webp`) on wide screens; portrait art (`/scene/tend-scene-portrait.webp`) when the viewport is taller than it is wide. `aria-hidden`. Used in `AppShell`, `AuthLayout`, `OnboardingLayout`, `LandingPage`, and `LegalPage`. Mobile uses the same portrait illustration in `SceneBackground`. Keep the art as a quiet backdrop — not a poster in front of the UI.
 
 ---
 

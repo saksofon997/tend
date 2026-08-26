@@ -16,7 +16,11 @@ import { ChevronDown, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function UserMenu() {
+interface UserMenuProps {
+  onOpenChange?: (open: boolean) => void;
+}
+
+export function UserMenu({ onOpenChange }: UserMenuProps) {
   const router = useRouter();
   const { locale, setLocale, t } = useI18n();
   const [signingOut, setSigningOut] = useState(false);
@@ -29,7 +33,7 @@ export function UserMenu() {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild>
         <Button
           type="button"

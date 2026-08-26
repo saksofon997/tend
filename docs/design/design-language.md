@@ -162,7 +162,7 @@ Use neutral chip styling; area-specific color is not required for MVP. If adding
 
 - **Content max width:** `640px` (`--tend-content-max`) for home and lists
 - **Form max width:** `768px` (`--tend-content-wide`) for item create/edit
-- **Mobile:** Full bleed with `16px` horizontal padding; no side nav
+- **Mobile:** Full bleed with `16px` horizontal padding; no side nav. On compact web viewports the AppShell header folds away while scrolling down and returns on scroll up.
 
 ### Section rhythm
 
@@ -198,6 +198,7 @@ Subtle and functional. No bounce, no confetti.
 | Focus ring | 120ms | `--tend-ease` |
 | Card hover bg | 200ms | `--tend-ease` |
 | Section expand | 200ms | `--tend-ease` |
+| Compact header fold | 200ms | `--tend-ease` |
 | Mark tended success | 320ms | opacity fade on card (optional) |
 
 Honor `prefers-reduced-motion: reduce` — tokens zero out durations.

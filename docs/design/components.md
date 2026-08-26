@@ -102,7 +102,7 @@ interface AppShellProps {
 - Nav links: centered in the column; `text-sm`, muted default, primary color when active
 - User menu: `UserMenu` dropdown in the header trailing slot (sign out today; expandable)
 
-**Notes:** Hide full nav during onboarding. Auth pages use `AuthLayout` with `SiteFooter`. Page chrome sits on `TendSceneBackground` (illustrated meadow).
+**Notes:** Hide full nav during onboarding. Auth pages use `AuthLayout` with `SiteFooter`. Page chrome sits on `TendSceneBackground` (illustrated meadow). On compact web viewports, the header slides away while scrolling down and returns on scroll up; desktop stays pinned.
 
 ---
 

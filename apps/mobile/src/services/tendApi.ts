@@ -4,6 +4,7 @@ import type {
   ItemResponse,
   OnboardingStatusResponse,
   PushSubscriptionResponse,
+  ReflectionResponse,
   RemindersResponse,
   TendEventResponse,
   UserResponse,
@@ -15,6 +16,7 @@ import { type ActivityListParams, buildActivityListQuery } from "@utils/activity
 import { resolveStoredApiBaseUrl } from "@utils/apiBaseUrl";
 import { isDevMode } from "@utils/devMode";
 import { toNetworkApiError } from "@utils/networkError";
+import { buildReflectionsQuery } from "@utils/reflections";
 import { storage } from "@utils/storage";
 import Constants from "expo-constants";
 import { Platform } from "react-native";
@@ -183,6 +185,19 @@ export class TendApi {
     return this.request<{ period: CheckInPeriod; summary: CheckInSummary }>(
       `/api/v1/check-in?period=${period}`,
     );
+  }
+
+  async listReflections(from?: string, to?: string) {
+    return this.request<{ entries: ReflectionResponse[] }>(
+      `/api/v1/reflections${buildReflectionsQuery(from, to)}`,
+    );
+  }
+
+  async saveReflection(entryDate: string, body: string) {
+    return this.request<{ entry: ReflectionResponse | null }>(`/api/v1/reflections/${entryDate}`, {
+      method: "PUT",
+      body: { body },
+    });
   }
 
   async listActivity(limitOrOptions?: number | ActivityListParams) {

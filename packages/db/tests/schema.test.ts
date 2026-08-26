@@ -3,6 +3,7 @@ import {
   lifeAreaEnum,
   passwordResetTokens,
   pushSubscriptions,
+  reflections,
   tendItemTypeEnum,
   tendItems,
   tendStatusEnum,
@@ -44,6 +45,12 @@ describe("schema enums", () => {
 
   it("defines optional friend sharing on tend items", () => {
     expect(tendItems.sharedWithUserId.name).toBe("shared_with_user_id");
+  });
+
+  it("defines one reflection leaf per user and calendar day", () => {
+    expect(reflections.entryDate.name).toBe("entry_date");
+    expect(reflections.body.name).toBe("body");
+    expect(reflections.userId.name).toBe("user_id");
   });
 
   it("defines password reset tokens", () => {

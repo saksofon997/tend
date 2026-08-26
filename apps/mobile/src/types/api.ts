@@ -42,6 +42,14 @@ export interface ActivityEntryResponse {
   createdAt: string;
 }
 
+export interface ReflectionResponse {
+  id: string;
+  entryDate: string;
+  body: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface TendEventResponse {
   id: string;
   itemId: string;

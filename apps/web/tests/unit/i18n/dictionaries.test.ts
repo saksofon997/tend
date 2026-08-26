@@ -14,6 +14,8 @@ describe("web i18n dictionaries", () => {
 
   it("includes Serbian shell and landing copy", () => {
     expect(dictionaries.sr["nav.home"]).toBe("Početna");
+    expect(dictionaries.sr["nav.reflections"]).toBe("Osvrti");
+    expect(dictionaries.en["reflections.title"]).toBe("Reflections");
     expect(dictionaries.sr["activity.empty.title"]).toBe("Još nema zabeleženih aktivnosti");
     expect(dictionaries.sr["activity.search.title"]).toBe("Pretraži aktivnost");
     expect(dictionaries.sr["activity.search.namePlaceholder"]).toBe("Pretraži tend");

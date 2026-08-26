@@ -16,6 +16,7 @@ import { keyboardAvoidingBehavior } from "@/utils/keyboardAvoidance";
 import { formatRelativeFromDays } from "@/utils/relativeTime";
 import { reminderItemIdsKey, selectReminderBannerItems } from "@/utils/reminderBanner";
 import {
+  type AppScreenKey,
   type TabKey,
   getTabTransitionTarget,
   resolveHardwareBackAction,
@@ -47,6 +48,7 @@ import {
   lifeAreaLabel,
   t,
 } from "@i18n";
+import { ReflectionsScreen } from "@screens/reflections-screen";
 import {
   CHECK_IN_PERIODS,
   PRESETS_BY_AREA,
@@ -72,7 +74,7 @@ import { timeOptionsAfter } from "@utils/timeOptions";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import {
-  Activity,
+  BookOpen,
   CalendarClock,
   CalendarDays,
   ChartNoAxesColumn,
@@ -118,7 +120,7 @@ import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from "react-native-
 function tabItems() {
   return [
     { key: "home", label: t("nav.home"), Icon: Home },
-    { key: "activity", label: t("nav.activity"), Icon: Activity },
+    { key: "reflections", label: t("nav.reflections"), Icon: BookOpen },
     { key: "add", label: t("nav.add"), Icon: Plus },
     { key: "checkIn", label: t("nav.checkIn"), Icon: ChartNoAxesColumn },
     { key: "settings", label: t("nav.settings"), Icon: Settings },
@@ -566,7 +568,7 @@ function AuthedApp({
   user: UserResponse;
   onSignedOut: () => void;
 }) {
-  const [activeTab, setActiveTab] = useState<TabKey>("home");
+  const [activeTab, setActiveTab] = useState<AppScreenKey>("home");
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -591,8 +593,12 @@ function AuthedApp({
             return <HomeScreen api={api} user={user} />;
           }
 
+          if (tab === "reflections") {
+            return <ReflectionsScreen api={api} />;
+          }
+
           if (tab === "activity") {
-            return <ActivityScreen api={api} />;
+            return <ActivityScreen api={api} onBack={() => setActiveTab("checkIn")} />;
           }
 
           if (tab === "add") {
@@ -600,7 +606,7 @@ function AuthedApp({
           }
 
           if (tab === "checkIn") {
-            return <CheckInScreen api={api} />;
+            return <CheckInScreen api={api} onOpenActivity={() => setActiveTab("activity")} />;
           }
 
           return (
@@ -623,8 +629,8 @@ function AnimatedTabScreen({
   activeTab,
   children,
 }: {
-  activeTab: TabKey;
-  children: (tab: TabKey) => ReactNode;
+  activeTab: AppScreenKey;
+  children: (tab: AppScreenKey) => ReactNode;
 }) {
   const previousTab = useRef(activeTab);
   const opacity = useRef(new Animated.Value(1)).current;
@@ -680,14 +686,14 @@ function AnimatedTabScreen({
 function BottomBar({
   activeTab,
   onChange,
-}: { activeTab: TabKey; onChange: (tab: TabKey) => void }) {
+}: { activeTab: AppScreenKey; onChange: (tab: TabKey) => void }) {
   const insets = useSafeAreaInsets();
   const items = tabItems();
 
   return (
     <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, spacing.sm) }]}>
       {items.map(({ key, label, Icon }) => {
-        const active = activeTab === key;
+        const active = activeTab === key || (key === "checkIn" && activeTab === "activity");
         const isAdd = key === "add";
 
         return (
@@ -1754,7 +1760,7 @@ function HomeScreen({ api, user }: { api: TendApi; user: UserResponse }) {
   );
 }
 
-function ActivityScreen({ api }: { api: TendApi }) {
+function ActivityScreen({ api, onBack }: { api: TendApi; onBack?: () => void }) {
   const [name, setName] = useState("");
   const [debouncedName, setDebouncedName] = useState("");
   const [type, setType] = useState<"" | "must" | "want">("");
@@ -1805,6 +1811,11 @@ function ActivityScreen({ api }: { api: TendApi }) {
   return (
     <ScreenScroll>
       <View style={styles.pageHeader}>
+        {onBack ? (
+          <Pressable accessibilityRole="button" onPress={onBack} style={styles.modalBackButton}>
+            <Text style={styles.onboardingGhostButtonText}>{t("onboarding.back")}</Text>
+          </Pressable>
+        ) : null}
         <Text style={styles.pageTitle}>{t("activity.title")}</Text>
         <Text style={styles.pageSubtitle}>{t("activity.subtitle")}</Text>
       </View>
@@ -1926,7 +1937,7 @@ const CHECK_IN_PERIOD_LABELS = {
   all: "checkIn.period.all",
 } as const;
 
-function CheckInScreen({ api }: { api: TendApi }) {
+function CheckInScreen({ api, onOpenActivity }: { api: TendApi; onOpenActivity: () => void }) {
   const [period, setPeriod] = useState<CheckInPeriod>("week");
   const [summary, setSummary] = useState<CheckInSummary | null>(null);
   const [loading, setLoading] = useState(true);
@@ -1975,6 +1986,18 @@ function CheckInScreen({ api }: { api: TendApi }) {
         <Text style={styles.pageTitle}>{t("checkIn.title")}</Text>
         <Text style={styles.pageSubtitle}>{t("checkIn.subtitle")}</Text>
       </View>
+
+      <Pressable
+        accessibilityRole="button"
+        onPress={onOpenActivity}
+        style={styles.activityLinkButton}
+      >
+        <ListChecks size={18} color={colors.primary} />
+        <View style={styles.activityLinkCopy}>
+          <Text style={styles.activityLinkTitle}>{t("checkIn.openActivity")}</Text>
+          <Text style={styles.activityLinkHint}>{t("checkIn.openActivity.hint")}</Text>
+        </View>
+      </Pressable>
 
       <View
         accessibilityRole="tablist"
@@ -3437,6 +3460,35 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 14,
     lineHeight: 20,
+    marginTop: spacing.xs,
+  },
+  activityLinkButton: {
+    alignItems: "center",
+    backgroundColor: colors.card,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    flexDirection: "row",
+    gap: spacing.md,
+    marginBottom: spacing.xl,
+    minHeight: 44,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+  },
+  activityLinkCopy: {
+    flex: 1,
+    minWidth: 0,
+  },
+  activityLinkTitle: {
+    color: colors.text,
+    fontFamily: fonts.bodyMedium,
+    fontSize: 15,
+  },
+  activityLinkHint: {
+    color: colors.textMuted,
+    fontFamily: fonts.body,
+    fontSize: 13,
+    lineHeight: 18,
     marginTop: spacing.xs,
   },
   section: {

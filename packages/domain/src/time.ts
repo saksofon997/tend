@@ -19,6 +19,70 @@ export function isCalendarDate(value: string): boolean {
   );
 }
 
+function padCalendarPart(value: number): string {
+  return String(value).padStart(2, "0");
+}
+
+export function formatCalendarDate(year: number, month: number, day: number): string {
+  return `${String(year).padStart(4, "0")}-${padCalendarPart(month)}-${padCalendarPart(day)}`;
+}
+
+export function calendarDateParts(value: string): { year: number; month: number; day: number } {
+  if (!isCalendarDate(value)) {
+    throw new Error(`Invalid calendar date: ${value}`);
+  }
+
+  const [year, month, day] = value.split("-").map(Number);
+  return { year, month, day };
+}
+
+/** Local calendar day of `date`, or the day in `timeZone` when provided. */
+export function calendarDateString(date: Date, timeZone?: string): string {
+  if (timeZone) {
+    const parts = zonedParts(date, timeZone);
+    return formatCalendarDate(parts.year, parts.month, parts.day);
+  }
+
+  return formatCalendarDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
+}
+
+export function shiftCalendarDate(value: string, days: number): string {
+  const { year, month, day } = calendarDateParts(value);
+  const shifted = new Date(Date.UTC(year, month - 1, day + days));
+  return formatCalendarDate(
+    shifted.getUTCFullYear(),
+    shifted.getUTCMonth() + 1,
+    shifted.getUTCDate(),
+  );
+}
+
+export function calendarDatesInclusive(from: string, to: string): string[] {
+  if (!isCalendarDate(from) || !isCalendarDate(to) || from > to) {
+    return [];
+  }
+
+  const dates: string[] = [];
+  let current = from;
+  while (current <= to) {
+    dates.push(current);
+    current = shiftCalendarDate(current, 1);
+    if (dates.length > 4000) {
+      break;
+    }
+  }
+
+  return dates;
+}
+
+export function shiftYearMonth(
+  year: number,
+  month: number,
+  deltaMonths: number,
+): { year: number; month: number } {
+  const shifted = new Date(Date.UTC(year, month - 1 + deltaMonths, 1));
+  return { year: shifted.getUTCFullYear(), month: shifted.getUTCMonth() + 1 };
+}
+
 export function daysBetween(earlier: Date, later: Date): number {
   return Math.floor((later.getTime() - earlier.getTime()) / MS_PER_DAY);
 }

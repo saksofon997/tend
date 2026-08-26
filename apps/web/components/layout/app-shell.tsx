@@ -14,10 +14,11 @@ interface AppShellProps {
   activePath?: string;
 }
 
-const NAV_ITEMS = [
+export const NAV_ITEMS = [
   { href: "/", labelKey: "nav.home" },
   { href: "/check-in", labelKey: "nav.checkIn" },
-  { href: "/activity", labelKey: "nav.activity" },
+  { href: "/reflections", labelKey: "nav.reflections" },
+  { href: "/activity", labelKey: "nav.activity", hideOnMobile: true },
   { href: "/settings/availability", labelKey: "nav.availability" },
 ] as const;
 
@@ -46,6 +47,7 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
                 href={item.href}
                 className={cn(
                   "text-sm transition-colors duration-[var(--tend-duration-fast)]",
+                  "hideOnMobile" in item && item.hideOnMobile ? "hidden md:inline" : null,
                   activePath === item.href
                     ? "font-medium text-primary"
                     : "text-muted-foreground hover:text-foreground",

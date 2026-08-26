@@ -3,6 +3,7 @@
 import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/layout/page-header";
 import { CheckInPeriodFilter } from "@/components/tend/check-in-period-filter";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n/client";
 import { LIFE_AREA_TRANSLATION_KEYS, WEEKDAY_TRANSLATION_KEYS } from "@/lib/i18n/labels";
@@ -10,6 +11,7 @@ import { cn } from "@/lib/utils";
 import type { CheckInPeriod, CheckInSummary } from "@tend/domain";
 import { weeklySupportTone } from "@tend/domain";
 import { CalendarDays, HeartHandshake, Leaf, ListChecks, Sprout, SunMedium } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -36,6 +38,16 @@ export function CheckInView({ user, period, summary }: CheckInViewProps) {
       <PageHeader title={t("checkIn.title")} subtitle={t("checkIn.subtitle")} />
 
       <div className="flex flex-col gap-5">
+        <div className="md:hidden">
+          <Button asChild variant="secondary" className="w-full justify-start">
+            <Link href="/activity">
+              <ListChecks aria-hidden className="size-4" />
+              {t("checkIn.openActivity")}
+            </Link>
+          </Button>
+          <p className="mt-2 text-muted-foreground text-sm">{t("checkIn.openActivity.hint")}</p>
+        </div>
+
         <CheckInPeriodFilter
           period={period}
           onChange={(nextPeriod) => {

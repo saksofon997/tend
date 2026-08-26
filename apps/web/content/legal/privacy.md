@@ -9,6 +9,7 @@ When you create an account and use Tend, we store:
 - Your email address and display name
 - A hashed password (we never store plain-text passwords)
 - Tend items you create (title, type, rhythm, life area, notes)
+- Reflection journal leaves you write (one short page per calendar day)
 - Tend events (when you mark something tended)
 - Your availability windows and reminder preferences
 - Session cookies used to keep you signed in
@@ -29,7 +30,7 @@ These providers process data on our behalf to deliver the service.
 
 ## Retention and deletion
 
-We keep your data while your account is active. You can request account deletion from settings (when available) or by contacting us. Deletion removes your account and associated items, events, and settings.
+We keep your data while your account is active. You can request account deletion from settings (when available) or by contacting us. Deletion removes your account and associated items, reflection leaves, events, and settings.
 
 ## Contact
 

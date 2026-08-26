@@ -47,6 +47,9 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [EmptyState](#emptystate) | `tend/empty-state.tsx` | 5, 14 |
 | [CheckInView](#checkinview) | `tend/check-in-view.tsx` | Check In |
 | [CheckInPeriodFilter](#checkinperiodfilter) | `tend/check-in-period-filter.tsx` | Check In |
+| [ReflectionsView](#reflectionsview) | `tend/reflections-view.tsx` | Reflections |
+| [ReflectionLeaf](#reflectionleaf) | `tend/reflection-leaf.tsx` | Reflections |
+| [ReflectionsMonthGrid](#reflectionsmonthgrid) | `tend/reflections-month-grid.tsx` | Reflections |
 | [ActivityListItem](#activitylistitem) | `tend/activity-list-item.tsx` | 14 |
 | [ActivityFilters](#activityfilters) | `tend/activity-filters.tsx` | 14 |
 | [AvailabilityEditor](#availabilityeditor) | `forms/availability-editor.tsx` | 10 |
@@ -79,7 +82,7 @@ interface AppShellProps {
 **Anatomy:**
 ```
 ┌──────────────────────────────────────────────┐
-│ [Tend logo]     Home  Activity  Settings  ▾  │  ← header, h-14, border-b
+│ [Tend logo]  Home  Check In  Reflections  ▾  │  ← Activity is desktop-only
 ├──────────────────────────────────────────────┤
 │  {children}                                   │
 ├──────────────────────────────────────────────┤
@@ -761,6 +764,7 @@ interface EmptyStateProps {
 **Anatomy:**
 ```
 PageHeader
+Recent activity (mobile web only; desktop uses nav)
 Period filter (week / month / 90 days / all)
 Gentle qualitative note
 Summary stat cards (tending logged, days with care, shared)
@@ -771,11 +775,43 @@ Right now attention mix
 
 **Copy constraints:** No streaks, rankings, alarm language, or productivity-style performance framing. Use tending moments, shared care, weekdays, and current attention mix. Period filtering changes history stats only; "Right now" stays current.
 
+A **Recent activity** button sits near the top so mobile web can reach `/activity` after Activity left the primary nav.
+
 ### CheckInPeriodFilter
 
 **File:** `components/tend/check-in-period-filter.tsx`
 
 Quiet chip row for `week`, `month`, `ninety`, and `all`. Used on Check In and the marketing Check In preview. Minimum hit target 44px.
+
+---
+
+### ReflectionsView
+
+**File:** `components/tend/reflections-view.tsx`
+
+**Purpose:** One journal leaf per calendar day. Desktop shows a month of paper tiles plus an editor. Mobile web uses a snapping notebook of full leaves.
+
+**Anatomy:**
+```
+PageHeader
+Date picker + today's page
+Desktop: month nav + tile grid + selected leaf editor
+Mobile: snapping notebook pages
+```
+
+Lined paper (`tend-paper-leaf`) with a faint grain and a margin rule. Copy stays invitational — never overdue, streaks, or missed-day language. Max 1000 characters.
+
+### ReflectionLeaf
+
+**File:** `components/tend/reflection-leaf.tsx`
+
+Lined paper page with a display-font textarea, date heading, and a quiet character count.
+
+### ReflectionsMonthGrid
+
+**File:** `components/tend/reflections-month-grid.tsx`
+
+Sunday-first month of paper tiles. Written days show a short preview; blank days stay empty leaves. Hidden below the `md` breakpoint.
 
 ---
 

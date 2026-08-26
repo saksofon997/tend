@@ -12,8 +12,8 @@ describe("getTabSwitchDirection", () => {
   });
 
   it("returns 1 when moving to a later tab", () => {
-    expect(getTabSwitchDirection("home", "activity")).toBe(1);
-    expect(getTabSwitchDirection("activity", "settings")).toBe(1);
+    expect(getTabSwitchDirection("home", "reflections")).toBe(1);
+    expect(getTabSwitchDirection("reflections", "settings")).toBe(1);
   });
 
   it("returns -1 when moving to an earlier tab", () => {
@@ -24,7 +24,7 @@ describe("getTabSwitchDirection", () => {
 
 describe("getTabTransition", () => {
   it("keeps ordinary tab switches horizontal", () => {
-    expect(getTabTransition("home", "activity")).toEqual({
+    expect(getTabTransition("home", "reflections")).toEqual({
       axis: "x",
       enterOffset: 18,
       exitOffset: -18,
@@ -76,5 +76,9 @@ describe("resolveHardwareBackAction", () => {
   it("returns to home from secondary tabs instead of letting Android quit the app", () => {
     expect(resolveHardwareBackAction("add")).toEqual({ consume: true, nextTab: "home" });
     expect(resolveHardwareBackAction("settings")).toEqual({ consume: true, nextTab: "home" });
+  });
+
+  it("returns to Check In from the activity screen", () => {
+    expect(resolveHardwareBackAction("activity")).toEqual({ consume: true, nextTab: "checkIn" });
   });
 });

@@ -114,6 +114,81 @@
     border-radius: var(--tend-radius-thought-inset);
   }
 
+  .tend-paper-leaf {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--tend-paper);
+    background-image: radial-gradient(rgba(44, 41, 37, 0.04) 0.55px, transparent 0.7px),
+      linear-gradient(
+        to right,
+        transparent 0,
+        transparent 1.65rem,
+        var(--tend-paper-margin) 1.65rem,
+        var(--tend-paper-margin) calc(1.65rem + 1px),
+        transparent calc(1.65rem + 1px)
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent calc(var(--tend-paper-line-height) - 1px),
+        var(--tend-paper-line) calc(var(--tend-paper-line-height) - 1px),
+        var(--tend-paper-line) var(--tend-paper-line-height)
+      );
+    background-position: 0 0, 0 0, 0 var(--tend-paper-line-offset, 2.75rem);
+    background-size: 2.5px 2.5px, 100% 100%, 100% var(--tend-paper-line-height);
+    box-shadow: var(--tend-shadow-sm);
+  }
+
+  .tend-paper-leaf--tile {
+    --tend-paper-line-height: 0.85rem;
+    --tend-paper-line-offset: 1.65rem;
+    background-image: radial-gradient(rgba(44, 41, 37, 0.04) 0.55px, transparent 0.7px),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent calc(var(--tend-paper-line-height) - 1px),
+        var(--tend-paper-line) calc(var(--tend-paper-line-height) - 1px),
+        var(--tend-paper-line) var(--tend-paper-line-height)
+      );
+    background-position: 0 0, 0 var(--tend-paper-line-offset);
+    background-size: 2.5px 2.5px, 100% var(--tend-paper-line-height);
+  }
+
+  .tend-paper-leaf__input {
+    display: block;
+    width: 100%;
+    min-height: 16.5rem;
+    resize: none;
+    border: 0;
+    background: transparent;
+    padding: 0.15rem 1rem 1.25rem 2.25rem;
+    color: var(--tend-text);
+    font-family: var(--tend-font-display);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: var(--tend-paper-line-height);
+    outline: none;
+  }
+
+  .tend-paper-leaf__input::placeholder {
+    color: var(--tend-text-subtle);
+  }
+
+  .tend-reflections-notebook {
+    display: grid;
+    gap: var(--tend-space-4);
+    max-height: min(44rem, calc(100dvh - 13rem));
+    overflow-y: auto;
+    padding-bottom: var(--tend-space-4);
+    scroll-snap-type: y mandatory;
+    scrollbar-gutter: stable;
+  }
+
+  .tend-reflections-notebook__page {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
   .tend-scene {
     pointer-events: none;
     position: fixed;

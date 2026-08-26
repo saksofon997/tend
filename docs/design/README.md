@@ -57,7 +57,7 @@ When adding a pattern used in more than one place:
 
 ## Implementation status
 
-Foundation, attention home, item detail, availability, in-app reminders, activity, and confirm dialogs are implemented. Extend `components.md` when adding catalog entries; do not rebuild those screens from scratch.
+Foundation, attention home, item detail, availability, in-app reminders, activity, check in, and reflections are implemented. Extend `components.md` when adding catalog entries; do not rebuild those screens from scratch.
 
 ## File layout
 

@@ -29,3 +29,27 @@ export function calendarDisabledMatchers(
 
   return matchers;
 }
+
+export function isSameLocalYearMonth(left: Date, right: Date): boolean {
+  return left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth();
+}
+
+/** Keep the existing Date when DayPicker reports the same visible month. */
+export function retainMonthIfUnchanged(current: Date, next: Date): Date {
+  return isSameLocalYearMonth(current, next) ? current : next;
+}
+
+export function visibleMonthFromLocalDate(date: Date): { year: number; month: number } {
+  return { year: date.getFullYear(), month: date.getMonth() + 1 };
+}
+
+export function nextVisibleMonth(
+  current: { year: number; month: number },
+  nextDate: Date,
+): { year: number; month: number } | null {
+  const next = visibleMonthFromLocalDate(nextDate);
+  if (next.year === current.year && next.month === current.month) {
+    return null;
+  }
+  return next;
+}

@@ -8,17 +8,8 @@ import { REFLECTION_BODY_MAX_LENGTH, notebookDates, shiftCalendarDate } from "@t
 import { getErrorMessage } from "@utils/networkError";
 import { replaceReflectionEntry } from "@utils/reflections";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  useWindowDimensions,
-} from "react-native";
-import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import PagerView from "react-native-pager-view";
 
 function dayKind(entryDate: string, today: string): "today" | "yesterday" | "other" {
   if (entryDate === today) {
@@ -41,9 +32,7 @@ function formatOtherDate(value: string) {
 
 export function ReflectionsScreen({ api }: { api: TendApi }) {
   const today = todayDateInputValue();
-  const { height } = useWindowDimensions();
-  const pageHeight = Math.max(420, height - 220);
-  const listRef = useRef<FlatList<string>>(null);
+  const pagerRef = useRef<PagerView>(null);
   const saveTimers = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
   const [entries, setEntries] = useState<ReflectionResponse[]>([]);
   const [drafts, setDrafts] = useState<Record<string, string>>({});
@@ -130,15 +119,7 @@ export function ReflectionsScreen({ api }: { api: TendApi }) {
     setSelectedDate(nextDate);
     const index = pages.indexOf(nextDate);
     if (index >= 0) {
-      listRef.current?.scrollToIndex({ index, animated: true });
-    }
-  }
-
-  function handleMomentumScrollEnd(event: NativeSyntheticEvent<NativeScrollEvent>) {
-    const index = Math.round(event.nativeEvent.contentOffset.y / pageHeight);
-    const nextDate = pages[index];
-    if (nextDate) {
-      setSelectedDate(nextDate);
+      pagerRef.current?.setPage(index);
     }
   }
 
@@ -194,29 +175,22 @@ export function ReflectionsScreen({ api }: { api: TendApi }) {
           <Text style={styles.subtitle}>{t("common.loadingReflections")}</Text>
         </View>
       ) : (
-        <FlatList
-          ref={listRef}
-          data={pages}
-          keyExtractor={(item) => item}
-          pagingEnabled
-          decelerationRate="fast"
-          showsVerticalScrollIndicator={false}
-          initialScrollIndex={selectedIndex}
-          getItemLayout={(_, index) => ({
-            length: pageHeight,
-            offset: pageHeight * index,
-            index,
-          })}
-          onMomentumScrollEnd={handleMomentumScrollEnd}
-          onScrollToIndexFailed={({ index }) => {
-            requestAnimationFrame(() => {
-              listRef.current?.scrollToIndex({ index, animated: false });
-            });
+        <PagerView
+          ref={pagerRef}
+          style={styles.pager}
+          orientation="vertical"
+          initialPage={selectedIndex}
+          onPageSelected={(event) => {
+            const nextDate = pages[event.nativeEvent.position];
+            if (nextDate) {
+              setSelectedDate(nextDate);
+            }
           }}
-          renderItem={({ item }) => {
+        >
+          {pages.map((item) => {
             const body = bodies.get(item) ?? "";
             return (
-              <View style={[styles.page, { height: pageHeight }]}>
+              <View key={item} collapsable={false} style={styles.page}>
                 <PaperLeaf
                   dateLabel={labelFor(item)}
                   body={body}
@@ -224,8 +198,8 @@ export function ReflectionsScreen({ api }: { api: TendApi }) {
                 />
               </View>
             );
-          }}
-        />
+          })}
+        </PagerView>
       )}
     </View>
   );
@@ -345,7 +319,11 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     paddingTop: spacing.xxxl,
   },
+  pager: {
+    flex: 1,
+  },
   page: {
+    flex: 1,
     paddingHorizontal: spacing.lg,
     paddingBottom: spacing.md,
   },

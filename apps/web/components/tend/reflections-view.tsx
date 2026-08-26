@@ -7,17 +7,18 @@ import { ReflectionLeaf } from "@/components/tend/reflection-leaf";
 import { ReflectionsMonthGrid } from "@/components/tend/reflections-month-grid";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import { Label } from "@/components/ui/label";
 import { formatDatePickerLabel } from "@/lib/design/relative-time";
 import { useI18n } from "@/lib/i18n/client";
 import { entriesByDate, reflectionDayKind, todayCalendarDate } from "@/lib/reflections/dates";
 import type { ReflectionResponse } from "@/lib/reflections/serialize";
-import {
-  REFLECTION_BODY_MAX_LENGTH,
-  notebookDates,
-  reflectionMonthLabelParts,
-  shiftYearMonth,
-} from "@tend/domain";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { REFLECTION_BODY_MAX_LENGTH, notebookDates, reflectionMonthLabelParts } from "@tend/domain";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 interface ReflectionsViewProps {
@@ -36,8 +37,8 @@ export function ReflectionsView({ user, initialEntries }: ReflectionsViewProps) 
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [error, setError] = useState<string | null>(null);
+  const [notebookApi, setNotebookApi] = useState<CarouselApi>();
   const saveTimers = useRef<Record<string, number>>({});
-  const notebookRef = useRef<HTMLDivElement>(null);
   const selectedDateRef = useRef(selectedDate);
   const didScrollNotebookToToday = useRef(false);
   selectedDateRef.current = selectedDate;
@@ -112,16 +113,12 @@ export function ReflectionsView({ user, initialEntries }: ReflectionsViewProps) 
     queueSave(entryDate, body);
   }
 
-  function selectDate(nextDate: string, options: { scrollNotebook?: boolean } = {}) {
+  function selectDate(nextDate: string) {
     setSelectedDate(nextDate);
     setVisibleMonth(reflectionMonthLabelParts(nextDate));
-    if (options.scrollNotebook !== false) {
-      requestAnimationFrame(() => {
-        document.getElementById(`reflection-page-${nextDate}`)?.scrollIntoView({
-          block: "start",
-          behavior: "auto",
-        });
-      });
+    const index = notebookPages.indexOf(nextDate);
+    if (index >= 0) {
+      notebookApi?.scrollTo(index);
     }
   }
 
@@ -134,44 +131,33 @@ export function ReflectionsView({ user, initialEntries }: ReflectionsViewProps) 
   }, []);
 
   useEffect(() => {
-    const root = notebookRef.current;
-    if (!root) {
+    if (!notebookApi) {
       return;
     }
 
     if (!didScrollNotebookToToday.current) {
-      const todayPage = document.getElementById(`reflection-page-${today}`);
-      todayPage?.scrollIntoView({ block: "start", behavior: "auto" });
-      didScrollNotebookToToday.current = true;
-    }
-
-    const observer = new IntersectionObserver(
-      (observed) => {
-        const visible = observed
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        const date = visible?.target.getAttribute("data-date");
-        if (date && date !== selectedDateRef.current) {
-          setSelectedDate(date);
-        }
-      },
-      { root, threshold: 0.55 },
-    );
-
-    for (const date of notebookPages) {
-      const page = document.getElementById(`reflection-page-${date}`);
-      if (page) {
-        observer.observe(page);
+      const todayIndex = notebookPages.indexOf(today);
+      if (todayIndex >= 0) {
+        notebookApi.scrollTo(todayIndex, true);
+        didScrollNotebookToToday.current = true;
       }
     }
 
-    return () => observer.disconnect();
-  }, [notebookPages, today]);
+    function syncSelectedFromNotebook(api: NonNullable<CarouselApi>) {
+      const date = notebookPages[api.selectedScrollSnap()];
+      if (date && date !== selectedDateRef.current) {
+        setSelectedDate(date);
+        setVisibleMonth(reflectionMonthLabelParts(date));
+      }
+    }
 
-  const monthLabel = new Date(visibleMonth.year, visibleMonth.month - 1, 1).toLocaleDateString(
-    locale === "sr" ? "sr-RS" : "en-US",
-    { month: "long", year: "numeric" },
-  );
+    syncSelectedFromNotebook(notebookApi);
+    notebookApi.on("select", syncSelectedFromNotebook);
+
+    return () => {
+      notebookApi.off("select", syncSelectedFromNotebook);
+    };
+  }, [notebookApi, notebookPages, today]);
 
   function dayLabel(date: string) {
     const kind = reflectionDayKind(date, today);
@@ -198,9 +184,12 @@ export function ReflectionsView({ user, initialEntries }: ReflectionsViewProps) 
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-end gap-3">
           <div className="min-w-48 flex-1">
-            <label className="mb-1 block text-muted-foreground text-xs" htmlFor="reflection-date">
+            <Label
+              htmlFor="reflection-date"
+              className="mb-1 block text-muted-foreground text-xs font-normal"
+            >
               {t("reflections.chooseDate")}
-            </label>
+            </Label>
             <DatePickerField id="reflection-date" value={selectedDate} onChange={selectDate} />
           </div>
           <Button type="button" variant="secondary" onClick={() => selectDate(today)}>
@@ -221,34 +210,6 @@ export function ReflectionsView({ user, initialEntries }: ReflectionsViewProps) 
           </Alert>
         ) : null}
 
-        <div className="hidden items-center justify-between gap-3 md:flex">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className="min-h-11 min-w-11"
-            onClick={() =>
-              setVisibleMonth((current) => shiftYearMonth(current.year, current.month, -1))
-            }
-            aria-label={t("reflections.previousMonth")}
-          >
-            <ChevronLeft className="size-4" aria-hidden />
-          </Button>
-          <p className="font-display text-lg text-foreground capitalize">{monthLabel}</p>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className="min-h-11 min-w-11"
-            onClick={() =>
-              setVisibleMonth((current) => shiftYearMonth(current.year, current.month, 1))
-            }
-            aria-label={t("reflections.nextMonth")}
-          >
-            <ChevronRight className="size-4" aria-hidden />
-          </Button>
-        </div>
-
         <ReflectionsMonthGrid
           year={visibleMonth.year}
           month={visibleMonth.month}
@@ -256,6 +217,7 @@ export function ReflectionsView({ user, initialEntries }: ReflectionsViewProps) 
           today={today}
           bodies={storedBodies}
           onSelect={selectDate}
+          onMonthChange={setVisibleMonth}
         />
 
         <div className="hidden md:block">
@@ -269,35 +231,41 @@ export function ReflectionsView({ user, initialEntries }: ReflectionsViewProps) 
           />
         </div>
 
-        <div
-          ref={notebookRef}
+        <Carousel
+          orientation="vertical"
+          setApi={setNotebookApi}
+          opts={{
+            align: "start",
+            containScroll: "trimSnaps",
+            watchDrag: (_api, event) => {
+              const target = event.target;
+              return !(target instanceof HTMLElement && target.closest("textarea"));
+            },
+          }}
           className="tend-reflections-notebook md:hidden"
           aria-label={t("reflections.notebook")}
         >
-          {notebookPages.map((date) => {
-            const body = storedBodies.get(date) ?? "";
-            return (
-              <div
-                key={date}
-                id={`reflection-page-${date}`}
-                data-date={date}
-                className="tend-reflections-notebook__page"
-              >
-                <ReflectionLeaf
-                  id={`reflection-notebook-${date}`}
-                  dateLabel={dayLabel(date)}
-                  body={body}
-                  placeholder={t("reflections.placeholder")}
-                  onChange={(next) => {
-                    selectDate(date);
-                    handleBodyChange(date, next);
-                  }}
-                  characterCountLabel={characterCountLabel(body)}
-                />
-              </div>
-            );
-          })}
-        </div>
+          <CarouselContent className="h-[min(36rem,calc(100dvh-14rem))]">
+            {notebookPages.map((date) => {
+              const body = storedBodies.get(date) ?? "";
+              return (
+                <CarouselItem key={date} className="h-full">
+                  <ReflectionLeaf
+                    id={`reflection-notebook-${date}`}
+                    dateLabel={dayLabel(date)}
+                    body={body}
+                    placeholder={t("reflections.placeholder")}
+                    onChange={(next) => {
+                      selectDate(date);
+                      handleBodyChange(date, next);
+                    }}
+                    characterCountLabel={characterCountLabel(body)}
+                  />
+                </CarouselItem>
+              );
+            })}
+          </CarouselContent>
+        </Carousel>
       </div>
     </AppShell>
   );

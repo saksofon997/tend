@@ -1,5 +1,6 @@
 "use client";
 
+import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { REFLECTION_BODY_MAX_LENGTH } from "@tend/domain";
 
@@ -31,7 +32,7 @@ export function ReflectionLeaf({
       <label className="sr-only" htmlFor={id}>
         {dateLabel}
       </label>
-      <textarea
+      <Textarea
         id={id}
         value={body}
         onChange={(event) => {
@@ -43,7 +44,7 @@ export function ReflectionLeaf({
         placeholder={placeholder}
         disabled={disabled}
         maxLength={REFLECTION_BODY_MAX_LENGTH}
-        className="tend-paper-leaf__input"
+        className="tend-paper-leaf__input min-h-[16.5rem] rounded-none border-0 bg-transparent px-0 py-0 shadow-none focus-visible:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
         spellCheck
       />
     </article>
@@ -55,29 +56,19 @@ export function ReflectionTile({
   preview,
   selected,
   today,
-  label,
   emptyLabel,
-  onSelect,
 }: {
   dayNumber: number;
   preview: string;
   selected: boolean;
   today: boolean;
-  label: string;
   emptyLabel: string;
-  onSelect: () => void;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onSelect}
-      aria-pressed={selected}
-      aria-label={label}
+    <span
       className={cn(
-        "tend-paper-leaf tend-paper-leaf--tile flex min-h-[5.75rem] flex-col items-stretch rounded-md border p-1.5 text-left transition-colors duration-[var(--tend-duration-fast)]",
-        selected
-          ? "border-[var(--tend-border-focus)] ring-2 ring-ring"
-          : "border-border hover:border-[var(--tend-border-focus)]",
+        "tend-paper-leaf tend-paper-leaf--tile flex min-h-[5.75rem] w-full flex-col items-stretch rounded-md border p-1.5 text-left",
+        selected ? "border-[var(--tend-border-focus)] ring-2 ring-ring" : "border-border",
         today && !selected ? "border-[var(--tend-status-fresh)]" : null,
       )}
     >
@@ -92,6 +83,6 @@ export function ReflectionTile({
       <span className="mt-1 line-clamp-3 font-display text-[0.65rem] leading-snug text-foreground">
         {preview || emptyLabel}
       </span>
-    </button>
+    </span>
   );
 }

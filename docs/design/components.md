@@ -24,7 +24,12 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [FormField](#formfield) | `forms/form-field.tsx` | 1, 3, 8, 10 |
 | [DatePickerField](#datepickerfield) | `forms/date-picker-field.tsx` | 3, 8, 14 |
 | [Input](#input) | `ui/input.tsx` | 1, 3, 8 |
+| [Textarea](#textarea) | `ui/textarea.tsx` | Reflections |
 | [PasswordInput](#passwordinput) | `forms/password-input.tsx` | 1 |
+| [Select](#select) | `ui/select.tsx` | 3, 4, 8, 13 |
+| [Calendar](#calendar) | `ui/calendar.tsx` | Reflections, DatePickerField |
+| [Popover](#popover) | `ui/popover.tsx` | DatePickerField |
+| [Carousel](#carousel) | `ui/carousel.tsx` | Reflections |
 | [Select](#select) | `ui/select.tsx` | 3, 4, 8, 13 |
 | [Card](#card) | `ui/card.tsx` | 1, 5, 6 |
 | [Alert](#alert) | `ui/alert.tsx` | 1, 11 |
@@ -233,7 +238,7 @@ Extend shadcn variants:
 | `ghost` | transparent | `--tend-text-muted` | none | Skip, low emphasis |
 | `destructive` | `--tend-error-bg` | `--tend-error` | `--tend-error` 1px | Delete confirm only |
 
-**Sizes:** `sm` (32px), `default` (40px), `lg` (44px)
+**Sizes:** `sm` (32px), `default` (40px), `lg` (44px), `icon` (44px square)
 
 **States:** `disabled` → 50% opacity, no pointer. `loading` → spinner + "Saving…" label pattern.
 
@@ -280,6 +285,38 @@ Used in `AuthForm` for password and confirm-password fields (register) and sign-
 **File:** `components/ui/select.tsx` (shadcn Radix)
 
 Same visual treatment as Input. Chevron icon muted. Dropdown panel: elevated card with `--tend-shadow-md`.
+
+---
+
+### Textarea
+
+**File:** `components/ui/textarea.tsx` (shadcn)
+
+Multiline field matching `Input` tokens. Reflections paper leaves override borders and background so the lines show through.
+
+---
+
+### Calendar
+
+**File:** `components/ui/calendar.tsx` (shadcn + `react-day-picker`)
+
+Single-month DayPicker with Tend tokens, 44px hit targets, Sunday-first weeks, and motion off. Used compact inside `DatePickerField` and with paper-tile day buttons on Reflections.
+
+---
+
+### Popover
+
+**File:** `components/ui/popover.tsx` (shadcn Radix)
+
+Elevated panel (`--tend-shadow-md`) for the date calendar. No bounce or zoom animation.
+
+---
+
+### Carousel
+
+**File:** `components/ui/carousel.tsx` (shadcn + Embla)
+
+Horizontal or vertical snapping slides. Reflections uses the vertical axis for the mobile notebook. Drag starting on a `textarea` is ignored so writing is not captured as a page change.
 
 ---
 
@@ -794,9 +831,9 @@ Quiet chip row for `week`, `month`, `ninety`, and `all`. Used on Check In and th
 **Anatomy:**
 ```
 PageHeader
-Date picker + today's page
-Desktop: month nav + tile grid + selected leaf editor
-Mobile: snapping notebook pages
+Date picker (Calendar popover) + today's page
+Desktop: react-day-picker month of paper tiles + selected leaf editor
+Mobile: Embla vertical carousel of full leaves
 ```
 
 Lined paper (`tend-paper-leaf`) with a faint grain and a margin rule. Copy stays invitational — never overdue, streaks, or missed-day language. Max 1000 characters.
@@ -811,7 +848,7 @@ Lined paper page with a display-font textarea, date heading, and a quiet charact
 
 **File:** `components/tend/reflections-month-grid.tsx`
 
-Sunday-first month of paper tiles. Written days show a short preview; blank days stay empty leaves. Hidden below the `md` breakpoint.
+Sunday-first month of paper tiles on `Calendar`. Written days show a short preview; blank days stay empty leaves. Hidden below the `md` breakpoint.
 
 ---
 
@@ -896,7 +933,7 @@ interface DatePickerFieldProps {
 }
 ```
 
-Calendar-styled date control. Shows a formatted date (or placeholder) with a calendar icon; the native date picker opens on click. Optional dates can be cleared. Used by `ActivityFilters`, `ItemForm`, `ActivityListItem`, and `TendEventRow`.
+Calendar-styled date control. Shows a formatted date (or placeholder) with a calendar icon; a `Calendar` popover opens on click. Optional dates can be cleared. Used by `ActivityFilters`, `ItemForm`, `ActivityListItem`, `TendEventRow`, and Reflections.
 
 **Stories:** 3, 8, 14
 

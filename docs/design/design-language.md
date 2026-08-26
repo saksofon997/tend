@@ -318,7 +318,7 @@ When initializing shadcn, map component defaults to Tend tokens:
 
 Override shadcn `destructive` to use `--tend-error` (muted brick). Do not use default bright red.
 
-Recommended shadcn components to install first: `button`, `input`, `label`, `select`, `card`, `badge`, `dialog`, `tabs`, `separator`, `alert`.
+Recommended shadcn components: `button`, `input`, `textarea`, `label`, `select`, `card`, `badge`, `dialog`, `tabs`, `separator`, `alert`, `calendar`, `popover`, `carousel`.
 
 ---
 

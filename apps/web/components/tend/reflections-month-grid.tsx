@@ -2,13 +2,17 @@
 
 import { ReflectionTile } from "@/components/tend/reflection-leaf";
 import { Calendar } from "@/components/ui/calendar";
-import { calendarDateFromLocalDate, localDateFromCalendarDate } from "@/lib/design/calendar-date";
+import {
+  calendarDateFromLocalDate,
+  localDateFromCalendarDate,
+  nextVisibleMonth,
+} from "@/lib/design/calendar-date";
 import { formatDatePickerLabel } from "@/lib/design/relative-time";
 import { useI18n } from "@/lib/i18n/client";
 import { WEEKDAY_TRANSLATION_KEYS } from "@/lib/i18n/labels";
 import { cn } from "@/lib/utils";
 import { previewReflectionBody } from "@tend/domain";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 import type { DayButtonProps } from "react-day-picker";
 
 interface ReflectionsMonthGridProps {
@@ -67,7 +71,8 @@ export function ReflectionsMonthGrid({
   onMonthChange,
 }: ReflectionsMonthGridProps) {
   const { locale, t } = useI18n();
-  const displayedMonth = new Date(year, month - 1, 1);
+  const displayedMonth = useMemo(() => new Date(year, month - 1, 1), [month, year]);
+  const selected = useMemo(() => localDateFromCalendarDate(selectedDate), [selectedDate]);
 
   return (
     <MonthGridContext.Provider
@@ -79,10 +84,13 @@ export function ReflectionsMonthGrid({
           required
           showOutsideDays={false}
           month={displayedMonth}
-          selected={localDateFromCalendarDate(selectedDate)}
-          onMonthChange={(nextMonth) =>
-            onMonthChange({ year: nextMonth.getFullYear(), month: nextMonth.getMonth() + 1 })
-          }
+          selected={selected}
+          onMonthChange={(nextMonth) => {
+            const next = nextVisibleMonth({ year, month }, nextMonth);
+            if (next) {
+              onMonthChange(next);
+            }
+          }}
           onSelect={(date) => {
             if (date) {
               onSelect(calendarDateFromLocalDate(date));

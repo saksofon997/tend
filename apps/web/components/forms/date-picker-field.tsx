@@ -6,13 +6,14 @@ import {
   calendarDateFromLocalDate,
   calendarDisabledMatchers,
   localDateFromCalendarDate,
+  retainMonthIfUnchanged,
 } from "@/lib/design/calendar-date";
 import { formatDatePickerLabel } from "@/lib/design/relative-time";
 import { useI18n } from "@/lib/i18n/client";
 import { cn } from "@/lib/utils";
 import { isCalendarDate } from "@tend/domain";
 import { CalendarDays, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface DatePickerFieldProps {
   id: string;
@@ -37,17 +38,26 @@ export function DatePickerField({
 }: DatePickerFieldProps) {
   const { locale, t } = useI18n();
   const [open, setOpen] = useState(false);
-  const selected = value && isCalendarDate(value) ? localDateFromCalendarDate(value) : undefined;
-  const [month, setMonth] = useState<Date>(selected ?? new Date());
+  const selected = useMemo(
+    () => (value && isCalendarDate(value) ? localDateFromCalendarDate(value) : undefined),
+    [value],
+  );
+  const [month, setMonth] = useState<Date>(() => selected ?? new Date());
   const disabled = useMemo(() => calendarDisabledMatchers(min, max), [max, min]);
   const label = value
     ? formatDatePickerLabel(value, locale)
     : (placeholder ?? t("activity.search.anyDate"));
 
+  const handleMonthChange = useCallback((next: Date) => {
+    setMonth((current) => retainMonthIfUnchanged(current, next));
+  }, []);
+
   useEffect(() => {
-    if (selected) {
-      setMonth(selected);
+    if (!selected) {
+      return;
     }
+
+    setMonth((current) => retainMonthIfUnchanged(current, selected));
   }, [selected]);
 
   return (
@@ -89,7 +99,7 @@ export function DatePickerField({
           required={!allowEmpty}
           selected={selected}
           month={month}
-          onMonthChange={setMonth}
+          onMonthChange={handleMonthChange}
           onSelect={(date: Date | undefined) => {
             if (!date) {
               if (allowEmpty) {

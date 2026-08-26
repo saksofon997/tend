@@ -1,6 +1,7 @@
 "use client";
 
 import { buttonVariants } from "@/components/ui/button";
+import { isSameLocalYearMonth } from "@/lib/design/calendar-date";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type * as React from "react";
@@ -16,16 +17,26 @@ export function Calendar({
   navLayout = "around",
   weekStartsOn = 0,
   components,
+  month,
+  onMonthChange,
   ...props
 }: CalendarProps) {
   const defaults = getDefaultClassNames();
 
   return (
     <DayPicker
+      {...props}
       showOutsideDays={showOutsideDays}
       animate={animate}
       navLayout={navLayout}
       weekStartsOn={weekStartsOn}
+      month={month}
+      onMonthChange={(next) => {
+        if (month && isSameLocalYearMonth(month, next)) {
+          return;
+        }
+        onMonthChange?.(next);
+      }}
       className={cn("relative w-fit p-2 [--cell-size:2.5rem]", className)}
       classNames={{
         root: cn("w-fit", defaults.root),
@@ -70,7 +81,6 @@ export function Calendar({
           ),
         ...components,
       }}
-      {...props}
     />
   );
 }

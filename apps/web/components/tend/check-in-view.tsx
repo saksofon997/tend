@@ -40,7 +40,7 @@ export function CheckInView({ user, period, summary }: CheckInViewProps) {
       <div className="flex flex-col gap-5">
         <div className="md:hidden">
           <Button asChild variant="secondary" className="w-full justify-start">
-            <Link href="/activity">
+            <Link href="/history">
               <ListChecks aria-hidden className="size-4" />
               {t("checkIn.openActivity")}
             </Link>

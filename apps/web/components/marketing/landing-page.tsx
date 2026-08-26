@@ -238,7 +238,7 @@ function LandingCheckInScreenshot() {
             <span className="rounded-full bg-[var(--tend-primary-muted)] px-3 py-1 font-medium text-primary">
               {t("nav.checkIn")}
             </span>
-            <span>{t("nav.activity")}</span>
+            <span>{t("nav.reflections")}</span>
           </div>
           <div className="rounded-full border border-border bg-muted/50 px-3 py-1 text-muted-foreground text-xs">
             {t("landing.checkIn.preview.user")}

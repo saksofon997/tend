@@ -10,6 +10,7 @@ import {
 describe("formatRelativeFromDays", () => {
   it("returns never tended when days are null", () => {
     expect(formatRelativeFromDays(null)).toBe("Never tended");
+    expect(formatRelativeFromDays(null, { prefix: "Last tended" })).toBe("Never tended");
   });
 
   it("returns today for zero days", () => {
@@ -24,9 +25,9 @@ describe("formatRelativeFromDays", () => {
     expect(formatRelativeFromDays(11)).toBe("Last tended 11 days ago");
   });
 
-  it("formats Serbian card activity copy with a prefix", () => {
-    expect(formatRelativeFromDays(11, { locale: "sr", prefix: "Poslednja aktivnost" })).toBe(
-      "Poslednja aktivnost pre 11 dana",
+  it("formats Serbian last-tended copy with a prefix", () => {
+    expect(formatRelativeFromDays(11, { locale: "sr", prefix: "Poslednji put pobrinuto" })).toBe(
+      "Poslednji put pobrinuto pre 11 dana",
     );
   });
 });

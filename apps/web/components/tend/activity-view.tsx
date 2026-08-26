@@ -127,7 +127,7 @@ export function ActivityView({ user, initialEvents }: ActivityViewProps) {
   }
 
   return (
-    <AppShell user={user} activePath="/activity">
+    <AppShell user={user} activePath="/history">
       <PageHeader title={t("activity.title")} subtitle={t("activity.subtitle")} />
 
       <ActivityFilters value={filters} onChange={setFilters} />

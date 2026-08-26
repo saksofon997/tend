@@ -63,7 +63,7 @@ Tend ships as a hosted web app and an Expo mobile app, both backed by the same P
 | **Item detail** | Status, history, edit form, correct past tend dates |
 | **Reminders** | Availability windows, in-app reminder surface, mark tended from reminder |
 | **Push notifications** | FCM native push for item reminders and a weekly supportive note |
-| **Activity** | Recent tend events across items |
+| **History** | Tended dates across items |
 | **Presets** | Suggested tends across 12 life areas, led by self-care |
 | **Settings** | Timezone and language preferences |
 

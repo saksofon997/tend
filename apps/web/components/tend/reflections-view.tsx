@@ -181,7 +181,7 @@ export function ReflectionsView({ user, initialEntries }: ReflectionsViewProps) 
     <AppShell user={user} activePath="/reflections">
       <PageHeader title={t("reflections.title")} subtitle={t("reflections.subtitle")} />
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-6">
         <div className="flex flex-wrap items-end gap-3">
           <div className="min-w-48 flex-1">
             <Label
@@ -210,16 +210,6 @@ export function ReflectionsView({ user, initialEntries }: ReflectionsViewProps) 
           </Alert>
         ) : null}
 
-        <ReflectionsMonthGrid
-          year={visibleMonth.year}
-          month={visibleMonth.month}
-          selectedDate={selectedDate}
-          today={today}
-          bodies={storedBodies}
-          onSelect={selectDate}
-          onMonthChange={setVisibleMonth}
-        />
-
         <div className="hidden md:block">
           <ReflectionLeaf
             id={`reflection-editor-${selectedDate}`}
@@ -230,6 +220,16 @@ export function ReflectionsView({ user, initialEntries }: ReflectionsViewProps) 
             characterCountLabel={characterCountLabel(selectedBody)}
           />
         </div>
+
+        <ReflectionsMonthGrid
+          year={visibleMonth.year}
+          month={visibleMonth.month}
+          selectedDate={selectedDate}
+          today={today}
+          bodies={storedBodies}
+          onSelect={selectDate}
+          onMonthChange={setVisibleMonth}
+        />
 
         <Carousel
           orientation="vertical"

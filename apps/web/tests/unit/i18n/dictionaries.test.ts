@@ -16,11 +16,16 @@ describe("web i18n dictionaries", () => {
     expect(dictionaries.sr["nav.home"]).toBe("Početna");
     expect(dictionaries.sr["nav.reflections"]).toBe("Osvrti");
     expect(dictionaries.en["reflections.title"]).toBe("Reflections");
-    expect(dictionaries.sr["activity.empty.title"]).toBe("Još nema zabeleženih aktivnosti");
-    expect(dictionaries.sr["activity.search.title"]).toBe("Pretraži aktivnost");
+    expect(dictionaries.en["nav.activity"]).toBe("History");
+    expect(dictionaries.en["activity.title"]).toBe("History");
+    expect(dictionaries.sr["nav.activity"]).toBe("Istorija");
+    expect(dictionaries.sr["activity.empty.title"]).toBe("Još nema zabeleženog tendovanja");
+    expect(dictionaries.sr["activity.search.title"]).toBe("Pronađi tend");
     expect(dictionaries.sr["activity.search.namePlaceholder"]).toBe("Pretraži tend");
     expect(dictionaries.sr["activity.empty.filtered.title"]).toBe("Ništa ne odgovara toj pretrazi");
     expect(dictionaries.sr["footer.appReleaseSoon"]).toBe("Izdanje aplikacije uskoro...");
+    expect(dictionaries.en["checkIn.openActivity"]).toBe("History");
+    expect(dictionaries.en["reflections.subtitle"]).toContain("today's page");
     expect(dictionaries.en["landing.checkIn.preview.imageLabel"]).toBe(
       "Preview of the Tend Check In screen",
     );
@@ -32,7 +37,7 @@ describe("web i18n dictionaries", () => {
       "Stvari koje se zapostave, zapamćene nežno.",
     );
     expect(dictionaries.sr["items.markTended"]).toBe("Označi kao pobrinuto");
-    expect(dictionaries.sr["items.lastActivityPrefix"]).toBe("Poslednja aktivnost");
+    expect(dictionaries.sr["items.lastActivityPrefix"]).toBe("Poslednji put pobrinuto");
     expect(dictionaries.en["auth.forgotPassword.link"]).toBe("Forgot password?");
     expect(dictionaries.sr["auth.forgotPassword.link"]).toBe("Zaboravljena lozinka?");
     expect(dictionaries.en["email.passwordReset.subject"]).toBe("Reset your Tend password");

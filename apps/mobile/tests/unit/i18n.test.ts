@@ -20,6 +20,8 @@ describe("mobile i18n", () => {
     expect(t("activity.empty.title")).toBe("No tending logged yet");
     expect(t("reflections.title")).toBe("Reflections");
     expect(t("nav.reflections")).toBe("Reflections");
+    expect(t("nav.activity")).toBe("History");
+    expect(t("activity.title")).toBe("History");
     expect(t("activity.empty.filtered.title")).toBe("Nothing matches that look-up");
   });
 
@@ -79,7 +81,7 @@ describe("mobile i18n", () => {
     setLocale("sr");
 
     expect(getLocale()).toBe("sr");
-    expect(t("activity.search.title")).toBe("Pretraži aktivnost");
+    expect(t("activity.search.title")).toBe("Pronađi tend");
     expect(t("activity.search.namePlaceholder")).toBe("Pretraži tend");
     expect(lifeAreaFilterToggleLabel("health")).toBe("Filtriranje po oblasti · Zdravlje");
 

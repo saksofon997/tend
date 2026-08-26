@@ -1,6 +1,6 @@
 ### `GET /api/v1/activity`
 
-List recent tending events across all items for the signed-in user.
+List recent tending events across all items for the signed-in user. The web and mobile UI call this screen **History** (`/history` on web). The API path is unchanged.
 
 **Auth:** Session cookie (required)
 

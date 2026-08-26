@@ -87,7 +87,7 @@ interface AppShellProps {
 **Anatomy:**
 ```
 ┌──────────────────────────────────────────────┐
-│ [Tend logo]  Home  Check In  Reflections  ▾  │  ← Activity is desktop-only
+│ [Tend logo]  Home  Check In  Reflections  ▾  │  ← History is desktop-only
 ├──────────────────────────────────────────────┤
 │  {children}                                   │
 ├──────────────────────────────────────────────┤
@@ -801,7 +801,7 @@ interface EmptyStateProps {
 **Anatomy:**
 ```
 PageHeader
-Recent activity (mobile web only; desktop uses nav)
+History (mobile web only; desktop uses nav)
 Period filter (week / month / 90 days / all)
 Gentle qualitative note
 Summary stat cards (tending logged, days with care, shared)
@@ -812,7 +812,7 @@ Right now attention mix
 
 **Copy constraints:** No streaks, rankings, alarm language, or productivity-style performance framing. Use tending moments, shared care, weekdays, and current attention mix. Period filtering changes history stats only; "Right now" stays current.
 
-A **Recent activity** button sits near the top so mobile web can reach `/activity` after Activity left the primary nav.
+A **History** button sits near the top so mobile web can reach `/history` after History left the primary nav.
 
 ### CheckInPeriodFilter
 
@@ -826,13 +826,13 @@ Quiet chip row for `week`, `month`, `ninety`, and `all`. Used on Check In and th
 
 **File:** `components/tend/reflections-view.tsx`
 
-**Purpose:** One journal leaf per calendar day. Desktop shows a month of paper tiles plus an editor. Mobile web uses a snapping notebook of full leaves.
+**Purpose:** One journal leaf per calendar day. Desktop writes the selected page first, then browses a month of paper tiles. Mobile web uses a snapping notebook of full leaves.
 
 **Anatomy:**
 ```
 PageHeader
 Date picker (Calendar popover) + today's page
-Desktop: react-day-picker month of paper tiles + selected leaf editor
+Desktop: selected leaf editor, then a react-day-picker month of paper tiles
 Mobile: Embla vertical carousel of full leaves
 ```
 
@@ -863,7 +863,7 @@ interface ActivityFiltersProps {
 }
 ```
 
-Quiet look-up bar on `/activity`: tend name, must/want type, and an inclusive date range via `DatePickerField` (calendar trigger, formatted date, optional clear). Clearing restores the unfiltered list. Empty results use a distinct “nothing matches” state, not the never-tended empty copy.
+Quiet look-up bar on `/history`: tend name, must/want type, and an inclusive date range via `DatePickerField` (calendar trigger, formatted date, optional clear). Clearing restores the unfiltered list. Empty results use a distinct “nothing matches” state, not the never-tended empty copy.
 
 **Stories:** 14
 

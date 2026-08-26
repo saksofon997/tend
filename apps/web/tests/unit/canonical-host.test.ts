@@ -71,6 +71,7 @@ describe("isMarketingPath", () => {
   it("blocks app and auth routes", () => {
     expect(isMarketingPath("/login")).toBe(false);
     expect(isMarketingPath("/register")).toBe(false);
+    expect(isMarketingPath("/history")).toBe(false);
     expect(isMarketingPath("/activity")).toBe(false);
     expect(isMarketingPath("/api/v1/health")).toBe(false);
   });

@@ -8,8 +8,15 @@ import {
   todayDateInputValue,
 } from "@/constants";
 import { tendFonts } from "@/fonts";
-import { colors, dewSoft, fonts, radius, spacing, thoughtRadius } from "@/theme";
+import { colors, dew, dewSoft, fonts, radius, spacing, thoughtRadius } from "@/theme";
 import type { ActivityEntryResponse, ItemResponse, ReminderResponse, UserResponse } from "@/types";
+import {
+  DEW_DROP_SIZE,
+  DEW_DROP_TRAVEL_MS,
+  dewDropHidesOnTab,
+  dewDropLeft,
+  dewDropLift,
+} from "@/utils/dewDrop";
 import { getAttentionSectionDefaults } from "@/utils/homeGroups";
 import { refreshHomeData } from "@/utils/homeRefresh";
 import { keyboardAvoidingBehavior } from "@/utils/keyboardAvoidance";
@@ -84,6 +91,7 @@ import {
   Home,
   ListChecks,
   LogOut,
+  type LucideIcon,
   Pencil,
   Plus,
   Settings,
@@ -93,12 +101,14 @@ import {
   Trash2,
   Users,
 } from "lucide-react-native";
-import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  AccessibilityInfo,
   ActivityIndicator,
   Alert,
   Animated,
   BackHandler,
+  Easing,
   Image,
   KeyboardAvoidingView,
   Linking,
@@ -684,63 +694,227 @@ function AnimatedTabScreen({
   );
 }
 
+const StableTabIcon = memo(function StableTabIcon({
+  Icon,
+  color,
+  size,
+}: {
+  Icon: LucideIcon;
+  color: string;
+  size: number;
+}) {
+  return <Icon color={color} size={size} strokeWidth={1.75} />;
+});
+
+function TabIconSlot({
+  Icon,
+  active,
+  activeColor,
+  idleColor,
+  size,
+}: {
+  Icon: LucideIcon;
+  active: boolean;
+  activeColor: string;
+  idleColor: string;
+  size: number;
+}) {
+  return (
+    <View collapsable={false} style={styles.tabIconSlot}>
+      {/* Lucide redraws keyless SVG paths when `color` changes, which blanks the icon on the first press. */}
+      <View style={{ opacity: active ? 0 : 1 }}>
+        <StableTabIcon Icon={Icon} color={idleColor} size={size} />
+      </View>
+      <View
+        pointerEvents="none"
+        style={[StyleSheet.absoluteFill, styles.tabIconCenter, { opacity: active ? 1 : 0 }]}
+      >
+        <StableTabIcon Icon={Icon} color={activeColor} size={size} />
+      </View>
+    </View>
+  );
+}
+
 function BottomBar({
   activeTab,
   onChange,
 }: { activeTab: AppScreenKey; onChange: (tab: TabKey) => void }) {
   const insets = useSafeAreaInsets();
   const items = tabItems();
+  const activeKey: TabKey = activeTab === "activity" ? "checkIn" : activeTab;
+  const activeKeyRef = useRef(activeKey);
+  activeKeyRef.current = activeKey;
+  const centers = useRef<Partial<Record<TabKey, { center: number; y: number }>>>({});
+  const placed = useRef(false);
+  const reduceMotion = useRef(false);
+  const dropX = useRef(new Animated.Value(0)).current;
+  const dropBaseY = useRef(new Animated.Value(0)).current;
+  const dropLift = useRef(new Animated.Value(0)).current;
+  const dropOpacity = useRef(new Animated.Value(0)).current;
+  const dropY = useMemo(() => Animated.add(dropBaseY, dropLift), [dropBaseY, dropLift]);
+
+  const syncDew = useCallback(
+    (key: TabKey, animate: boolean) => {
+      const slot = centers.current[key];
+      if (!slot) {
+        return;
+      }
+
+      const x = dewDropLeft(slot.center);
+      const hide = dewDropHidesOnTab(key);
+      dropX.stopAnimation();
+      dropBaseY.stopAnimation();
+      dropLift.stopAnimation();
+      dropOpacity.stopAnimation();
+
+      if (!animate || !placed.current || reduceMotion.current) {
+        dropX.setValue(x);
+        dropBaseY.setValue(slot.y);
+        dropLift.setValue(0);
+        dropOpacity.setValue(hide ? 0 : 1);
+        placed.current = true;
+        return;
+      }
+
+      const lift = dewDropLift(false);
+      Animated.parallel([
+        Animated.timing(dropX, {
+          duration: DEW_DROP_TRAVEL_MS,
+          easing: Easing.out(Easing.cubic),
+          toValue: x,
+          useNativeDriver: true,
+        }),
+        Animated.timing(dropBaseY, {
+          duration: DEW_DROP_TRAVEL_MS,
+          easing: Easing.out(Easing.cubic),
+          toValue: slot.y,
+          useNativeDriver: true,
+        }),
+        Animated.sequence([
+          Animated.timing(dropLift, {
+            duration: 120,
+            easing: Easing.out(Easing.quad),
+            toValue: lift,
+            useNativeDriver: true,
+          }),
+          Animated.timing(dropLift, {
+            duration: 160,
+            easing: Easing.in(Easing.quad),
+            toValue: 0,
+            useNativeDriver: true,
+          }),
+        ]),
+        Animated.timing(dropOpacity, {
+          duration: 160,
+          easing: Easing.out(Easing.quad),
+          toValue: hide ? 0 : 1,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    },
+    [dropBaseY, dropLift, dropOpacity, dropX],
+  );
+
+  useEffect(() => {
+    let mounted = true;
+    AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
+      if (mounted) {
+        reduceMotion.current = enabled;
+      }
+    });
+    const subscription = AccessibilityInfo.addEventListener("reduceMotionChanged", (enabled) => {
+      reduceMotion.current = enabled;
+    });
+    return () => {
+      mounted = false;
+      subscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    syncDew(activeKey, true);
+  }, [activeKey, syncDew]);
+
+  function registerSlot(key: TabKey, x: number, y: number, width: number) {
+    const center = Math.round(x + width / 2);
+    const top = Math.round(y);
+    const previous = centers.current[key];
+    if (previous && previous.center === center && previous.y === top) {
+      return;
+    }
+
+    centers.current[key] = { center, y: top };
+    if (key === activeKeyRef.current) {
+      syncDew(key, placed.current && previous != null);
+    }
+  }
 
   return (
     <View style={[styles.bottomBar, { paddingBottom: Math.max(insets.bottom, spacing.sm) }]}>
-      {items.map(({ key, label, Icon }) => {
-        const active = activeTab === key || (key === "checkIn" && activeTab === "activity");
-        const isAdd = key === "add";
-
-        return (
-          <Pressable
-            key={key}
-            accessibilityRole="button"
-            accessibilityState={{ selected: active }}
-            android_ripple={{ color: "transparent" }}
-            style={isAdd ? styles.addTabButton : styles.tabButton}
-            onPress={() => onChange(key)}
+      <View style={styles.bottomBarInset}>
+        <View style={styles.bottomBarRow}>
+          <Animated.View
+            pointerEvents="none"
+            style={[
+              styles.tabDew,
+              {
+                opacity: dropOpacity,
+                transform: [{ translateX: dropX }, { translateY: dropY }],
+              },
+            ]}
           >
-            {({ pressed }) => {
-              const showPressedOverlay = pressed && !(active && !isAdd);
+            <View style={styles.tabDewHighlight} />
+          </Animated.View>
+          {items.map(({ key, label, Icon }) => {
+            const active = activeKey === key;
+            const isAdd = key === "add";
 
-              return (
-                <>
-                  <View
-                    style={[
-                      isAdd ? styles.addTabIconWrap : styles.tabIconWrap,
-                      active && !isAdd ? styles.tabIconWrapActive : null,
-                      showPressedOverlay
-                        ? isAdd
-                          ? styles.addTabIconWrapPressed
-                          : styles.tabIconWrapPressed
-                        : null,
-                    ]}
-                  >
-                    <Icon
-                      size={isAdd ? 26 : 21}
-                      color={isAdd ? colors.inverse : active ? colors.primary : colors.textMuted}
+            return (
+              <Pressable
+                key={key}
+                accessibilityRole="button"
+                accessibilityLabel={label}
+                accessibilityState={{ selected: active }}
+                android_ripple={{ color: "rgba(89, 109, 85, 0.14)", borderless: false }}
+                style={({ pressed }) => [
+                  isAdd ? styles.addTabButton : styles.tabButton,
+                  pressed ? styles.tabPressed : null,
+                ]}
+                onPress={() => onChange(key)}
+                onLayout={(event) => {
+                  const { x, y, width } = event.nativeEvent.layout;
+                  registerSlot(key, x, y, width);
+                }}
+              >
+                <View
+                  collapsable={false}
+                  style={isAdd ? styles.addTabIconWrap : styles.tabIconWrap}
+                >
+                  {isAdd ? (
+                    <StableTabIcon Icon={Icon} color={colors.inverse} size={26} />
+                  ) : (
+                    <TabIconSlot
+                      Icon={Icon}
+                      active={active}
+                      activeColor={colors.primary}
+                      idleColor={colors.textMuted}
+                      size={21}
                     />
-                  </View>
-                  {!isAdd ? (
-                    <Text
-                      style={[styles.tabLabel, active ? styles.tabLabelActive : null]}
-                      numberOfLines={1}
-                    >
-                      {label}
-                    </Text>
-                  ) : null}
-                </>
-              );
-            }}
-          </Pressable>
-        );
-      })}
+                  )}
+                </View>
+                {!isAdd ? (
+                  <Text
+                    style={[styles.tabLabel, active ? styles.tabLabelActive : null]}
+                    numberOfLines={1}
+                  >
+                    {label}
+                  </Text>
+                ) : null}
+              </Pressable>
+            );
+          })}
+        </View>
+      </View>
     </View>
   );
 }
@@ -3426,41 +3600,66 @@ const styles = StyleSheet.create({
     width: 148,
   },
   bottomBar: {
-    alignItems: "flex-end",
     backgroundColor: colors.card,
     borderTopColor: colors.borderSubtle,
     borderTopWidth: 1,
+    paddingTop: spacing.sm,
+  },
+  bottomBarInset: {
+    paddingHorizontal: spacing.sm,
+  },
+  bottomBarRow: {
+    alignItems: "flex-end",
     flexDirection: "row",
     gap: spacing.xs,
     justifyContent: "space-around",
-    paddingHorizontal: spacing.sm,
-    paddingTop: spacing.sm,
+  },
+  tabDew: {
+    backgroundColor: colors.primaryMuted,
+    borderColor: colors.sage,
+    borderRadius: radius.round,
+    borderWidth: 1,
+    height: DEW_DROP_SIZE,
+    left: 0,
+    position: "absolute",
+    top: 0,
+    width: DEW_DROP_SIZE,
+  },
+  tabDewHighlight: {
+    backgroundColor: dew.highlight,
+    borderRadius: 1,
+    height: 1,
+    left: 10,
+    position: "absolute",
+    right: 10,
+    top: 2,
   },
   tabButton: {
     alignItems: "center",
     flex: 1,
     minHeight: 54,
   },
+  tabPressed: {
+    opacity: 0.72,
+  },
   addTabButton: {
     alignItems: "center",
     flex: 1,
     minHeight: 54,
   },
+  tabIconSlot: {
+    height: 21,
+    width: 21,
+  },
+  tabIconCenter: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
   tabIconWrap: {
     alignItems: "center",
-    borderRadius: radius.round,
     height: 40,
     justifyContent: "center",
-    overflow: "hidden",
     width: 40,
-  },
-  tabIconWrapActive: {
-    backgroundColor: colors.primaryMuted,
-    borderColor: colors.sage,
-    borderWidth: 1,
-  },
-  tabIconWrapPressed: {
-    backgroundColor: colors.muted,
   },
   addTabIconWrap: {
     alignItems: "center",
@@ -3470,15 +3669,11 @@ const styles = StyleSheet.create({
     height: 54,
     justifyContent: "center",
     marginTop: -20,
-    overflow: "hidden",
     shadowColor: "#3F382F",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.12,
     shadowRadius: 8,
     width: 54,
-  },
-  addTabIconWrapPressed: {
-    backgroundColor: colors.primaryPressed,
   },
   tabLabel: {
     color: colors.textMuted,

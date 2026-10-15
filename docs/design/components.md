@@ -844,7 +844,7 @@ Desktop: selected leaf editor, then a react-day-picker month of paper tiles
 Mobile: Embla vertical carousel of full leaves
 ```
 
-Lined paper (`tend-paper-leaf`) with a faint grain and a margin rule. Copy stays invitational — never overdue, streaks, or missed-day language. Max 1000 characters.
+Lined paper (`tend-paper-leaf`) with a faint grain. Rules sit on the writing baseline and scroll with the text. Copy stays invitational — never overdue, streaks, or missed-day language. Max 1000 characters.
 
 ### ReflectionLeaf
 

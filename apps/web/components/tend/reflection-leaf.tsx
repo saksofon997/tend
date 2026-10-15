@@ -44,7 +44,7 @@ export function ReflectionLeaf({
         placeholder={placeholder}
         disabled={disabled}
         maxLength={REFLECTION_BODY_MAX_LENGTH}
-        className="tend-paper-leaf__input min-h-[16.5rem] rounded-none border-0 bg-transparent px-0 py-0 shadow-none focus-visible:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+        className="tend-paper-leaf__input rounded-none border-0 bg-transparent shadow-none focus-visible:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
         spellCheck
       />
     </article>

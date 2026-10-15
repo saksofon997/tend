@@ -23,7 +23,8 @@ describe("web i18n dictionaries", () => {
     expect(dictionaries.sr["activity.search.title"]).toBe("Pronađi tend");
     expect(dictionaries.sr["activity.search.namePlaceholder"]).toBe("Pretraži tend");
     expect(dictionaries.sr["activity.empty.filtered.title"]).toBe("Ništa ne odgovara toj pretrazi");
-    expect(dictionaries.sr["footer.appReleaseSoon"]).toBe("Izdanje aplikacije uskoro...");
+    expect(dictionaries.en["footer.appInBeta"]).toBe("App in beta");
+    expect(dictionaries.sr["footer.appInBeta"]).toBe("Aplikacija u beti");
     expect(dictionaries.en["checkIn.openActivity"]).toBe("History");
     expect(dictionaries.en["reflections.subtitle"]).toContain("today's page");
     expect(dictionaries.en["landing.checkIn.preview.imageLabel"]).toBe(

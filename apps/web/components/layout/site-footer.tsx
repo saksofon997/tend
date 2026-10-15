@@ -42,7 +42,7 @@ export function SiteFooter() {
             rel="noreferrer"
             className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            {t("footer.appReleaseSoon")}
+            {t("footer.appInBeta")}
           </a>
         </span>
       </div>

@@ -286,6 +286,18 @@ export const en = {
   "settings.notifications.title": "Notifications",
   "settings.language.subtitle": "Choose the language Tend uses on this phone.",
   "settings.language.title": "Language",
+  "settings.open": "Settings",
+  "settings.reset.body":
+    "Remove the tend items you created and the history those tends built. Your account, reflections, and availability stay.",
+  "settings.reset.button": "Reset Tend",
+  "settings.reset.confirm": "Reset Tend",
+  "settings.reset.confirmMessage":
+    "This removes your tend items and their tending history. It can't be undone.",
+  "settings.reset.confirmTitle": "Reset Tend?",
+  "settings.reset.done": "Your tends are cleared. You can start fresh.",
+  "settings.reset.error": "Couldn't reset Tend. Try again.",
+  "settings.reset.title": "Start fresh",
+  "settings.reset.working": "Resetting…",
   "settings.signOut": "Sign out",
   "settings.timezone.placeholder": "Europe/Belgrade",
   "settings.timezone.save": "Save timezone",

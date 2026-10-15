@@ -64,10 +64,10 @@ export function PresetSuggestions({
               onClick={() => onSelect(preset)}
               aria-pressed={isSelected}
               className={cn(
-                "rounded-md border px-2.5 py-1.5 text-xs font-normal transition-colors duration-[var(--tend-duration-fast)]",
+                "min-h-11 rounded-[var(--tend-radius-chip)] px-3 py-1.5 text-xs font-medium transition-colors duration-[var(--tend-duration-fast)]",
                 isSelected
-                  ? "border-primary bg-[var(--tend-primary-muted)] text-primary"
-                  : "border-[var(--tend-border-subtle)] bg-[var(--tend-bg-elevated)] text-muted-foreground hover:border-[var(--tend-border)] hover:text-foreground",
+                  ? "tend-dew-selected"
+                  : "tend-dew-soft text-muted-foreground hover:text-foreground",
               )}
             >
               {preset.name}

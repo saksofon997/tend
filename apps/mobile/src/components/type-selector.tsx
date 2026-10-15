@@ -74,11 +74,11 @@ const styles = StyleSheet.create({
   },
   wantOption: {
     backgroundColor: colors.wantBg,
-    borderColor: "#c5ced8",
+    borderColor: colors.wantBorder,
   },
   mustOption: {
     backgroundColor: colors.mustBg,
-    borderColor: "#d4b8ad",
+    borderColor: colors.mustBorder,
   },
   optionTitle: {
     color: colors.text,

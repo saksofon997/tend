@@ -71,7 +71,7 @@ export function DatePickerField({
             aria-haspopup="dialog"
             aria-invalid={invalid || undefined}
             className={cn(
-              "flex h-10 w-full items-center gap-2 rounded-md border border-input bg-card px-3 text-left text-base text-foreground",
+              "tend-dew-soft flex h-10 w-full items-center gap-2 rounded-md px-3 text-left text-base text-foreground",
               "focus-visible:border-[var(--tend-border-focus)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
               !value && "text-[var(--tend-text-subtle)]",
               invalid && "border-destructive",

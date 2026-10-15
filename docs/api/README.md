@@ -22,7 +22,7 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 | Availability | [availability.md](./availability.md) | Weekly free-time windows |
 | Reminders | [reminders.md](./reminders.md) | In-app reminder eligibility |
 | Notifications | [notifications.md](./notifications.md) | Push subscriptions and server-side notification job |
-| Settings | [settings.md](./settings.md) | User preferences such as timezone |
+| Settings | [settings.md](./settings.md) | User preferences such as timezone, and resetting tends |
 | Check In | [check-in.md](./check-in.md) | Period-filtered tending summary |
 | Reflections | [reflections.md](./reflections.md) | One journal leaf per calendar day |
 | Onboarding | [onboarding.md](./onboarding.md) | First-run setup status |
@@ -31,6 +31,7 @@ Reference for exposed HTTP endpoints. Update this index and the linked resource 
 
 | Date | Change |
 |------|--------|
+| 2026-10-15 | Added `POST /api/v1/settings/reset` to remove the signed-in user's tend items and their history |
 | 2026-08-26 | Added Reflections endpoints (`GET /api/v1/reflections`, `GET`/`PUT`/`DELETE /api/v1/reflections/:date`) |
 | 2026-08-24 | Notification job sends at most one push per availability-window occurrence |
 | 2026-08-21 | Password-reset mail is sent from `noreply@tend.qzz.io`; reset links stay on the app host |

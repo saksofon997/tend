@@ -192,7 +192,7 @@ export function ReflectionsView({ user, initialEntries }: ReflectionsViewProps) 
             </Label>
             <DatePickerField id="reflection-date" value={selectedDate} onChange={selectDate} />
           </div>
-          <Button type="button" variant="secondary" onClick={() => selectDate(today)}>
+          <Button type="button" variant="dew" onClick={() => selectDate(today)}>
             {t("reflections.goToToday")}
           </Button>
           <p className="text-muted-foreground text-xs" aria-live="polite">

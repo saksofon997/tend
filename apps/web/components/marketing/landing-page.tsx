@@ -93,7 +93,7 @@ export function LandingPage() {
         <section className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-12 xl:gap-16">
           <div className="max-w-xl">
             <p className="text-sm font-medium text-primary">{t("landing.eyebrow")}</p>
-            <h1 className="mt-3 font-display text-3xl font-medium leading-tight text-balance text-foreground sm:text-4xl">
+            <h1 className="mt-3 font-display text-[length:var(--tend-text-2xl)] font-medium leading-tight text-balance text-foreground sm:text-[length:var(--tend-text-3xl)]">
               {t("landing.title")}
             </h1>
             <p className="mt-4 max-w-prose text-base leading-relaxed text-muted-foreground text-pretty">
@@ -235,7 +235,7 @@ function LandingCheckInScreenshot() {
           <div className="font-display font-medium text-foreground text-lg">Tend</div>
           <div className="hidden items-center gap-4 text-muted-foreground text-xs sm:flex">
             <span>{t("nav.home")}</span>
-            <span className="rounded-full bg-[var(--tend-primary-muted)] px-3 py-1 font-medium text-primary">
+            <span className="tend-dew-selected rounded-[var(--tend-radius-chip)] px-3 py-1 font-medium">
               {t("nav.checkIn")}
             </span>
             <span>{t("nav.reflections")}</span>
@@ -245,7 +245,7 @@ function LandingCheckInScreenshot() {
           </div>
         </div>
 
-        <div className="bg-background/70 p-4 sm:p-5">
+        <div className="bg-background p-4 sm:p-5">
           <div>
             <p className="font-display font-medium text-2xl text-foreground">
               {t("checkIn.title")}
@@ -254,13 +254,13 @@ function LandingCheckInScreenshot() {
           </div>
 
           <div className="mt-3 flex flex-wrap gap-2">
-            <span className="rounded-full bg-[var(--tend-primary-muted)] px-3 py-1 font-medium text-primary text-xs">
+            <span className="tend-dew-selected rounded-[var(--tend-radius-chip)] px-3 py-1 font-medium text-xs">
               {t("checkIn.period.week")}
             </span>
-            <span className="rounded-full bg-muted px-3 py-1 text-muted-foreground text-xs">
+            <span className="tend-dew-soft rounded-[var(--tend-radius-chip)] px-3 py-1 text-muted-foreground text-xs">
               {t("checkIn.period.month")}
             </span>
-            <span className="rounded-full bg-muted px-3 py-1 text-muted-foreground text-xs">
+            <span className="tend-dew-soft rounded-[var(--tend-radius-chip)] px-3 py-1 text-muted-foreground text-xs">
               {t("checkIn.period.all")}
             </span>
           </div>
@@ -373,7 +373,9 @@ function CheckInPreviewStat({
         {icon}
         <span>{label}</span>
       </div>
-      <div className="mt-2 font-display text-3xl text-foreground">{value}</div>
+      <div className="mt-2 font-display text-[length:var(--tend-text-stat)] leading-none text-foreground">
+        {value}
+      </div>
       <p className="mt-1 text-muted-foreground text-xs">{helper}</p>
     </div>
   );
@@ -391,7 +393,7 @@ function CheckInPreviewPattern({
   value: string;
 }) {
   return (
-    <div className="tend-thought-inset flex gap-3 border border-border bg-background/60 p-3">
+    <div className="tend-thought-inset flex gap-3 border border-border bg-[var(--tend-bg-muted)] p-3">
       <div className="mt-0.5 text-primary">{icon}</div>
       <div className="min-w-0">
         <div className="text-muted-foreground text-xs">{label}</div>
@@ -404,7 +406,7 @@ function CheckInPreviewPattern({
 
 function CheckInPreviewCount({ label, value }: { label: string; value: string }) {
   return (
-    <div className="tend-thought-inset flex items-center justify-between border border-border bg-muted/40 px-3 py-2">
+    <div className="tend-thought-inset flex items-center justify-between border border-border bg-muted px-3 py-2">
       <span className="truncate text-muted-foreground text-xs">{label}</span>
       <span className="font-display text-foreground text-lg">{value}</span>
     </div>

@@ -3,81 +3,101 @@
  * Import at top of apps/web/app/globals.css
  *
  * Maps to shadcn CSS variables where noted (--background, --foreground, etc.)
+ * Palette: aged Japanese parchment, ink, and muted botanical color.
+ * Dew materials are the secondary surface — see --dew-* and .tend-dew-* in globals.css.
  */
 
 :root {
-  /* ── Color: surfaces ───────────────────────────────────── */
-  --tend-bg: #f7f5f2; /* warm linen page background */
-  --tend-sun: rgba(255, 214, 140, 0.42);
-  --tend-sun-soft: rgba(255, 232, 186, 0.2);
-  --tend-sun-ray: rgb(255, 214, 140); /* opaque gold for faint SVG rays */
-  --tend-grass: #7a9270;
-  --tend-bg-elevated: #ffffff; /* cards, modals */
-  --tend-bg-muted: #efede8; /* inset sections, tab tracks */
-  --tend-bg-subtle: #f3f1ec; /* hover on list rows */
+  /* ── Color: surfaces (parchment) ───────────────────────── */
+  --tend-bg: #e8ddca; /* aged paper page */
+  --tend-bg-elevated: #f4ede1; /* primary cards */
+  --tend-bg-muted: #eee5d7; /* journal, secondary panels */
+  --tend-bg-subtle: #e5d9c8; /* hover, inactive chip fill */
+  --tend-bg-raised: #f8f2e8; /* elevated paper */
 
-  --tend-border: #e4e0d8; /* default borders */
-  --tend-border-subtle: #ece8e1; /* input borders at rest */
-  --tend-border-focus: #9aab8f; /* focus ring color */
+  --tend-border: #cfc2ad; /* outlines and dividers */
+  --tend-border-subtle: #ddd2c1; /* light separators */
+  --tend-border-focus: #75876d; /* sage focus */
 
-  /* ── Color: text ───────────────────────────────────────── */
-  --tend-text: #2c2925; /* primary body */
-  --tend-text-muted: #6b6560; /* secondary, metadata */
-  --tend-text-subtle: #9a948c; /* placeholders, hints */
-  --tend-text-inverse: #f7f5f2; /* on primary buttons */
+  /* ── Color: text (ink) ─────────────────────────────────── */
+  --tend-text: #3f382f; /* primary text, headings */
+  --tend-text-muted: #696154; /* descriptions, metadata */
+  --tend-text-subtle: #8b8174; /* placeholders, inactive labels */
+  --tend-text-inverse: #f4ede1; /* on primary buttons */
 
   /* ── Color: brand & actions ────────────────────────────── */
-  --tend-primary: #5c7352; /* sage green — primary actions */
-  --tend-primary-hover: #4d6244;
-  --tend-primary-muted: #e8efe5; /* primary tint backgrounds */
+  --tend-primary: #596d55; /* moss green — primary actions */
+  --tend-primary-hover: #485a45; /* pressed */
+  --tend-primary-muted: #e2e5dc; /* selected filters, soft sage */
 
-  --tend-secondary: #7a8f9a; /* dusty blue-gray — secondary actions */
-  --tend-secondary-hover: #6a7d87;
-  --tend-secondary-muted: #eef2f4;
+  --tend-sage: #a2ad92; /* secondary botanical */
+  --tend-sage-dark: #75876d; /* secondary emphasis */
 
-  --tend-shared: #5b6f79; /* shared care badge text, AA on shared bg */
-  --tend-shared-bg: #eef2f4;
-  --tend-shared-border: #7a8f9a;
+  --tend-secondary: var(--tend-sage-dark);
+  --tend-secondary-hover: var(--tend-primary);
+  --tend-secondary-muted: var(--tend-primary-muted);
+
+  --tend-shared: #75876d;
+  --tend-shared-bg: #e2e5dc;
+  --tend-shared-border: #a2ad92;
+
+  --tend-wood: #9b8168;
+  --tend-vermilion: #925b51;
+  --tend-vermilion-soft: #e8dad4;
 
   /* ── Color: status (never punitive red) ──────────────── */
-  --tend-status-fresh: #6b8f71;
-  --tend-status-fresh-bg: #edf4ee;
+  /* Badge ink is a step darker than the swatch so 12–14px text clears WCAG AA on the soft fills. */
+  --tend-status-fresh: #485a45;
+  --tend-status-fresh-bg: #e2e5dc;
 
-  --tend-status-stale: #b8956b; /* warm honey */
+  --tend-status-stale: #7a6450; /* wood, darkened for the pale fill */
   --tend-status-stale-bg: #f8f2e8;
 
-  --tend-status-attention: #a67c6b; /* soft clay — not alarm red */
-  --tend-status-attention-bg: #f6ece8;
+  --tend-status-attention: #7a4e46; /* vermilion, darkened for the pale fill */
+  --tend-status-attention-bg: #e8dad4;
 
   /* ── Color: type distinction ───────────────────────────── */
-  --tend-type-must: #8b6b5c; /* muted terracotta accent */
-  --tend-type-must-bg: #f5ebe7;
-  --tend-type-must-border: #d4b8ad;
+  --tend-type-must: #7a4e46;
+  --tend-type-must-bg: #e8dad4;
+  --tend-type-must-border: #b88f86;
 
-  --tend-type-want: #6b7a8f; /* calm slate */
-  --tend-type-want-bg: #eef1f5;
-  --tend-type-want-border: #c5cdd8;
+  --tend-type-want: #485a45;
+  --tend-type-want-bg: #e2e5dc;
+  --tend-type-want-border: #a2ad92;
 
   /* ── Color: feedback ───────────────────────────────────── */
-  --tend-error: #9e5a52; /* muted brick, not bright red */
-  --tend-error-bg: #f9ecea;
-  --tend-success: #5c7352;
-  --tend-success-bg: #edf4ee;
-  --tend-info: #6b7a8f;
-  --tend-info-bg: #eef1f5;
+  --tend-error: #925b51;
+  --tend-error-bg: #e8dad4;
+  --tend-success: #596d55;
+  --tend-success-bg: #e2e5dc;
+  --tend-info: #75876d;
+  --tend-info-bg: #e2e5dc;
+
+  /* ── Morning dew (secondary material) ──────────────────── */
+  --dew-surface: rgba(248, 242, 232, 0.58);
+  --dew-surface-strong: rgba(248, 242, 232, 0.78);
+  --dew-border: rgba(255, 250, 240, 0.55);
+  --dew-border-shadow: rgba(105, 97, 84, 0.12);
+  --dew-highlight: rgba(255, 255, 255, 0.35);
+  --dew-shadow: 0 4px 16px rgba(63, 56, 47, 0.07);
+  --dew-blur: 10px;
+  --dew-blur-soft: 6px;
+  --tend-dew-fallback: #f8f2e8; /* opaque ivory when blur is unavailable */
 
   /* ── Typography ────────────────────────────────────────── */
-  --tend-font-display: "Fraunces", "Palatino Linotype", "Book Antiqua", serif;
-  --tend-font-body: "Nunito", system-ui, sans-serif;
+  --tend-font-display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  --tend-font-body: "DM Sans", system-ui, sans-serif;
   --tend-font-mono: "DM Mono", ui-monospace, monospace;
 
   --tend-text-xs: 0.75rem; /* 12px — badges, captions */
   --tend-text-sm: 0.875rem; /* 14px — metadata, helpers */
   --tend-text-base: 1rem; /* 16px — body */
-  --tend-text-lg: 1.125rem; /* 18px — card titles */
-  --tend-text-xl: 1.25rem; /* 20px — section headers */
-  --tend-text-2xl: 1.5rem; /* 24px — page titles */
-  --tend-text-3xl: 1.875rem; /* 30px — hero / onboarding */
+  --tend-text-button: 0.9375rem; /* 15px — buttons */
+  --tend-text-lg: 1.125rem; /* 18px — card titles, journal writing */
+  --tend-text-xl: 1.375rem; /* 22px — card headings */
+  --tend-text-2xl: 2rem; /* 32px — screen titles */
+  --tend-text-3xl: 2.25rem; /* 36px — editorial titles */
+  --tend-text-stat: 2.5rem; /* 40px — large statistics */
 
   --tend-leading-tight: 1.25;
   --tend-leading-normal: 1.5;
@@ -100,23 +120,24 @@
   --tend-space-16: 4rem; /* 64 */
 
   /* ── Radius ────────────────────────────────────────────── */
-  --tend-radius-sm: 0.375rem; /* 6px — badges, chips */
-  --tend-radius-md: 0.5rem; /* 8px — inputs, buttons */
-  --tend-radius-lg: 0.75rem; /* 12px — default chips */
-  --tend-radius-thought: 1.65rem 1.2rem 1.75rem 1.35rem / 1.4rem 1.7rem 1.15rem 1.55rem;
-  --tend-radius-thought-inset: 1.1rem 0.85rem 1.2rem 0.95rem / 1rem 1.15rem 0.8rem 1.05rem;
-  --tend-radius-xl: 1rem; /* 16px — modals, hero cards */
+  --tend-radius-sm: 0.375rem; /* 6px — badges */
+  --tend-radius-md: 0.75rem; /* 12px — inputs, buttons */
+  --tend-radius-lg: 0.875rem; /* 14px */
+  --tend-radius-chip: 1.125rem; /* 18px — filters */
+  --tend-radius-thought: 1rem; /* 16px — paper cards (legacy class name) */
+  --tend-radius-thought-inset: 0.75rem;
+  --tend-radius-xl: 1rem; /* 16px — cards, sheets */
   --tend-radius-full: 9999px;
 
-  /* ── Shadows (barely there) ────────────────────────────── */
-  --tend-shadow-sm: 0 1px 2px rgba(44, 41, 37, 0.04);
-  --tend-shadow-md: 0 2px 8px rgba(44, 41, 37, 0.06);
-  --tend-shadow-lg: 0 4px 16px rgba(44, 41, 37, 0.08);
+  /* ── Shadows (ink, barely there) ───────────────────────── */
+  --tend-shadow-sm: 0 1px 2px rgba(63, 56, 47, 0.06);
+  --tend-shadow-md: 0 2px 8px rgba(63, 56, 47, 0.06);
+  --tend-shadow-lg: 0 4px 16px rgba(63, 56, 47, 0.08);
 
   /* ── Motion ────────────────────────────────────────────── */
-  --tend-duration-fast: 120ms;
-  --tend-duration-normal: 200ms;
-  --tend-duration-slow: 320ms;
+  --tend-duration-fast: 150ms;
+  --tend-duration-normal: 180ms;
+  --tend-duration-slow: 240ms;
   --tend-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
 
   /* ── Layout ────────────────────────────────────────────── */
@@ -126,9 +147,9 @@
   --tend-nav-height: 3.5rem; /* 56px */
 
   /* ── Reflections paper ─────────────────────────────────── */
-  --tend-paper: #f3eee4;
-  --tend-paper-line: rgba(92, 115, 82, 0.18);
-  --tend-paper-margin: rgba(166, 124, 107, 0.42);
+  --tend-paper: #eee5d7;
+  --tend-paper-line: #d7ccba;
+  --tend-paper-margin: #b88f86;
   --tend-paper-line-height: 1.75rem;
 
   /* ── shadcn mappings ───────────────────────────────────── */
@@ -140,7 +161,7 @@
   --popover-foreground: var(--tend-text);
   --primary: var(--tend-primary);
   --primary-foreground: var(--tend-text-inverse);
-  --secondary: var(--tend-secondary-muted);
+  --secondary: var(--tend-bg-muted);
   --secondary-foreground: var(--tend-text);
   --muted: var(--tend-bg-muted);
   --muted-foreground: var(--tend-text-muted);

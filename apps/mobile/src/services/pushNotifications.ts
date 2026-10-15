@@ -65,7 +65,7 @@ export async function configurePushNotifications() {
       name: "Tend reminders",
       importance: Notifications.AndroidImportance.DEFAULT,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: "#5c7352",
+      lightColor: "#596D55",
     });
   }
 }

@@ -1,10 +1,10 @@
 /** Inline email colors — keep in sync with `docs/design/tokens.css`. */
 export const EMAIL_TOKENS = {
-  bg: "#f7f5f2",
-  card: "#ffffff",
-  border: "#e4e0d8",
-  text: "#2c2925",
-  muted: "#6b6560",
-  primary: "#5c7352",
-  inverse: "#f7f5f2",
+  bg: "#e8ddca",
+  card: "#f4ede1",
+  border: "#cfc2ad",
+  text: "#3f382f",
+  muted: "#696154",
+  primary: "#596d55",
+  inverse: "#f4ede1",
 } as const;

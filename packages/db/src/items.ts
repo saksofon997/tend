@@ -338,6 +338,11 @@ export async function deleteEventForUser(
   });
 }
 
-export async function deleteItemsForUser(database: Database, userId: string): Promise<void> {
-  await database.delete(tendItems).where(eq(tendItems.userId, userId));
+export async function deleteItemsForUser(database: Database, userId: string): Promise<number> {
+  const deleted = await database
+    .delete(tendItems)
+    .where(eq(tendItems.userId, userId))
+    .returning({ id: tendItems.id });
+
+  return deleted.length;
 }

@@ -32,10 +32,10 @@ export function CheckInPeriodFilter({ period, onChange }: CheckInPeriodFilterPro
             aria-selected={selected}
             onClick={() => onChange(entry)}
             className={cn(
-              "min-h-11 rounded-full px-3 py-1.5 text-xs font-medium transition-colors duration-[var(--tend-duration-fast)]",
+              "min-h-11 rounded-[var(--tend-radius-chip)] px-3 py-1.5 text-xs font-medium transition-colors duration-[var(--tend-duration-fast)]",
               selected
-                ? "bg-[var(--tend-primary-muted)] text-primary"
-                : "bg-[var(--tend-bg-muted)] text-muted-foreground hover:bg-[var(--tend-bg-subtle)] hover:text-foreground",
+                ? "tend-dew-selected"
+                : "tend-dew-soft text-[var(--tend-text-muted)] hover:text-foreground",
             )}
           >
             {t(PERIOD_LABEL_KEYS[entry])}

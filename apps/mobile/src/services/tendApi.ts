@@ -242,6 +242,13 @@ export class TendApi {
     });
   }
 
+  async resetTend() {
+    return this.request<{ ok: true; deletedItems: number }>("/api/v1/settings/reset", {
+      method: "POST",
+      body: { confirm: true },
+    });
+  }
+
   async listReminders() {
     return this.request<RemindersResponse>("/api/v1/reminders");
   }

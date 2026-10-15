@@ -1,6 +1,10 @@
 import { isValidTimeZone } from "@tend/domain";
 import { z } from "zod";
 
+export const resetTendSchema = z.object({
+  confirm: z.boolean().refine((value) => value, "Confirm the reset before continuing"),
+});
+
 export const updateSettingsSchema = z.object({
   timezone: z
     .string()

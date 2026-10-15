@@ -5,7 +5,7 @@ import {
   type RhythmOption,
   isPresetRhythm,
 } from "@/constants";
-import { colors, fonts, radius, spacing } from "@/theme";
+import { colors, dewSoft, fonts, radius, spacing } from "@/theme";
 import { RHYTHM_CUSTOM_SELECT_VALUE } from "@/utils/rhythm";
 import { t } from "@i18n";
 import { useEffect, useRef, useState } from "react";
@@ -125,16 +125,16 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   chip: {
-    backgroundColor: colors.card,
-    borderColor: colors.border,
-    borderRadius: radius.round,
-    borderWidth: 1,
+    ...dewSoft,
+    borderRadius: radius.chip,
+    justifyContent: "center",
+    minHeight: 44,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
   chipSelected: {
     backgroundColor: colors.primaryMuted,
-    borderColor: colors.primary,
+    borderColor: colors.sage,
   },
   chipText: {
     color: colors.textMuted,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   chipTextSelected: {
-    color: colors.primary,
+    color: colors.primaryPressed,
     fontFamily: fonts.bodySemibold,
   },
   customField: {

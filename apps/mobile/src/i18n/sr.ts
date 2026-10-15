@@ -292,6 +292,18 @@ export const sr = {
   "settings.notifications.title": "Obaveštenja",
   "settings.language.subtitle": "Izaberi jezik koji Tend koristi na ovom telefonu.",
   "settings.language.title": "Jezik",
+  "settings.open": "Podešavanja",
+  "settings.reset.body":
+    "Uklanja tendove koje si napravio i istoriju koju su izgradili. Nalog, osvrti i dostupnost ostaju.",
+  "settings.reset.confirm": "Resetuj Tend",
+  "settings.reset.confirmMessage":
+    "Ovo uklanja tvoje tendove i istoriju tendovanja. Ne može se opozvati.",
+  "settings.reset.confirmTitle": "Resetovati Tend?",
+  "settings.reset.done": "Tendovi su očišćeni. Možeš početi iznova.",
+  "settings.reset.error": "Resetovanje Tenda nije uspelo. Pokušaj ponovo.",
+  "settings.reset.title": "Počni iznova",
+  "settings.reset.button": "Resetuj Tend",
+  "settings.reset.working": "Resetovanje…",
   "settings.signOut": "Odjavi se",
   "settings.timezone.placeholder": "Europe/Belgrade",
   "settings.timezone.save": "Sačuvaj vremensku zonu",

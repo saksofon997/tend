@@ -27,7 +27,7 @@ Read, in order, only what the change needs:
 
 [`DESIGN.md`](../../../DESIGN.md) is a pointer only. Canonical design is `docs/design/`.
 
-**Do not** run impeccable `init` or `document`. **Do not** rewrite `PRODUCT.md` or replace the linen/clay/sage palette. Warm paper is the committed identity, not a generic cream default to fight.
+**Do not** run impeccable `init` or `document`. **Do not** rewrite `PRODUCT.md` or replace the parchment, ink, and dew palette in `docs/design/tokens.css`. That warm paper is the committed identity, not a generic cream default to fight.
 
 ## Commands Tend allows
 

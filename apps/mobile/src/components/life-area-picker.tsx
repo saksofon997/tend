@@ -1,5 +1,5 @@
 import { LIFE_AREA_ORDER } from "@/constants";
-import { colors, fonts, radius, spacing } from "@/theme";
+import { colors, dewSoft, fonts, radius, spacing } from "@/theme";
 import { lifeAreaLabel, t } from "@i18n";
 import type { LifeArea } from "@tend/domain";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -58,16 +58,16 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   chip: {
-    backgroundColor: colors.card,
-    borderColor: colors.border,
-    borderRadius: radius.round,
-    borderWidth: 1,
+    ...dewSoft,
+    borderRadius: radius.chip,
+    minHeight: 44,
+    justifyContent: "center",
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
   chipSelected: {
     backgroundColor: colors.primaryMuted,
-    borderColor: colors.primary,
+    borderColor: colors.sage,
   },
   chipText: {
     color: colors.textMuted,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   chipTextSelected: {
-    color: colors.primary,
+    color: colors.primaryPressed,
     fontFamily: fonts.bodySemibold,
   },
 });

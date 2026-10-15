@@ -6,9 +6,23 @@ import { DatePickerField } from "@components/date-picker-field";
 import { t } from "@i18n";
 import { REFLECTION_BODY_MAX_LENGTH, notebookDates, shiftCalendarDate } from "@tend/domain";
 import { getErrorMessage } from "@utils/networkError";
+import {
+  PAPER_FONT_SIZE,
+  PAPER_LINE_HEIGHT,
+  paperLineCount,
+  paperRuleOffset,
+} from "@utils/paperLines";
 import { replaceReflectionEntry } from "@utils/reflections";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  Animated,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import PagerView from "react-native-pager-view";
 
 function dayKind(entryDate: string, today: string): "today" | "yesterday" | "other" {
@@ -214,20 +228,16 @@ function PaperLeaf({
   body: string;
   onChange: (body: string) => void;
 }) {
-  const lineHeight = 28;
-  const lines = Array.from({ length: 14 }, (_, index) => index);
+  const [viewportHeight, setViewportHeight] = useState(0);
+  const [contentHeight, setContentHeight] = useState(PAPER_LINE_HEIGHT);
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const lineShift = useMemo(() => Animated.multiply(scrollY, -1), [scrollY]);
+  const lineCount = paperLineCount(contentHeight, viewportHeight);
+  const lines = Array.from({ length: lineCount }, (_, index) => index);
 
   return (
     <View style={styles.leaf}>
       <View pointerEvents="none" style={styles.leafTexture} />
-      <View pointerEvents="none" style={styles.marginRule} />
-      {lines.map((line) => (
-        <View
-          key={line}
-          pointerEvents="none"
-          style={[styles.ruledLine, { top: 52 + line * lineHeight }]}
-        />
-      ))}
       <View style={styles.leafHeader}>
         <Text style={styles.leafDate}>{dateLabel}</Text>
         <Text style={styles.leafCount}>
@@ -237,16 +247,41 @@ function PaperLeaf({
           })}
         </Text>
       </View>
-      <TextInput
-        value={body}
-        onChangeText={onChange}
-        placeholder={t("reflections.placeholder")}
-        placeholderTextColor={colors.textSubtle}
-        multiline
-        textAlignVertical="top"
-        maxLength={REFLECTION_BODY_MAX_LENGTH}
-        style={styles.leafInput}
-      />
+      <View
+        style={styles.leafBody}
+        onLayout={(event) => {
+          setViewportHeight(event.nativeEvent.layout.height);
+        }}
+      >
+        <Animated.View
+          pointerEvents="none"
+          style={[
+            styles.lineLayer,
+            { height: lineCount * PAPER_LINE_HEIGHT, transform: [{ translateY: lineShift }] },
+          ]}
+        >
+          {lines.map((line) => (
+            <View key={line} style={[styles.ruledLine, { top: paperRuleOffset(line) }]} />
+          ))}
+        </Animated.View>
+        <TextInput
+          value={body}
+          onChangeText={onChange}
+          onScroll={(event) => {
+            scrollY.setValue(event.nativeEvent.contentOffset.y);
+          }}
+          onContentSizeChange={(event) => {
+            setContentHeight(event.nativeEvent.contentSize.height);
+          }}
+          placeholder={t("reflections.placeholder")}
+          placeholderTextColor={colors.textSubtle}
+          multiline
+          textAlignVertical="top"
+          underlineColorAndroid="transparent"
+          maxLength={REFLECTION_BODY_MAX_LENGTH}
+          style={styles.leafInput}
+        />
+      </View>
     </View>
   );
 }
@@ -337,19 +372,20 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(63, 56, 47, 0.02)",
   },
-  marginRule: {
+  leafBody: {
+    flex: 1,
+  },
+  lineLayer: {
+    left: 0,
     position: "absolute",
+    right: 0,
     top: 0,
-    bottom: 0,
-    left: 22,
-    width: 1,
-    backgroundColor: colors.paperMargin,
   },
   ruledLine: {
     position: "absolute",
-    left: 28,
-    right: 12,
-    height: StyleSheet.hairlineWidth,
+    left: spacing.lg,
+    right: spacing.lg,
+    height: 1,
     backgroundColor: colors.paperLine,
   },
   leafHeader: {
@@ -370,12 +406,14 @@ const styles = StyleSheet.create({
   },
   leafInput: {
     flex: 1,
+    backgroundColor: "transparent",
     color: colors.text,
     fontFamily: fonts.displayRegular,
-    fontSize: 18,
-    lineHeight: 28,
-    paddingHorizontal: 32,
-    paddingTop: spacing.sm,
+    fontSize: PAPER_FONT_SIZE,
+    includeFontPadding: false,
+    lineHeight: PAPER_LINE_HEIGHT,
     paddingBottom: spacing.lg,
+    paddingHorizontal: spacing.lg,
+    paddingTop: 0,
   },
 });

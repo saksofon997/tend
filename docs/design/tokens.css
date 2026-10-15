@@ -150,7 +150,15 @@
   --tend-paper: #eee5d7;
   --tend-paper-line: #d7ccba;
   --tend-paper-margin: #b88f86;
-  --tend-paper-line-height: 1.75rem;
+  --tend-paper-font-size: 1.125rem; /* 18px — journal writing */
+  --tend-paper-line-height: 1.75rem; /* 28px */
+  /* Newsreader typo ascender is 0.735em. The rule sits on that baseline inside the line box. */
+  --tend-paper-baseline: calc(
+    (var(--tend-paper-line-height) - var(--tend-paper-font-size)) /
+    2 +
+    0.735 *
+    var(--tend-paper-font-size)
+  );
 
   /* ── shadcn mappings ───────────────────────────────────── */
   --background: var(--tend-bg);

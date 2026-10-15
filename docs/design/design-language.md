@@ -36,7 +36,7 @@ These come directly from the MVP product rules. Every UI decision should pass at
 - **Dew second:** Translucent ivory controls (Soft Dew and Raised Dew) for filters, date controls, and small floating menus. Never on content cards or the journal sheet.
 - **Gentle fonts:** Newsreader for titles, statistics, and journal writing. DM Sans for UI, buttons, and metadata.
 - **Straightforward layout:** Single-column content, clear section headers, solid moss-green primary buttons.
-- **Artwork is separate:** Meadow image files stay in place and are not rendered until a new background is ready. Components must not sample colors from that artwork.
+- **Artwork stays behind the UI:** A parchment landscape or portrait fills the page. Cards and type use tokens, not colors sampled from the painting.
 
 ---
 
@@ -94,7 +94,7 @@ All values live in [`tokens.css`](./tokens.css). Use semantic tokens, not raw he
 ### Surfaces
 
 ```
-Page          → --tend-bg (#E8DDCA parchment). Meadow art is kept on disk and not rendered.
+Page          → --tend-bg (#E8DDCA parchment), with the scene painting behind the column
 Card          → --tend-bg-elevated (#F4EDE1), 16px radius, 1px --tend-border
 Inset section → --tend-bg-muted (#EEE5D7)
 Raised paper  → --tend-bg-raised (#F8F2E8)

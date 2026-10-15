@@ -11,7 +11,7 @@ export function nextShellHeaderCollapseState(input: {
   previousScrollY: number;
   scrollY: number;
 }): { collapsed: boolean; previousScrollY: number } {
-  // Desktop keeps a pinned bar; compact web folds it away so the meadow and content can use the screen.
+  // Desktop keeps a pinned bar; compact web folds it away so the scene and content can use the screen.
   if (!input.isCompactViewport || input.menuOpen) {
     return { collapsed: false, previousScrollY: input.scrollY };
   }

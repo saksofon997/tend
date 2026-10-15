@@ -1,5 +1,5 @@
 import { LIFE_AREA_ORDER } from "@/constants";
-import { colors, fonts, radius, spacing } from "@/theme";
+import { colors, dewSoft, fonts, radius, spacing } from "@/theme";
 import { lifeAreaLabel, t } from "@i18n";
 import { PRESETS_BY_AREA } from "@tend/domain";
 import type { LifeArea, TendPreset } from "@tend/domain";
@@ -82,16 +82,16 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   chip: {
-    backgroundColor: colors.card,
-    borderColor: colors.border,
-    borderRadius: radius.round,
-    borderWidth: 1,
+    ...dewSoft,
+    borderRadius: radius.chip,
+    justifyContent: "center",
+    minHeight: 44,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
   chipSelected: {
     backgroundColor: colors.primaryMuted,
-    borderColor: colors.primary,
+    borderColor: colors.sage,
   },
   chipText: {
     color: colors.textMuted,
@@ -99,28 +99,28 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   chipTextSelected: {
-    color: colors.primary,
+    color: colors.primaryPressed,
     fontFamily: fonts.bodySemibold,
   },
   presetChip: {
-    backgroundColor: colors.card,
-    borderColor: colors.borderSubtle,
-    borderRadius: radius.sm,
-    borderWidth: 1,
-    paddingHorizontal: spacing.sm + 2,
+    ...dewSoft,
+    borderRadius: radius.chip,
+    justifyContent: "center",
+    minHeight: 44,
+    paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
   presetChipSelected: {
     backgroundColor: colors.primaryMuted,
-    borderColor: colors.primary,
+    borderColor: colors.sage,
   },
   presetChipText: {
     color: colors.textMuted,
     fontFamily: fonts.body,
-    fontSize: 12,
+    fontSize: 13,
   },
   presetChipTextSelected: {
-    color: colors.primary,
+    color: colors.primaryPressed,
     fontFamily: fonts.bodyMedium,
   },
 });

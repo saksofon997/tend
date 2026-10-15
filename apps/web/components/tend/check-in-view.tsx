@@ -225,7 +225,9 @@ function CheckInStatCard({
           {icon}
           <span className="font-medium">{label}</span>
         </div>
-        <div className="mt-3 font-display text-3xl text-foreground">{value}</div>
+        <div className="mt-3 font-display text-[length:var(--tend-text-stat)] leading-none text-foreground">
+          {value}
+        </div>
         <p className="mt-1 text-muted-foreground text-sm">{helper}</p>
       </CardContent>
     </Card>
@@ -244,7 +246,7 @@ function PatternRow({
   value: string;
 }) {
   return (
-    <div className="tend-thought-inset flex gap-3 border border-border bg-background/60 p-3">
+    <div className="tend-thought-inset flex gap-3 border border-border bg-[var(--tend-bg-muted)] p-3">
       <div className="mt-0.5 text-primary">{icon}</div>
       <div className="min-w-0">
         <div className="text-muted-foreground text-xs">{label}</div>
@@ -257,7 +259,7 @@ function PatternRow({
 
 function AttentionPill({ label, value }: { label: string; value: number }) {
   return (
-    <div className="tend-thought-inset border border-border bg-muted/40 p-3">
+    <div className="tend-thought-inset border border-border bg-muted p-3">
       <div className="font-display text-2xl text-foreground">{value}</div>
       <div className="mt-1 text-muted-foreground text-sm">{label}</div>
     </div>

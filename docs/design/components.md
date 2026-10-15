@@ -18,6 +18,7 @@ Implementation specs for React components in `apps/web/components/`. Each entry 
 | [LegalPage](#legalpage) | `marketing/legal-page.tsx` | 1 |
 | [TendLogoLink](#tendlogolink) | `layout/tend-logo-link.tsx` | 1, All |
 | [UserMenu](#usermenu) | `layout/user-menu.tsx` | All |
+| [Reset tend](#reset-tend) | `tend/reset-tend-section.tsx` | Settings |
 | [PageHeader](#pageheader) | `layout/page-header.tsx` | All pages |
 | [Button](#button) | `ui/button.tsx` | All |
 | [DropdownMenu](#dropdownmenu) | `ui/dropdown-menu.tsx` | All |
@@ -233,10 +234,11 @@ Extend shadcn variants:
 
 | Variant | Background | Text | Border | Usage |
 |---------|------------|------|--------|-------|
-| `default` | `--tend-primary` | inverse | none | Primary actions |
-| `secondary` | `--tend-secondary-muted` | `--tend-text` | `--tend-border` | Back, cancel |
+| `default` | `--tend-primary` | inverse | none | Primary actions. Radius 12px. Pressed `--tend-primary-hover` |
+| `secondary` | `--tend-bg-muted` | `--tend-text` | `--tend-border` | Back, cancel, paper secondary |
+| `dew` | Soft Dew | `--tend-text` | dew border | Lightweight controls (filters, today's page) |
 | `ghost` | transparent | `--tend-text-muted` | none | Skip, low emphasis |
-| `destructive` | `--tend-error-bg` | `--tend-error` | `--tend-error` 1px | Delete confirm only |
+| `destructive` | `--tend-error-bg` | `--tend-error` | `--tend-error` 1px | Delete and reset confirm |
 
 **Sizes:** `sm` (32px), `default` (40px), `lg` (44px), `icon` (44px square)
 
@@ -328,9 +330,9 @@ Horizontal or vertical snapping slides. Reflections uses the vertical axis for t
 // shadcn Card + CardHeader + CardContent + CardFooter
 ```
 
-- Background: `--tend-bg-elevated`
-- Border: `1.5px --tend-border`
-- Radius: `--tend-radius-thought` (organic thought-bubble; no comic tail)
+- Background: `--tend-bg-elevated` (`#F4EDE1`)
+- Border: `1px --tend-border`
+- Radius: `--tend-radius-xl` (16px paper card). The `tend-thought-card` class name remains as the shared card hook.
 - Padding: `--tend-space-4` (content), `--tend-space-5` (header)
 
 Used for: auth forms, preset picker container, Check In stats.
@@ -691,7 +693,13 @@ interface LifeAreaFilterProps {
 }
 ```
 
-Collapsible row of `LifeAreaChip` + "All" chip, hidden by default. **Filter by area?** toggle (secondary `sm` button, muted text) expands the chip row via `.tend-collapsible-reveal`. When a life area is selected, the toggle shows `Filter by area · {label}` so the active filter stays visible while collapsed. Pass `defaultOpen` when the user needs the chips immediately (e.g. empty filter results).
+Collapsible row of `LifeAreaChip` + "All" chip, hidden by default. **Filter by area?** toggle (Soft Dew button, muted text) expands the chip row via `.tend-collapsible-reveal`. Idle chips use Soft Dew; the selected chip uses solid sage (`.tend-dew-selected`). When a life area is selected, the toggle shows `Filter by area · {label}` so the active filter stays visible while collapsed. Pass `defaultOpen` when the user needs the chips immediately (e.g. empty filter results).
+
+### Reset tend
+
+**File:** `components/tend/reset-tend-section.tsx`
+
+Settings control that asks for confirmation, then `POST /api/v1/settings/reset` with `{ confirm: true }`. Removes tend items the signed-in user created and the history those items built. Account, reflections, and availability stay. Mobile settings uses the same endpoint.
 
 **Stories:** 13
 

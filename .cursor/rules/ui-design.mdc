@@ -32,7 +32,7 @@ If a requested change would violate `PRODUCT.md` or the design language, push ba
 
 - No guilt-driven UX: no red overdue styling, no "OVERDUE" / "LATE" copy, no streaks
 - Status labels: `Fresh`, `Getting stale`, `Needs attention`
-- Mild palette, subtle inputs, gentle fonts (Fraunces + Nunito), straightforward layout
+- Mild parchment palette, subtle inputs, gentle fonts (Newsreader + DM Sans), straightforward layout
 - Must items get stronger emphasis than wants — still never alarm-red
 
 ## Component layers

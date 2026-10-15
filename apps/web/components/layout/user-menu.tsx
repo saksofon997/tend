@@ -58,6 +58,9 @@ export function UserMenu({ onOpenChange }: UserMenuProps) {
           <DropdownMenuRadioItem value="sr">{t("language.serbian")}</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
         <DropdownMenuSeparator />
+        <DropdownMenuItem onSelect={() => router.push("/settings")}>
+          {t("settings.open")}
+        </DropdownMenuItem>
         <DropdownMenuItem disabled={signingOut} onSelect={() => void handleSignOut()}>
           {signingOut ? t("settings.signingOut") : t("settings.signOut")}
         </DropdownMenuItem>

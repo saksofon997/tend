@@ -1,5 +1,5 @@
 import { todayDateInputValue } from "@/constants";
-import { colors, fonts, radius, spacing, thoughtRadius } from "@/theme";
+import { colors, dewSoft, fonts, radius, spacing } from "@/theme";
 import type { ReflectionResponse } from "@/types";
 import type { TendApi } from "@api/tendApi";
 import { DatePickerField } from "@components/date-picker-field";
@@ -262,8 +262,8 @@ const styles = StyleSheet.create({
   title: {
     color: colors.text,
     fontFamily: fonts.display,
-    fontSize: 24,
-    lineHeight: 30,
+    fontSize: 32,
+    lineHeight: 38,
   },
   subtitle: {
     color: colors.textMuted,
@@ -291,10 +291,8 @@ const styles = StyleSheet.create({
     minHeight: 44,
     justifyContent: "center",
     paddingHorizontal: spacing.md,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.muted,
+    borderRadius: radius.chip,
+    ...dewSoft,
   },
   todayButtonText: {
     color: colors.text,
@@ -331,13 +329,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.paper,
     borderColor: colors.border,
+    borderRadius: radius.xl,
     borderWidth: 1,
     overflow: "hidden",
-    ...thoughtRadius,
   },
   leafTexture: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(44, 41, 37, 0.018)",
+    backgroundColor: "rgba(63, 56, 47, 0.02)",
   },
   marginRule: {
     position: "absolute",
@@ -374,7 +372,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: colors.text,
     fontFamily: fonts.displayRegular,
-    fontSize: 16,
+    fontSize: 18,
     lineHeight: 28,
     paddingHorizontal: 32,
     paddingTop: spacing.sm,

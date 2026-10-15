@@ -106,19 +106,62 @@
   }
 
   .tend-thought-card {
-    border-radius: var(--tend-radius-thought);
-    border-width: 1.5px;
+    border-radius: var(--tend-radius-xl);
+    border-width: 1px;
   }
 
   .tend-thought-inset {
     border-radius: var(--tend-radius-thought-inset);
   }
 
+  /* Soft Dew — everyday controls. Raised Dew — occasional floating emphasis. */
+  .tend-dew-soft,
+  .tend-dew-raised {
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--dew-border);
+    box-shadow: inset 0 1px 0 var(--dew-highlight);
+    transition: opacity var(--tend-duration-fast) var(--tend-ease), background-color
+      var(--tend-duration-fast) var(--tend-ease);
+  }
+
+  .tend-dew-soft {
+    background-color: var(--dew-surface);
+    backdrop-filter: blur(var(--dew-blur-soft));
+    -webkit-backdrop-filter: blur(var(--dew-blur-soft));
+  }
+
+  .tend-dew-raised {
+    background-color: var(--dew-surface-strong);
+    box-shadow: inset 0 1px 0 var(--dew-highlight), var(--dew-shadow);
+    backdrop-filter: blur(var(--dew-blur));
+    -webkit-backdrop-filter: blur(var(--dew-blur));
+  }
+
+  .tend-dew-soft:active,
+  .tend-dew-raised:active {
+    opacity: 0.9;
+  }
+
+  .tend-dew-selected {
+    background-color: var(--tend-primary-muted);
+    border: 1px solid var(--tend-sage);
+    color: var(--tend-primary-hover);
+    box-shadow: inset 0 1px 0 var(--dew-highlight);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .tend-dew-soft,
+    .tend-dew-raised {
+      background-color: var(--tend-dew-fallback);
+    }
+  }
+
   .tend-paper-leaf {
     position: relative;
     overflow: hidden;
     background-color: var(--tend-paper);
-    background-image: radial-gradient(rgba(44, 41, 37, 0.04) 0.55px, transparent 0.7px),
+    background-image: radial-gradient(rgba(63, 56, 47, 0.035) 0.55px, transparent 0.7px),
       linear-gradient(
         to right,
         transparent 0,
@@ -142,7 +185,7 @@
   .tend-paper-leaf--tile {
     --tend-paper-line-height: 0.85rem;
     --tend-paper-line-offset: 1.65rem;
-    background-image: radial-gradient(rgba(44, 41, 37, 0.04) 0.55px, transparent 0.7px),
+    background-image: radial-gradient(rgba(63, 56, 47, 0.035) 0.55px, transparent 0.7px),
       repeating-linear-gradient(
         to bottom,
         transparent 0,
@@ -164,7 +207,7 @@
     padding: 0.15rem 1rem 1.25rem 2.25rem;
     color: var(--tend-text);
     font-family: var(--tend-font-display);
-    font-size: 1rem;
+    font-size: var(--tend-text-lg);
     font-weight: 400;
     line-height: var(--tend-paper-line-height);
     outline: none;

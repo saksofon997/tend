@@ -47,10 +47,7 @@ export function ReminderBanner({ reminders, onTend }: ReminderBannerProps) {
 
         <ul className="mt-4 flex flex-col gap-3">
           {reminders.map((reminder) => (
-            <li
-              key={reminder.itemId}
-              className="flex flex-col gap-3 rounded-md bg-background/60 px-3 py-2"
-            >
+            <li key={reminder.itemId} className="flex flex-col gap-3 rounded-md bg-card px-3 py-2">
               <div className="min-w-0 flex-1">
                 <p className="text-pretty break-words font-medium text-foreground">
                   {reminder.name}

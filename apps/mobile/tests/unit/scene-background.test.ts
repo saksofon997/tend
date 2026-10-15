@@ -8,8 +8,9 @@ const portraitFile = join(mobileRoot, "assets/scene/tend-scene-portrait.webp");
 const splashSource = readFileSync(join(mobileRoot, "App.tsx"), "utf8");
 
 describe("SceneBackground", () => {
-  it("covers the screen with the portrait meadow illustration", () => {
+  it("keeps the portrait meadow file and does not paint it over parchment", () => {
     expect(sceneSource).toContain("tend-scene-portrait.webp");
+    expect(sceneSource).toContain("SCENE_ART_ENABLED = false");
     expect(sceneSource).toContain('resizeMode="cover"');
     expect(sceneSource).not.toContain("react-native-svg");
     expect(existsSync(portraitFile)).toBe(true);

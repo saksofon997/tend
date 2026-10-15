@@ -2,6 +2,12 @@ import { Image, StyleSheet, View } from "react-native";
 
 const scenePortrait = require("../../assets/scene/tend-scene-portrait.webp");
 
+/**
+ * Portrait meadow file stays in assets/scene. Rendering is off so the
+ * parchment background can stand on its own until new artwork arrives.
+ */
+export const SCENE_ART_ENABLED = false;
+
 export function SceneBackground() {
   return (
     <View
@@ -10,12 +16,14 @@ export function SceneBackground() {
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
-      <Image
-        accessibilityIgnoresInvertColors
-        resizeMode="cover"
-        source={scenePortrait}
-        style={styles.art}
-      />
+      {SCENE_ART_ENABLED ? (
+        <Image
+          accessibilityIgnoresInvertColors
+          resizeMode="cover"
+          source={scenePortrait}
+          style={styles.art}
+        />
+      ) : null}
     </View>
   );
 }

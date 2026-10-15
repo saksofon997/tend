@@ -1,15 +1,15 @@
 import { I18nProvider } from "@/lib/i18n/client";
 import type { Metadata } from "next";
-import { Fraunces, Nunito } from "next/font/google";
+import { DM_Sans, Newsreader } from "next/font/google";
 import "./globals.css";
 
-const display = Fraunces({
+const display = Newsreader({
   subsets: ["latin", "latin-ext"],
   variable: "--font-display",
   weight: ["400", "500", "600"],
 });
 
-const body = Nunito({
+const body = DM_Sans({
   subsets: ["latin", "latin-ext"],
   variable: "--font-body",
   weight: ["400", "500", "600"],

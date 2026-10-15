@@ -270,10 +270,10 @@ export function OnboardingFlow() {
                 aria-selected={selectedArea === area}
                 onClick={() => setSelectedArea(area)}
                 className={cn(
-                  "rounded-full px-3 py-1.5 text-xs font-medium transition-colors",
+                  "min-h-11 rounded-[var(--tend-radius-chip)] px-3 py-1.5 text-xs font-medium transition-colors",
                   selectedArea === area
-                    ? "bg-[var(--tend-primary-muted)] text-primary"
-                    : "bg-[var(--tend-bg-muted)] text-muted-foreground hover:bg-[var(--tend-bg-subtle)]",
+                    ? "tend-dew-selected"
+                    : "tend-dew-soft text-muted-foreground hover:text-foreground",
                 )}
               >
                 {t(LIFE_AREA_TRANSLATION_KEYS[area])}

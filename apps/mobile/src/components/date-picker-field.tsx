@@ -1,5 +1,5 @@
 import { todayDateInputValue } from "@/constants";
-import { colors, fonts, radius, spacing } from "@/theme";
+import { colors, dewSoft, fonts, radius, spacing } from "@/theme";
 import { t } from "@i18n";
 import DateTimePicker, { type DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { Calendar } from "lucide-react-native";
@@ -102,10 +102,8 @@ export function DatePickerField({
 const styles = StyleSheet.create({
   trigger: {
     alignItems: "center",
-    backgroundColor: colors.card,
-    borderColor: colors.borderSubtle,
+    ...dewSoft,
     borderRadius: radius.md,
-    borderWidth: 1,
     flexDirection: "row",
     gap: spacing.sm,
     minHeight: 48,

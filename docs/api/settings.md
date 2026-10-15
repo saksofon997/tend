@@ -46,3 +46,31 @@ Update saved user settings. The timezone controls how availability windows are i
 ```json
 { "timezone": "Europe/Belgrade" }
 ```
+
+---
+
+### `POST /api/v1/settings/reset`
+
+Remove every tend item the signed-in user created. Tending history for those items is removed with them. The account, reflections, availability, and items shared by someone else stay.
+
+**Auth:** Session cookie (required)
+
+**Request body**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| confirm | `true` | yes | Must be exactly `true` |
+
+**Responses**
+
+| Status | Body | Description |
+|--------|------|-------------|
+| 200 | `{ ok: true, deletedItems: number }` | Tends and their history removed |
+| 400 | `{ error: string }` | Missing confirmation or invalid JSON |
+| 401 | `{ error: string }` | Not signed in |
+
+**Example**
+
+```json
+{ "confirm": true }
+```

@@ -30,13 +30,13 @@ These come directly from the MVP product rules. Every UI decision should pass at
 
 ## 2. Visual personality
 
-**One-line summary:** *A cozy nature comic on warm linen — sun at the top, a few blades of grass, thought-shaped cards.*
+**One-line summary:** *An illustrated Japanese journal on a quiet morning — aged parchment, ink, and a little morning dew.*
 
-- **Mild colors:** Warm neutrals (linen, clay, sage) plus a soft sun-gold wash. Status uses muted earth tones, not traffic lights.
-- **Subtle inputs:** Hairline borders, filled backgrounds only on focus. No heavy box shadows on fields.
-- **Gentle fonts:** Fraunces for display (soft old-print, comic-adjacent without Comic Sans); Nunito for body. Never ultra-condensed or monospace UI.
-- **Straightforward layout:** Single-column content, clear section headers, obvious primary buttons.
-- **Scene, not chrome:** An illustrated linen meadow — sunrays from the top-left corner, grass and a few flowers along the bottom. Cards use an organic thought-bubble radius, not a cartoon tail on every row.
+- **Paper first:** Warm washi surfaces (`#E8DDCA` page, `#F4EDE1` cards). About 80–90% of the interface is parchment, ink, and botanical color.
+- **Dew second:** Translucent ivory controls (Soft Dew and Raised Dew) for filters, date controls, and small floating menus. Never on content cards or the journal sheet.
+- **Gentle fonts:** Newsreader for titles, statistics, and journal writing. DM Sans for UI, buttons, and metadata.
+- **Straightforward layout:** Single-column content, clear section headers, solid moss-green primary buttons.
+- **Artwork is separate:** Meadow image files stay in place and are not rendered until a new background is ready. Components must not sample colors from that artwork.
 
 ---
 
@@ -48,16 +48,16 @@ Load in `app/layout.tsx` via `next/font/google`:
 
 | Role | Family | Weights | Usage |
 |------|--------|---------|-------|
-| Display | **Fraunces** | 400, 500, 600 | Page titles, hero text, onboarding headlines |
-| Body / UI | **Nunito** | 400, 500, 600 | Body copy, labels, buttons, list items |
+| Display | **Newsreader** | 400, 500, 600 | Page titles, statistics, journal writing |
+| Body / UI | **DM Sans** | 400, 500, 600 | Body copy, labels, buttons, list items |
 | Mono (optional) | **DM Mono** | 400 | Time ranges in availability editor only |
 
 ```tsx
 // layout.tsx pattern
-import { Fraunces, Nunito } from "next/font/google";
+import { DM_Sans, Newsreader } from "next/font/google";
 
-const display = Fraunces({ subsets: ["latin", "latin-ext"], variable: "--font-display" });
-const body = Nunito({ subsets: ["latin", "latin-ext"], variable: "--font-body" });
+const display = Newsreader({ subsets: ["latin", "latin-ext"], variable: "--font-display" });
+const body = DM_Sans({ subsets: ["latin", "latin-ext"], variable: "--font-body" });
 ```
 
 Apply: `className={`${display.variable} ${body.variable} font-body`}` on `<body>`.
@@ -66,9 +66,9 @@ Apply: `className={`${display.variable} ${body.variable} font-body`}` on `<body>
 
 | Token | Size | Weight | Font | Example |
 |-------|------|--------|------|---------|
-| `text-3xl` | 30px | 500 | display | "Welcome to Tend" |
-| `text-2xl` | 24px | 500 | display | Home page title |
-| `text-xl` | 20px | 500 | display | Section: "Needs attention" |
+| `text-3xl` | 36px | 500 | display | Editorial title |
+| `text-2xl` | 32px | 500 | display | Screen title |
+| `text-xl` | 22px | 500 | display | Section: "Needs attention" |
 | `text-lg` | 18px | 500 | body | Item card title |
 | `text-base` | 16px | 400 | body | Body paragraphs, form labels |
 | `text-sm` | 14px | 400 | body | Metadata ("every 7 days") |
@@ -94,11 +94,14 @@ All values live in [`tokens.css`](./tokens.css). Use semantic tokens, not raw he
 ### Surfaces
 
 ```
-Page          → --tend-bg (#f7f5f2 linen) behind the illustrated meadow scene (landscape on wide screens, portrait on tall)
-Card          → --tend-bg-elevated (#fff), organic thought-bubble radius (`--tend-radius-thought`)
-Inset section → --tend-bg-muted
+Page          → --tend-bg (#E8DDCA parchment). Meadow art is kept on disk and not rendered.
+Card          → --tend-bg-elevated (#F4EDE1), 16px radius, 1px --tend-border
+Inset section → --tend-bg-muted (#EEE5D7)
+Raised paper  → --tend-bg-raised (#F8F2E8)
 List hover    → --tend-bg-subtle
 ```
+
+Soft Dew (`.tend-dew-soft`) and Raised Dew (`.tend-dew-raised`) live in `apps/web/app/globals.css` and `apps/mobile/src/theme.ts` (`dewSoft`, `dewRaised`). Change those values to adjust translucency everywhere. Selected filters use solid `--tend-primary-muted` with sage border (`.tend-dew-selected`), not transparency alone.
 
 ### Status colors
 
@@ -181,10 +184,12 @@ Tend is mostly **flat**. Depth is communicated through background shifts, not sh
 
 | Element | Treatment |
 |---------|-----------|
-| Cards | Thought-bubble radius `--tend-radius-thought`, `1.5px` border `--tend-border`, optional `--tend-shadow-sm` |
-| Inputs | `1px` border `--tend-border-subtle`, no shadow; focus ring `2px` `--tend-border-focus` |
-| Modals / sheets | `--tend-shadow-lg`, `radius-xl` |
-| Buttons | No shadow; filled primary or ghost secondary |
+| Cards | 16px radius, `1px` border `--tend-border`, optional `--tend-shadow-sm` |
+| Inputs | Warm paper, `1px` border `--tend-border-subtle`; focus ring sage with a soft green halo |
+| Chips | Soft Dew when idle; solid sage fill when selected. Radius 18px |
+| Modals / sheets | Paper surface, `--tend-shadow-lg`, 16px radius |
+| Menus | Raised Dew for the short account menu |
+| Buttons | Solid moss primary (`#596D55`, pressed `#485A45`, radius 12px). Secondary actions use muted paper. Soft Dew only for lightweight controls |
 
 ---
 
@@ -302,7 +307,7 @@ FAB or header "Add" → /items/new
 - Focus visible on all interactive elements (ring token)
 - Status never conveyed by color alone — always paired with text label
 - `role="alert"` on form errors; `aria-live="polite"` when marking tended updates list
-- Contrast: body text `#2c2925` on `#f7f5f2` ≈ 11:1 ✓; status text tokens all ≥ 4.5:1 on their backgrounds
+- Contrast: body text `#3F382F` on `#E8DDCA` ≈ 8.6:1. Badge ink is slightly darker than the palette swatches so small status text stays at or above 4.5:1 on the soft fills. Placeholder ink (`#8B8174`) is for hints, not body copy.
 
 ---
 

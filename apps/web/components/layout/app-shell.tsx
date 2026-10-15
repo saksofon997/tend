@@ -33,7 +33,7 @@ export const APP_SHELL_NAV_CLASS =
 export const APP_SHELL_USER_MENU_SLOT_CLASS = "ml-auto flex shrink-0 items-center gap-2";
 
 export const APP_SHELL_HEADER_CLASS =
-  "sticky top-0 z-10 border-b border-border bg-card/80 backdrop-blur-[3px] transition-transform duration-[var(--tend-duration-normal)] ease-[var(--tend-ease)] motion-reduce:transition-none md:translate-y-0";
+  "sticky top-0 z-10 border-b border-[var(--tend-border-subtle)] bg-card transition-transform duration-[var(--tend-duration-normal)] ease-[var(--tend-ease)] motion-reduce:transition-none md:translate-y-0";
 
 export const APP_SHELL_HEADER_COLLAPSED_CLASS =
   "-translate-y-full pointer-events-none md:pointer-events-auto";
@@ -60,10 +60,10 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "text-sm transition-colors duration-[var(--tend-duration-fast)]",
+                  "rounded-[var(--tend-radius-chip)] px-2.5 py-1 text-sm transition-colors duration-[var(--tend-duration-fast)]",
                   "hideOnMobile" in item && item.hideOnMobile ? "hidden md:inline" : null,
                   activePath === item.href
-                    ? "font-medium text-primary"
+                    ? "tend-dew-selected font-medium"
                     : "text-muted-foreground hover:text-foreground",
                 )}
               >

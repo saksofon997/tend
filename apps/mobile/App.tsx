@@ -8,7 +8,7 @@ import {
   todayDateInputValue,
 } from "@/constants";
 import { tendFonts } from "@/fonts";
-import { colors, fonts, radius, spacing, thoughtRadius } from "@/theme";
+import { colors, dewSoft, fonts, radius, spacing, thoughtRadius } from "@/theme";
 import type { ActivityEntryResponse, ItemResponse, ReminderResponse, UserResponse } from "@/types";
 import { getAttentionSectionDefaults } from "@/utils/homeGroups";
 import { refreshHomeData } from "@/utils/homeRefresh";
@@ -2711,6 +2711,9 @@ function SettingsScreen({
   const [settingsMessage, setSettingsMessage] = useState<string | null>(null);
   const [settingsError, setSettingsError] = useState<string | null>(null);
   const [timezoneSaving, setTimezoneSaving] = useState(false);
+  const [resetting, setResetting] = useState(false);
+  const [resetMessage, setResetMessage] = useState<string | null>(null);
+  const [resetError, setResetError] = useState<string | null>(null);
   const { disable, pushToken, register, registering, statusMessage } = usePushNotifications(api);
 
   useEffect(() => {
@@ -2753,6 +2756,34 @@ function SettingsScreen({
       setSettingsError(getErrorMessage(saveError, t("errors.settings.save")));
     } finally {
       setTimezoneSaving(false);
+    }
+  }
+
+  function confirmReset() {
+    Alert.alert(t("settings.reset.confirmTitle"), t("settings.reset.confirmMessage"), [
+      { text: t("common.cancel"), style: "cancel" },
+      {
+        text: t("settings.reset.confirm"),
+        style: "destructive",
+        onPress: () => {
+          void resetTend();
+        },
+      },
+    ]);
+  }
+
+  async function resetTend() {
+    setResetting(true);
+    setResetMessage(null);
+    setResetError(null);
+
+    try {
+      await api.resetTend();
+      setResetMessage(t("settings.reset.done"));
+    } catch (error) {
+      setResetError(getErrorMessage(error, t("settings.reset.error")));
+    } finally {
+      setResetting(false);
     }
   }
 
@@ -2848,6 +2879,27 @@ function SettingsScreen({
         >
           <CalendarClock size={17} color={colors.primary} />
           <Text style={styles.secondaryButtonText}>{t("settings.availability.button")}</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.settingsCard}>
+        <Text style={styles.cardTitle}>{t("settings.reset.title")}</Text>
+        <Text style={styles.metaText}>{t("settings.reset.body")}</Text>
+        {resetMessage ? <AlertBox message={resetMessage} tone="info" /> : null}
+        {resetError ? <AlertBox message={resetError} tone="error" /> : null}
+        <TouchableOpacity
+          accessibilityRole="button"
+          style={[
+            styles.deleteItemButton,
+            styles.resetTendButton,
+            resetting ? styles.buttonDisabled : null,
+          ]}
+          disabled={resetting}
+          onPress={confirmReset}
+        >
+          <Text style={styles.deleteItemButtonText}>
+            {resetting ? t("settings.reset.working") : t("settings.reset.button")}
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -3376,9 +3428,8 @@ const styles = StyleSheet.create({
   bottomBar: {
     alignItems: "flex-end",
     backgroundColor: colors.card,
-    borderTopColor: colors.border,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    elevation: 12,
+    borderTopColor: colors.borderSubtle,
+    borderTopWidth: 1,
     flexDirection: "row",
     gap: spacing.xs,
     justifyContent: "space-around",
@@ -3405,6 +3456,8 @@ const styles = StyleSheet.create({
   },
   tabIconWrapActive: {
     backgroundColor: colors.primaryMuted,
+    borderColor: colors.sage,
+    borderWidth: 1,
   },
   tabIconWrapPressed: {
     backgroundColor: colors.muted,
@@ -3413,10 +3466,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.primary,
     borderRadius: radius.round,
+    elevation: 3,
     height: 54,
     justifyContent: "center",
     marginTop: -20,
     overflow: "hidden",
+    shadowColor: "#3F382F",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
     width: 54,
   },
   addTabIconWrapPressed: {
@@ -3453,8 +3511,8 @@ const styles = StyleSheet.create({
   pageTitle: {
     color: colors.text,
     fontFamily: fonts.display,
-    fontSize: 24,
-    lineHeight: 30,
+    fontSize: 32,
+    lineHeight: 38,
   },
   pageSubtitle: {
     color: colors.textMuted,
@@ -3511,8 +3569,8 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: colors.text,
     fontFamily: fonts.display,
-    fontSize: 20,
-    lineHeight: 26,
+    fontSize: 24,
+    lineHeight: 30,
   },
   sectionCount: {
     backgroundColor: colors.muted,
@@ -3535,7 +3593,7 @@ const styles = StyleSheet.create({
   },
   reminderBanner: {
     backgroundColor: colors.staleBg,
-    borderColor: "#e7d8bd",
+    borderColor: colors.border,
     borderRadius: radius.lg,
     borderWidth: 1,
     gap: spacing.md,
@@ -3543,11 +3601,11 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
   reminderBannerMust: {
-    borderColor: "#e7d8bd",
+    borderColor: colors.mustBorder,
   },
   reminderBannerTitle: {
     color: colors.text,
-    fontFamily: fonts.displaySemibold,
+    fontFamily: fonts.display,
     fontSize: 19,
     lineHeight: 25,
   },
@@ -3584,7 +3642,8 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
   mustAttentionCard: {
-    borderColor: colors.border,
+    borderLeftColor: colors.mustBorder,
+    borderLeftWidth: 4,
   },
   subduedCard: {
     opacity: 0.85,
@@ -3629,11 +3688,11 @@ const styles = StyleSheet.create({
   },
   statusStale: {
     backgroundColor: colors.staleBg,
-    color: "#835f35",
+    color: colors.stale,
   },
   statusAttention: {
     backgroundColor: colors.attentionBg,
-    color: "#7f5143",
+    color: colors.attention,
   },
   typeMust: {
     backgroundColor: colors.mustBg,
@@ -3707,8 +3766,8 @@ const styles = StyleSheet.create({
   },
   filterToggle: {
     alignSelf: "flex-start",
-    backgroundColor: colors.primaryMuted,
-    borderRadius: radius.md,
+    ...dewSoft,
+    borderRadius: radius.chip,
     minHeight: 36,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
@@ -3727,16 +3786,16 @@ const styles = StyleSheet.create({
     paddingTop: spacing.md,
   },
   chip: {
-    backgroundColor: colors.card,
-    borderColor: colors.border,
-    borderRadius: radius.round,
-    borderWidth: 1,
+    ...dewSoft,
+    borderRadius: radius.chip,
+    justifyContent: "center",
+    minHeight: 44,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
   chipSelected: {
     backgroundColor: colors.primaryMuted,
-    borderColor: colors.primary,
+    borderColor: colors.sage,
   },
   chipText: {
     color: colors.textMuted,
@@ -3744,7 +3803,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   chipTextSelected: {
-    color: colors.primary,
+    color: colors.primaryPressed,
     fontFamily: fonts.bodySemibold,
   },
   field: {
@@ -3909,6 +3968,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     marginBottom: spacing.sm,
+  },
+  resetTendButton: {
+    marginTop: spacing.md,
+    minHeight: 44,
   },
   deleteItemButton: {
     alignItems: "center",
@@ -4124,8 +4187,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   periodChip: {
-    backgroundColor: colors.muted,
-    borderRadius: radius.round,
+    ...dewSoft,
+    borderRadius: radius.chip,
     minHeight: 44,
     justifyContent: "center",
     paddingHorizontal: spacing.md,
@@ -4133,6 +4196,7 @@ const styles = StyleSheet.create({
   },
   periodChipSelected: {
     backgroundColor: colors.primaryMuted,
+    borderColor: colors.sage,
   },
   periodChipText: {
     color: colors.textMuted,
@@ -4140,7 +4204,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   periodChipTextSelected: {
-    color: colors.primary,
+    color: colors.primaryPressed,
   },
   checkInStatsGrid: {
     gap: spacing.md,
@@ -4165,8 +4229,8 @@ const styles = StyleSheet.create({
   checkInStatValue: {
     color: colors.text,
     fontFamily: fonts.display,
-    fontSize: 30,
-    lineHeight: 36,
+    fontSize: 40,
+    lineHeight: 46,
     marginTop: spacing.sm,
   },
   checkInPatternList: {

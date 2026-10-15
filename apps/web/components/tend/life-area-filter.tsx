@@ -46,9 +46,9 @@ export function LifeAreaFilter({ selected, onChange, defaultOpen = false }: Life
     <div className={cn(!open && "mb-6")}>
       <Button
         type="button"
-        variant="secondary"
+        variant="dew"
         size="sm"
-        className="text-[var(--tend-text-muted)] hover:text-foreground"
+        className="min-h-11 text-[var(--tend-text-muted)] hover:text-foreground"
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((current) => !current)}

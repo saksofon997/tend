@@ -70,7 +70,8 @@ const CHECK_IN_WEEKDAY_COUNTS = [
 ] as const;
 
 export const LANDING_SECTION_CLASS = "mt-16 border-t border-border pt-10";
-export const LANDING_SECTION_INTRO_CLASS = "mx-auto max-w-2xl text-center";
+export const LANDING_SECTION_INTRO_CLASS =
+  "mx-auto max-w-2xl rounded-xl bg-card px-5 py-4 text-center";
 export const LANDING_POINT_GRID_CLASS = "mt-8 grid gap-6 sm:grid-cols-3";
 
 export function LandingPage() {
@@ -167,7 +168,10 @@ export function LandingPage() {
 
             <div className="grid gap-4">
               {CHECK_IN_POINTS.map((point) => (
-                <article key={point.titleKey} className="border-border border-b pb-4 last:border-0">
+                <article
+                  key={point.titleKey}
+                  className="tend-thought-card border border-border bg-card p-4"
+                >
                   <LandingPointCopy title={t(point.titleKey)} body={t(point.bodyKey)} />
                 </article>
               ))}
@@ -215,7 +219,7 @@ function LandingPointCopy({ body, title }: { body: string; title: string }) {
 
 function LandingPoint({ body, title }: { body: string; title: string }) {
   return (
-    <article className="min-w-0">
+    <article className="tend-thought-card min-w-0 border border-border bg-card p-4">
       <LandingPointCopy body={body} title={title} />
     </article>
   );

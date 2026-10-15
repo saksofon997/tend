@@ -103,7 +103,7 @@ interface AppShellProps {
 - Nav links: centered in the column; `text-sm`, muted default, primary color when active
 - User menu: `UserMenu` dropdown in the header trailing slot (sign out today; expandable)
 
-**Notes:** Hide full nav during onboarding. Auth pages use `AuthLayout` with `SiteFooter`. Page chrome sits on `TendSceneBackground` (illustrated meadow). On compact web viewports, the header slides away while scrolling down and returns on scroll up; desktop stays pinned.
+**Notes:** Hide full nav during onboarding. Auth pages use `AuthLayout` with `SiteFooter`. Page chrome sits on `TendSceneBackground` (parchment painting). On compact web viewports, the header slides away while scrolling down and returns on scroll up; desktop stays pinned.
 
 ---
 
@@ -111,7 +111,7 @@ interface AppShellProps {
 
 **File:** `components/layout/tend-scene-background.tsx`
 
-Decorative illustrated meadow: warm paper, sunrays from the top-left, grass and small flowers along the bottom. Landscape art (`/scene/tend-scene-landscape.webp`) on wide screens; portrait art (`/scene/tend-scene-portrait.webp`) when the viewport is taller than it is wide. `aria-hidden`. Used in `AppShell`, `AuthLayout`, `OnboardingLayout`, `LandingPage`, and `LegalPage`. Mobile uses the same portrait illustration in `SceneBackground`. Keep the art as a quiet backdrop — not a poster in front of the UI.
+Decorative parchment painting: aged paper, distant hills, and plants with dew in the lower corners. Landscape art (`/scene/tend-scene-landscape.webp`) on wide screens; portrait art (`/scene/tend-scene-portrait.webp`) when the viewport is taller than it is wide. The image is anchored to the bottom center so the plants stay in frame. `aria-hidden`. Used in `AppShell`, `AuthLayout`, `OnboardingLayout`, `LandingPage`, and `LegalPage`. Mobile uses the same portrait illustration in `SceneBackground`. Keep the art as a quiet backdrop — not a poster in front of the UI.
 
 ---
 

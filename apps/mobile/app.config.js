@@ -39,7 +39,8 @@ module.exports = {
       googleServicesFile: "./google-services.json",
       adaptiveIcon: {
         foregroundImage: "./assets/app-icon.png",
-        backgroundColor: "#f7f5f2",
+        // Cream already painted into the icon, so the adaptive mask edge matches.
+        backgroundColor: "#F3EAD6",
       },
       edgeToEdgeEnabled: true,
     },

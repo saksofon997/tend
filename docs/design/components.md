@@ -98,9 +98,9 @@ interface AppShellProps {
 
 **Styles:**
 - Header: `--tend-bg-elevated`, bottom border `--tend-border`, full-width bar
-- Header and page body share `.tend-content-column` (`max-width: 640px`, centered, `padding-inline: 16px`)
+- Header uses `.tend-header-column` (`max-width: 768px`) so labels such as Check In stay on one line. Page body stays `.tend-content-column` (`max-width: 640px`, centered, `padding-inline: 16px`)
 - Logo: `TendLogoLink` image (`/promo/tend-logo.png`), `h-7` in the shell header
-- Nav links: centered in the column; `text-sm`, muted default, primary color when active
+- Nav links: centered in the header; `text-sm`, `whitespace-nowrap`, muted default, primary color when active
 - User menu: `UserMenu` dropdown in the header trailing slot (sign out today; expandable)
 
 **Notes:** Hide full nav during onboarding. Auth pages use `AuthLayout` with `SiteFooter`. Page chrome sits on `TendSceneBackground` (parchment painting). On compact web viewports, the header slides away while scrolling down and returns on scroll up; desktop stays pinned.

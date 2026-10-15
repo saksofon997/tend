@@ -4,6 +4,7 @@ import {
   APP_SHELL_HEADER_COLLAPSED_CLASS,
   APP_SHELL_HEADER_ROW_CLASS,
   APP_SHELL_NAV_CLASS,
+  APP_SHELL_NAV_LINK_CLASS,
   APP_SHELL_USER_MENU_SLOT_CLASS,
   NAV_ITEMS,
 } from "@/components/layout/app-shell";
@@ -16,6 +17,9 @@ describe("AppShell responsive header layout", () => {
     expect(APP_SHELL_NAV_CLASS).toContain("w-full");
     expect(APP_SHELL_NAV_CLASS).toContain("md:order-none");
     expect(APP_SHELL_NAV_CLASS).toContain("md:w-auto");
+    expect(APP_SHELL_NAV_CLASS).toContain("md:flex-nowrap");
+    expect(APP_SHELL_HEADER_ROW_CLASS).toContain("tend-header-column");
+    expect(APP_SHELL_NAV_LINK_CLASS).toContain("whitespace-nowrap");
     expect(APP_SHELL_USER_MENU_SLOT_CLASS).toContain("ml-auto");
     expect(APP_SHELL_USER_MENU_SLOT_CLASS).toContain("shrink-0");
   });

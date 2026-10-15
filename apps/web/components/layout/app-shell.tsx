@@ -25,10 +25,13 @@ export const NAV_ITEMS = [
 ] as const;
 
 export const APP_SHELL_HEADER_ROW_CLASS =
-  "tend-content-column flex min-h-14 flex-wrap items-center gap-x-3 gap-y-2 py-2 md:flex-nowrap md:gap-4";
+  "tend-header-column flex min-h-14 flex-wrap items-center gap-x-3 gap-y-2 py-2 md:flex-nowrap md:gap-4";
 
 export const APP_SHELL_NAV_CLASS =
-  "order-3 flex w-full flex-1 items-center justify-center gap-3 md:order-none md:w-auto md:gap-4";
+  "order-3 flex w-full flex-1 flex-wrap items-center justify-center gap-3 md:order-none md:w-auto md:flex-nowrap md:gap-4";
+
+export const APP_SHELL_NAV_LINK_CLASS =
+  "whitespace-nowrap rounded-[var(--tend-radius-chip)] px-2.5 py-1 text-sm transition-colors duration-[var(--tend-duration-fast)]";
 
 export const APP_SHELL_USER_MENU_SLOT_CLASS = "ml-auto flex shrink-0 items-center gap-2";
 
@@ -60,7 +63,7 @@ export function AppShell({ children, user, activePath }: AppShellProps) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "rounded-[var(--tend-radius-chip)] px-2.5 py-1 text-sm transition-colors duration-[var(--tend-duration-fast)]",
+                  APP_SHELL_NAV_LINK_CLASS,
                   "hideOnMobile" in item && item.hideOnMobile ? "hidden md:inline" : null,
                   activePath === item.href
                     ? "tend-dew-selected font-medium"

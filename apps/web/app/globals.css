@@ -52,6 +52,15 @@
     padding-inline: var(--tend-space-4);
   }
 
+  /* Wider than the page column so two-word labels such as "Check In" stay on one line. */
+  .tend-header-column {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: var(--tend-content-wide);
+    margin-inline: auto;
+    padding-inline: var(--tend-space-4);
+  }
+
   .tend-marketing-column {
     box-sizing: border-box;
     width: 100%;
